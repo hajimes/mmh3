@@ -1,0 +1,5 @@
+include *.cpp
+include MurmurHash3.h
+include README
+include setup.py
+include MANIFEST.in
