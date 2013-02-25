@@ -1,6 +1,6 @@
 Metadata-Version: 1.0
 Name: mmh3
-Version: 2.0
+Version: 2.1
 Summary: Python library for MurmurHash3, a set of fast and robust hash functions.
 Home-page: http://packages.python.org/mmh3
 Author: Hajime Senuma
@@ -8,7 +8,7 @@ Author-email: hajime.senuma@gmail.com
 License: Public Domain
 Description: Python library for MurmurHash3, a set of fast and robust hash functions.
         
-        mmh3 2.0 now supports both Python 2.7 and 3.x. The interface is greatly changed.
+        mmh3 2.1 supports both Python 2.7 and 3.x.
         
         Sample usage:
             >>> import mmh3
@@ -24,7 +24,7 @@ Description: Python library for MurmurHash3, a set of fast and robust hash funct
             >>> mmh3.hash('foo', 42) # uses 42 for a seed
             725194882
         
-        hash64 and hash_bytes have a third argument for architecture optimization. Use True for x64 and False for x86 (default: True).
+        hash64 and hash_bytes have the third argument for architecture optimization. Use True for x64 and False for x86 (default: True).
             >>> mmh3.hash64('foo', 42, True) 
             (-840311307571801102, -6739155424061121879)
         

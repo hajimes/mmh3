@@ -10,7 +10,12 @@
 #include "MurmurHash3.h"
 
 #if defined(_MSC_VER)
+typedef signed char int8_t;
+typedef signed long int32_t;
 typedef signed __int64 int64_t;
+typedef unsigned char uint8_t;
+typedef unsigned long uint32_t;
+typedef unsigned __int64 uint64_t;
 // Other compilers
 #else    // defined(_MSC_VER)
 #include <stdint.h>
@@ -112,7 +117,7 @@ static PyMethodDef Mmh3Methods[] = {
         "hash64(key[, seed=0, x64arch=True]) -> (hash value 1, hash value 2)\n Return a tuple of two 64 bit integers for a string. Optimized for the x64 bit architecture when x64arch=True, otherwise for x86."},
     {"hash_bytes", (PyCFunction)mmh3_hash_bytes,
       METH_VARARGS | METH_KEYWORDS,
-        "hash_bytes(key[, seed=0, x64arch=True]) -> bytes\n Return a 128 bit hash value as bytes for a string. Optimized for the x64     bit architecture when x64arch=True, otherwise for the x86."},
+        "hash_bytes(key[, seed=0, x64arch=True]) -> bytes\n Return a 128 bit hash value as bytes for a string. Optimized for the x64 bit architecture when x64arch=True, otherwise for the x86."},
     {NULL, NULL, 0, NULL}
 };
 
@@ -163,6 +168,8 @@ initmmh3(void)
 
     if (module == NULL)
         INITERROR;
+
+    PyModule_AddStringConstant(module, "__version__", "2.1");
 
     struct module_state *st = GETSTATE(module);
 
