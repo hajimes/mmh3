@@ -1,6 +1,6 @@
 Metadata-Version: 1.0
 Name: mmh3
-Version: 2.1
+Version: 2.2
 Summary: Python library for MurmurHash3, a set of fast and robust hash functions.
 Home-page: http://packages.python.org/mmh3
 Author: Hajime Senuma
