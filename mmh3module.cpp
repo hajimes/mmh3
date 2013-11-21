@@ -174,7 +174,7 @@ initmmh3(void)
     struct module_state *st = GETSTATE(module);
 
     st->error = PyErr_NewException((char *) "mmh3.Error", NULL, NULL);
-    if (st->error = NULL) {
+    if (st->error == NULL) {
         Py_DECREF(module);
         INITERROR;
     }
