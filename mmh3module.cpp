@@ -94,6 +94,12 @@ mmh3_hash128(PyObject *self, PyObject *args, PyObject *keywds)
       MurmurHash3_x86_128(target_str, target_str_len, seed, result);
     }
 
+    
+    /**
+     * _PyLong_FromByteArray is not a part of official Python/C API
+     * and can be displaced (although it is practically stable). cf.
+     * https://mail.python.org/pipermail/python-list/2006-August/372368.html
+     */
     PyObject *retval = _PyLong_FromByteArray((unsigned char *)result, 16, 1, 0);
     return retval;
 }
@@ -143,7 +149,7 @@ static PyMethodDef Mmh3Methods[] = {
     {"hash64", (PyCFunction)mmh3_hash64, METH_VARARGS | METH_KEYWORDS,
         "hash64(key[, seed=0, x64arch=True]) -> (hash value 1, hash value 2)\n Return a tuple of two 64 bit integers for a string. Optimized for the x64 bit architecture when x64arch=True, otherwise for x86."},
     {"hash128", (PyCFunction)mmh3_hash128, METH_VARARGS | METH_KEYWORDS,
-        "hash128(key[, seed=0]) -> hash value\n Return a 128 bit long integer."},
+        "hash128(key[, seed=0, x64arch=True]]) -> hash value\n Return a 128 bit long integer. Optimized for the x64 bit architecture when x64arch=True, otherwise for x86."},
     {"hash_bytes", (PyCFunction)mmh3_hash_bytes,
       METH_VARARGS | METH_KEYWORDS,
         "hash_bytes(key[, seed=0, x64arch=True]) -> bytes\n Return a 128 bit hash value as bytes for a string. Optimized for the x64 bit architecture when x64arch=True, otherwise for the x86."},
