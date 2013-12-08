@@ -3,7 +3,7 @@ mmh3
 
 Python wrapper for MurmurHash (MurmurHash3), a set of fast and robust hash functions.
 
-mmh3 2.2 supports both Python 2.7 and 3.x.
+mmh3 2.3 supports both Python 2.7 and 3.x.
 
 Usage
 -----
@@ -15,6 +15,8 @@ Sample Usage::
     -156908512
     >>> mmh3.hash64('foo') # two 64 bit signed ints
     (-2129773440516405919, 9128664383759220103)
+    >>> mmh3.hash128('foo') # 128 bit signed int
+    168394135621993849475852668931176482145
     >>> mmh3.hash_bytes('foo') # 128 bit value as bytes
     'aE\xf5\x01W\x86q\xe2\x87}\xba+\xe4\x87\xaf~'
     >>> mmh3.hash('foo', 42) # uses 42 for its seed
@@ -27,9 +29,17 @@ hash64 and hash_bytes have the third argument for architecture optimization. Use
 
 Changes
 =======
+2.3 (2013-12-08)
+----------------
+* Add `hash128`, which returns a 128-bit signed integer.
+* Fix a misplaced operator which could cause memory leak in a rare condition.
+* Fix a malformed value to a Python/C API function which may cause runtime errors in recent Python 3.x versions.
+
+The first two commits are from `Derek Wilson <https://github.com/underrun>`_. Thanks!
+
 2.2 (2013-03-03)
 ----------------
-* Improve portability to support systems with old gcc (version < 4.4) such as CentOS/RHEL 5.x. (Commit from Micha Gorelick. Thanks!)
+* Improve portability to support systems with old gcc (version < 4.4) such as CentOS/RHEL 5.x. (Commit from `Micha Gorelick <https://github.com/mynameisfiber>`_. Thanks!)
 
 2.1 (2013-02-25)
 ----------------
