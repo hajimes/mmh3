@@ -22,7 +22,7 @@ Sample Usage::
     >>> mmh3.hash('foo', 42) # uses 42 for its seed
     -1322301282
 
-hash64 and hash_bytes have the third argument for architecture optimization. Use True for x64 and False for x86 (default: True).::
+``hash64``, ``hash128``, and ``hash_bytes`` have the third argument for architecture optimization. Use True for x64 and False for x86 (default: True).::
 
     >>> mmh3.hash64('foo', 42, True) 
     (-840311307571801102, -6739155424061121879)
@@ -31,7 +31,7 @@ Changes
 =======
 2.3 (2013-12-08)
 ----------------
-* Add `hash128`, which returns a 128-bit signed integer.
+* Add ``hash128``, which returns a 128-bit signed integer.
 * Fix a misplaced operator which could cause memory leak in a rare condition.
 * Fix a malformed value to a Python/C API function which may cause runtime errors in recent Python 3.x versions.
 
