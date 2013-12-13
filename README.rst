@@ -61,6 +61,8 @@ License
 
 Public Domain
 
+except: the `.gitignore` file was copied from https://github.com/github/gitignore/blob/master/Python.gitignore and is copyrighted Copyright (c) 2013 GitHub, Inc. under the MIT license. See the header of `.gitignore`.
+
 Authors
 =======
 
