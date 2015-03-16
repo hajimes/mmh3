@@ -31,7 +31,7 @@ mmh3_hash(PyObject *self, PyObject *args, PyObject *keywds)
 
     static char *kwlist[] = {(char *)"key", (char *)"seed", NULL};
 
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|i", kwlist,
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|I", kwlist,
         &target_str, &target_str_len, &seed)) {
         return NULL;
     }
@@ -56,7 +56,7 @@ mmh3_hash64(PyObject *self, PyObject *args, PyObject *keywds)
     static char *kwlist[] = {(char *)"key", (char *)"seed",
       (char *)"x64arch", NULL};
 
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|iB", kwlist,
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|IB", kwlist,
         &target_str, &target_str_len, &seed, &x64arch)) {
         return NULL;
     }
@@ -83,7 +83,7 @@ mmh3_hash128(PyObject *self, PyObject *args, PyObject *keywds)
     static char *kwlist[] = {(char *)"key", (char *)"seed",
       (char *)"x64arch", NULL};
 
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|iB", kwlist,
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|IB", kwlist,
         &target_str, &target_str_len, &seed, &x64arch)) {
         return NULL;
     }
@@ -116,7 +116,7 @@ mmh3_hash_bytes(PyObject *self, PyObject *args, PyObject *keywds)
     static char *kwlist[] = {(char *)"key", (char *)"seed",
       (char *)"x64arch", NULL};
 
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|iB", kwlist,
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|IB", kwlist,
         &target_str, &target_str_len, &seed, &x64arch)) {
         return NULL;
     }
