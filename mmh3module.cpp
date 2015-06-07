@@ -204,7 +204,7 @@ initmmh3(void)
     if (module == NULL)
         INITERROR;
 
-    PyModule_AddStringConstant(module, "__version__", "2.3");
+    PyModule_AddStringConstant(module, "__version__", "2.31");
 
     struct module_state *st = GETSTATE(module);
 
