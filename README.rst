@@ -3,7 +3,7 @@ mmh3
 
 Python wrapper for MurmurHash (MurmurHash3), a set of fast and robust hash functions.
 
-mmh3 2.31 supports both Python 2.7 and 3.x.
+mmh3 2.3.1 supports both Python 2.7 and 3.x.
 
 Usage
 -----
@@ -29,8 +29,8 @@ Sample Usage::
 
 Changes
 =======
-2.31 (2015-06-07)
------------------
+2.3.1 (2015-06-07)
+------------------
 * Fix compile errors for gcc >=5.
 
 2.3 (2013-12-08)
