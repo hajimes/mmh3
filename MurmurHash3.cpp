@@ -31,7 +31,7 @@
 
 #if defined(__GNUC__) && ((__GNUC__ > 4) || (__GNUC__ == 4 && GNUC_MINOR >= 4))
 /* gcc version >= 4.4 4.1 = RHEL 5, 4.4 = RHEL 6. Don't inline for RHEL 5 gcc which is 4.1*/
-#define FORCE_INLINE attribute((always_inline))
+#define FORCE_INLINE inline __attribute__((always_inline))
 #else
 #define FORCE_INLINE 
 #endif
