@@ -13,7 +13,7 @@ Sample Usage::
     >>> import mmh3
     >>> mmh3.hash('foo') # 32 bit signed int
     -156908512
-    >>> mmh3.hash64('foo') # two 64 bit signed ints
+    >>> mmh3.hash64('foo') # two 64 bit signed ints (by using the 128-bit algorithm as its backend)
     (-2129773440516405919, 9128664383759220103)
     >>> mmh3.hash128('foo') # 128 bit signed int
     168394135621993849475852668931176482145
@@ -26,6 +26,8 @@ Sample Usage::
 
     >>> mmh3.hash64('foo', 42, True) 
     (-840311307571801102, -6739155424061121879)
+
+Beware that ``hash64`` returns **two** values, because it uses the 128-bit version of MurmurHash3 as its backend.
 
 Changes
 =======
