@@ -10,7 +10,8 @@ def u32_to_s32(v):
 
 # Note that MurmurHash3 is endian-sensitive.
 # In big-endian environments, these tests may fail.
-def test_hash_value():
+
+def test_hash():
     assert mmh3.hash('foo') == -156908512
     
     # Several test vectors devised by Ian Boyd
@@ -54,3 +55,8 @@ def test_hash_value():
 
     assert mmh3.hash('The quick brown fox jumps over the lazy dog',
         u32_to_s32(0x9747b28c)) == u32_to_s32(0x2FA826CD)
+        
+def test_hash_bytes():
+    mmh3.hash_bytes('foo') == b'aE\xf5\x01W\x86q\xe2\x87}\xba+\xe4\x87\xaf~'
+    
+    # TODO
