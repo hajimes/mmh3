@@ -4,6 +4,11 @@
 // and is also placed in the public domain.
 // The authors hereby disclaim copyright to these source codes.
 
+// To handle 64-bit data; see https://docs.python.org/2.7/c-api/arg.html
+#ifndef PY_SSIZE_T_CLEAN
+#define PY_SSIZE_T_CLEAN
+#endif
+
 #include <stdio.h>
 #include <string.h>
 #include <Python.h>
@@ -25,7 +30,7 @@ static PyObject *
 mmh3_hash(PyObject *self, PyObject *args, PyObject *keywds)
 {
     const char *target_str;
-    int target_str_len;
+    Py_ssize_t target_str_len;
     uint32_t seed = 0;
     int32_t result[1];
 
@@ -48,7 +53,7 @@ static PyObject *
 mmh3_hash64(PyObject *self, PyObject *args, PyObject *keywds)
 {
     const char *target_str;
-    int target_str_len;
+    Py_ssize_t target_str_len;
     uint32_t seed = 0;
     int64_t result[2];
     char x64arch = 1;
@@ -75,7 +80,7 @@ static PyObject *
 mmh3_hash128(PyObject *self, PyObject *args, PyObject *keywds)
 {
     const char *target_str;
-    int target_str_len;
+    Py_ssize_t target_str_len;
     uint32_t seed = 0;
     uint64_t result[2];
     char x64arch = 1;
@@ -108,7 +113,7 @@ static PyObject *
 mmh3_hash_bytes(PyObject *self, PyObject *args, PyObject *keywds)
 {
     const char *target_str;
-    int target_str_len;
+    Py_ssize_t target_str_len;
     uint32_t seed = 0;
     uint32_t result[4];
     char x64arch = 1;

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import mmh3
+import numpy as np
 
 # see also https://stackoverflow.com/a/1375939
 def u32_to_s32(v):
@@ -100,13 +101,20 @@ def test_hash2():
         0x9747b28c) == u32_to_s32(0x2FA826CD)
 
 def test_hash_bytes():
-    mmh3.hash_bytes('foo') == b'aE\xf5\x01W\x86q\xe2\x87}\xba+\xe4\x87\xaf~'
+    assert mmh3.hash_bytes('foo') == b'aE\xf5\x01W\x86q\xe2\x87}\xba+\xe4\x87\xaf~'
     # TODO
     
 def test_hash64():
-    mmh3.hash64('foo') == (-2129773440516405919, 9128664383759220103)
+    assert mmh3.hash64('foo') == (-2129773440516405919, 9128664383759220103)
     # TODO
 
 def test_hash128():
-    mmh3.hash128('foo') == 168394135621993849475852668931176482145
+    assert mmh3.hash128('foo') == 168394135621993849475852668931176482145
     # TODO
+    
+def test_64bit():
+    a = np.zeros(2**32, dtype=np.int8)
+    assert mmh3.hash(a) == -1988950868
+    assert mmh3.hash64(a) == (-6319308327427928234, -8156928649350215884)
+    assert mmh3.hash128(a) == 189813591698865711411311444615608766294
+    assert mmh3.hash_bytes(a) == b'V\x8f}\xad\x8eNM\xa84\x07FU\x9c\xc4\xcc\x8e'

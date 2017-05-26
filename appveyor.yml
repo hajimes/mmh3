@@ -19,6 +19,7 @@ install:
   # We need wheel installed to build wheels
   - "%PYTHON%\\python.exe -m pip install wheel"
   - "build.cmd %PYTHON%\\python.exe -m pip install pytest"
+  - "build.cmd %PYTHON%\\python.exe -m pip install numpy"
   - "build.cmd %PYTHON%\\python.exe -m pip install ."
 
 build: off

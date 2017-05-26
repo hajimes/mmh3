@@ -98,6 +98,7 @@ os:
 #  - osx # See https://github.com/travis-ci/travis-ci/issues/4729
 
 install:
+  - pip install numpy
   - pip install .
 
 script: pytest
