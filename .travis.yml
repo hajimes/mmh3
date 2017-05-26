@@ -16,11 +16,11 @@ os:
   - linux
 #  - osx # See https://github.com/travis-ci/travis-ci/issues/4729
 
-env:
-  - CXX=clang++-4.0
-  - CXX=g++-4.9
-  - CXX=g++-5
-  - CXX=g++-6
+compiler:
+  - clang++-4.0
+  - g++-4.9
+  - g++-5
+  - g++-6
 
 install:
   - pip install .
