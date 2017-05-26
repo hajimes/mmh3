@@ -1,6 +1,10 @@
 language: python
 
 addons_shortcuts:
+  addons_gcc4.9: &gcc4.9
+    apt:
+      sources: [ 'ubuntu-toolchain-r-test' ]
+      packages: [ 'g++-4.9', 'gcc-4.9']
   addons_gcc5: &gcc5
     apt:
       sources: [ 'ubuntu-toolchain-r-test' ]
@@ -9,46 +13,85 @@ addons_shortcuts:
     apt:
       sources: [ 'ubuntu-toolchain-r-test' ]
       packages: [ 'g++-6', 'gcc-6']
+  addons_gcc6: &clang4
+    apt:
+      sources: [ 'ubuntu-toolchain-r-test' ]
+      packages: [ 'clang-4']
 
 matrix:
   include:
     - python: "2.7"
+      env: CXX=g++-4.9
+      addons: *gcc4.9
+    - python: "2.7"
       env: CXX=g++-5
       addons: *gcc5
     - python: "2.7"
       env: CXX=g++-6
       addons: *gcc6
+    - python: "2.7"
+      env: CXX=clang++-4
+      addons: *clang4
+    - python: "3.3"
+      env: CXX=g++-4.9
+      addons: *gcc4.9
     - python: "3.3"
       env: CXX=g++-5
       addons: *gcc5
     - python: "3.3"
       env: CXX=g++-6
       addons: *gcc6
+    - python: "3.3"
+      env: CXX=clang++-4
+      addons: *clang4
+    - python: "3.4"
+      env: CXX=g++-4.9
+      addons: *gcc4.9
     - python: "3.4"
       env: CXX=g++-5
       addons: *gcc5
     - python: "3.4"
       env: CXX=g++-6
       addons: *gcc6
+    - python: "3.4"
+      env: CXX=clang++-4
+      addons: *clang4
+    - python: "3.5"
+      env: CXX=g++-4.9
+      addons: *gcc4.9
     - python: "3.5"
       env: CXX=g++-5
       addons: *gcc5
     - python: "3.5"
       env: CXX=g++-6
       addons: *gcc6
+    - python: "3.5"
+      env: CXX=clang++-4
+      addons: *clang4
+    - python: "3.6"
+      env: CXX=g++-4.9
+      addons: *gcc4.9
     - python: "3.6"
       env: CXX=g++-5
       addons: *gcc5
     - python: "3.6"
       env: CXX=g++-6
       addons: *gcc6
+    - python: "3.6"
+      env: CXX=clang++-4
+      addons: *clang4
+    - python: "3.7-dev"
+      env: CXX=g++-4.9
+      addons: *gcc4.9
     - python: "3.7-dev"
       env: CXX=g++-5
       addons: *gcc5
     - python: "3.7-dev"
       env: CXX=g++-6
       addons: *gcc6
-
+    - python: "3.7-dev"
+      env: CXX=clang++-4
+      addons: *clang4
 os:
   - linux
 #  - osx # See https://github.com/travis-ci/travis-ci/issues/4729
