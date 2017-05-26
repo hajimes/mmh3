@@ -1,23 +1,5 @@
-# See also "Supporting Windows using Appveyor"
+# See "Supporting Windows using Appveyor"
 # https://packaging.python.org/appveyor/
-# cf https://github.com/jakubroztocil/httpie/blob/master/appveyor.yml
-environment:
-  matrix:
-    - PYTHON: "C:/Python27"
-    - PYTHON: "C:/Python36"
-
-init:
-  - "ECHO %PYTHON%"
-  - ps: "ls C:/Python*"
-  
-install:
-  - "%PYTHON%/Scripts/pip.exe install -e ."
-  
-test_script:
-  - "%PYTHON%/Scripts/pip.exe --version"
-  - "%PYTHON%/pytest"
-  
-  
 environment:
   matrix:
     # For Python versions available on Appveyor, see
