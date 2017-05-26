@@ -6,14 +6,31 @@ python:
   - "3.3"
   - "3.4"
   - "3.5"
-  - "3.5-dev"
+#  - "3.5-dev"
   - "3.6"
-  - "3.6-dev"
+#  - "3.6-dev"
   - "3.7-dev"
-  - "nightly"
+#  - "nightly"
 
 os:
   - linux
+    addons:
+      apt:
+        sources:
+          - ubuntu-toolchain-r-test
+        packages:
+          - g++-5
+    env:
+      - CXX=g++-5
+  - linux
+    addons:
+      apt:
+        sources:
+          - ubuntu-toolchain-r-test
+        packages:
+          - g++-6
+    env:
+      - CXX=g++-6
 #  - osx # See https://github.com/travis-ci/travis-ci/issues/4729
 
 compiler:
