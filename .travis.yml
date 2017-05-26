@@ -1,7 +1,7 @@
 language: python
 
 addons_shortcuts:
-  addons_gcc4.9: &gcc4.9
+  addons_gcc49: &gcc49
     apt:
       sources: ['ubuntu-toolchain-r-test' ]
       packages: ['g++-4.9', 'gcc-4.9']
@@ -22,7 +22,7 @@ matrix:
   include:
     - python: "2.7"
       env: CXX=g++-4.9
-      addons: *gcc4.9
+      addons: *gcc49
     - python: "2.7"
       env: CXX=g++-5
       addons: *gcc5
@@ -34,7 +34,7 @@ matrix:
       addons: *clang4
     - python: "3.3"
       env: CXX=g++-4.9
-      addons: *gcc4.9
+      addons: *gcc49
     - python: "3.3"
       env: CXX=g++-5
       addons: *gcc5
@@ -46,7 +46,7 @@ matrix:
       addons: *clang4
     - python: "3.4"
       env: CXX=g++-4.9
-      addons: *gcc4.9
+      addons: *gcc49
     - python: "3.4"
       env: CXX=g++-5
       addons: *gcc5
@@ -58,7 +58,7 @@ matrix:
       addons: *clang4
     - python: "3.5"
       env: CXX=g++-4.9
-      addons: *gcc4.9
+      addons: *gcc49
     - python: "3.5"
       env: CXX=g++-5
       addons: *gcc5
@@ -70,7 +70,7 @@ matrix:
       addons: *clang4
     - python: "3.6"
       env: CXX=g++-4.9
-      addons: *gcc4.9
+      addons: *gcc49
     - python: "3.6"
       env: CXX=g++-5
       addons: *gcc5
@@ -82,7 +82,7 @@ matrix:
       addons: *clang4
     - python: "3.7-dev"
       env: CXX=g++-4.9
-      addons: *gcc4.9
+      addons: *gcc49
     - python: "3.7-dev"
       env: CXX=g++-5
       addons: *gcc5
