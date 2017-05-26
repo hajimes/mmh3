@@ -27,7 +27,7 @@ def test_hash_value():
     assert mmh3.hash(b'\xff\xff\xff\xff', 0) == u32_to_s32(0x76293B50)
     assert mmh3.hash(b'\x00\x00\x00\x00', 0) == u32_to_s32(0x2362F9DE)
     assert mmh3.hash(b'\x00\x00\x00', 0) == u32_to_s32(0x85F0B427)
-    #assert mmh3.hash(b'\x00\x00', 0) == u32_to_s32(0x30F4C3060) fail
+    assert mmh3.hash(b'\x00\x00', 0) == u32_to_s32(0x30F4C306)
     assert mmh3.hash(b'\x00', 0) == u32_to_s32(0x514E28B7)
     
     assert mmh3.hash('aaaa', u32_to_s32(0x9747b28c)) == u32_to_s32(0x5A97808A)
