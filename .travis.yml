@@ -13,3 +13,4 @@ python:
   - "nightly"
 install:
   - pip install .
+script: pytest
