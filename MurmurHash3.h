@@ -12,8 +12,6 @@
 
 #if defined(_MSC_VER)
 #ifndef uint32_t
-// skip if uint32_t had been already defined (Python >=3.6)
-#else // defined(uint32_t)
 typedef unsigned char uint8_t;
 typedef unsigned long uint32_t;
 typedef unsigned __int64 uint64_t;
