@@ -3,20 +3,20 @@ language: python
 addons_shortcuts:
   addons_gcc4.9: &gcc4.9
     apt:
-      sources: [ 'ubuntu-toolchain-r-test' ]
-      packages: [ 'g++-4.9', 'gcc-4.9']
+      sources: ['ubuntu-toolchain-r-test' ]
+      packages: ['g++-4.9', 'gcc-4.9']
   addons_gcc5: &gcc5
     apt:
-      sources: [ 'ubuntu-toolchain-r-test' ]
-      packages: [ 'g++-5', 'gcc-5']
+      sources: ['ubuntu-toolchain-r-test' ]
+      packages: ['g++-5', 'gcc-5']
   addons_gcc6: &gcc6
     apt:
-      sources: [ 'ubuntu-toolchain-r-test' ]
-      packages: [ 'g++-6', 'gcc-6']
-  addons_gcc6: &clang4
+      sources: ['ubuntu-toolchain-r-test' ]
+      packages: ['g++-6', 'gcc-6']
+  addons_clang4: &clang4
     apt:
-      sources: [ 'ubuntu-toolchain-r-test' ]
-      packages: [ 'clang-4']
+      sources: ['ubuntu-toolchain-r-test' ]
+      packages: ['clang-4']
 
 matrix:
   include:
