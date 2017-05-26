@@ -32,6 +32,7 @@ Sample Usage::
 
 Beware that ``hash64`` returns **two** values, because it uses the 128-bit version of MurmurHash3 as its backend.
 
+
 Changes
 =======
 2.3.1 (2015-06-07)
