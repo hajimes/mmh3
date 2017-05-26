@@ -33,12 +33,6 @@ os:
       - CXX=g++-6
 #  - osx # See https://github.com/travis-ci/travis-ci/issues/4729
 
-compiler:
-  - clang++-4.0
-  - g++-4.9
-  - g++-5
-  - g++-6
-
 install:
   - pip install .
 
