@@ -10,6 +10,9 @@
 #include "MurmurHash3.h"
 
 #if defined(_MSC_VER)
+#if defined(int32_t)
+// skip if int32_t had been already defined (Python >=3.6)
+#else
 typedef signed char int8_t;
 typedef signed long int32_t;
 typedef signed __int64 int64_t;

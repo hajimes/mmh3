@@ -2,7 +2,6 @@
 # mmh3 Python module was written by Hajime Senuma, and is also placed in the public domain.
 # The authors hereby disclaim copyright to these source codes.
 
-#from distutils.core import setup, Extension
 from setuptools import setup, Extension
 
 mmh3module = Extension('mmh3',
@@ -21,7 +20,13 @@ setup(name = 'mmh3',
     classifiers = ['Development Status :: 5 - Production/Stable',
     'Intended Audience :: Developers',
     'License :: CC0 1.0 Universal (CC0 1.0) Public Domain Dedication',
+    'Programming Language :: Python :: 2',
     'Programming Language :: Python :: 2.7',
     'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.3',
+    'Programming Language :: Python :: 3.4',
+    'Programming Language :: Python :: 3.5',
+    'Programming Language :: Python :: 3.6',
+    'Topic :: Software Development :: Libraries',
     'Topic :: Utilities']
 )
