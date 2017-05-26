@@ -13,12 +13,13 @@ addons_shortcuts:
     apt:
       sources: ['ubuntu-toolchain-r-test' ]
       packages: ['g++-6', 'gcc-6']
-  addons_clang4: &clang4
+  addons_clang38: &clang38
     apt:
       sources: ['ubuntu-toolchain-r-test' ]
-      packages: ['clang-4']
+      packages: ['clang-3.8']
 
 matrix:
+  fast_finish: true
   include:
     - python: "2.7"
       env: CXX=g++-4.9
@@ -30,8 +31,8 @@ matrix:
       env: CXX=g++-6
       addons: *gcc6
     - python: "2.7"
-      env: CXX=clang++-4
-      addons: *clang4
+      env: CXX=clang++-3.8
+      addons: *clang38
     - python: "3.3"
       env: CXX=g++-4.9
       addons: *gcc49
@@ -42,8 +43,8 @@ matrix:
       env: CXX=g++-6
       addons: *gcc6
     - python: "3.3"
-      env: CXX=clang++-4
-      addons: *clang4
+      env: CXX=clang++-3.8
+      addons: *clang38
     - python: "3.4"
       env: CXX=g++-4.9
       addons: *gcc49
@@ -54,8 +55,8 @@ matrix:
       env: CXX=g++-6
       addons: *gcc6
     - python: "3.4"
-      env: CXX=clang++-4
-      addons: *clang4
+      env: CXX=clang++-3.8
+      addons: *clang38
     - python: "3.5"
       env: CXX=g++-4.9
       addons: *gcc49
@@ -66,8 +67,8 @@ matrix:
       env: CXX=g++-6
       addons: *gcc6
     - python: "3.5"
-      env: CXX=clang++-4
-      addons: *clang4
+      env: CXX=clang++-3.8
+      addons: *clang38
     - python: "3.6"
       env: CXX=g++-4.9
       addons: *gcc49
@@ -78,8 +79,8 @@ matrix:
       env: CXX=g++-6
       addons: *gcc6
     - python: "3.6"
-      env: CXX=clang++-4
-      addons: *clang4
+      env: CXX=clang++-3.8
+      addons: *clang38
     - python: "3.7-dev"
       env: CXX=g++-4.9
       addons: *gcc49
@@ -90,8 +91,8 @@ matrix:
       env: CXX=g++-6
       addons: *gcc6
     - python: "3.7-dev"
-      env: CXX=clang++-4
-      addons: *clang4
+      env: CXX=clang++-3.8
+      addons: *clang38
 os:
   - linux
 #  - osx # See https://github.com/travis-ci/travis-ci/issues/4729
