@@ -72,7 +72,7 @@ mmh3_hash64(PyObject *self, PyObject *args, PyObject *keywds)
       MurmurHash3_x86_128(target_str, target_str_len, seed, result);
     }
 
-    PyObject *retval = Py_BuildValue("ll", result[0], result[1]);
+    PyObject *retval = Py_BuildValue("LL", result[0], result[1]);
     return retval;
 }
 

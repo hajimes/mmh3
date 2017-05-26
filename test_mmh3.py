@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import sys
 import mmh3
 import numpy as np
 
@@ -113,6 +114,8 @@ def test_hash128():
     # TODO
     
 def test_64bit():
+    if sys.maxsize < (1 << 32): # Skip this test under 32-bit environments
+        return
     a = np.zeros(2**32, dtype=np.int8)
     assert mmh3.hash(a) == -1988950868
     assert mmh3.hash64(a) == (-6319308327427928234, -8156928649350215884)
