@@ -1,36 +1,56 @@
 language: python
 
-python:
-  - "2.7"
-#  - "3.2" # setuptools 30.0.0 (and above) dropped support for Python 3.2
-  - "3.3"
-  - "3.4"
-  - "3.5"
-#  - "3.5-dev"
-  - "3.6"
-#  - "3.6-dev"
-  - "3.7-dev"
-#  - "nightly"
+addons_shortcuts:
+  addons_gcc5: &gcc5
+    apt:
+      sources: [ 'ubuntu-toolchain-r-test' ]
+      packages: [ 'g++-5', 'gcc-5']
+  addons_gcc6: &gcc6
+    apt:
+      sources: [ 'ubuntu-toolchain-r-test' ]
+      packages: [ 'g++-6', 'gcc-6']
+
+matrix:
+  include:
+    - python: "2.7"
+      env: CXX=g++-5
+      addons: *gcc5
+    - python: "2.7"
+      env: CXX=g++-6
+      addons: *gcc6
+    - python: "3.3"
+      env: CXX=g++-5
+      addons: *gcc5
+    - python: "3.3"
+      env: CXX=g++-6
+      addons: *gcc6
+    - python: "3.4"
+      env: CXX=g++-5
+      addons: *gcc5
+    - python: "3.4"
+      env: CXX=g++-6
+      addons: *gcc6
+    - python: "3.5"
+      env: CXX=g++-5
+      addons: *gcc5
+    - python: "3.5"
+      env: CXX=g++-6
+      addons: *gcc6
+    - python: "3.6"
+      env: CXX=g++-5
+      addons: *gcc5
+    - python: "3.6"
+      env: CXX=g++-6
+      addons: *gcc6
+    - python: "3.7-dev"
+      env: CXX=g++-5
+      addons: *gcc5
+    - python: "3.7-dev"
+      env: CXX=g++-6
+      addons: *gcc6
 
 os:
   - linux
-    addons:
-      apt:
-        sources:
-          - ubuntu-toolchain-r-test
-        packages:
-          - g++-5
-    env:
-      - CXX=g++-5
-  - linux
-    addons:
-      apt:
-        sources:
-          - ubuntu-toolchain-r-test
-        packages:
-          - g++-6
-    env:
-      - CXX=g++-6
 #  - osx # See https://github.com/travis-ci/travis-ci/issues/4729
 
 install:
