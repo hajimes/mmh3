@@ -9,15 +9,17 @@ environment:
     - PYTHON: "C:\\Python36"
     - PYTHON: "C:\\Python27-x64"
     - PYTHON: "C:\\Python33-x64"
+      DISTUTILS_USE_SDK: "1"
     - PYTHON: "C:\\Python34-x64"
+      DISTUTILS_USE_SDK: "1"
     - PYTHON: "C:\\Python35-x64"
     - PYTHON: "C:\\Python36-x64"
 
 install:
   # We need wheel installed to build wheels
   - "%PYTHON%\\python.exe -m pip install wheel"
-  - "%PYTHON%\\python.exe -m pip install pytest"
-  - "%PYTHON%\\python.exe -m pip install ."
+  - "build.cmd %PYTHON%\\python.exe -m pip install pytest"
+  - "build.cmd %PYTHON%\\python.exe -m pip install ."
 
 build: off
 

@@ -17,6 +17,7 @@ typedef signed __int64 int64_t;
 typedef unsigned char uint8_t;
 typedef unsigned long uint32_t;
 typedef unsigned __int64 uint64_t;
+#endif
 // Other compilers
 #else    // defined(_MSC_VER)
 #include <stdint.h>
