@@ -4,6 +4,9 @@ mmh3
 .. image:: https://img.shields.io/travis/hajimes/mmh3.svg?branch=master
    :target: https://travis-ci.org/hajimes/mmh3
 
+.. image:: https://ci.appveyor.com/api/projects/status/github/hajimes/mmh3?branch=master&svg=true
+   :target: https://ci.appveyor.com/project/hajimes/mmh3
+
 Python wrapper for MurmurHash (MurmurHash3), a set of fast and robust hash functions.
 
 mmh3 2.3.1 supports both Python 2.7 and 3.x.
