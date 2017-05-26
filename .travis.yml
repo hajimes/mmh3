@@ -15,7 +15,7 @@ python:
 
 os:
   - linux
-  - osx
+#  - osx # See https://github.com/travis-ci/travis-ci/issues/4729
 
 install:
   - pip install .
