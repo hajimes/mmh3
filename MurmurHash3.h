@@ -11,11 +11,11 @@
 // Microsoft Visual Studio
 
 #if defined(_MSC_VER)
-#ifndef uint32_t
+#ifndef _MSC_STDINT_H_
 typedef unsigned char uint8_t;
 typedef unsigned long uint32_t;
 typedef unsigned __int64 uint64_t;
-#endif // !defined(uint32_t)
+#endif // ifndef _MSC_STDINT_H_
 
 // Other compilers
 
