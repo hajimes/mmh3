@@ -11,7 +11,7 @@
 // Microsoft Visual Studio
 
 #if defined(_MSC_VER)
-#if defined(uint32_t)
+#ifndef uint32_t
 // skip if uint32_t had been already defined (Python >=3.6)
 #else // defined(uint32_t)
 typedef unsigned char uint8_t;
