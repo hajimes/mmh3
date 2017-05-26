@@ -35,6 +35,10 @@ Beware that ``hash64`` returns **two** values, because it uses the 128-bit versi
 
 Changes
 =======
+2.3.2 (2017-05-26)
+------------------
+* Relicensed from public domain to `CC0-1.0 <./LICENSE>`_.
+
 2.3.1 (2015-06-07)
 ------------------
 * Fix compile errors for gcc >=5.
@@ -69,9 +73,7 @@ The results of hash64 and hash_bytes remain unchanged. Austin Appleby, the autho
 License
 =======
 
-Public Domain
-
-except: the `.gitignore` file was copied from https://github.com/github/gitignore/blob/master/Python.gitignore and is copyrighted Copyright (c) 2013 GitHub, Inc. under the MIT license. See the header of `.gitignore`.
+`CC0-1.0 <./LICENSE>`_.
 
 Authors
 =======
