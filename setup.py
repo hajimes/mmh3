@@ -8,7 +8,7 @@ mmh3module = Extension('mmh3',
     sources = ['mmh3module.cpp', 'MurmurHash3.cpp'])
 
 setup(name = 'mmh3',
-    version = '2.3.2',
+    version = '2.4',
     description = 'Python library for MurmurHash (MurmurHash3), a set of fast and robust hash functions.',
     license = 'License :: CC0 1.0 Universal (CC0 1.0) Public Domain Dedication',
     author = 'Hajime Senuma',

@@ -9,7 +9,7 @@ mmh3
 
 Python wrapper for MurmurHash (MurmurHash3), a set of fast and robust hash functions.
 
-mmh3 2.3.2 supports both Python 2.7 and 3.x.
+mmh3 2.4 supports Python 2.7, Python 3.3 and higher.
 
 Usage
 -----
@@ -35,9 +35,38 @@ Sample Usage::
 
 Beware that ``hash64`` returns **two** values, because it uses the 128-bit version of MurmurHash3 as its backend.
 
+Version 2.4 added support for 64-bit data.
+
+    >>> import numpy as np
+    >>> a = np.zeros(2**32, dtype=np.int8)
+    >>> mmh3.hash128('foo') # 128 bit signed int
+    >>> mmh3.hash_bytes(a)
+    b'V\x8f}\xad\x8eNM\xa84\x07FU\x9c\xc4\xcc\x8e'
+
+Version 2.4 also changed the type of seeds from signed 32-bit int to unsigned 32-bit int. (**The resulting values with signed seeds still remain the same as before, as long as they are 32-bit**)
+
+    >>> mmh3.hash('aaaa', -1756908916) # signed rep. for 0x9747b28c
+    1519878282
+    >>> mmh3.hash('aaaa', 2538058380) # unsigned rep. for 0x9747b28c
+    1519878282
+
+Be careful so that these seeds do not exceed 32-bit. Unexpected results may happen with invalid values.
+
+    >>> mmh3.hash('foo', 2 ** 33)
+    -156908512
+    >>> mmh3.hash('foo', 2 ** 34)
+    -156908512
+
 
 Changes
 =======
+2.4 (2017-05-27)
+------------------
+* Support seeds with 32-bit unsigned integers; thanks `Alexander Maznev <https://github.com/pik>`_!
+* Support 64-bit data (under 64-bit environments)
+* Fix compile errors for Python 3.6 under Windows systems.
+* Add unit testing and continuous integration with Travis CI and AppVeyor.
+
 2.3.2 (2017-05-26)
 ------------------
 * Relicensed from public domain to `CC0-1.0 <./LICENSE>`_.
@@ -78,14 +107,39 @@ License
 
 `CC0-1.0 <./LICENSE>`_.
 
+FAQ
+===
+
+How can I use this module? Any tutorials?
+-----------------------------------------
+
+The following textbooks and tutorials are great sources to learn how to use mmh3 (and other hash algorithms in general) for high-performance computing.
+* Chapter 11: Using Less Ram in Micha Gorelick and Ian Ozsvald. 2014. *High Performance Python: Practical Performant Programming for Humans*. O'Reilly Media. `ISBN: 978-1-4493-6159-4 <https://www.amazon.com/dp/1449361595>`_.
+* Duke University. `Efficient storage of data in memeory <http://people.duke.edu/~ccc14/sta-663-2016/20B_Big_Data_Structures.html>`_.
+* Max Burstein. `Creating a Simple Bloom Filter <http://www.maxburstein.com/blog/creating-a-simple-bloom-filter/>`_.
+* Bugra Akyildiz. `A Gentle Introduction to Bloom Filter <https://bugra.github.io/work/notes/2016-06-05/a-gentle-introduction-to-bloom-filter/>`_.
+
+Some results are different from other MurmurHash3-based libraries.
+------------------------------------------------------------------
+
+mmh3 returns **signed** values. To convert them into unsigned values, see https://stackoverflow.com/questions/20766813/how-to-convert-signed-to-unsigned-integer-in-python
+
+For compatibility with Google Guava (Java), see https://stackoverflow.com/questions/29932956/murmur3-hash-different-result-between-python-and-java-implementation
+
+
+I want to report errors/ask questions/send requests.
+----------------------------------------------------
+
+Thank you for helping me to improve the library. Please make sure to post them *through the issue tracking system of GitHub*. Issues sent directly to my email account may go unnoticed.
+
 Authors
 =======
 
-MurmurHash3 was created by Austin Appleby
+MurmurHash3 was originally developed by Austin Appleby and distributed under public domain.
 
 * http://code.google.com/p/smhasher/
 
-Modified by Hajime Senuma
+Ported and modified for Python by Hajime Senuma.
 
 * http://pypi.python.org/pypi/mmh3
 * http://github.com/hajimes/mmh3
