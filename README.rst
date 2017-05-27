@@ -39,7 +39,6 @@ Version 2.4 added support for 64-bit data.
 
     >>> import numpy as np
     >>> a = np.zeros(2**32, dtype=np.int8)
-    >>> mmh3.hash128('foo') # 128 bit signed int
     >>> mmh3.hash_bytes(a)
     b'V\x8f}\xad\x8eNM\xa84\x07FU\x9c\xc4\xcc\x8e'
 
@@ -114,6 +113,7 @@ How can I use this module? Any tutorials?
 -----------------------------------------
 
 The following textbooks and tutorials are great sources to learn how to use mmh3 (and other hash algorithms in general) for high-performance computing.
+
 * Chapter 11: Using Less Ram in Micha Gorelick and Ian Ozsvald. 2014. *High Performance Python: Practical Performant Programming for Humans*. O'Reilly Media. `ISBN: 978-1-4493-6159-4 <https://www.amazon.com/dp/1449361595>`_.
 * Duke University. `Efficient storage of data in memeory <http://people.duke.edu/~ccc14/sta-663-2016/20B_Big_Data_Structures.html>`_.
 * Max Burstein. `Creating a Simple Bloom Filter <http://www.maxburstein.com/blog/creating-a-simple-bloom-filter/>`_.
