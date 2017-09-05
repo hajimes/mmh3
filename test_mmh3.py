@@ -101,6 +101,10 @@ def test_hash2():
     assert mmh3.hash('The quick brown fox jumps over the lazy dog',
         0x9747b28c) == u32_to_s32(0x2FA826CD)
 
+def test_hash_from_buffer():
+    mview = memoryview('foo'.encode('utf8'))
+    assert mmh3.hash_from_buffer(mview) == -156908512
+
 def test_hash_bytes():
     assert mmh3.hash_bytes('foo') == b'aE\xf5\x01W\x86q\xe2\x87}\xba+\xe4\x87\xaf~'
     # TODO

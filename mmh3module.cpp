@@ -50,6 +50,28 @@ mmh3_hash(PyObject *self, PyObject *args, PyObject *keywds)
 }
 
 static PyObject *
+mmh3_hash_from_buffer(PyObject *self, PyObject *args, PyObject *keywds)
+{
+  Py_buffer target_buf;
+  uint32_t seed = 0;
+  int32_t result[1];
+
+  static char *kwlist[] = {(char *)"key", (char *)"seed", NULL};
+
+  if (!PyArg_ParseTupleAndKeywords(args, keywds, "s*|I", kwlist,
+                                   &target_buf, &seed)) {
+    return NULL;
+  }
+
+  MurmurHash3_x86_32(target_buf.buf, target_buf.len, seed, result);
+#if PY_MAJOR_VERSION >= 3
+  return PyLong_FromLong(result[0]);
+#else
+  return PyInt_FromLong(result[0]);
+#endif
+}
+
+static PyObject *
 mmh3_hash64(PyObject *self, PyObject *args, PyObject *keywds)
 {
     const char *target_str;
@@ -151,6 +173,8 @@ static struct module_state _state;
 static PyMethodDef Mmh3Methods[] = {
     {"hash", (PyCFunction)mmh3_hash, METH_VARARGS | METH_KEYWORDS,
         "hash(key[, seed=0]) -> hash value\n Return a 32 bit integer."},
+    {"hash_from_buffer", (PyCFunction)mmh3_hash_from_buffer, METH_VARARGS | METH_KEYWORDS,
+     "hash(key[, seed=0]) -> hash a memory buffer\n Return a 32 bit integer."},
     {"hash64", (PyCFunction)mmh3_hash64, METH_VARARGS | METH_KEYWORDS,
         "hash64(key[, seed=0, x64arch=True]) -> (hash value 1, hash value 2)\n Return a tuple of two 64 bit integers for a string. Optimized for the x64 bit architecture when x64arch=True, otherwise for x86."},
     {"hash128", (PyCFunction)mmh3_hash128, METH_VARARGS | METH_KEYWORDS,
