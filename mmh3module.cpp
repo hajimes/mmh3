@@ -174,7 +174,7 @@ static PyMethodDef Mmh3Methods[] = {
     {"hash", (PyCFunction)mmh3_hash, METH_VARARGS | METH_KEYWORDS,
         "hash(key[, seed=0]) -> hash value\n Return a 32 bit integer."},
     {"hash_from_buffer", (PyCFunction)mmh3_hash_from_buffer, METH_VARARGS | METH_KEYWORDS,
-     "hash(key[, seed=0]) -> hash a memory buffer\n Return a 32 bit integer."},
+     "hash_from_buffer(key[, seed=0]) -> hash value from a memory buffer\n Return a 32 bit integer."},
     {"hash64", (PyCFunction)mmh3_hash64, METH_VARARGS | METH_KEYWORDS,
         "hash64(key[, seed=0, x64arch=True]) -> (hash value 1, hash value 2)\n Return a tuple of two 64 bit integers for a string. Optimized for the x64 bit architecture when x64arch=True, otherwise for x86."},
     {"hash128", (PyCFunction)mmh3_hash128, METH_VARARGS | METH_KEYWORDS,
