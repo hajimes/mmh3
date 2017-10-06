@@ -97,11 +97,10 @@ os:
   - linux
 #  - osx # See https://github.com/travis-ci/travis-ci/issues/4729
 
-before_install:
-  - sudo apt-get install -y python-logilab-common
-
 install:
   - pip install numpy
   - pip install .
 
-script: pytest
+# see https://github.com/travis-ci/docs-travis-ci-com/issues/982
+script:
+  - python -m pytest
