@@ -50,57 +50,57 @@ mmh3_hash(PyObject *self, PyObject *args, PyObject *keywds)
 
     MurmurHash3_x86_32(target_str, target_str_len, seed, result);
 
-  /* for Windows envs */
 #if defined(_MSC_VER)
+  /* for Windows envs */
   long_result = result[0];
   if (is_signed == 1) {
     return PyLong_FromLong(long_result);
   } else {
     return PyLong_FromUnsignedLong(long_result);
   }
-#endif
-
+#else  
   /* for standard envs */
   long_result = result[0] & mask[is_signed];
   return PyLong_FromLong(long_result);
+#endif
 }
 
 static PyObject *
 mmh3_hash_from_buffer(PyObject *self, PyObject *args, PyObject *keywds)
 {
-  Py_buffer target_buf;
-  uint32_t seed = 0;
-  int32_t result[1];
-  long long_result = 0;
-  int is_signed = 1;
+    Py_buffer target_buf;
+    uint32_t seed = 0;
+    int32_t result[1];
+    long long_result = 0;
+    int is_signed = 1;
 
-  static char *kwlist[] = {(char *)"key", (char *)"seed",
-    (char *)"signed", NULL};
+    static char *kwlist[] = {(char *)"key", (char *)"seed",
+      (char *)"signed", NULL};
 
 #ifndef _MSC_VER
-  static uint64_t mask[] = {0x0ffffffff, 0xffffffffffffffff};
+    static uint64_t mask[] = {0x0ffffffff, 0xffffffffffffffff};
 #endif
 
-  if (!PyArg_ParseTupleAndKeywords(args, keywds, "s*|IB", kwlist,
-                                   &target_buf, &seed, &is_signed)) {
-    return NULL;
-  }
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s*|IB", kwlist,
+                                     &target_buf, &seed, &is_signed)) {
+      return NULL;
+    }
 
-  MurmurHash3_x86_32(target_buf.buf, target_buf.len, seed, result);
+    MurmurHash3_x86_32(target_buf.buf, target_buf.len, seed, result);
 
-  /* for Windows envs */
 #if defined(_MSC_VER)
-  long_result = result[0];
-  if (is_signed == 1) {
+    /* for Windows envs */
+    long_result = result[0];
+    if (is_signed == 1) {
+      return PyLong_FromLong(long_result);
+    } else {
+      return PyLong_FromUnsignedLong(long_result);
+    }
+#else
+    /* for standard envs */
+    long_result = result[0] & mask[is_signed];
     return PyLong_FromLong(long_result);
-  } else {
-    return PyLong_FromUnsignedLong(long_result);
-  }
 #endif
-
-  /* for standard envs */
-  long_result = result[0] & mask[is_signed];
-  return PyLong_FromLong(long_result);
 }
 
 static PyObject *
