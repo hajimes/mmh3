@@ -33,15 +33,13 @@ mmh3_hash(PyObject *self, PyObject *args, PyObject *keywds)
     Py_ssize_t target_str_len;
     uint32_t seed = 0;
     int32_t result[1];
-    uint32_t t = 0;
     long long_result = 0;
     int is_signed = 1;
-    unsigned long long t2 = 0;;
     
     static char *kwlist[] = {(char *)"key", (char *)"seed",
       (char *)"signed", NULL};
       
-#ifndef defined(_MSC_VER)
+#ifndef _MSC_VER
   static uint64_t mask[] = {0x0ffffffff, 0xffffffffffffffff};
 #endif
 
@@ -63,6 +61,7 @@ mmh3_hash(PyObject *self, PyObject *args, PyObject *keywds)
 #endif
 
   /* for standard envs */
+  long_result = result[0] & mask[is_signed];
   return PyLong_FromLong(long_result);
 }
 
@@ -72,14 +71,13 @@ mmh3_hash_from_buffer(PyObject *self, PyObject *args, PyObject *keywds)
   Py_buffer target_buf;
   uint32_t seed = 0;
   int32_t result[1];
-  unsigned int t = 0;
   long long_result = 0;
   int is_signed = 1;
 
   static char *kwlist[] = {(char *)"key", (char *)"seed",
     (char *)"signed", NULL};
 
-#ifndef defined(_MSC_VER)
+#ifndef _MSC_VER
   static uint64_t mask[] = {0x0ffffffff, 0xffffffffffffffff};
 #endif
 
@@ -89,7 +87,6 @@ mmh3_hash_from_buffer(PyObject *self, PyObject *args, PyObject *keywds)
   }
 
   MurmurHash3_x86_32(target_buf.buf, target_buf.len, seed, result);
-
 
   /* for Windows envs */
 #if defined(_MSC_VER)
@@ -103,11 +100,7 @@ mmh3_hash_from_buffer(PyObject *self, PyObject *args, PyObject *keywds)
 
   /* for standard envs */
   long_result = result[0] & mask[is_signed];
-#if PY_MAJOR_VERSION >= 3
   return PyLong_FromLong(long_result);
-#else
-  return PyInt_FromLong(long_result);
-#endif
 }
 
 static PyObject *
