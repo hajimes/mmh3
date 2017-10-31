@@ -9,7 +9,7 @@ mmh3module = Extension('mmh3',
 
 setup(name = 'mmh3',
     version = '2.5.1',
-    description = 'Python library for MurmurHash (MurmurHash3), a set of fast and robust hash functions.',
+    description = 'Python wrapper for MurmurHash (MurmurHash3), a set of fast and robust hash functions.',
     license = 'License :: CC0 1.0 Universal (CC0 1.0) Public Domain Dedication',
     author = 'Hajime Senuma',
     author_email = 'hajime.senuma@gmail.com',

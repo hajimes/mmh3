@@ -9,7 +9,7 @@ mmh3
 
 Python wrapper for MurmurHash (MurmurHash3), a set of fast and robust hash functions.
 
-mmh3 2.5 supports Python 2.7, Python 3.3 and higher.
+mmh3 2.5.1 supports Python 2.7, Python 3.3 and higher.
 
 Usage
 -----
@@ -75,6 +75,10 @@ Be careful so that these seeds do not exceed 32-bit. Unexpected results may happ
 
 Changes
 =======
+2.5.1 (2017-10-31)
+------------------
+* Bug fix for ``hash_bytes``. Thanks `doozr <https://github.com/doozr>`_!
+
 2.5 (2017-10-28)
 ------------------
 * Add ``hash_from_buffer``. Thanks `Dimitri Vorona <https://github.com/alendit>`_!
