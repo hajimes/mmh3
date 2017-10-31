@@ -179,7 +179,7 @@ mmh3_hash_bytes(PyObject *self, PyObject *args, PyObject *keywds)
     static char *kwlist[] = {(char *)"key", (char *)"seed",
       (char *)"x64arch", NULL};
 
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|IBB", kwlist,
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|IB", kwlist,
         &target_str, &target_str_len, &seed, &x64arch)) {
         return NULL;
     }
