@@ -1,7 +1,7 @@
 # MurmurHash3 was written by Austin Appleby, and is placed in the public domain.
 # mmh3 Python module was written by Hajime Senuma, and is also placed in the public domain.
 # The authors hereby disclaim copyright to these source codes.
-
+import sys
 from setuptools import setup, Extension
 
 COMPILE_OPTIONS = []
