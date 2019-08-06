@@ -5,7 +5,9 @@
 from setuptools import setup, Extension
 
 mmh3module = Extension('mmh3',
-    sources = ['mmh3module.cpp', 'MurmurHash3.cpp'])
+    sources = ['mmh3module.cpp', 'MurmurHash3.cpp'],
+    extra_compile_args = ['-stdlib=libc++'],
+    extra_link_args = ['-stdlib=libc++'])
 
 setup(name = 'mmh3',
     version = '2.5.1',
