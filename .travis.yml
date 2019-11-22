@@ -33,18 +33,6 @@ matrix:
     - python: "2.7"
       env: CXX=clang++-3.8
       addons: *clang38
-    - python: "3.3"
-      env: CXX=g++-4.9
-      addons: *gcc49
-    - python: "3.3"
-      env: CXX=g++-5
-      addons: *gcc5
-    - python: "3.3"
-      env: CXX=g++-6
-      addons: *gcc6
-    - python: "3.3"
-      env: CXX=clang++-3.8
-      addons: *clang38
     - python: "3.4"
       env: CXX=g++-4.9
       addons: *gcc49
