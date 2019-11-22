@@ -81,16 +81,28 @@ matrix:
     - python: "3.6"
       env: CXX=clang++-3.8
       addons: *clang38
-    - python: "3.7-dev"
+    - python: "3.7"
       env: CXX=g++-4.9
       addons: *gcc49
-    - python: "3.7-dev"
+    - python: "3.7"
       env: CXX=g++-5
       addons: *gcc5
-    - python: "3.7-dev"
+    - python: "3.7"
       env: CXX=g++-6
       addons: *gcc6
-    - python: "3.7-dev"
+    - python: "3.7"
+      env: CXX=clang++-3.8
+      addons: *clang38
+    - python: "3.8"
+      env: CXX=g++-4.9
+      addons: *gcc49
+    - python: "3.8"
+      env: CXX=g++-5
+      addons: *gcc5
+    - python: "3.8"
+      env: CXX=g++-6
+      addons: *gcc6
+    - python: "3.8"
       env: CXX=clang++-3.8
       addons: *clang38
 os:
