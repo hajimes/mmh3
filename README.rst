@@ -2,7 +2,7 @@ mmh3
 ====
 
 .. image:: https://img.shields.io/travis/hajimes/mmh3.svg?branch=master
-   :target: https://travis-ci.org/hajimes/mmh3
+   :target: https://travis-ci.com/hajimes/mmh3
 
 .. image:: https://ci.appveyor.com/api/projects/status/github/hajimes/mmh3?branch=master&svg=true
    :target: https://ci.appveyor.com/project/hajimes/mmh3
