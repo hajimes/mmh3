@@ -1,5 +1,11 @@
 language: python
 
+# safelist
+branches:
+  only:
+  - master
+  - develop
+
 addons_shortcuts:
   addons_gcc49: &gcc49
     apt:
