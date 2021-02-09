@@ -3,8 +3,8 @@
 # The authors hereby disclaim copyright to these source codes.
 import sys
 import platform
-import distutils.util
 from setuptools import setup, Extension
+import distutils.util
 
 COMPILE_OPTIONS = []
 LINK_OPTIONS = []
