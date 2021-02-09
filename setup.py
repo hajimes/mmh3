@@ -2,25 +2,23 @@
 # mmh3 Python module was written by Hajime Senuma, and is also placed in the public domain.
 # The authors hereby disclaim copyright to these source codes.
 import sys
+import platform
+import distutils.util
 from setuptools import setup, Extension
 
 COMPILE_OPTIONS = []
 LINK_OPTIONS = []
 
 def is_new_osx():
-    """Check whether we're on OSX >= 10.10"""
-    import distutils.util
+    """Check whether we're on OSX >= 10.7"""
     name = distutils.util.get_platform()
     if sys.platform != 'darwin':
         return False
-    elif name.startswith('macosx-10'):
-        minor_version = int(name.split('-')[1].split('.')[1])
-        if minor_version >= 7:
-            return True
-        else:
-            return False
-    else:
-        return False
+    mac_ver = platform.mac_ver()[0]
+    if mac_ver.startswith("10"):
+        minor_version = int(mac_ver.split('.')[1])
+        return minor_version >= 7
+    return False
 
 if is_new_osx():
     # On Mac, use libc++ because Apple deprecated use of
