@@ -7,7 +7,6 @@ from setuptools import setup, Extension
 COMPILE_OPTIONS = []
 LINK_OPTIONS = []
 
-
 def is_new_osx():
     """Check whether we're on OSX >= 10.10"""
     import distutils.util
