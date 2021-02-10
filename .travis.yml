@@ -1,4 +1,4 @@
-opelanguage: python
+language: python
 
 # safelist
 branches:
@@ -6,25 +6,24 @@ branches:
   - master
   - develop
 
-addons_shortcuts:
-  addons_gcc49: &gcc49
-    apt:
-      sources: ['ubuntu-toolchain-r-test' ]
-      packages: ['g++-4.9', 'gcc-4.9']
-  addons_gcc5: &gcc5
-    apt:
-      sources: ['ubuntu-toolchain-r-test' ]
-      packages: ['g++-5', 'gcc-5']
-  addons_gcc6: &gcc6
-    apt:
-      sources: ['ubuntu-toolchain-r-test' ]
-      packages: ['g++-6', 'gcc-6']
-  addons_clang38: &clang38
-    apt:
-      sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.8']
-      packages: ['clang-3.8']
+addons_gcc49: &gcc49
+  apt:
+    sources: ['ubuntu-toolchain-r-test' ]
+    packages: ['g++-4.9', 'gcc-4.9']
+addons_gcc5: &gcc5
+  apt:
+    sources: ['ubuntu-toolchain-r-test' ]
+    packages: ['g++-5', 'gcc-5']
+addons_gcc6: &gcc6
+  apt:
+    sources: ['ubuntu-toolchain-r-test' ]
+    packages: ['g++-6', 'gcc-6']
+addons_clang38: &clang38
+  apt:
+    sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.8']
+    packages: ['clang-3.8']
 
-matrix:
+jobs:
   fast_finish: true
   include:
     - python: "2.7"
@@ -127,25 +126,13 @@ matrix:
     - python: "3.9"
       env: CXX=clang++-3.8
       addons: *clang38
+
 os:
   - linux
 #  - osx # See https://github.com/travis-ci/travis-ci/issues/4729
 
 install:
   - pip install numpy
-os:
-  - linux
-#  - osx # See https://github.com/travis-ci/travis-ci/issues/4729
-
-install:
-  - pip install numpy
-os:
-  - linux
-#  - osx # See https://github.com/travis-ci/travis-ci/issues/4729
-
-install:
-  - pip install numpy
-  - pip install .
 
 # see https://github.com/travis-ci/docs-travis-ci-com/issues/982
 script:
