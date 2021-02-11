@@ -130,7 +130,10 @@ jobs:
     - name: "Python 3.7.4 on macOS"
       os: osx
       osx_image: xcode11.2
-      before_install: pip3 install pytest
+      install:
+        - pip3 install pytest
+        - pip3 install numpy
+        - pip3 install .
       language: shell
 
 os: linux
