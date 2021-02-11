@@ -130,6 +130,7 @@ jobs:
     - name: "Python 3.7.4 on macOS"
       os: osx
       osx_image: xcode11.2
+      before_install: pip3 install pytest
       language: shell
 
 os: linux
@@ -138,7 +139,6 @@ dist: xenial
 
 install:
   - pip install numpy
-  - pip install pytest
   - pip install .
 
 # see https://github.com/travis-ci/docs-travis-ci-com/issues/982
