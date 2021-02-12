@@ -44,7 +44,8 @@ setup(
     license="License :: CC0 1.0 Universal (CC0 1.0) Public Domain Dedication",
     author="Hajime Senuma",
     author_email="hajime.senuma@gmail.com",
-    url="http://packages.python.org/mmh3",
+    url="https://github.com/hajimes/mmh3",
+    
     ext_modules=[mmh3module],
     keywords="utility hash MurmurHash",
     long_description=open("README.md").read(),
