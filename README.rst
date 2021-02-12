@@ -1,15 +1,14 @@
 mmh3
 ====
+.. image:: https://github.com/hajimes/mmh3/workflows/Super-Linter/badge.svg?branch=feature/ghactions
+   :target: https://github.com/hajimes/mmh3/actions?query=workflow%3ASuper-Linter+branch%3Amaster
 
-.. image:: https://img.shields.io/travis/hajimes/mmh3.svg?branch=master
-   :target: https://travis-ci.com/hajimes/mmh3
-
-.. image:: https://ci.appveyor.com/api/projects/status/github/hajimes/mmh3?branch=master&svg=true
-   :target: https://ci.appveyor.com/project/hajimes/mmh3
+.. image:: https://github.com/hajimes/mmh3/workflows/build/badge.svg?branch=feature/ghactions
+   :target: https://github.com/hajimes/mmh3/actions?query=workflow%3Abuild+branch%3Amaster
 
 Python wrapper for MurmurHash (MurmurHash3), a set of fast and robust hash functions.
 
-mmh3 2.5.1 supports Python 2.7, Python 3.3 and higher.
+mmh3 2.5.1 supports Python 2.7, Python 3.5 and higher.
 
 Usage
 -----
