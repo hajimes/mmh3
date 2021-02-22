@@ -2,30 +2,28 @@
 [![GitHub Super-Linter](https://github.com/hajimes/mmh3/workflows/Super-Linter/badge.svg?branch=feature/ghactions)](https://github.com/hajimes/mmh3/actions?query=workflow%3ASuper-Linter+branch%3Amaster)
 [![Build passing](https://github.com/hajimes/mmh3/workflows/build/badge.svg?branch=feature/ghactions)](https://github.com/hajimes/mmh3/actions?query=workflow%3Abuild+branch%3Amaster)
 [![PyPi Version](https://img.shields.io/pypi/v/mmh3.svg?style=flat-square&logo=pypi&logoColor=white)](https://pypi.org/project/mmh3/)
-[![Conda Version](https://img.shields.io/conda/vn/conda-forge/mmh3.svg?style=flat-square&logo=conda-forge&logoColor=white)](https://anaconda.org/conda-forge/mmh3)
 [![Python Versions](https://img.shields.io/pypi/pyversions/mmh3.svg)](https://pypi.org/project/mmh3/)
 [![License: CC0-1.0](https://img.shields.io/badge/License-CC0%201.0-lightgrey.svg)](http://creativecommons.org/publicdomain/zero/1.0/)
 [![Total Downloads](https://pepy.tech/badge/mmh3)](https://pepy.tech/project/mmh3)
 [![Recent Downloads](https://pepy.tech/badge/mmh3/month)](https://pepy.tech/project/mmh3)
+[![Conda Version](https://img.shields.io/conda/vn/conda-forge/mmh3.svg?style=flat-square&logo=conda-forge&logoColor=white)](https://anaconda.org/conda-forge/mmh3)
 
-Python wrapper for MurmurHash (MurmurHash3), a set of fast and robust hash functions.
-
-mmh3 2.6 supports Python 2.7, Python 3.5 and higher.
+mmh3 is a Python wrapper for [MurmurHash (MurmurHash3)](https://en.wikipedia.org/wiki/MurmurHash), a set of fast and robust non-cryptographic hash functions invented by Austin Appleby.
 
 ## How to use
 Install:
-```bash
-pip3 install mmh3
+```shell
+pip install mmh3 # for macOS, use "pip3 install mmh3" and python3
 ```
 
 Quickstart:
 ```shell
 >>> import mmh3
->>> mmh3.hash("foo") # 32 bit signed int
+>>> mmh3.hash("foo") # returns a 32-bit signed int
 -156908512
->>> mmh3.hash("foo", 42) # uses 42 for its seed
+>>> mmh3.hash("foo", 42) # uses 42 as a seed
 -1322301282
->>> mmh3.hash("foo", signed=False) # 32 bit unsigned int (since Version 2.5)
+>>> mmh3.hash("foo", signed=False) # returns a 32-bit unsigned int
 4138058784
 ```
 
@@ -41,16 +39,15 @@ Other functions:
 -124315475380607080215185174712879655950
 >>> mmh3.hash_bytes("foo") # 128 bit value as bytes
 'aE\xf5\x01W\x86q\xe2\x87}\xba+\xe4\x87\xaf~'
+>>> import numpy as np
+>>> a = np.zeros(2 ** 32, dtype=np.int8)
+>>> mmh3.hash_bytes(a)
+b'V\x8f}\xad\x8eNM\xa84\x07FU\x9c\xc4\xcc\x8e'
 ```
 
-`hash64`, `hash128`, and `hash_bytes` have the third argument for architecture optimization. Use True for x64 and False for x86 (default: True).:
+Beware that `hash64` returns **two** values, because it uses the 128-bit version of MurmurHash3 as its backend.
 
-```shell
->>> mmh3.hash64("foo", 42, True) 
-(-840311307571801102, -6739155424061121879)
-```
-
-Version 2.5 added `hash_from_buffer`, which hashes byte-likes without memory copying. The method is suitable when you hash a large memory-view such as `numpy.ndarray`.
+`hash_from_buffer` hashes byte-likes without memory copying. The method is suitable when you hash a large memory-view such as `numpy.ndarray`.
 
 ```shell
 >>> mmh3.hash_from_buffer(numpy.random.rand(100))
@@ -59,39 +56,20 @@ Version 2.5 added `hash_from_buffer`, which hashes byte-likes without memory cop
 3812874078
 ```
 
-Beware that `hash64` returns **two** values, because it uses the 128-bit version of MurmurHash3 as its backend.
-
-Version 2.4 added support for 64-bit data.
+`hash64`, `hash128`, and `hash_bytes` have the third argument for architecture optimization. Use True for x64 and False for x86 (default: True):
 
 ```shell
->>> import numpy as np
->>> a = np.zeros(2 ** 32, dtype=np.int8)
->>> mmh3.hash_bytes(a)
-b'V\x8f}\xad\x8eNM\xa84\x07FU\x9c\xc4\xcc\x8e'
-```
-
-Version 2.4 also changed the type of seeds from signed 32-bit int to unsigned 32-bit int. (**The resulting values with signed seeds still remain the same as before, as long as they are 32-bit**)
-
-```shell
->>> mmh3.hash("aaaa", -1756908916) # signed rep. for 0x9747b28c
-1519878282
->>> mmh3.hash("aaaa", 2538058380) # unsigned rep. for 0x9747b28c
-1519878282
-```
-
-Be careful so that these seeds do not exceed 32-bit. Unexpected results may happen with invalid values.
-
-```shell
->>> mmh3.hash("foo", 2 ** 33)
--156908512
->>> mmh3.hash("foo", 2 ** 34)
--156908512
+>>> mmh3.hash64("foo", 42, True) 
+(-840311307571801102, -6739155424061121879)
 ```
 
 ## Changelog
-### 2.6 (2021-02-12)
+### 3.0.0 (2021-02-22)
+* Python wheels are now available, thanks to the power of [cibuildwheel](https://github.com/joerick/cibuildwheel).
+  * Supported platforms are `manylinux1_x86_64`, `manylinux2010_x86_64`, `manylinux2014_aarch64`, `win32`, `win_amd64`, `macosx_10_9_x86_64`, and `macosx_11_0_arm64` (Apple Silicon).
 * Add support for newer macOS environments. Thanks [Matthew Honnibal](https://github.com/honnibal)!
-* Drop support for Python 3.3 and 3.4. Add support for Python 3.7, 3.8 and 3.9.
+* Drop support for Python 2.7, 3.3, 3.4, and 3.5.
+* Add support for Python 3.7, 3.8, and 3.9.
 * Migrate Travis CI and AppVeyor to GitHub Actions.
 
 ### 2.5.1 (2017-10-31)
@@ -124,7 +102,6 @@ The first two commits are from [Derek Wilson](https://github.com/underrun). Than
 * Improve portability to support systems with old gcc (version < 4.4) such as CentOS/RHEL 5.x. (Commit from [Micha Gorelick](https://github.com/mynameisfiber). Thanks!)
 
 ### 2.1 (2013-02-25)
-
 * Add `__version__` constant. Check if it exists when the following revision matters for your application.
 * Incorporate the revision r147, which includes robustness improvement and minor tweaks.
 
@@ -140,7 +117,6 @@ Beware that due to this revision, **the result of 32-bit version of 2.1 is NOT t
 The results of hash64 and hash_bytes remain unchanged. Austin Appleby, the author of Murmurhash, ensured this revision was the final modification to MurmurHash3's results and any future changes would be to improve performance only.
 
 ## License
-
 [CC0-1.0](./LICENSE).
 
 ## Known Issues
@@ -149,10 +125,29 @@ By default, mmh3 returns **signed** values for 32-bit and 64-bit versions and **
 
 For compatibility with Google Guava (Java), see <https://stackoverflow.com/questions/29932956/murmur3-hash-different-result-between-python-and-java-implementation>
 
+### Unexpected results when given non 32-bit seeds
+Version 2.4 changed the type of seeds from signed 32-bit int to unsigned 32-bit int. (**The resulting values with signed seeds still remain the same as before, as long as they are 32-bit**)
+
+```shell
+>>> mmh3.hash("aaaa", -1756908916) # signed representation for 0x9747b28c
+1519878282
+>>> mmh3.hash("aaaa", 2538058380) # unsigned representation for 0x9747b28c
+1519878282
+```
+
+Be careful so that these seeds do not exceed 32-bit. Unexpected results may happen with invalid values.
+
+```shell
+>>> mmh3.hash("foo", 2 ** 33)
+-156908512
+>>> mmh3.hash("foo", 2 ** 34)
+-156908512
+```
+
 ## Authors
 MurmurHash3 was originally developed by Austin Appleby and distributed under public domain.
 
-* <http://code.google.com/p/smhasher/>
+* <https://github.com/aappleby/smhasher>
 
 Ported and modified for Python by Hajime Senuma.
 

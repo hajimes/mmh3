@@ -1,0 +1,83 @@
+name: Build and Upload Wheels
+
+on:
+  workflow_dispatch:
+    inputs:
+      repository: 
+        description: 'The repository to upload the package to'
+        required: true
+        default: 'testpypi'
+
+jobs:
+  build_wheels:
+    name: Build wheels on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-20.04, windows-2019, macOS-10.15]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - name: Set up QEMU
+        if: runner.os == 'Linux'
+        uses: docker/setup-qemu-action@v1.0.1
+        with:
+          platforms: arm64
+      - name: Build wheels
+        uses: joerick/cibuildwheel@v1.9.0
+        with:
+          output-dir: wheelhouse
+        env:
+          CIBW_BUILD: '{cp36,cp37,cp38,cp39}-{manylinux_x86_64,manylinux_aarch64,win32,win_amd64,macosx_x86_64} cp39-macosx_arm64'
+          CIBW_MANYLINUX_AARCH64_IMAGE: manylinux2014
+          CIBW_ARCHS_LINUX: 'auto aarch64'
+          CIBW_ARCHS_MACOS: 'auto arm64'
+          CIBW_TEST_REQUIRES: 'pytest numpy==1.19.5'
+          CIBW_TEST_COMMAND: 'pytest {project}'
+          CIBW_TEST_SKIP: '*-macosx_arm64' # Until the day Apple silicon instances are available on GitHub Actions
+      - uses: actions/upload-artifact@v2
+        with:
+          path: ./wheelhouse/*.whl
+  build_sdist:
+    name: Build a source distribution
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - name: Build sdist
+        run: python setup.py build sdist
+      - uses: actions/upload-artifact@v2
+        with:
+          path: dist/*.tar.gz
+  publish:
+    name: 'Upload to PyPI/Test PyPI'
+    runs-on: ubuntu-20.04
+    needs: [build_wheels, build_sdist]
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - name: Set up built items
+        uses: actions/download-artifact@v2
+        with:
+          name: artifact
+          path: dist
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install setuptools wheel twine
+      - name: Publish
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        run: |
+          twine upload  --repository ${{ github.event.inputs.repository }} dist/*
