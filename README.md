@@ -10,6 +10,8 @@
 
 mmh3 is a Python wrapper for [MurmurHash (MurmurHash3)](https://en.wikipedia.org/wiki/MurmurHash), a set of fast and robust non-cryptographic hash functions invented by Austin Appleby.
 
+Combined with probabilistic techniques like a [Bloom filter](https://en.wikipedia.org/wiki/Bloom_filter), [MinHash](https://en.wikipedia.org/wiki/MinHash), and [feature hashing](https://en.wikipedia.org/wiki/Feature_hashing), mmh3 allows you to develop high-performance systems in fields such as data mining, machine learning, and natural language processing.
+
 ## How to use
 Install:
 ```shell
@@ -64,7 +66,7 @@ Beware that `hash64` returns **two** values, because it uses the 128-bit version
 ```
 
 ## Changelog
-### 3.0.0 (2021-02-22)
+### 3.0.0 (2021-02-23)
 * Python wheels are now available, thanks to the power of [cibuildwheel](https://github.com/joerick/cibuildwheel).
   * Supported platforms are `manylinux1_x86_64`, `manylinux2010_x86_64`, `manylinux2014_aarch64`, `win32`, `win_amd64`, `macosx_10_9_x86_64`, and `macosx_11_0_arm64` (Apple Silicon).
 * Add support for newer macOS environments. Thanks [Matthew Honnibal](https://github.com/honnibal)!
@@ -126,7 +128,7 @@ By default, mmh3 returns **signed** values for 32-bit and 64-bit versions and **
 For compatibility with Google Guava (Java), see <https://stackoverflow.com/questions/29932956/murmur3-hash-different-result-between-python-and-java-implementation>
 
 ### Unexpected results when given non 32-bit seeds
-Version 2.4 changed the type of seeds from signed 32-bit int to unsigned 32-bit int. (**The resulting values with signed seeds still remain the same as before, as long as they are 32-bit**)
+Version 2.4 changed the type of seeds from signed 32-bit int to unsigned 32-bit int. The resulting values with signed seeds still remain the same as before, as long as they are 32-bit.
 
 ```shell
 >>> mmh3.hash("aaaa", -1756908916) # signed representation for 0x9747b28c
@@ -159,7 +161,7 @@ Ported and modified for Python by Hajime Senuma.
 The following textbooks and tutorials are great sources to learn how to use mmh3 (and other hash algorithms in general) for high-performance computing.
 
 * Chapter 11: Using Less Ram in Micha Gorelick and Ian Ozsvald. 2014. *High Performance Python: Practical Performant Programming for Humans*. O'Reilly Media. [ISBN: 978-1-4493-6159-4](https://www.amazon.com/dp/1449361595).
-* Duke University. [Efficient storage of data in memeory](http://people.duke.edu/~ccc14/sta-663-2016/20B_Big_Data_Structures.html).
+* Duke University. [Efficient storage of data in memory](http://people.duke.edu/~ccc14/sta-663-2016/20B_Big_Data_Structures.html).
 * Max Burstein. [Creating a Simple Bloom Filter](http://www.maxburstein.com/blog/creating-a-simple-bloom-filter/).
 * Bugra Akyildiz. [A Gentle Introduction to Bloom Filter](https://www.kdnuggets.com/2016/08/gentle-introduction-bloom-filter.html).
 

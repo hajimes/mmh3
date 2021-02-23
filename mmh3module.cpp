@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------------
 // MurmurHash3 was written by Austin Appleby, and is placed in the public
 // domain. mmh3 Python module was written by Hajime Senuma,
-// and is also placed in the public domain.
+// and is also placed in the public domain/CC0 1.0.
 // The authors hereby disclaim copyright to these source codes.
 
 // To handle 64-bit data; see https://docs.python.org/2.7/c-api/arg.html
@@ -269,7 +269,7 @@ initmmh3(void)
     if (module == NULL)
         INITERROR;
 
-    PyModule_AddStringConstant(module, "__version__", "2.5.1");
+    PyModule_AddStringConstant(module, "__version__", "3.0.0");
 
     struct module_state *st = GETSTATE(module);
 
