@@ -40,7 +40,9 @@ mmh3_hash(PyObject *self, PyObject *args, PyObject *keywds)
       (char *)"signed", NULL};
       
 #ifndef _MSC_VER
+#if __LONG_WIDTH__ == 64
   static uint64_t mask[] = {0x0ffffffff, 0xffffffffffffffff};
+#endif
 #endif
 
     if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|IB", kwlist,
@@ -60,8 +62,17 @@ mmh3_hash(PyObject *self, PyObject *args, PyObject *keywds)
   }
 #else  
   /* for standard envs */
+#if __LONG_WIDTH__ == 64
   long_result = result[0] & mask[is_signed];
   return PyLong_FromLong(long_result);
+#else
+  long_result = result[0];
+  if (is_signed == 1) {
+    return PyLong_FromLong(long_result);
+  } else {
+    return PyLong_FromUnsignedLong(long_result);
+  }
+#endif
 #endif
 }
 
@@ -78,7 +89,9 @@ mmh3_hash_from_buffer(PyObject *self, PyObject *args, PyObject *keywds)
       (char *)"signed", NULL};
 
 #ifndef _MSC_VER
+#if __LONG_WIDTH__ == 64
     static uint64_t mask[] = {0x0ffffffff, 0xffffffffffffffff};
+#endif
 #endif
 
     if (!PyArg_ParseTupleAndKeywords(args, keywds, "s*|IB", kwlist,
@@ -98,8 +111,17 @@ mmh3_hash_from_buffer(PyObject *self, PyObject *args, PyObject *keywds)
     }
 #else
     /* for standard envs */
+  #if __LONG_WIDTH__ == 64
     long_result = result[0] & mask[is_signed];
     return PyLong_FromLong(long_result);
+  #else
+    long_result = result[0];
+    if (is_signed == 1) {
+      return PyLong_FromLong(long_result);
+    } else {
+      return PyLong_FromUnsignedLong(long_result);
+    }
+  #endif
 #endif
 }
 
