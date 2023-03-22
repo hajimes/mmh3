@@ -14,7 +14,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-20.04, windows-2019, macOS-10.15]
+        os: [ubuntu-22.04, windows-2022, macOS-11]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -28,7 +28,7 @@ jobs:
         with:
           platforms: arm64
       - name: Build wheels
-        uses: joerick/cibuildwheel@v1.9.0
+        uses: joerick/cibuildwheel@v2.8.1
         with:
           output-dir: wheelhouse
         env:
@@ -36,7 +36,7 @@ jobs:
           CIBW_MANYLINUX_AARCH64_IMAGE: manylinux2014
           CIBW_ARCHS_LINUX: 'auto aarch64'
           CIBW_ARCHS_MACOS: 'auto arm64'
-          CIBW_TEST_REQUIRES: 'pytest numpy==1.19.5'
+          CIBW_TEST_REQUIRES: 'pytest numpy'
           CIBW_TEST_COMMAND: 'pytest {project}'
           CIBW_TEST_SKIP: '*-macosx_arm64' # Until the day Apple silicon instances are available on GitHub Actions
       - uses: actions/upload-artifact@v2
@@ -44,7 +44,7 @@ jobs:
           path: ./wheelhouse/*.whl
   build_sdist:
     name: Build a source distribution
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -59,7 +59,7 @@ jobs:
           path: dist/*.tar.gz
   publish:
     name: 'Upload to PyPI/Test PyPI'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs: [build_wheels, build_sdist]
     steps:
       - name: Set up Python
