@@ -75,7 +75,7 @@ Beware that `hash64` returns **two** values, because it uses the 128-bit version
 * Migrate Travis CI and AppVeyor to GitHub Actions.
 
 ### 2.5.1 (2017-10-31)
-* Bug fix for `hash_bytes`. Thanks [doozr](https://github.com/doozr)!
+* Bugfix for `hash_bytes`. Thanks [doozr](https://github.com/doozr)!
 
 ### 2.5 (2017-10-28)
 * Add `hash_from_buffer`. Thanks [Dimitri Vorona](https://github.com/alendit)!
