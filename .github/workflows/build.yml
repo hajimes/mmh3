@@ -1,6 +1,6 @@
 # This workflow is intended for quick building tests.
 # Use wheels.yml for complete building/uploading tests.
-name: Build and Test
+name: Build
 
 on:
   push:
