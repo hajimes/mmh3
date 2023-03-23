@@ -32,10 +32,11 @@ jobs:
         with:
           output-dir: wheelhouse
         env:
-          CIBW_BUILD: '{cp37,cp38,cp39,cp310,cp311}-{manylinux_x86_64,manylinux_aarch64,win32,win_amd64,macosx_x86_64} cp39-macosx_arm64 cp310-macosx_arm64'
+          CIBW_BUILD: '{cp37,cp38,cp39,cp310,cp311}-{manylinux_x86_64,manylinux_aarch64,win32,win_amd64,macosx_x86_64} {cp38,cp39,cp310,cp311}-macosx_arm64'
           CIBW_MANYLINUX_AARCH64_IMAGE: manylinux2014
           CIBW_ARCHS_LINUX: 'auto aarch64'
           CIBW_ARCHS_MACOS: 'auto arm64'
+          CIBW_BUILD_FRONTEND: 'build'
           CIBW_TEST_REQUIRES: 'pytest numpy'
           CIBW_TEST_COMMAND: 'pytest {project}'
           CIBW_TEST_SKIP: '*-macosx_arm64' # Until the day Apple silicon instances are available on GitHub Actions
