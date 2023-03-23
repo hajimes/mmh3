@@ -1,11 +1,12 @@
 # This workflow is intended for quick building tests.
 # Use wheels.yml for complete building/uploading tests.
-name: Build and Test
+name: Build
 
 on:
   push:
     branches:
-      - develop
+      - master
+      - feature/**
   pull_request:
     types:
       - opened
@@ -16,14 +17,14 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [macos-10.15, windows-2019, ubuntu-latest]
-        python-version: [3.6, 3.7, 3.8, 3.9]
+        os: [macos-12, windows-2022, ubuntu-22.04]
+        python-version: [3.7, 3.8, 3.9, "3.10", "3.11"]
 
     runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies

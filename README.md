@@ -1,6 +1,6 @@
 # mmh3
-[![GitHub Super-Linter](https://github.com/hajimes/mmh3/workflows/Super-Linter/badge.svg?branch=feature/ghactions)](https://github.com/hajimes/mmh3/actions?query=workflow%3ASuper-Linter+branch%3Amaster)
-[![Build passing](https://github.com/hajimes/mmh3/workflows/build/badge.svg?branch=feature/ghactions)](https://github.com/hajimes/mmh3/actions?query=workflow%3Abuild+branch%3Amaster)
+[![GitHub Super-Linter](https://github.com/hajimes/mmh3/workflows/Super-Linter/badge.svg?branch=master)](https://github.com/hajimes/mmh3/actions?query=workflow%3ASuper-Linter+branch%3Amaster)
+[![Build](https://github.com/hajimes/mmh3/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/hajimes/mmh3/actions/workflows/build.yml?branch=master)
 [![PyPi Version](https://img.shields.io/pypi/v/mmh3.svg?style=flat-square&logo=pypi&logoColor=white)](https://pypi.org/project/mmh3/)
 [![Python Versions](https://img.shields.io/pypi/pyversions/mmh3.svg)](https://pypi.org/project/mmh3/)
 [![License: CC0-1.0](https://img.shields.io/badge/License-CC0%201.0-lightgrey.svg)](http://creativecommons.org/publicdomain/zero/1.0/)
@@ -75,7 +75,7 @@ Beware that `hash64` returns **two** values, because it uses the 128-bit version
 * Migrate Travis CI and AppVeyor to GitHub Actions.
 
 ### 2.5.1 (2017-10-31)
-* Bug fix for `hash_bytes`. Thanks [doozr](https://github.com/doozr)!
+* Bugfix for `hash_bytes`. Thanks [doozr](https://github.com/doozr)!
 
 ### 2.5 (2017-10-28)
 * Add `hash_from_buffer`. Thanks [Dimitri Vorona](https://github.com/alendit)!
