@@ -38,7 +38,9 @@ static PyObject *mmh3_hash(PyObject *self, PyObject *args, PyObject *keywds) {
                            NULL};
 
 #ifndef _MSC_VER
+#if __LONG_WIDTH__ == 64 || defined(__APPLE__)
   static uint64_t mask[] = {0x0ffffffff, 0xffffffffffffffff};
+#endif
 #endif
 
   if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|IB", kwlist, &target_str,
@@ -58,8 +60,17 @@ static PyObject *mmh3_hash(PyObject *self, PyObject *args, PyObject *keywds) {
   }
 #else
   /* for standard envs */
+#if __LONG_WIDTH__ == 64 || defined(__APPLE__)
   long_result = result[0] & mask[is_signed];
   return PyLong_FromLong(long_result);
+#else
+  long_result = result[0];
+  if (is_signed == 1) {
+    return PyLong_FromLong(long_result);
+  } else {
+    return PyLong_FromUnsignedLong(long_result);
+  }
+#endif
 #endif
 }
 
@@ -75,7 +86,9 @@ static PyObject *mmh3_hash_from_buffer(PyObject *self, PyObject *args,
                            NULL};
 
 #ifndef _MSC_VER
+#if __LONG_WIDTH__ == 64 || defined(__APPLE__)
   static uint64_t mask[] = {0x0ffffffff, 0xffffffffffffffff};
+#endif
 #endif
 
   if (!PyArg_ParseTupleAndKeywords(args, keywds, "s*|IB", kwlist, &target_buf,
@@ -94,9 +107,18 @@ static PyObject *mmh3_hash_from_buffer(PyObject *self, PyObject *args,
     return PyLong_FromUnsignedLong(long_result);
   }
 #else
-  /* for standard envs */
+/* for standard envs */
+#if __LONG_WIDTH__ == 64 || defined(__APPLE__)
   long_result = result[0] & mask[is_signed];
   return PyLong_FromLong(long_result);
+#else
+  long_result = result[0];
+  if (is_signed == 1) {
+    return PyLong_FromLong(long_result);
+  } else {
+    return PyLong_FromUnsignedLong(long_result);
+  }
+#endif
 #endif
 }
 
