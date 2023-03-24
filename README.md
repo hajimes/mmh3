@@ -12,6 +12,8 @@ mmh3 is a Python wrapper for [MurmurHash (MurmurHash3)](https://en.wikipedia.org
 
 Combined with probabilistic techniques like a [Bloom filter](https://en.wikipedia.org/wiki/Bloom_filter), [MinHash](https://en.wikipedia.org/wiki/MinHash), and [feature hashing](https://en.wikipedia.org/wiki/Feature_hashing), mmh3 allows you to develop high-performance systems in fields such as data mining, machine learning, and natural language processing.
 
+Another common use of mmh3 is to [calculate favicon hashes](https://gist.github.com/yehgdotnet/b9dfc618108d2f05845c4d8e28c5fc6a) used by [Shodan](https://www.shodan.io), the world's first IoT search engine.
+
 ## How to use
 Install:
 ```shell
@@ -66,6 +68,13 @@ Beware that `hash64` returns **two** values, because it uses the 128-bit version
 ```
 
 ## Changelog
+### 3.1.0 (2023-03-24)
+* Add support for Python 3.10 and 3.11. Thanks [wouter bolsterlee](https://github.com/wbolster) and [Dušan Nikolić](https://github.com/n-dusan)!
+* Drop support for Python 3.6; remove legacy code for Python 2.x at the source code level.
+* Add support for 32-bit architectures such as `i686` and `armv7l`. From now on, `hash` and `hash_from_buffer` on these architectures will generate the same hash values as those on other environments. Thanks [Danil Shein](https://github.com/dshein-alt)!
+* In relation to the above, `manylinux2014_i686` wheels are now available.
+* Support for hashing huge data (>16GB). Thanks [arieleizenberg](https://github.com/arieleizenberg)!
+
 ### 3.0.0 (2021-02-23)
 * Python wheels are now available, thanks to the power of [cibuildwheel](https://github.com/joerick/cibuildwheel).
   * Supported platforms are `manylinux1_x86_64`, `manylinux2010_x86_64`, `manylinux2014_aarch64`, `win32`, `win_amd64`, `macosx_10_9_x86_64`, and `macosx_11_0_arm64` (Apple Silicon).
@@ -77,46 +86,7 @@ Beware that `hash64` returns **two** values, because it uses the 128-bit version
 ### 2.5.1 (2017-10-31)
 * Bugfix for `hash_bytes`. Thanks [doozr](https://github.com/doozr)!
 
-### 2.5 (2017-10-28)
-* Add `hash_from_buffer`. Thanks [Dimitri Vorona](https://github.com/alendit)!
-* Add a keyword argument `signed`.
-
-### 2.4 (2017-05-27)
-* Support seeds with 32-bit unsigned integers; thanks [Alexander Maznev](https://github.com/pik)!
-* Support 64-bit data (under 64-bit environments)
-* Fix compile errors for Python 3.6 under Windows systems.
-* Add unit testing and continuous integration with Travis CI and AppVeyor.
-
-### 2.3.2 (2017-05-26)
-* Relicensed from public domain to [CC0-1.0](./LICENSE).
-
-### 2.3.1 (2015-06-07)
-* Fix compile errors for gcc >=5.
-
-### 2.3 (2013-12-08)
-* Add `hash128`, which returns a 128-bit signed integer.
-* Fix a misplaced operator which could cause memory leak in a rare condition.
-* Fix a malformed value to a Python/C API function which may cause runtime errors in recent Python 3.x versions.
-
-The first two commits are from [Derek Wilson](https://github.com/underrun). Thanks!
-
-### 2.2 (2013-03-03)
-* Improve portability to support systems with old gcc (version < 4.4) such as CentOS/RHEL 5.x. (Commit from [Micha Gorelick](https://github.com/mynameisfiber). Thanks!)
-
-### 2.1 (2013-02-25)
-* Add `__version__` constant. Check if it exists when the following revision matters for your application.
-* Incorporate the revision r147, which includes robustness improvement and minor tweaks.
-
-Beware that due to this revision, **the result of 32-bit version of 2.1 is NOT the same as that of 2.0**. E.g.,:
-
-```shell
->>> mmh3.hash("foo") # in mmh3 2.0
--292180858
->>> mmh3.hash("foo") # in mmh3 2.1
--156908512
-```
-
-The results of hash64 and hash_bytes remain unchanged. Austin Appleby, the author of Murmurhash, ensured this revision was the final modification to MurmurHash3's results and any future changes would be to improve performance only.
+See [CHANGELOG.md](./CHANGELOG.md) for the complete changelog.
 
 ## License
 [CC0-1.0](./LICENSE).
@@ -157,16 +127,27 @@ Ported and modified for Python by Hajime Senuma.
 * <http://github.com/hajimes/mmh3>
 
 ## See also
-### Tutorials
+### Tutorials (High-Performance Computing)
 The following textbooks and tutorials are great sources to learn how to use mmh3 (and other hash algorithms in general) for high-performance computing.
 
-* Chapter 11: Using Less Ram in Micha Gorelick and Ian Ozsvald. 2014. *High Performance Python: Practical Performant Programming for Humans*. O'Reilly Media. [ISBN: 978-1-4493-6159-4](https://www.amazon.com/dp/1449361595).
-* Duke University. [Efficient storage of data in memory](http://people.duke.edu/~ccc14/sta-663-2016/20B_Big_Data_Structures.html).
-* Max Burstein. [Creating a Simple Bloom Filter](http://www.maxburstein.com/blog/creating-a-simple-bloom-filter/).
-* Bugra Akyildiz. [A Gentle Introduction to Bloom Filter](https://www.kdnuggets.com/2016/08/gentle-introduction-bloom-filter.html).
+* Chapter 11: *Using Less Ram* in Micha Gorelick and Ian Ozsvald. 2014. *High Performance Python: Practical Performant Programming for Humans*. O'Reilly Media. [ISBN: 978-1-4493-6159-4](https://www.amazon.com/dp/1449361595).
+  * 2nd edition of the above (2020). [ISBN: 978-1492055020](https://www.amazon.com/dp/1492055026).
+* Max Burstein. February 2, 2013. *[Creating a Simple Bloom Filter](http://www.maxburstein.com/blog/creating-a-simple-bloom-filter/)*.
+* Duke University. April 14, 2016. *[Efficient storage of data in memory](http://people.duke.edu/~ccc14/sta-663-2016/20B_Big_Data_Structures.html)*.
+* Bugra Akyildiz. August 24, 2016. *[A Gentle Introduction to Bloom Filter](https://www.kdnuggets.com/2016/08/gentle-introduction-bloom-filter.html)*. KDnuggets.
+
+### Tutorials (Internet of Things)
+[Shodan](https://www.shodan.io), the world's first [IoT](https://en.wikipedia.org/wiki/Internet_of_things) search engine, uses MurmurHash3 hash values for [favicons](https://en.wikipedia.org/wiki/Favicon) (icons associated with web pages). [ZoomEye](https://www.zoomeye.org) follows Shodan's convention.
+[Calculating these values with mmh3](https://gist.github.com/yehgdotnet/b9dfc618108d2f05845c4d8e28c5fc6a) is useful for OSINT and cybersecurity activities.
+
+* Jan Kopriva. April 19, 2021. *[Hunting phishing websites with favicon hashes](https://isc.sans.edu/diary/Hunting+phishing+websites+with+favicon+hashes/27326)*. SANS Internet Storm Center.
+* Nikhil Panwar. May 2, 2022. *[Using Favicons to Discover Phishing & Brand Impersonation Websites](https://bolster.ai/blog/how-to-use-favicons-to-find-phishing-websites)*. Bolster.
+* Faradaysec. July 25, 2022. *[Understanding Spring4Shell: How used is it?](https://faradaysec.com/understanding-spring4shell/)*. Faraday Security.
+* Debjeet. August 2, 2022. *[How To Find Assets Using Favicon Hashes](https://payatu.com/blog/favicon-hash/)*. Payatu.
 
 ### Similar libraries
 * <https://github.com/wc-duck/pymmh3>: mmh3 in pure python (Fredrik Kihlander and Swapnil Gusani)
 * <https://github.com/escherba/python-cityhash>: Python bindings for CityHash (Eugene Scherba)
 * <https://github.com/veelion/python-farmhash>: Python bindigs for FarmHash (Veelion Chong)
 * <https://github.com/escherba/python-metrohash>: Python bindings for MetroHash (Eugene Scherba)
+* <https://github.com/ifduyue/python-xxhash>: Python bindings for xxHash (Yue Du)
