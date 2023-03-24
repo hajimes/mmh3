@@ -5,7 +5,7 @@
 #ifndef MURMURHASH3_H_
 #define MURMURHASH3_H_
 
-// To handle 64-bit data; see https://docs.python.org/2.7/c-api/arg.html
+// To handle 64-bit data; see https://docs.python.org/3/c-api/arg.html
 #ifndef PY_SSIZE_T_CLEAN
 #define PY_SSIZE_T_CLEAN
 #endif
@@ -23,7 +23,7 @@ typedef unsigned __int64 uint64_t;
 
 // Other compilers
 
-#else. // defined(_MSC_VER)
+#else // defined(_MSC_VER)
 
 #include <stdint.h>
 

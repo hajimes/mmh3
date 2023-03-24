@@ -4,7 +4,7 @@
 // and is also placed in the public domain/CC0 1.0.
 // The authors hereby disclaim copyright to these source codes.
 
-// To handle 64-bit data; see https://docs.python.org/2.7/c-api/arg.html
+// To handle 64-bit data; see https://docs.python.org/3/c-api/arg.html
 #ifndef PY_SSIZE_T_CLEAN
 #define PY_SSIZE_T_CLEAN
 #endif
@@ -24,7 +24,7 @@ typedef unsigned __int64 uint64_t;
 // Other compilers
 #else // defined(_MSC_VER)
 #include <stdint.h>
-#endif // !defined(_MSC_VER)
+#endif // defined(_MSC_VER)
 
 static PyObject *mmh3_hash(PyObject *self, PyObject *args, PyObject *keywds) {
   const char *target_str;
@@ -58,20 +58,20 @@ static PyObject *mmh3_hash(PyObject *self, PyObject *args, PyObject *keywds) {
   } else {
     return PyLong_FromUnsignedLong(long_result);
   }
-#else
+#else // defined(_MSC_VER)
   /* for standard envs */
 #if __LONG_WIDTH__ == 64 || defined(__APPLE__)
   long_result = result[0] & mask[is_signed];
   return PyLong_FromLong(long_result);
-#else
+#else  // __LONG_WIDTH__ == 64 || defined(__APPLE__)
   long_result = result[0];
   if (is_signed == 1) {
     return PyLong_FromLong(long_result);
   } else {
     return PyLong_FromUnsignedLong(long_result);
   }
-#endif
-#endif
+#endif // __LONG_WIDTH__ == 64 || defined(__APPLE__)
+#endif // defined(_MSC_VER)
 }
 
 static PyObject *mmh3_hash_from_buffer(PyObject *self, PyObject *args,
@@ -106,20 +106,20 @@ static PyObject *mmh3_hash_from_buffer(PyObject *self, PyObject *args,
   } else {
     return PyLong_FromUnsignedLong(long_result);
   }
-#else
+#else // defined(_MSC_VER)
 /* for standard envs */
 #if __LONG_WIDTH__ == 64 || defined(__APPLE__)
   long_result = result[0] & mask[is_signed];
   return PyLong_FromLong(long_result);
-#else
+#else  // __LONG_WIDTH__ == 64 || defined(__APPLE__)
   long_result = result[0];
   if (is_signed == 1) {
     return PyLong_FromLong(long_result);
   } else {
     return PyLong_FromUnsignedLong(long_result);
   }
-#endif
-#endif
+#endif // __LONG_WIDTH__ == 64 || defined(__APPLE__)
+#endif // defined(_MSC_VER)
 }
 
 static PyObject *mmh3_hash64(PyObject *self, PyObject *args, PyObject *keywds) {
@@ -176,9 +176,9 @@ static PyObject *mmh3_hash128(PyObject *self, PyObject *args,
   }
 
   /**
-   * _PyLong_FromByteArray is not a part of official Python/C API
-   * and can be displaced (although it is practically stable). cf.
-   * https://mail.python.org/pipermail/python-list/2006-August/372368.html
+   * _PyLong_FromByteArray is not a part of the official Python/C API
+   * and may be removed in the future (although it is practically stable).
+   * cf. https://mail.python.org/pipermail/python-list/2006-August/372365.html
    */
   PyObject *retval =
       _PyLong_FromByteArray((unsigned char *)result, 16, 1, is_signed);
@@ -217,12 +217,7 @@ struct module_state {
   PyObject *error;
 };
 
-#if PY_MAJOR_VERSION >= 3
 #define GETSTATE(m) ((struct module_state *)PyModule_GetState(m))
-#else
-#define GETSTATE(m) (&_state)
-static struct module_state _state;
-#endif
 
 static PyMethodDef Mmh3Methods[] = {
     {"hash", (PyCFunction)mmh3_hash, METH_VARARGS | METH_KEYWORDS,
@@ -246,8 +241,6 @@ static PyMethodDef Mmh3Methods[] = {
      "value as bytes for a string. Optimized for the x64 bit architecture when "
      "x64arch=True, otherwise for the x86."},
     {NULL, NULL, 0, NULL}};
-
-#if PY_MAJOR_VERSION >= 3
 
 static int mmh3_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(GETSTATE(m)->error);
@@ -279,19 +272,8 @@ static struct PyModuleDef mmh3module = {
 extern "C" {
 PyMODINIT_FUNC PyInit_mmh3(void)
 
-#else // PY_MAJOR_VERSION >= 3
-#define INITERROR return
-
-extern "C" {
-void initmmh3(void)
-#endif // PY_MAJOR_VERSION >= 3
-
 {
-#if PY_MAJOR_VERSION >= 3
   PyObject *module = PyModule_Create(&mmh3module);
-#else
-  PyObject *module = Py_InitModule("mmh3", Mmh3Methods);
-#endif
 
   if (module == NULL)
     INITERROR;
@@ -306,8 +288,6 @@ void initmmh3(void)
     INITERROR;
   }
 
-#if PY_MAJOR_VERSION >= 3
   return module;
-#endif
 }
 } // extern "C"
