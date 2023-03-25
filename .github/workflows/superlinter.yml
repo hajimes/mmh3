@@ -29,6 +29,6 @@ jobs:
         env:
           DEFAULT_BRANCH: master
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VALIDATE_CPP: false
-          VALIDATE_JSCPD: false
-          VALIDATE_NATURAL_LANGUAGE: false
+          VALIDATE_CPP: false # Suppressed because it conflicts with clang-format in some cases
+          VALIDATE_JSCPD: false # Suppressed because copy/paste is sometimes required for low level code
+          VALIDATE_NATURAL_LANGUAGE: false # Suppressed because it even accuses book titles
