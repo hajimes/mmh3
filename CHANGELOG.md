@@ -57,3 +57,7 @@ Beware that due to this revision, **the result of 32-bit version of 2.1 is NOT t
 ```
 
 The results of hash64 and hash_bytes remain unchanged. Austin Appleby, the author of Murmurhash, ensured this revision was the final modification to MurmurHash3's results and any future changes would be to improve performance only.
+
+## 2.0 (2013-02-11)
+* Support both Python 2.7 and 3.x.
+* Change the module interface.
