@@ -12,7 +12,7 @@
 * Add support for newer macOS environments. Thanks [Matthew Honnibal](https://github.com/honnibal)!
 * Drop support for Python 2.7, 3.3, 3.4, and 3.5.
 * Add support for Python 3.7, 3.8, and 3.9.
-* Migrate Travis CI and AppVeyor to GitHub Actions.
+* Migrate CI from Travis CI and AppVeyor to GitHub Actions.
 
 ## 2.5.1 (2017-10-31)
 * Bugfix for `hash_bytes`. Thanks [doozr](https://github.com/doozr)!
