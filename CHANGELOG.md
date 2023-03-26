@@ -61,3 +61,5 @@ The results of hash64 and hash_bytes remain unchanged. Austin Appleby, the autho
 ## 2.0 (2013-02-11)
 * Support both Python 2.7 and 3.x.
 * Change the module interface.
+* Note [2023-03-26]: As far as the original author of this project ([@hajimes](https://github.com/hajimes)) remembers, the project started on [Google Code](https://en.wikipedia.org/wiki/Google_Developers#Google_Code) somewhere before 2013-02-11. In addition, mmh3 1.x used [Mercurial](https://en.wikipedia.org/wiki/Mercurial) for version control, because Google Code had endorsed it since 2009.
+It was later migrated to GitHub and updated with no backward compatibility. That's why the version number starts at 2.0 on GitHub.
