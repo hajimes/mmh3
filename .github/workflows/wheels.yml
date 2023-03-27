@@ -6,7 +6,20 @@ on:
       repository:
         description: 'The repository to upload the package to'
         required: true
-        default: 'testpypi'
+        default: 'dummy'
+        type: choice
+        options:
+        - dummy
+        - testpypi
+        - pypi
+      cibw_build:
+        descpriton: 'The CIBW_BUILD env for cibuildwheels'
+        required: true
+        default: '{cp37,cp38,cp39,cp310,cp311}-{manylinux_x86_64,manylinux_aarch64,manylinux_i686,win32,win_amd64,macosx_x86_64,macosx_universal2,macosx_arm64}'
+      cibw_skip:
+        descpriton: 'The CIBW_SKIP env for cibuildwheels'
+        required: true
+        default: 'cp37-{macosx_universal2,macosx_arm64}'
 
 jobs:
   build_wheels:
@@ -32,7 +45,8 @@ jobs:
         with:
           output-dir: wheelhouse
         env:
-          CIBW_BUILD: '{cp37,cp38,cp39,cp310,cp311}-{manylinux_x86_64,manylinux_aarch64,manylinux_i686,win32,win_amd64,macosx_x86_64} {cp38,cp39,cp310,cp311}-macosx_arm64'
+          CIBW_BUILD: ${{ github.event.inputs.cibw_build }}
+          CIBW_SKIP: ${{ github.event.inputs.cibw_skip }}
           CIBW_MANYLINUX_AARCH64_IMAGE: manylinux2014
           CIBW_MANYLINUX_I686_IMAGE: manylinux2014
           CIBW_ARCHS_LINUX: 'auto aarch64 i686'
