@@ -58,8 +58,9 @@ Beware that due to this revision, **the result of 32-bit version of 2.1 is NOT t
 
 The results of hash64 and hash_bytes remain unchanged. Austin Appleby, the author of Murmurhash, ensured this revision was the final modification to MurmurHash3's results and any future changes would be to improve performance only.
 
-## 2.0 (2013-02-11)
+## 2.0 (2011-06-07)
 * Support both Python 2.7 and 3.x.
 * Change the module interface.
-* Note [2023-03-26]: As far as the original author of this project ([@hajimes](https://github.com/hajimes)) remembers, the project started on [Google Code](https://en.wikipedia.org/wiki/Google_Developers#Google_Code) somewhere before 2013-02-11. In addition, mmh3 1.x used [Mercurial](https://en.wikipedia.org/wiki/Mercurial) for version control, because Google Code had endorsed it since 2009.
-It was later migrated to GitHub and updated with no backward compatibility. That's why the version number starts at 2.0 on GitHub.
+
+## 1.0 (<= 2011-04-27)
+* As [Softpedia collected mmh3 1.0 on April, 27, 2011](https://web.archive.org/web/20110430172027/https://linux.softpedia.com/get/Programming/Libraries/mmh3-68314.shtml), it must have been uploaded to PyPI on or slightly before this date.
