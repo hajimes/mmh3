@@ -63,4 +63,4 @@ The results of hash64 and hash_bytes remain unchanged. Austin Appleby, the autho
 * Change the module interface.
 
 ## 1.0 (<= 2011-04-27)
-* As [Softpedia collected mmh3 1.0 on April, 27, 2011](https://web.archive.org/web/20110430172027/https://linux.softpedia.com/get/Programming/Libraries/mmh3-68314.shtml), it must have been uploaded to PyPI on or slightly before this date.
+* As [Softpedia collected mmh3 1.0 on April 27, 2011](https://web.archive.org/web/20110430172027/https://linux.softpedia.com/get/Programming/Libraries/mmh3-68314.shtml), it must have been uploaded to PyPI on or slightly before this date.
