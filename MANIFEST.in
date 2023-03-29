@@ -1,5 +1,10 @@
-include *.cpp
-include MurmurHash3.h
+include src/mmh3/*.cpp
+include deps/MurmurHash3.cpp
+include deps/MurmurHash3.h
 include README.md
+include LICENSE
+include CHANGELOG.md
+include CODE_OF_CONDUCT.md
+include pyproject.toml
 include setup.py
 include MANIFEST.in

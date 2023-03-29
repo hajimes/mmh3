@@ -32,7 +32,8 @@ if is_new_osx():
 
 mmh3module = Extension(
     "mmh3",
-    sources=["mmh3module.cpp", "MurmurHash3.cpp"],
+    sources=["src/mmh3/mmh3module.cpp", "deps/MurmurHash3.cpp"],
+    include_dirs=["deps"],
     extra_compile_args=COMPILE_OPTIONS,
     extra_link_args=LINK_OPTIONS,
 )
