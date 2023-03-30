@@ -4,6 +4,8 @@
 // and is also placed in the public domain/CC0 1.0.
 // The authors hereby disclaim copyright to these source codes.
 
+// This code currently conforms to the clang-format code style, not PEP 7
+
 // To handle 64-bit data; see https://docs.python.org/3/c-api/arg.html
 #ifndef PY_SSIZE_T_CLEAN
 #define PY_SSIZE_T_CLEAN
@@ -26,8 +28,9 @@ typedef unsigned __int64 uint64_t;
 #include <stdint.h>
 #endif // defined(_MSC_VER)
 
-PyDoc_STRVAR(mmh3_hash_doc, "hash(key[, seed=0, signed=True]) -> hash value\n"
-                            "Return a 32 bit integer.");
+PyDoc_STRVAR(mmh3_hash_doc, "hash(key[, seed=0, signed=True]) -> 32-bit int\n\n"
+                            "Return a hash value as a 32-bit integer. "
+                            "Calculated by the MurmurHash3_x86_32 algorithm.");
 
 static PyObject *mmh3_hash(PyObject *self, PyObject *args, PyObject *keywds) {
   const char *target_str;
@@ -77,11 +80,11 @@ static PyObject *mmh3_hash(PyObject *self, PyObject *args, PyObject *keywds) {
 #endif // defined(_MSC_VER)
 }
 
-PyDoc_STRVAR(
-    mmh3_hash_from_buffer_doc,
-    "hash_from_buffer(key[, seed=0, signed=True]) -> hash value from a memory "
-    "buffer\n Return a 32 bit integer. Designed for large memory-views such "
-    "as numpy arrays.");
+PyDoc_STRVAR(mmh3_hash_from_buffer_doc,
+             "hash_from_buffer(key[, seed=0, signed=True]) -> 32-bit int\n\n"
+             "Return a hash value from a memory buffer as a 32-bit integer. "
+             "Calculated by the MurmurHash3_x86_32 algorithm. "
+             "Designed for large memory-views such as numpy arrays.");
 
 static PyObject *mmh3_hash_from_buffer(PyObject *self, PyObject *args,
                                        PyObject *keywds) {
@@ -133,8 +136,10 @@ static PyObject *mmh3_hash_from_buffer(PyObject *self, PyObject *args,
 
 PyDoc_STRVAR(
     mmh3_hash64_doc,
-    "hash64(key[, seed=0, x64arch=True, signed=True]) -> (hash value 1, hash "
-    "value 2)\n Return a tuple of two 64 bit integers for a string. Optimized "
+    "hash64(key[, seed=0, x64arch=True, signed=True]) -> (64-bit int, 64-bit "
+    "int)\n\n"
+    "Return a tuple of two 64 bit integers given an input string. "
+    "Calculated by the MurmurHash3_x{64, 86}_128 algorithm. Optimized "
     "for the x64 bit architecture when x64arch=True, otherwise for x86.");
 
 static PyObject *mmh3_hash64(PyObject *self, PyObject *args, PyObject *keywds) {
@@ -168,8 +173,10 @@ static PyObject *mmh3_hash64(PyObject *self, PyObject *args, PyObject *keywds) {
 
 PyDoc_STRVAR(
     mmh3_hash128_doc,
-    "hash128(key[, seed=0, x64arch=True, signed=False]]) -> hash value\n "
-    "Return a 128 bit long integer. Optimized for the x64 bit architecture "
+    "hash128(key[, seed=0, x64arch=True, signed=False]]) -> 128-bit int\n\n"
+    "Return a 128 bit long integer. "
+    "Calculated by the MurmurHash3_x{64, 86}_128 algorithm. "
+    "Optimized for the x64 bit architecture "
     "when x64arch=True, otherwise for x86.");
 
 static PyObject *mmh3_hash128(PyObject *self, PyObject *args,
@@ -207,11 +214,11 @@ static PyObject *mmh3_hash128(PyObject *self, PyObject *args,
   return retval;
 }
 
-PyDoc_STRVAR(
-    mmh3_hash_bytes_doc,
-    "hash_bytes(key[, seed=0, x64arch=True]) -> bytes\n Return a 128 bit hash "
-    "value as bytes for a string. Optimized for the x64 bit architecture when "
-    "x64arch=True, otherwise for the x86.");
+PyDoc_STRVAR(mmh3_hash_bytes_doc,
+             "hash_bytes(key[, seed=0, x64arch=True]) -> bytes\n\n"
+             "Return a 128 bit hash value as bytes for a string. Optimized for "
+             "the x64 bit architecture when "
+             "x64arch=True, otherwise for the x86.");
 
 static PyObject *mmh3_hash_bytes(PyObject *self, PyObject *args,
                                  PyObject *keywds) {
