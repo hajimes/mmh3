@@ -7,6 +7,10 @@
 // compile and run any of them on any platform, but your performance with the
 // non-native version will be less than optimal.
 
+// This file contains several minor changes made by mmh3 developers.
+// Any issues caused by these changes should be reported to
+// https://github.com/hajimes/mmh3/issues, not to the original author.
+
 #include "MurmurHash3.h"
 
 //-----------------------------------------------------------------------------

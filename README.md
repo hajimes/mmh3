@@ -89,7 +89,9 @@ Beware that `hash64` returns **two** values, because it uses the 128-bit version
 See [CHANGELOG.md](./CHANGELOG.md) for the complete changelog.
 
 ## License
-[CC0-1.0](./LICENSE).
+[MIT](./LICENSE), unless otherwise noted within a file.
+
+Note that as of 2023-03-30, the most recent official release of mmh3 is Version 3.1.0, which is released under CC0-1.0.
 
 ## Known Issues
 ### Getting different results from other MurmurHash3-based libraries
@@ -117,14 +119,9 @@ Be careful so that these seeds do not exceed 32-bit. Unexpected results may happ
 ```
 
 ## Authors
-MurmurHash3 was originally developed by Austin Appleby and distributed under public domain.
-
-* <https://github.com/aappleby/smhasher>
+MurmurHash3 was originally developed by Austin Appleby and distributed under public domain [https://github.com/aappleby/smhasher](https://github.com/aappleby/smhasher]).
 
 Ported and modified for Python by Hajime Senuma.
-
-* <http://pypi.python.org/pypi/mmh3>
-* <http://github.com/hajimes/mmh3>
 
 ## See also
 ### Tutorials (High-Performance Computing)

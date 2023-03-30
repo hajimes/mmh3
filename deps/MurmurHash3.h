@@ -2,6 +2,10 @@
 // MurmurHash3 was written by Austin Appleby, and is placed in the public
 // domain. The author hereby disclaims copyright to this source code.
 
+// This file contains several minor changes made by mmh3 developers.
+// Any issues caused by these changes should be reported to
+// https://github.com/hajimes/mmh3/issues, not to the original author.
+
 #ifndef MURMURHASH3_H_
 #define MURMURHASH3_H_
 

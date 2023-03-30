@@ -1,9 +1,3 @@
-//-----------------------------------------------------------------------------
-// MurmurHash3 was written by Austin Appleby, and is placed in the public
-// domain. mmh3 Python module was written by Hajime Senuma,
-// and is also placed in the public domain/CC0 1.0.
-// The authors hereby disclaim copyright to these source codes.
-
 // This code currently conforms to the clang-format code style, not PEP 7
 
 // To handle 64-bit data; see https://docs.python.org/3/c-api/arg.html
