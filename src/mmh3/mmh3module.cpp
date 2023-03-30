@@ -26,6 +26,9 @@ typedef unsigned __int64 uint64_t;
 #include <stdint.h>
 #endif // defined(_MSC_VER)
 
+PyDoc_STRVAR(mmh3_hash_doc, "hash(key[, seed=0, signed=True]) -> hash value\n"
+                            "Return a 32 bit integer.");
+
 static PyObject *mmh3_hash(PyObject *self, PyObject *args, PyObject *keywds) {
   const char *target_str;
   Py_ssize_t target_str_len;
@@ -73,6 +76,12 @@ static PyObject *mmh3_hash(PyObject *self, PyObject *args, PyObject *keywds) {
 #endif // __LONG_WIDTH__ == 64 || defined(__APPLE__)
 #endif // defined(_MSC_VER)
 }
+
+PyDoc_STRVAR(
+    mmh3_hash_from_buffer_doc,
+    "hash_from_buffer(key[, seed=0, signed=True]) -> hash value from a memory "
+    "buffer\n Return a 32 bit integer. Designed for large memory-views such "
+    "as numpy arrays.");
 
 static PyObject *mmh3_hash_from_buffer(PyObject *self, PyObject *args,
                                        PyObject *keywds) {
@@ -122,6 +131,12 @@ static PyObject *mmh3_hash_from_buffer(PyObject *self, PyObject *args,
 #endif // defined(_MSC_VER)
 }
 
+PyDoc_STRVAR(
+    mmh3_hash64_doc,
+    "hash64(key[, seed=0, x64arch=True, signed=True]) -> (hash value 1, hash "
+    "value 2)\n Return a tuple of two 64 bit integers for a string. Optimized "
+    "for the x64 bit architecture when x64arch=True, otherwise for x86.");
+
 static PyObject *mmh3_hash64(PyObject *self, PyObject *args, PyObject *keywds) {
   const char *target_str;
   Py_ssize_t target_str_len;
@@ -150,6 +165,12 @@ static PyObject *mmh3_hash64(PyObject *self, PyObject *args, PyObject *keywds) {
   PyObject *retval = Py_BuildValue(valflag[is_signed], result[0], result[1]);
   return retval;
 }
+
+PyDoc_STRVAR(
+    mmh3_hash128_doc,
+    "hash128(key[, seed=0, x64arch=True, signed=False]]) -> hash value\n "
+    "Return a 128 bit long integer. Optimized for the x64 bit architecture "
+    "when x64arch=True, otherwise for x86.");
 
 static PyObject *mmh3_hash128(PyObject *self, PyObject *args,
                               PyObject *keywds) {
@@ -186,6 +207,12 @@ static PyObject *mmh3_hash128(PyObject *self, PyObject *args,
   return retval;
 }
 
+PyDoc_STRVAR(
+    mmh3_hash_bytes_doc,
+    "hash_bytes(key[, seed=0, x64arch=True]) -> bytes\n Return a 128 bit hash "
+    "value as bytes for a string. Optimized for the x64 bit architecture when "
+    "x64arch=True, otherwise for the x86.");
+
 static PyObject *mmh3_hash_bytes(PyObject *self, PyObject *args,
                                  PyObject *keywds) {
   const char *target_str;
@@ -221,25 +248,15 @@ struct module_state {
 
 static PyMethodDef Mmh3Methods[] = {
     {"hash", (PyCFunction)mmh3_hash, METH_VARARGS | METH_KEYWORDS,
-     "hash(key[, seed=0, signed=True]) -> hash value\n Return a 32 bit "
-     "integer."},
+     mmh3_hash_doc},
     {"hash_from_buffer", (PyCFunction)mmh3_hash_from_buffer,
-     METH_VARARGS | METH_KEYWORDS,
-     "hash_from_buffer(key[, seed=0, signed=True]) -> hash value from a memory "
-     "buffer\n Return a 32 bit integer. Designed for large memory-views such "
-     "as numpy arrays."},
+     METH_VARARGS | METH_KEYWORDS, mmh3_hash_from_buffer_doc},
     {"hash64", (PyCFunction)mmh3_hash64, METH_VARARGS | METH_KEYWORDS,
-     "hash64(key[, seed=0, x64arch=True, signed=True]) -> (hash value 1, hash "
-     "value 2)\n Return a tuple of two 64 bit integers for a string. Optimized "
-     "for the x64 bit architecture when x64arch=True, otherwise for x86."},
+     mmh3_hash64_doc},
     {"hash128", (PyCFunction)mmh3_hash128, METH_VARARGS | METH_KEYWORDS,
-     "hash128(key[, seed=0, x64arch=True, signed=False]]) -> hash value\n "
-     "Return a 128 bit long integer. Optimized for the x64 bit architecture "
-     "when x64arch=True, otherwise for x86."},
+     mmh3_hash128_doc},
     {"hash_bytes", (PyCFunction)mmh3_hash_bytes, METH_VARARGS | METH_KEYWORDS,
-     "hash_bytes(key[, seed=0, x64arch=True]) -> bytes\n Return a 128 bit hash "
-     "value as bytes for a string. Optimized for the x64 bit architecture when "
-     "x64arch=True, otherwise for the x86."},
+     mmh3_hash_bytes_doc},
     {NULL, NULL, 0, NULL}};
 
 static int mmh3_traverse(PyObject *m, visitproc visit, void *arg) {
@@ -255,11 +272,15 @@ static int mmh3_clear(PyObject *m) {
 static struct PyModuleDef mmh3module = {
     PyModuleDef_HEAD_INIT,
     "mmh3",
-    "mmh3 is a Python front-end to MurmurHash3, a fast and robust hash library "
-    "created by Austin Appleby (http://code.google.com/p/smhasher/).\n Ported "
-    "by Hajime Senuma <hajime.senuma@gmail.com>\n Try hash('foobar') or "
-    "hash('foobar', 1984).\n If you find any bugs, please submit an issue via "
-    "https://github.com/hajimes/mmh3",
+    PyDoc_STR(
+        "mmh3 is a Python front-end to MurmurHash3, a fast and robust hash "
+        "library "
+        "created by Austin Appleby (http://code.google.com/p/smhasher/).\n "
+        "Ported "
+        "by Hajime Senuma <hajime.senuma@gmail.com>\n Try hash('foobar') or "
+        "hash('foobar', 1984).\n If you find any bugs, please submit an issue "
+        "via "
+        "https://github.com/hajimes/mmh3"),
     sizeof(struct module_state),
     Mmh3Methods,
     NULL,
