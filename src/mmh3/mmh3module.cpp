@@ -1,14 +1,13 @@
-// This code currently conforms to the clang-format code style, not PEP 7
-
 // To handle 64-bit data; see https://docs.python.org/3/c-api/arg.html
 #ifndef PY_SSIZE_T_CLEAN
 #define PY_SSIZE_T_CLEAN
 #endif
 
-#include "MurmurHash3.h"
 #include <Python.h>
 #include <stdio.h>
 #include <string.h>
+
+#include "MurmurHash3.h"
 
 #if defined(_MSC_VER)
 typedef signed __int8 int8_t;
@@ -18,60 +17,66 @@ typedef unsigned __int8 uint8_t;
 typedef unsigned __int32 uint32_t;
 typedef unsigned __int64 uint64_t;
 // Other compilers
-#else // defined(_MSC_VER)
+#else  // defined(_MSC_VER)
 #include <stdint.h>
-#endif // defined(_MSC_VER)
+#endif  // defined(_MSC_VER)
 
-PyDoc_STRVAR(mmh3_hash_doc, "hash(key[, seed=0, signed=True]) -> 32-bit int\n\n"
-                            "Return a hash value as a 32-bit integer. "
-                            "Calculated by the MurmurHash3_x86_32 algorithm.");
+PyDoc_STRVAR(mmh3_hash_doc,
+             "hash(key[, seed=0, signed=True]) -> 32-bit int\n\n"
+             "Return a hash value as a 32-bit integer. "
+             "Calculated by the MurmurHash3_x86_32 algorithm.");
 
-static PyObject *mmh3_hash(PyObject *self, PyObject *args, PyObject *keywds) {
-  const char *target_str;
-  Py_ssize_t target_str_len;
-  uint32_t seed = 0;
-  int32_t result[1];
-  long long_result = 0;
-  int is_signed = 1;
+static PyObject *
+mmh3_hash(PyObject *self, PyObject *args, PyObject *keywds)
+{
+    const char *target_str;
+    Py_ssize_t target_str_len;
+    uint32_t seed = 0;
+    int32_t result[1];
+    long long_result = 0;
+    int is_signed = 1;
 
-  static char *kwlist[] = {(char *)"key", (char *)"seed", (char *)"signed",
-                           NULL};
+    static char *kwlist[] = {(char *)"key", (char *)"seed", (char *)"signed",
+                             NULL};
 
 #ifndef _MSC_VER
 #if __LONG_WIDTH__ == 64 || defined(__APPLE__)
-  static uint64_t mask[] = {0x0ffffffff, 0xffffffffffffffff};
+    static uint64_t mask[] = {0x0ffffffff, 0xffffffffffffffff};
 #endif
 #endif
 
-  if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|IB", kwlist, &target_str,
-                                   &target_str_len, &seed, &is_signed)) {
-    return NULL;
-  }
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|IB", kwlist,
+                                     &target_str, &target_str_len, &seed,
+                                     &is_signed)) {
+        return NULL;
+    }
 
-  MurmurHash3_x86_32(target_str, target_str_len, seed, result);
+    MurmurHash3_x86_32(target_str, target_str_len, seed, result);
 
 #if defined(_MSC_VER)
-  /* for Windows envs */
-  long_result = result[0];
-  if (is_signed == 1) {
-    return PyLong_FromLong(long_result);
-  } else {
-    return PyLong_FromUnsignedLong(long_result);
-  }
-#else // defined(_MSC_VER)
-  /* for standard envs */
+    /* for Windows envs */
+    long_result = result[0];
+    if (is_signed == 1) {
+        return PyLong_FromLong(long_result);
+    }
+    else {
+        return PyLong_FromUnsignedLong(long_result);
+    }
+#else  // defined(_MSC_VER)
+    /* for standard envs */
 #if __LONG_WIDTH__ == 64 || defined(__APPLE__)
-  long_result = result[0] & mask[is_signed];
-  return PyLong_FromLong(long_result);
-#else  // __LONG_WIDTH__ == 64 || defined(__APPLE__)
-  long_result = result[0];
-  if (is_signed == 1) {
+    long_result = result[0] & mask[is_signed];
     return PyLong_FromLong(long_result);
-  } else {
-    return PyLong_FromUnsignedLong(long_result);
-  }
-#endif // __LONG_WIDTH__ == 64 || defined(__APPLE__)
-#endif // defined(_MSC_VER)
+#else   // __LONG_WIDTH__ == 64 || defined(__APPLE__)
+    long_result = result[0];
+    if (is_signed == 1) {
+        return PyLong_FromLong(long_result);
+    }
+    else {
+        return PyLong_FromUnsignedLong(long_result);
+    }
+#endif  // __LONG_WIDTH__ == 64 || defined(__APPLE__)
+#endif  // defined(_MSC_VER)
 }
 
 PyDoc_STRVAR(mmh3_hash_from_buffer_doc,
@@ -80,52 +85,55 @@ PyDoc_STRVAR(mmh3_hash_from_buffer_doc,
              "Calculated by the MurmurHash3_x86_32 algorithm. "
              "Designed for large memory-views such as numpy arrays.");
 
-static PyObject *mmh3_hash_from_buffer(PyObject *self, PyObject *args,
-                                       PyObject *keywds) {
-  Py_buffer target_buf;
-  uint32_t seed = 0;
-  int32_t result[1];
-  long long_result = 0;
-  int is_signed = 1;
+static PyObject *
+mmh3_hash_from_buffer(PyObject *self, PyObject *args, PyObject *keywds)
+{
+    Py_buffer target_buf;
+    uint32_t seed = 0;
+    int32_t result[1];
+    long long_result = 0;
+    int is_signed = 1;
 
-  static char *kwlist[] = {(char *)"key", (char *)"seed", (char *)"signed",
-                           NULL};
+    static char *kwlist[] = {(char *)"key", (char *)"seed", (char *)"signed",
+                             NULL};
 
 #ifndef _MSC_VER
 #if __LONG_WIDTH__ == 64 || defined(__APPLE__)
-  static uint64_t mask[] = {0x0ffffffff, 0xffffffffffffffff};
+    static uint64_t mask[] = {0x0ffffffff, 0xffffffffffffffff};
 #endif
 #endif
 
-  if (!PyArg_ParseTupleAndKeywords(args, keywds, "s*|IB", kwlist, &target_buf,
-                                   &seed, &is_signed)) {
-    return NULL;
-  }
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s*|IB", kwlist,
+                                     &target_buf, &seed, &is_signed)) {
+        return NULL;
+    }
 
-  MurmurHash3_x86_32(target_buf.buf, target_buf.len, seed, result);
+    MurmurHash3_x86_32(target_buf.buf, target_buf.len, seed, result);
 
 #if defined(_MSC_VER)
-  /* for Windows envs */
-  long_result = result[0];
-  if (is_signed == 1) {
-    return PyLong_FromLong(long_result);
-  } else {
-    return PyLong_FromUnsignedLong(long_result);
-  }
-#else // defined(_MSC_VER)
+    /* for Windows envs */
+    long_result = result[0];
+    if (is_signed == 1) {
+        return PyLong_FromLong(long_result);
+    }
+    else {
+        return PyLong_FromUnsignedLong(long_result);
+    }
+#else  // defined(_MSC_VER)
 /* for standard envs */
 #if __LONG_WIDTH__ == 64 || defined(__APPLE__)
-  long_result = result[0] & mask[is_signed];
-  return PyLong_FromLong(long_result);
-#else  // __LONG_WIDTH__ == 64 || defined(__APPLE__)
-  long_result = result[0];
-  if (is_signed == 1) {
+    long_result = result[0] & mask[is_signed];
     return PyLong_FromLong(long_result);
-  } else {
-    return PyLong_FromUnsignedLong(long_result);
-  }
-#endif // __LONG_WIDTH__ == 64 || defined(__APPLE__)
-#endif // defined(_MSC_VER)
+#else   // __LONG_WIDTH__ == 64 || defined(__APPLE__)
+    long_result = result[0];
+    if (is_signed == 1) {
+        return PyLong_FromLong(long_result);
+    }
+    else {
+        return PyLong_FromUnsignedLong(long_result);
+    }
+#endif  // __LONG_WIDTH__ == 64 || defined(__APPLE__)
+#endif  // defined(_MSC_VER)
 }
 
 PyDoc_STRVAR(
@@ -136,33 +144,36 @@ PyDoc_STRVAR(
     "Calculated by the MurmurHash3_x{64, 86}_128 algorithm. Optimized "
     "for the x64 bit architecture when x64arch=True, otherwise for x86.");
 
-static PyObject *mmh3_hash64(PyObject *self, PyObject *args, PyObject *keywds) {
-  const char *target_str;
-  Py_ssize_t target_str_len;
-  uint32_t seed = 0;
-  uint64_t result[2];
-  char x64arch = 1;
-  int is_signed = 1;
+static PyObject *
+mmh3_hash64(PyObject *self, PyObject *args, PyObject *keywds)
+{
+    const char *target_str;
+    Py_ssize_t target_str_len;
+    uint32_t seed = 0;
+    uint64_t result[2];
+    char x64arch = 1;
+    int is_signed = 1;
 
-  static char *kwlist[] = {(char *)"key", (char *)"seed", (char *)"x64arch",
-                           (char *)"signed", NULL};
+    static char *kwlist[] = {(char *)"key", (char *)"seed", (char *)"x64arch",
+                             (char *)"signed", NULL};
 
-  static char *valflag[] = {(char *)"KK", (char *)"LL"};
+    static char *valflag[] = {(char *)"KK", (char *)"LL"};
 
-  if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|IBB", kwlist, &target_str,
-                                   &target_str_len, &seed, &x64arch,
-                                   &is_signed)) {
-    return NULL;
-  }
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|IBB", kwlist,
+                                     &target_str, &target_str_len, &seed,
+                                     &x64arch, &is_signed)) {
+        return NULL;
+    }
 
-  if (x64arch == 1) {
-    MurmurHash3_x64_128(target_str, target_str_len, seed, result);
-  } else {
-    MurmurHash3_x86_128(target_str, target_str_len, seed, result);
-  }
+    if (x64arch == 1) {
+        MurmurHash3_x64_128(target_str, target_str_len, seed, result);
+    }
+    else {
+        MurmurHash3_x86_128(target_str, target_str_len, seed, result);
+    }
 
-  PyObject *retval = Py_BuildValue(valflag[is_signed], result[0], result[1]);
-  return retval;
+    PyObject *retval = Py_BuildValue(valflag[is_signed], result[0], result[1]);
+    return retval;
 }
 
 PyDoc_STRVAR(
@@ -173,76 +184,83 @@ PyDoc_STRVAR(
     "Optimized for the x64 bit architecture "
     "when x64arch=True, otherwise for x86.");
 
-static PyObject *mmh3_hash128(PyObject *self, PyObject *args,
-                              PyObject *keywds) {
-  const char *target_str;
-  Py_ssize_t target_str_len;
-  uint32_t seed = 0;
-  uint64_t result[2];
-  char x64arch = 1;
-  char is_signed = 0;
+static PyObject *
+mmh3_hash128(PyObject *self, PyObject *args, PyObject *keywds)
+{
+    const char *target_str;
+    Py_ssize_t target_str_len;
+    uint32_t seed = 0;
+    uint64_t result[2];
+    char x64arch = 1;
+    char is_signed = 0;
 
-  static char *kwlist[] = {(char *)"key", (char *)"seed", (char *)"x64arch",
-                           (char *)"signed", NULL};
+    static char *kwlist[] = {(char *)"key", (char *)"seed", (char *)"x64arch",
+                             (char *)"signed", NULL};
 
-  if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|IBB", kwlist, &target_str,
-                                   &target_str_len, &seed, &x64arch,
-                                   &is_signed)) {
-    return NULL;
-  }
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|IBB", kwlist,
+                                     &target_str, &target_str_len, &seed,
+                                     &x64arch, &is_signed)) {
+        return NULL;
+    }
 
-  if (x64arch == 1) {
-    MurmurHash3_x64_128(target_str, target_str_len, seed, result);
-  } else {
-    MurmurHash3_x86_128(target_str, target_str_len, seed, result);
-  }
+    if (x64arch == 1) {
+        MurmurHash3_x64_128(target_str, target_str_len, seed, result);
+    }
+    else {
+        MurmurHash3_x86_128(target_str, target_str_len, seed, result);
+    }
 
-  /**
-   * _PyLong_FromByteArray is not a part of the official Python/C API
-   * and may be removed in the future (although it is practically stable).
-   * cf. https://mail.python.org/pipermail/python-list/2006-August/372365.html
-   */
-  PyObject *retval =
-      _PyLong_FromByteArray((unsigned char *)result, 16, 1, is_signed);
+    /**
+     * _PyLong_FromByteArray is not a part of the official Python/C API
+     * and may be removed in the future (although it is practically stable).
+     * cf.
+     * https://mail.python.org/pipermail/python-list/2006-August/372365.html
+     */
+    PyObject *retval =
+        _PyLong_FromByteArray((unsigned char *)result, 16, 1, is_signed);
 
-  return retval;
+    return retval;
 }
 
-PyDoc_STRVAR(mmh3_hash_bytes_doc,
-             "hash_bytes(key[, seed=0, x64arch=True]) -> bytes\n\n"
-             "Return a 128 bit hash value as bytes for a string. Optimized for "
-             "the x64 bit architecture when "
-             "x64arch=True, otherwise for the x86.");
+PyDoc_STRVAR(
+    mmh3_hash_bytes_doc,
+    "hash_bytes(key[, seed=0, x64arch=True]) -> bytes\n\n"
+    "Return a 128 bit hash value as bytes for a string. Optimized for "
+    "the x64 bit architecture when "
+    "x64arch=True, otherwise for the x86.");
 
-static PyObject *mmh3_hash_bytes(PyObject *self, PyObject *args,
-                                 PyObject *keywds) {
-  const char *target_str;
-  Py_ssize_t target_str_len;
-  uint32_t seed = 0;
-  uint32_t result[4];
-  char x64arch = 1;
+static PyObject *
+mmh3_hash_bytes(PyObject *self, PyObject *args, PyObject *keywds)
+{
+    const char *target_str;
+    Py_ssize_t target_str_len;
+    uint32_t seed = 0;
+    uint32_t result[4];
+    char x64arch = 1;
 
-  static char *kwlist[] = {(char *)"key", (char *)"seed", (char *)"x64arch",
-                           NULL};
+    static char *kwlist[] = {(char *)"key", (char *)"seed", (char *)"x64arch",
+                             NULL};
 
-  if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|IB", kwlist, &target_str,
-                                   &target_str_len, &seed, &x64arch)) {
-    return NULL;
-  }
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|IB", kwlist,
+                                     &target_str, &target_str_len, &seed,
+                                     &x64arch)) {
+        return NULL;
+    }
 
-  if (x64arch == 1) {
-    MurmurHash3_x64_128(target_str, target_str_len, seed, result);
-  } else {
-    MurmurHash3_x86_128(target_str, target_str_len, seed, result);
-  }
+    if (x64arch == 1) {
+        MurmurHash3_x64_128(target_str, target_str_len, seed, result);
+    }
+    else {
+        MurmurHash3_x86_128(target_str, target_str_len, seed, result);
+    }
 
-  char bytes[16];
-  memcpy(bytes, result, 16);
-  return PyBytes_FromStringAndSize(bytes, 16);
+    char bytes[16];
+    memcpy(bytes, result, 16);
+    return PyBytes_FromStringAndSize(bytes, 16);
 }
 
 struct module_state {
-  PyObject *error;
+    PyObject *error;
 };
 
 #define GETSTATE(m) ((struct module_state *)PyModule_GetState(m))
@@ -260,14 +278,18 @@ static PyMethodDef Mmh3Methods[] = {
      mmh3_hash_bytes_doc},
     {NULL, NULL, 0, NULL}};
 
-static int mmh3_traverse(PyObject *m, visitproc visit, void *arg) {
-  Py_VISIT(GETSTATE(m)->error);
-  return 0;
+static int
+mmh3_traverse(PyObject *m, visitproc visit, void *arg)
+{
+    Py_VISIT(GETSTATE(m)->error);
+    return 0;
 }
 
-static int mmh3_clear(PyObject *m) {
-  Py_CLEAR(GETSTATE(m)->error);
-  return 0;
+static int
+mmh3_clear(PyObject *m)
+{
+    Py_CLEAR(GETSTATE(m)->error);
+    return 0;
 }
 
 static struct PyModuleDef mmh3module = {
@@ -292,24 +314,25 @@ static struct PyModuleDef mmh3module = {
 #define INITERROR return NULL
 
 extern "C" {
-PyMODINIT_FUNC PyInit_mmh3(void)
+PyMODINIT_FUNC
+PyInit_mmh3(void)
 
 {
-  PyObject *module = PyModule_Create(&mmh3module);
+    PyObject *module = PyModule_Create(&mmh3module);
 
-  if (module == NULL)
-    INITERROR;
+    if (module == NULL)
+        INITERROR;
 
-  PyModule_AddStringConstant(module, "__version__", "3.2.0.alpha4");
+    PyModule_AddStringConstant(module, "__version__", "3.2.0.alpha4");
 
-  struct module_state *st = GETSTATE(module);
+    struct module_state *st = GETSTATE(module);
 
-  st->error = PyErr_NewException((char *)"mmh3.Error", NULL, NULL);
-  if (st->error == NULL) {
-    Py_DECREF(module);
-    INITERROR;
-  }
+    st->error = PyErr_NewException((char *)"mmh3.Error", NULL, NULL);
+    if (st->error == NULL) {
+        Py_DECREF(module);
+        INITERROR;
+    }
 
-  return module;
+    return module;
 }
-} // extern "C"
+}  // extern "C"

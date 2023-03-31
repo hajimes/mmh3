@@ -1,0 +1,21 @@
+# This .clang-format was originally written by Paul Ganssle
+# Its exact license is unknown but compatible with MIT
+# https://gist.github.com/pganssle/0e3a5f828b4d07d79447f6ced8e7e4db
+
+# A clang-format style that approximates Python's PEP 7
+# Useful for IDE integration
+BasedOnStyle: Google
+AlwaysBreakAfterReturnType: All
+AllowShortIfStatementsOnASingleLine: false
+AlignAfterOpenBracket: Align
+BreakBeforeBraces: Stroustrup
+ColumnLimit: 79
+DerivePointerAlignment: false
+IndentWidth: 4
+Language: Cpp
+PointerAlignment: Right
+ReflowComments: true
+SpaceBeforeParens: ControlStatements
+SpacesInParentheses: false
+TabWidth: 4
+UseTab: Never
