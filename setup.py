@@ -34,6 +34,7 @@ mmh3module = Extension(
     "mmh3",
     sources=["src/mmh3/mmh3module.cpp", "deps/MurmurHash3.cpp"],
     include_dirs=["deps"],
+    package_data={"mmh3": ["./src/mmh3/py.typed", "./src/mmh3/**.pyi"]},
     extra_compile_args=COMPILE_OPTIONS,
     extra_link_args=LINK_OPTIONS,
 )

@@ -1,4 +1,6 @@
 include src/mmh3/*.cpp
+include src/mmh3/*.pyi
+include src/mmh3/py.typed
 include deps/MurmurHash3.cpp
 include deps/MurmurHash3.h
 include README.md

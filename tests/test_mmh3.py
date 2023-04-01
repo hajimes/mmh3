@@ -6,7 +6,7 @@ import numpy as np
 
 
 # see also https://stackoverflow.com/a/1375939
-def u32_to_s32(v):
+def u32_to_s32(v: int) -> int:
     if v & 0x80000000:
         return -0x100000000 + v
     else:
@@ -17,7 +17,7 @@ def u32_to_s32(v):
 # In big-endian environments, these tests may fail.
 
 
-def test_hash():
+def test_hash() -> None:
     assert mmh3.hash("foo") == -156908512
 
     # Several test vectors devised by Ian Boyd
@@ -70,7 +70,7 @@ def test_hash():
     ) == u32_to_s32(0x2FA826CD)
 
 
-def test_hash_unsigned():
+def test_hash_unsigned() -> None:
     assert mmh3.hash("foo", signed=False) == 4138058784
 
     # Several test vectors devised by Ian Boyd
@@ -128,7 +128,7 @@ def test_hash_unsigned():
     )
 
 
-def test_hash2():
+def test_hash2() -> None:
     assert mmh3.hash("foo") == -156908512
 
     # Several test vectors devised by Ian Boyd
@@ -173,18 +173,18 @@ def test_hash2():
     ) == u32_to_s32(0x2FA826CD)
 
 
-def test_hash_from_buffer():
+def test_hash_from_buffer() -> None:
     mview = memoryview("foo".encode("utf8"))
     assert mmh3.hash_from_buffer(mview) == -156908512
     assert mmh3.hash_from_buffer(mview, signed=False) == 4138058784
 
 
-def test_hash_bytes():
+def test_hash_bytes() -> None:
     assert mmh3.hash_bytes("foo") == b"aE\xf5\x01W\x86q\xe2\x87}\xba+\xe4\x87\xaf~"
     # TODO
 
 
-def test_hash64():
+def test_hash64() -> None:
     assert mmh3.hash64("foo") == (-2129773440516405919, 9128664383759220103)
     assert mmh3.hash64("foo", signed=False) == (
         16316970633193145697,
@@ -193,7 +193,7 @@ def test_hash64():
     # TODO
 
 
-def test_hash128():
+def test_hash128() -> None:
     assert mmh3.hash128("foo") == 168394135621993849475852668931176482145
     assert mmh3.hash128("foo", 42) == 215966891540331383248189432718888555506
     assert (
@@ -205,7 +205,7 @@ def test_hash128():
     # TODO
 
 
-def test_64bit():
+def test_64bit() -> None:
     if sys.maxsize < (1 << 32):  # Skip this test under 32-bit environments
         return
     a = np.zeros(2**32, dtype=np.int8)

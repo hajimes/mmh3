@@ -1,5 +1,6 @@
 # This workflow is intended for quick building tests.
 # Use wheels.yml for complete building/uploading tests.
+---
 name: Build
 
 on:
@@ -29,8 +30,9 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        pip install pytest
-        pip install numpy
         pip install .
+        pip install ".[test]"
     - name: Test with pytest
       run: python -m pytest
+    - name: Test type hints with mypy
+      run: mypy --strict tests
