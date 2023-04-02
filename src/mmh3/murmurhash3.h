@@ -1,10 +1,18 @@
+/***
+ * This file is under MIT <year> Hajime Senuma, just like other files.
+ * See LICENSE for details.
+ *
+ * It was originally written by Austin Appleby in C++ under the public domain,
+ * but ported to PEP 7 C for Python 3.6 and later by the mmh3 project.
+ *
+ * Any issues should be reported to https://github.com/hajimes/mmh3/issues.
+ *
+ * The following is the original public domain notice by Austin Appleby.
+ */
+
 //-----------------------------------------------------------------------------
 // MurmurHash3 was written by Austin Appleby, and is placed in the public
 // domain. The author hereby disclaims copyright to this source code.
-
-// This file contains several minor changes made by mmh3 developers.
-// Any issues caused by these changes should be reported to
-// https://github.com/hajimes/mmh3/issues, not to the original author.
 
 #ifndef MURMURHASH3_H_
 #define MURMURHASH3_H_
@@ -27,23 +35,23 @@ typedef unsigned __int64 uint64_t;
 
 // Other compilers
 
-#else // defined(_MSC_VER)
+#else  // defined(_MSC_VER)
 
 #include <stdint.h>
 
-#endif // !defined(_MSC_VER)
+#endif  // !defined(_MSC_VER)
 
 //-----------------------------------------------------------------------------
 
-void MurmurHash3_x86_32(const void *key, Py_ssize_t len, uint32_t seed,
-                        void *out);
+void
+murmurhash3_x86_32(const void *key, Py_ssize_t len, uint32_t seed, void *out);
 
-void MurmurHash3_x86_128(const void *key, Py_ssize_t len, uint32_t seed,
-                         void *out);
+void
+murmurhash3_x86_128(const void *key, Py_ssize_t len, uint32_t seed, void *out);
 
-void MurmurHash3_x64_128(const void *key, Py_ssize_t len, uint32_t seed,
-                         void *out);
+void
+murmurhash3_x64_128(const void *key, Py_ssize_t len, uint32_t seed, void *out);
 
 //-----------------------------------------------------------------------------
 
-#endif // MURMURHASH3_H_
+#endif  // MURMURHASH3_H_

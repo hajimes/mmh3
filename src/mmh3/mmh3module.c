@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "MurmurHash3.h"
+#include "murmurhash3.h"
 
 #if defined(_MSC_VER)
 typedef signed __int8 int8_t;
@@ -51,7 +51,7 @@ mmh3_hash(PyObject *self, PyObject *args, PyObject *keywds)
         return NULL;
     }
 
-    MurmurHash3_x86_32(target_str, target_str_len, seed, result);
+    murmurhash3_x86_32(target_str, target_str_len, seed, result);
 
 #if defined(_MSC_VER)
     /* for Windows envs */
@@ -108,7 +108,7 @@ mmh3_hash_from_buffer(PyObject *self, PyObject *args, PyObject *keywds)
         return NULL;
     }
 
-    MurmurHash3_x86_32(target_buf.buf, target_buf.len, seed, result);
+    murmurhash3_x86_32(target_buf.buf, target_buf.len, seed, result);
 
 #if defined(_MSC_VER)
     /* for Windows envs */
@@ -166,10 +166,10 @@ mmh3_hash64(PyObject *self, PyObject *args, PyObject *keywds)
     }
 
     if (x64arch == 1) {
-        MurmurHash3_x64_128(target_str, target_str_len, seed, result);
+        murmurhash3_x64_128(target_str, target_str_len, seed, result);
     }
     else {
-        MurmurHash3_x86_128(target_str, target_str_len, seed, result);
+        murmurhash3_x86_128(target_str, target_str_len, seed, result);
     }
 
     PyObject *retval = Py_BuildValue(valflag[is_signed], result[0], result[1]);
@@ -204,10 +204,10 @@ mmh3_hash128(PyObject *self, PyObject *args, PyObject *keywds)
     }
 
     if (x64arch == 1) {
-        MurmurHash3_x64_128(target_str, target_str_len, seed, result);
+        murmurhash3_x64_128(target_str, target_str_len, seed, result);
     }
     else {
-        MurmurHash3_x86_128(target_str, target_str_len, seed, result);
+        murmurhash3_x86_128(target_str, target_str_len, seed, result);
     }
 
     /**
@@ -248,10 +248,10 @@ mmh3_hash_bytes(PyObject *self, PyObject *args, PyObject *keywds)
     }
 
     if (x64arch == 1) {
-        MurmurHash3_x64_128(target_str, target_str_len, seed, result);
+        murmurhash3_x64_128(target_str, target_str_len, seed, result);
     }
     else {
-        MurmurHash3_x86_128(target_str, target_str_len, seed, result);
+        murmurhash3_x86_128(target_str, target_str_len, seed, result);
     }
 
     char bytes[16];
@@ -296,13 +296,12 @@ static struct PyModuleDef mmh3module = {
     PyModuleDef_HEAD_INIT,
     "mmh3",
     PyDoc_STR(
-        "mmh3 is a Python front-end to MurmurHash3, a fast and robust hash "
-        "library "
+        "mmh3 is a Python front-end to MurmurHash3, "
+        "a fast and robust hash library "
         "created by Austin Appleby (http://code.google.com/p/smhasher/).\n "
-        "Ported "
-        "by Hajime Senuma <hajime.senuma@gmail.com>\n Try hash('foobar') or "
-        "hash('foobar', 1984).\n If you find any bugs, please submit an issue "
-        "via "
+        "Ported by Hajime Senuma <hajime.senuma@gmail.com>\n"
+        "Try hash('foobar') or hash('foobar', 1984).\n"
+        "If you find any bugs, please submit an issue via "
         "https://github.com/hajimes/mmh3"),
     sizeof(struct module_state),
     Mmh3Methods,
@@ -313,17 +312,15 @@ static struct PyModuleDef mmh3module = {
 
 #define INITERROR return NULL
 
-extern "C" {
 PyMODINIT_FUNC
 PyInit_mmh3(void)
-
 {
     PyObject *module = PyModule_Create(&mmh3module);
 
     if (module == NULL)
         INITERROR;
 
-    PyModule_AddStringConstant(module, "__version__", "3.2.0.alpha4");
+    PyModule_AddStringConstant(module, "__version__", "4.0.0.alpha1");
 
     struct module_state *st = GETSTATE(module);
 
@@ -335,4 +332,3 @@ PyInit_mmh3(void)
 
     return module;
 }
-}  // extern "C"
