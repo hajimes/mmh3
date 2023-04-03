@@ -1,7 +1,7 @@
 ---
 name: Build and Upload Wheels
 
-on:
+on:  # yamllint disable-line rule:truthy
   workflow_dispatch:
     inputs:
       repository:
@@ -10,13 +10,16 @@ on:
         default: 'dummy'
         type: choice
         options:
-        - dummy
-        - testpypi
-        - pypi
+          - dummy
+          - testpypi
+          - pypi
       cibw_build:
         description: 'The CIBW_BUILD env for cibuildwheels'
         required: true
-        default: '{cp37,cp38,cp39,cp310,cp311}-{manylinux_x86_64,manylinux_aarch64,manylinux_i686,win32,win_amd64,macosx_x86_64,macosx_universal2,macosx_arm64}'
+        default: "{cp37,cp38,cp39,cp310,cp311}\
+          -{manylinux_x86_64,manylinux_aarch64,\
+          manylinux_i686,win32,win_amd64,macosx_x86_64,\
+          macosx_universal2,macosx_arm64}"
       cibw_skip:
         description: 'The CIBW_SKIP env for cibuildwheels'
         required: true
@@ -55,7 +58,8 @@ jobs:
           CIBW_BUILD_FRONTEND: 'build'
           CIBW_TEST_REQUIRES: 'pytest numpy'
           CIBW_TEST_COMMAND: 'pytest {project}'
-          CIBW_TEST_SKIP: '*-macosx_arm64' # Until the day Apple silicon instances are available on GitHub Actions
+          # Until the day Apple silicon instances are available on GH Actions
+          CIBW_TEST_SKIP: '*-macosx_arm64'
       - uses: actions/upload-artifact@v3
         with:
           path: ./wheelhouse/*.whl
@@ -97,4 +101,4 @@ jobs:
           TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
           TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
         run: |
-          twine upload  --repository ${{ github.event.inputs.repository }} dist/*
+          twine upload --repository ${{ github.event.inputs.repository }} dist/*

@@ -1,7 +1,7 @@
 ---
 name: Super-Linter
 
-on:
+on:  # yamllint disable-line rule:truthy
   push:
     branches: '**'
   pull_request:
@@ -30,6 +30,9 @@ jobs:
         env:
           DEFAULT_BRANCH: master
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VALIDATE_CPP: false # Suppressed because it conflicts with clang-format in some cases
-          VALIDATE_JSCPD: false # Suppressed because copy/paste is sometimes required for low level code
-          VALIDATE_NATURAL_LANGUAGE: false # Suppressed because it even accuses book titles
+          # Suppressed because it conflicts with clang-format in some cases
+          VALIDATE_CPP: false
+          # Suppressed because copy/paste is sometimes required at low level
+          VALIDATE_JSCPD: false
+          # Suppressed because it even accuses book titles
+          VALIDATE_NATURAL_LANGUAGE: false

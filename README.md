@@ -4,8 +4,8 @@
 [![PyPi Version](https://img.shields.io/pypi/v/mmh3.svg?style=flat-square&logo=pypi&logoColor=white)](https://pypi.org/project/mmh3/)
 [![Python Versions](https://img.shields.io/pypi/pyversions/mmh3.svg)](https://pypi.org/project/mmh3/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/license/mit/)
-[![Total Downloads](https://pepy.tech/badge/mmh3)](https://pepy.tech/project/mmh3)
-[![Recent Downloads](https://pepy.tech/badge/mmh3/month)](https://pepy.tech/project/mmh3)
+[![Total Downloads](https://pepy.tech/badge/mmh3)](https://pepy.tech/project/mmh3?versions=*&versions=3.*&versions=2.*)
+[![Recent Downloads](https://pepy.tech/badge/mmh3/month)](https://pepy.tech/project/mmh3?versions=*&versions=3.*&versions=2.*)
 [![Conda Version](https://img.shields.io/conda/vn/conda-forge/mmh3.svg?style=flat-square&logo=conda-forge&logoColor=white)](https://anaconda.org/conda-forge/mmh3)
 
 mmh3 is a Python wrapper for [MurmurHash (MurmurHash3)](https://en.wikipedia.org/wiki/MurmurHash), a set of fast and robust non-cryptographic hash functions invented by Austin Appleby.
@@ -119,7 +119,7 @@ Be careful so that these seeds do not exceed 32-bit. Unexpected results may happ
 ```
 
 ## Authors
-MurmurHash3 was originally developed by Austin Appleby and distributed under public domain [https://github.com/aappleby/smhasher](https://github.com/aappleby/smhasher]).
+MurmurHash3 was originally developed by Austin Appleby and distributed under public domain [https://github.com/aappleby/smhasher](https://github.com/aappleby/smhasher).
 
 Ported and modified for Python by Hajime Senuma.
 
