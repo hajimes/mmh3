@@ -320,8 +320,6 @@ PyInit_mmh3(void)
     if (module == NULL)
         INITERROR;
 
-    PyModule_AddStringConstant(module, "__version__", "4.0.0.alpha1");
-
     struct module_state *st = GETSTATE(module);
 
     st->error = PyErr_NewException((char *)"mmh3.Error", NULL, NULL);
