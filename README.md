@@ -97,7 +97,9 @@ Note that as of 2023-03-30, the most recent official release of mmh3 is Version 
 ### Getting different results from other MurmurHash3-based libraries
 By default, mmh3 returns **signed** values for 32-bit and 64-bit versions and **unsigned** values for `hash128`, due to historical reasons. Please use the keyword argument `signed` to obtain a desired result.
 
-For compatibility with Google Guava (Java), see <https://stackoverflow.com/questions/29932956/murmur3-hash-different-result-between-python-and-java-implementation>
+For compatibility with [Google Guava (Java)](https://github.com/google/guava), see <https://stackoverflow.com/questions/29932956/murmur3-hash-different-result-between-python-and-java-implementation>.
+
+For compatibility with [murmur3 (Go)](https://pkg.go.dev/github.com/spaolacci/murmur3), see <https://github.com/hajimes/mmh3/issues/46>.
 
 ### Unexpected results when given non 32-bit seeds
 Version 2.4 changed the type of seeds from signed 32-bit int to unsigned 32-bit int. The resulting values with signed seeds still remain the same as before, as long as they are 32-bit.
