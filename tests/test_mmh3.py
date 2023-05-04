@@ -3,15 +3,7 @@ import sys
 
 import mmh3
 import numpy as np
-
-
-# see also https://stackoverflow.com/a/1375939
-def u32_to_s32(v: int) -> int:
-    if v & 0x80000000:
-        return -0x100000000 + v
-    else:
-        return v
-
+from helper import u32_to_s32
 
 # Note that MurmurHash3 is endian-sensitive.
 # In big-endian environments, these tests may fail.
@@ -20,7 +12,7 @@ def u32_to_s32(v: int) -> int:
 def test_hash() -> None:
     assert mmh3.hash("foo") == -156908512
 
-    # Several test vectors devised by Ian Boyd
+    # Test vectors devised by Ian Boyd
     # https://stackoverflow.com/a/31929528
     assert mmh3.hash(b"", seed=0) == 0
     assert mmh3.hash(b"", seed=1) == 0x514E28B7
@@ -73,7 +65,7 @@ def test_hash() -> None:
 def test_hash_unsigned() -> None:
     assert mmh3.hash("foo", signed=False) == 4138058784
 
-    # Several test vectors devised by Ian Boyd
+    # Test vectors devised by Ian Boyd
     # https://stackoverflow.com/a/31929528
     assert mmh3.hash(b"", seed=0, signed=False) == 0
     assert mmh3.hash(b"", seed=1, signed=False) == 0x514E28B7
@@ -131,7 +123,7 @@ def test_hash_unsigned() -> None:
 def test_hash2() -> None:
     assert mmh3.hash("foo") == -156908512
 
-    # Several test vectors devised by Ian Boyd
+    # Test vectors devised by Ian Boyd
     # https://stackoverflow.com/a/31929528
     assert mmh3.hash(b"", seed=0) == 0
     assert mmh3.hash(b"", seed=1) == 0x514E28B7

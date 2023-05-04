@@ -38,3 +38,7 @@ Homepage = "https://pypi.org/project/mmh3/"
 Repository = "https://github.com/hajimes/mmh3"
 Changelog = "https://github.com/hajimes/mmh3/blob/master/CHANGELOG.md"
 "Bug Tracker" = "https://github.com/hajimes/mmh3/issues"
+
+[tool.isort]
+profile = "black"
+src_paths = ["src/mmh3/__init__.pyi", "tests"]
