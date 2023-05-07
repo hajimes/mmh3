@@ -182,6 +182,17 @@ def test_hash64() -> None:
         16316970633193145697,
         9128664383759220103,
     )
+
+    assert mmh3.hash64("The quick brown fox jumps over the lazy dog", 0x9747B28C) == (
+        8325606756057297185,
+        -484854449282476315,
+    )
+    assert mmh3.hash64(
+        "The quick brown fox jumps over the lazy dog", 0x9747B28C, signed=False
+    ) == (
+        8325606756057297185,
+        17961889624427075301,
+    )
     # TODO
 
 

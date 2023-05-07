@@ -134,6 +134,42 @@ mixH1(uint32_t h1, uint32_t k1)
     return h1;
 }
 
+static FORCE_INLINE uint64_t
+mixK1_x64_128(uint64_t k1)
+{
+    const uint64_t c1 = BIG_CONSTANT(0x87c37b91114253d5);
+    const uint64_t c2 = BIG_CONSTANT(0x4cf5ad432745937f);
+
+    k1 *= c1;
+    k1 = ROTL64(k1, 31);
+    k1 *= c2;
+
+    return k1;
+}
+
+static FORCE_INLINE uint64_t
+mixK2_x64_128(uint64_t k2)
+{
+    const uint64_t c1 = BIG_CONSTANT(0x87c37b91114253d5);
+    const uint64_t c2 = BIG_CONSTANT(0x4cf5ad432745937f);
+
+    k2 *= c2;
+    k2 = ROTL64(k2, 33);
+    k2 *= c1;
+
+    return k2;
+}
+
+static FORCE_INLINE uint64_t
+mixH_x64_128(uint64_t h1, uint64_t h2, uint8_t shift, uint32_t c)
+{
+    h1 = ROTL64(h1, shift);
+    h1 += h2;
+    h1 = h1 * 5 + c;
+
+    return h1;
+}
+
 //-----------------------------------------------------------------------------
 // Finalization mix - force all bits of a hash block to avalanche
 
@@ -154,10 +190,13 @@ fmix32(uint32_t h)
 static FORCE_INLINE uint64_t
 fmix64(uint64_t k)
 {
+    const uint64_t fmix_c1 = BIG_CONSTANT(0xff51afd7ed558ccd);
+    const uint64_t fmix_c2 = BIG_CONSTANT(0xc4ceb9fe1a85ec53);
+
     k ^= k >> 33;
-    k *= BIG_CONSTANT(0xff51afd7ed558ccd);
+    k *= fmix_c1;
     k ^= k >> 33;
-    k *= BIG_CONSTANT(0xc4ceb9fe1a85ec53);
+    k *= fmix_c2;
     k ^= k >> 33;
 
     return k;
