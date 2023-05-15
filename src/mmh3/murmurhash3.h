@@ -125,11 +125,11 @@ mixK1(uint32_t k1)
 }
 
 static FORCE_INLINE uint32_t
-mixH1(uint32_t h1, uint32_t k1)
+mixH1(uint32_t h1, const uint32_t h2, const uint8_t shift, const uint32_t c1)
 {
-    h1 ^= k1;
-    h1 = ROTL32(h1, 13);
-    h1 = h1 * 5 + 0xe6546b64;
+    h1 = ROTL32(h1, shift);
+    h1 += h2;
+    h1 = h1 * 5 + c1;
 
     return h1;
 }
@@ -161,13 +161,24 @@ mixK2_x64_128(uint64_t k2)
 }
 
 static FORCE_INLINE uint64_t
-mixH_x64_128(uint64_t h1, uint64_t h2, uint8_t shift, uint32_t c)
+mixH_x64_128(uint64_t h1, uint64_t h2, const uint8_t shift, const uint32_t c)
 {
     h1 = ROTL64(h1, shift);
     h1 += h2;
     h1 = h1 * 5 + c;
 
     return h1;
+}
+
+static FORCE_INLINE uint64_t
+mixK_x86_128(uint32_t k, const uint8_t shift, const uint32_t c1,
+             const uint32_t c2)
+{
+    k *= c1;
+    k = ROTL32(k, shift);
+    k *= c2;
+
+    return k;
 }
 
 //-----------------------------------------------------------------------------
@@ -200,6 +211,77 @@ fmix64(uint64_t k)
     k ^= k >> 33;
 
     return k;
+}
+
+//-----------------------------------------------------------------------------
+// Finalization function
+static FORCE_INLINE void
+digest_x64_128_impl(uint64_t h1, uint64_t h2, const uint64_t k1,
+                    const uint64_t k2, const Py_ssize_t len, const char *out)
+{
+    h1 ^= mixK1_x64_128(k1);
+    h2 ^= mixK2_x64_128(k2);
+
+    h1 ^= len;
+    h2 ^= len;
+
+    h1 += h2;
+    h2 += h1;
+
+    h1 = fmix64(h1);
+    h2 = fmix64(h2);
+
+    h1 += h2;
+    h2 += h1;
+
+    // TODO: do endian-swapping here for big-endian envs
+    ((uint64_t *)out)[0] = h1;
+    ((uint64_t *)out)[1] = h2;
+}
+
+static FORCE_INLINE void
+digest_x86_128_impl(uint32_t h1, uint32_t h2, uint32_t h3, uint32_t h4,
+                    const uint32_t k1, const uint32_t k2, const uint32_t k3,
+                    const uint32_t k4, const Py_ssize_t len, const char *out)
+{
+    const uint32_t c1 = 0x239b961b;
+    const uint32_t c2 = 0xab0e9789;
+    const uint32_t c3 = 0x38b34ae5;
+    const uint32_t c4 = 0xa1e38b93;
+
+    h1 ^= mixK_x86_128(k1, 15, c1, c2);
+    h2 ^= mixK_x86_128(k2, 16, c2, c3);
+    h3 ^= mixK_x86_128(k3, 17, c3, c4);
+    h4 ^= mixK_x86_128(k4, 18, c4, c1);
+
+    h1 ^= len;
+    h2 ^= len;
+    h3 ^= len;
+    h4 ^= len;
+
+    h1 += h2;
+    h1 += h3;
+    h1 += h4;
+    h2 += h1;
+    h3 += h1;
+    h4 += h1;
+
+    h1 = fmix32(h1);
+    h2 = fmix32(h2);
+    h3 = fmix32(h3);
+    h4 = fmix32(h4);
+
+    h1 += h2;
+    h1 += h3;
+    h1 += h4;
+    h2 += h1;
+    h3 += h1;
+    h4 += h1;
+
+    ((uint32_t *)out)[0] = h1;
+    ((uint32_t *)out)[1] = h2;
+    ((uint32_t *)out)[2] = h3;
+    ((uint32_t *)out)[3] = h4;
 }
 
 //-----------------------------------------------------------------------------

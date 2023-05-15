@@ -25,6 +25,9 @@ typedef unsigned __int64 uint64_t;
 #define MMH3_32_DIGESTSIZE 4
 #define MMH3_128_DIGESTSIZE 16
 
+#define MMH3_32_BLOCKSIZE 12
+#define MMH3_128_BLOCKSIZE 32
+
 //-----------------------------------------------------------------------------
 // One shot functions
 
@@ -284,10 +287,13 @@ static PyMethodDef Mmh3Methods[] = {
 //
 // The design of hasher classes are loosely based on the Google Guava
 // implementation (Java)
+
+//-----------------------------------------------------------------------------
+// Hasher for murmurhash3_x86_32
 typedef struct {
     PyObject_HEAD uint32_t h;
     uint64_t buffer;
-    uint32_t shift;
+    uint8_t shift;
     Py_ssize_t length;
 } Hasher32;
 
@@ -329,6 +335,7 @@ Hasher32_update(Hasher32 *self, PyObject *obj)
     Py_buffer buf;
     uint32_t h1 = self->h;
     uint32_t k1 = 0;
+    const uint32_t c1 = 0xe6546b64;
     const uint64_t mask = 0xffffffffUL;
 
     GET_BUFFER_VIEW_OR_ERROUT(obj, &buf);
@@ -338,7 +345,8 @@ Hasher32_update(Hasher32 *self, PyObject *obj)
         self->buffer |= (k1 & mask) << self->shift;
         self->length += 4;
 
-        h1 = mixH1(h1, mixK1(self->buffer));
+        h1 ^= mixK1(self->buffer);
+        h1 = mixH1(h1, 0, 13, c1);
         self->buffer >>= 32;
     }
 
@@ -349,7 +357,8 @@ Hasher32_update(Hasher32 *self, PyObject *obj)
         self->length += 1;
 
         if (self->shift >= 32) {
-            h1 = mixH1(h1, mixK1(self->buffer));
+            h1 ^= mixK1(self->buffer);
+            h1 = mixH1(h1, 0, 13, c1);
             self->buffer >>= 32;
             self->shift -= 32;
         }
@@ -412,8 +421,22 @@ Hasher32_get_digest_size(PyObject *self, void *closure)
     return PyLong_FromLong(MMH3_32_DIGESTSIZE);
 }
 
+static PyObject *
+Hasher32_get_block_size(PyObject *self, void *closure)
+{
+    return PyLong_FromLong(MMH3_32_BLOCKSIZE);
+}
+
+static PyObject *
+Hasher32_get_name(PyObject *self, void *closure)
+{
+    return PyUnicode_FromStringAndSize("mmh3_32", 7);
+}
+
 static PyGetSetDef Hasher32_getsetters[] = {
     {"digest_size", (getter)Hasher32_get_digest_size, NULL, NULL, NULL},
+    {"block_size", (getter)Hasher32_get_block_size, NULL, NULL, NULL},
+    {"name", (getter)Hasher32_get_name, NULL, NULL, NULL},
     {NULL} /* Sentinel */
 };
 
@@ -430,23 +453,25 @@ static PyTypeObject Hasher32Type = {
     .tp_getset = Hasher32_getsetters,
 };
 
+//-----------------------------------------------------------------------------
+// Hasher for murmurhash3_x64_128
 typedef struct {
     PyObject_HEAD uint64_t h1;
     uint64_t h2;
     uint64_t buffer1;
     uint64_t buffer2;
-    uint32_t shift;
+    uint8_t shift;
     Py_ssize_t length;
 } Hasher128;
 
 static void
-Hasher128_dealloc(Hasher128 *self)
+Hasher128x64_dealloc(Hasher128 *self)
 {
     Py_TYPE(self)->tp_free((PyObject *)self);
 }
 
 static PyObject *
-Hasher128_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
+Hasher128x64_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 {
     Hasher128 *self;
     self = (Hasher128 *)type->tp_alloc(type, 0);
@@ -462,7 +487,7 @@ Hasher128_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 }
 
 static int
-Hasher128_init(Hasher128 *self, PyObject *args, PyObject *kwds)
+Hasher128x64_init(Hasher128 *self, PyObject *args, PyObject *kwds)
 {
     static char *kwlist[] = {"seed", NULL};
 
@@ -475,7 +500,7 @@ Hasher128_init(Hasher128 *self, PyObject *args, PyObject *kwds)
 }
 
 static PyObject *
-Hasher128_update(Hasher128 *self, PyObject *obj)
+Hasher128x64_update(Hasher128 *self, PyObject *obj)
 {
     Py_ssize_t i = 0;
     Py_buffer buf;
@@ -561,45 +586,21 @@ Hasher128_update(Hasher128 *self, PyObject *obj)
     Py_RETURN_NONE;
 }
 
-static FORCE_INLINE void
-digest128_impl(Hasher128 *self, char *out)
-{
-    uint64_t h1 = self->h1;
-    uint64_t h2 = self->h2;
-
-    h1 ^= mixK1_x64_128(self->buffer1);
-    h2 ^= mixK2_x64_128(self->buffer2);
-
-    h1 ^= self->length;
-    h2 ^= self->length;
-
-    h1 += h2;
-    h2 += h1;
-
-    h1 = fmix64(h1);
-    h2 = fmix64(h2);
-
-    h1 += h2;
-    h2 += h1;
-
-    // TODO: do endian-swapping here for big-endian envs
-    ((uint64_t *)out)[0] = h1;
-    ((uint64_t *)out)[1] = h2;
-}
-
 static PyObject *
-Hasher128_digest(Hasher128 *self, PyObject *Py_UNUSED(ignored))
+Hasher128x64_digest(Hasher128 *self, PyObject *Py_UNUSED(ignored))
 {
-    char out[MMH3_128_DIGESTSIZE];
-    digest128_impl(self, out);
+    const char out[MMH3_128_DIGESTSIZE];
+    digest_x64_128_impl(self->h1, self->h2, self->buffer1, self->buffer2,
+                        self->length, out);
     return PyBytes_FromStringAndSize(out, MMH3_128_DIGESTSIZE);
 }
 
 static PyObject *
-Hasher128_sintdigest(Hasher128 *self, PyObject *Py_UNUSED(ignored))
+Hasher128x64_sintdigest(Hasher128 *self, PyObject *Py_UNUSED(ignored))
 {
     const char out[MMH3_128_DIGESTSIZE];
-    digest128_impl(self, out);
+    digest_x64_128_impl(self->h1, self->h2, self->buffer1, self->buffer2,
+                        self->length, out);
     const int little_endian = 1;
     const int is_signed = 1;
 
@@ -616,10 +617,11 @@ Hasher128_sintdigest(Hasher128 *self, PyObject *Py_UNUSED(ignored))
 }
 
 static PyObject *
-Hasher128_uintdigest(Hasher128 *self, PyObject *Py_UNUSED(ignored))
+Hasher128x64_uintdigest(Hasher128 *self, PyObject *Py_UNUSED(ignored))
 {
     const char out[MMH3_128_DIGESTSIZE];
-    digest128_impl(self, out);
+    digest_x64_128_impl(self->h1, self->h2, self->buffer1, self->buffer2,
+                        self->length, out);
     const int little_endian = 1;
     const int is_signed = 0;
 
@@ -636,10 +638,11 @@ Hasher128_uintdigest(Hasher128 *self, PyObject *Py_UNUSED(ignored))
 }
 
 static PyObject *
-Hasher128_stupledigest(Hasher128 *self, PyObject *Py_UNUSED(ignored))
+Hasher128x64_stupledigest(Hasher128 *self, PyObject *Py_UNUSED(ignored))
 {
     const char out[MMH3_128_DIGESTSIZE];
-    digest128_impl(self, out);
+    digest_x64_128_impl(self->h1, self->h2, self->buffer1, self->buffer2,
+                        self->length, out);
 
     char *valflag = "LL";
     PyObject *retval =
@@ -649,10 +652,11 @@ Hasher128_stupledigest(Hasher128 *self, PyObject *Py_UNUSED(ignored))
 }
 
 static PyObject *
-Hasher128_utupledigest(Hasher128 *self, PyObject *Py_UNUSED(ignored))
+Hasher128x64_utupledigest(Hasher128 *self, PyObject *Py_UNUSED(ignored))
 {
     const char out[MMH3_128_DIGESTSIZE];
-    digest128_impl(self, out);
+    digest_x64_128_impl(self->h1, self->h2, self->buffer1, self->buffer2,
+                        self->length, out);
 
     char *valflag = "KK";
     PyObject *retval =
@@ -661,40 +665,317 @@ Hasher128_utupledigest(Hasher128 *self, PyObject *Py_UNUSED(ignored))
     return retval;
 }
 
-static PyMethodDef Hasher128_methods[] = {
-    {"digest", (PyCFunction)Hasher128_digest, METH_NOARGS, "doc here"},
-    {"sintdigest", (PyCFunction)Hasher128_sintdigest, METH_NOARGS, "doc here"},
-    {"uintdigest", (PyCFunction)Hasher128_uintdigest, METH_NOARGS, "doc here"},
-    {"stupledigest", (PyCFunction)Hasher128_stupledigest, METH_NOARGS,
+static PyMethodDef Hasher128x64_methods[] = {
+    {"digest", (PyCFunction)Hasher128x64_digest, METH_NOARGS, "doc here"},
+    {"sintdigest", (PyCFunction)Hasher128x64_sintdigest, METH_NOARGS,
      "doc here"},
-    {"utupledigest", (PyCFunction)Hasher128_utupledigest, METH_NOARGS,
+    {"uintdigest", (PyCFunction)Hasher128x64_uintdigest, METH_NOARGS,
      "doc here"},
-    {"update", (PyCFunction)Hasher128_update, METH_O, "doc here"},
+    {"stupledigest", (PyCFunction)Hasher128x64_stupledigest, METH_NOARGS,
+     "doc here"},
+    {"utupledigest", (PyCFunction)Hasher128x64_utupledigest, METH_NOARGS,
+     "doc here"},
+    {"update", (PyCFunction)Hasher128x64_update, METH_O, "doc here"},
     {NULL} /* Sentinel */
 };
 
 static PyObject *
-Hasher128_get_digest_size(PyObject *self, void *closure)
+Hasher128x64_get_digest_size(PyObject *self, void *closure)
 {
     return PyLong_FromLong(MMH3_128_DIGESTSIZE);
 }
 
-static PyGetSetDef Hasher128_getsetters[] = {
-    {"digest_size", (getter)Hasher128_get_digest_size, NULL, NULL, NULL},
+static PyObject *
+Hasher128x64_get_block_size(PyObject *self, void *closure)
+{
+    return PyLong_FromLong(MMH3_128_BLOCKSIZE);
+}
+
+static PyObject *
+Hasher128x64_get_name(PyObject *self, void *closure)
+{
+    return PyUnicode_FromStringAndSize("mmh3_x64_128", 12);
+}
+
+static PyGetSetDef Hasher128x64_getsetters[] = {
+    {"digest_size", (getter)Hasher128x64_get_digest_size, NULL, NULL, NULL},
+    {"block_size", (getter)Hasher128x64_get_block_size, NULL, NULL, NULL},
+    {"name", (getter)Hasher128x64_get_name, NULL, NULL, NULL},
     {NULL} /* Sentinel */
 };
 
 static PyTypeObject Hasher128Type = {
-    PyVarObject_HEAD_INIT(NULL, 0).tp_name = "mmh3.mmh3_128",
-    .tp_doc = PyDoc_STR("MMH3_128"),
+    PyVarObject_HEAD_INIT(NULL, 0).tp_name = "mmh3.mmh3_x64_128",
+    .tp_doc = PyDoc_STR("MMH3_X64_128"),
     .tp_basicsize = sizeof(Hasher128),
     .tp_itemsize = 0,
     .tp_flags = Py_TPFLAGS_DEFAULT,
-    .tp_new = Hasher128_new,
-    .tp_init = (initproc)Hasher128_init,
-    .tp_dealloc = (destructor)Hasher128_dealloc,
-    .tp_methods = Hasher128_methods,
-    .tp_getset = Hasher128_getsetters,
+    .tp_new = Hasher128x64_new,
+    .tp_init = (initproc)Hasher128x64_init,
+    .tp_dealloc = (destructor)Hasher128x64_dealloc,
+    .tp_methods = Hasher128x64_methods,
+    .tp_getset = Hasher128x64_getsetters,
+};
+
+//-----------------------------------------------------------------------------
+// Hasher for murmurhash3_x86_128
+typedef struct {
+    PyObject_HEAD uint32_t h1;
+    uint32_t h2;
+    uint32_t h3;
+    uint32_t h4;
+    uint32_t buffer1;
+    uint32_t buffer2;
+    uint32_t buffer3;
+    uint32_t buffer4;
+    uint8_t shift;
+    Py_ssize_t length;
+} Hasher128x86;
+
+static void
+Hasher128x86_dealloc(Hasher128x86 *self)
+{
+    Py_TYPE(self)->tp_free((PyObject *)self);
+}
+
+static PyObject *
+Hasher128x86_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
+{
+    Hasher128x86 *self;
+    self = (Hasher128x86 *)type->tp_alloc(type, 0);
+    if (self != NULL) {
+        self->h1 = 0;
+        self->h2 = 0;
+        self->h3 = 0;
+        self->h4 = 0;
+        self->buffer1 = 0;
+        self->buffer2 = 0;
+        self->buffer3 = 0;
+        self->buffer4 = 0;
+        self->shift = 0;
+        self->length = 0;
+    }
+    return (PyObject *)self;
+}
+
+static int
+Hasher128x86_init(Hasher128x86 *self, PyObject *args, PyObject *kwds)
+{
+    static char *kwlist[] = {"seed", NULL};
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|I", kwlist, &self->h1))
+        return -1;
+
+    self->h2 = self->h1;
+    self->h3 = self->h1;
+    self->h4 = self->h1;
+
+    return 0;
+}
+
+static PyObject *
+Hasher128x86_update(Hasher128x86 *self, PyObject *obj)
+{
+    Py_ssize_t i = 0;
+    Py_buffer buf;
+    uint32_t h1 = self->h1;
+    uint32_t h2 = self->h2;
+    uint32_t h3 = self->h3;
+    uint32_t h4 = self->h4;
+    uint32_t k1 = 0;
+    uint32_t k2 = 0;
+    uint32_t k3 = 0;
+    uint32_t k4 = 0;
+
+    GET_BUFFER_VIEW_OR_ERROUT(obj, &buf);
+
+    for (; i < buf.len; i++) {
+        k1 = ((uint8_t *)buf.buf)[i];
+        if (self->shift < 32) {  // TODO: use bit ops
+            self->buffer1 |= k1 << self->shift;
+        }
+        else if (self->shift < 64) {
+            self->buffer2 |= k1 << (self->shift - 32);
+        }
+        else if (self->shift < 96) {
+            self->buffer3 |= k1 << (self->shift - 64);
+        }
+        else {
+            self->buffer4 |= k1 << (self->shift - 96);
+        }
+        self->shift += 8;
+        self->length += 1;
+
+        if (self->shift >= 128) {
+            const uint32_t c1 = 0x239b961b;
+            const uint32_t c2 = 0xab0e9789;
+            const uint32_t c3 = 0x38b34ae5;
+            const uint32_t c4 = 0xa1e38b93;
+
+            h1 ^= mixK_x86_128(self->buffer1, 15, c1, c2);
+            h1 = mixH1(h1, h2, 19, 0x561ccd1bUL);
+
+            h2 ^= mixK_x86_128(self->buffer2, 16, c2, c3);
+            h2 = mixH1(h2, h3, 17, 0x0bcaa747UL);
+
+            h3 ^= mixK_x86_128(self->buffer3, 17, c3, c4);
+            h3 = mixH1(h3, h4, 15, 0x96cd1c35UL);
+
+            h4 ^= mixK_x86_128(self->buffer4, 18, c4, c1);
+            h4 = mixH1(h4, h1, 13, 0x32ac3b17UL);
+
+            self->buffer1 = 0;
+            self->buffer2 = 0;
+            self->buffer3 = 0;
+            self->buffer4 = 0;
+            self->shift -= 128;
+        }
+    }
+
+    PyBuffer_Release(&buf);
+
+    self->h1 = h1;
+    self->h2 = h2;
+    self->h3 = h3;
+    self->h4 = h4;
+
+    Py_RETURN_NONE;
+}
+
+static PyObject *
+Hasher128x86_digest(Hasher128x86 *self, PyObject *Py_UNUSED(ignored))
+{
+    char out[MMH3_128_DIGESTSIZE];
+    digest_x86_128_impl(self->h1, self->h2, self->h3, self->h4, self->buffer1,
+                        self->buffer2, self->buffer3, self->buffer4,
+                        self->length, out);
+    return PyBytes_FromStringAndSize(out, MMH3_128_DIGESTSIZE);
+}
+
+static PyObject *
+Hasher128x86_sintdigest(Hasher128x86 *self, PyObject *Py_UNUSED(ignored))
+{
+    const char out[MMH3_128_DIGESTSIZE];
+    digest_x86_128_impl(self->h1, self->h2, self->h3, self->h4, self->buffer1,
+                        self->buffer2, self->buffer3, self->buffer4,
+                        self->length, out);
+    const int little_endian = 1;
+    const int is_signed = 1;
+
+    /**
+     * _PyLong_FromByteArray is not a part of the official Python/C API
+     * and may be removed in the future (although it is practically stable).
+     * cf.
+     * https://mail.python.org/pipermail/python-list/2006-August/372365.html
+     */
+    PyObject *retval = _PyLong_FromByteArray(
+        (unsigned char *)out, MMH3_128_DIGESTSIZE, little_endian, is_signed);
+
+    return retval;
+}
+
+static PyObject *
+Hasher128x86_uintdigest(Hasher128x86 *self, PyObject *Py_UNUSED(ignored))
+{
+    const char out[MMH3_128_DIGESTSIZE];
+    digest_x86_128_impl(self->h1, self->h2, self->h3, self->h4, self->buffer1,
+                        self->buffer2, self->buffer3, self->buffer4,
+                        self->length, out);
+    const int little_endian = 1;
+    const int is_signed = 0;
+
+    /**
+     * _PyLong_FromByteArray is not a part of the official Python/C API
+     * and may be removed in the future (although it is practically stable).
+     * cf.
+     * https://mail.python.org/pipermail/python-list/2006-August/372365.html
+     */
+    PyObject *retval = _PyLong_FromByteArray(
+        (unsigned char *)out, MMH3_128_DIGESTSIZE, little_endian, is_signed);
+
+    return retval;
+}
+
+static PyObject *
+Hasher128x86_stupledigest(Hasher128x86 *self, PyObject *Py_UNUSED(ignored))
+{
+    const char out[MMH3_128_DIGESTSIZE];
+    digest_x86_128_impl(self->h1, self->h2, self->h3, self->h4, self->buffer1,
+                        self->buffer2, self->buffer3, self->buffer4,
+                        self->length, out);
+
+    char *valflag = "LL";
+    PyObject *retval =
+        Py_BuildValue(valflag, ((uint64_t *)out)[0], ((uint64_t *)out)[1]);
+
+    return retval;
+}
+
+static PyObject *
+Hasher128x86_utupledigest(Hasher128x86 *self, PyObject *Py_UNUSED(ignored))
+{
+    const char out[MMH3_128_DIGESTSIZE];
+    digest_x86_128_impl(self->h1, self->h2, self->h3, self->h4, self->buffer1,
+                        self->buffer2, self->buffer3, self->buffer4,
+                        self->length, out);
+
+    char *valflag = "KK";
+    PyObject *retval =
+        Py_BuildValue(valflag, ((uint64_t *)out)[0], ((uint64_t *)out)[1]);
+
+    return retval;
+}
+
+static PyMethodDef Hasher128x86_methods[] = {
+    {"digest", (PyCFunction)Hasher128x86_digest, METH_NOARGS, "doc here"},
+    {"sintdigest", (PyCFunction)Hasher128x86_sintdigest, METH_NOARGS,
+     "doc here"},
+    {"uintdigest", (PyCFunction)Hasher128x86_uintdigest, METH_NOARGS,
+     "doc here"},
+    {"stupledigest", (PyCFunction)Hasher128x86_stupledigest, METH_NOARGS,
+     "doc here"},
+    {"utupledigest", (PyCFunction)Hasher128x86_utupledigest, METH_NOARGS,
+     "doc here"},
+    {"update", (PyCFunction)Hasher128x86_update, METH_O, "doc here"},
+    {NULL} /* Sentinel */
+};
+
+static PyObject *
+Hasher128x86_get_digest_size(PyObject *self, void *closure)
+{
+    return PyLong_FromLong(MMH3_128_DIGESTSIZE);
+}
+
+static PyObject *
+Hasher128x86_get_block_size(PyObject *self, void *closure)
+{
+    return PyLong_FromLong(MMH3_128_BLOCKSIZE);
+}
+
+static PyObject *
+Hasher128x86_get_name(PyObject *self, void *closure)
+{
+    return PyUnicode_FromStringAndSize("mmh3_x86_128", 12);
+}
+
+static PyGetSetDef Hasher128x86_getsetters[] = {
+    {"digest_size", (getter)Hasher128x86_get_digest_size, NULL, NULL, NULL},
+    {"block_size", (getter)Hasher128x86_get_block_size, NULL, NULL, NULL},
+    {"name", (getter)Hasher128x86_get_name, NULL, NULL, NULL},
+    {NULL} /* Sentinel */
+};
+
+static PyTypeObject Hasher128x86Type = {
+    PyVarObject_HEAD_INIT(NULL, 0).tp_name = "mmh3.mmh3_x86_128",
+    .tp_doc = PyDoc_STR("MMH3_X86_128"),
+    .tp_basicsize = sizeof(Hasher128x86),
+    .tp_itemsize = 0,
+    .tp_flags = Py_TPFLAGS_DEFAULT,
+    .tp_new = Hasher128x86_new,
+    .tp_init = (initproc)Hasher128x86_init,
+    .tp_dealloc = (destructor)Hasher128x86_dealloc,
+    .tp_methods = Hasher128x86_methods,
+    .tp_getset = Hasher128x86_getsetters,
 };
 
 //-----------------------------------------------------------------------------
@@ -725,6 +1006,9 @@ PyInit_mmh3(void)
     if (PyType_Ready(&Hasher128Type) < 0)
         return NULL;
 
+    if (PyType_Ready(&Hasher128x86Type) < 0)
+        return NULL;
+
     PyObject *module = PyModule_Create(&mmh3module);
 
     if (module == NULL)
@@ -738,9 +1022,17 @@ PyInit_mmh3(void)
     }
 
     Py_INCREF(&Hasher128Type);
-    if (PyModule_AddObject(module, "mmh3_128", (PyObject *)&Hasher128Type) <
-        0) {
-        Py_DECREF(&Hasher32Type);
+    if (PyModule_AddObject(module, "mmh3_x64_128",
+                           (PyObject *)&Hasher128Type) < 0) {
+        Py_DECREF(&Hasher128Type);
+        Py_DECREF(module);
+        return NULL;
+    }
+
+    Py_INCREF(&Hasher128x86Type);
+    if (PyModule_AddObject(module, "mmh3_x86_128",
+                           (PyObject *)&Hasher128x86Type) < 0) {
+        Py_DECREF(&Hasher128x86Type);
         Py_DECREF(module);
         return NULL;
     }
