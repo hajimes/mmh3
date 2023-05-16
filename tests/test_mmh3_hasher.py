@@ -3,14 +3,14 @@ import mmh3
 from helper import u32_to_s32
 
 
-def test_mmh32_basic_ops() -> None:
+def test_mmh3_32_basic_ops() -> None:
     hasher = mmh3.mmh3_32()
     assert hasher.digest_size == 4
     assert hasher.block_size == 12
     assert hasher.name == "mmh3_32"
 
 
-def test_mmh32_digest() -> None:
+def test_mmh3_32_digest() -> None:
     hasher = mmh3.mmh3_32()
     hasher.update(b"")
     assert hasher.digest() == b"\x00\x00\x00\x00"
@@ -27,7 +27,7 @@ def test_mmh32_digest() -> None:
     assert hasher.digest() == b"\xBA\x4C\x88\x24"
 
 
-def test_mmh32_sintdigest() -> None:
+def test_mmh3_32_sintdigest() -> None:
     hasher = mmh3.mmh3_32()
     hasher.update(b"foo")
     assert hasher.sintdigest() == -156908512
@@ -71,7 +71,7 @@ def test_mmh32_sintdigest() -> None:
     assert hasher.sintdigest() == u32_to_s32(0x2FA826CD)
 
 
-def test_mmh32_uintdigest() -> None:
+def test_mmh3_32_uintdigest() -> None:
     hasher = mmh3.mmh3_32()
     hasher.update(b"foo")
     assert hasher.uintdigest() == 4138058784
@@ -115,6 +115,19 @@ def test_mmh32_uintdigest() -> None:
     assert hasher.uintdigest() == 0x2FA826CD
 
 
+def test_mmh3_32_copy() -> None:
+    hasher = mmh3.mmh3_32(seed=0x9747B28C)
+    hasher.update(b"The quick brown fox")
+
+    hasher2 = hasher.copy()
+
+    hasher.update(b" jumps over the lazy dog")
+    assert hasher.uintdigest() == 0x2FA826CD
+
+    hasher2.update(b" jumps over the lazy dog")
+    assert hasher2.uintdigest() == 0x2FA826CD
+
+
 def test_mmh3_x64_128_basic_ops() -> None:
     hasher = mmh3.mmh3_x64_128()
     assert hasher.digest_size == 16
@@ -126,6 +139,10 @@ def test_mmh3_x64_128_digest() -> None:
     hasher = mmh3.mmh3_x64_128()
     hasher.update(b"foo")
     assert hasher.digest() == b"aE\xf5\x01W\x86q\xe2\x87}\xba+\xe4\x87\xaf~"
+
+    hasher = mmh3.mmh3_x64_128(0x9747B28C)
+    hasher.update(b"The quick brown fox jumps over the lazy dog")
+    assert hasher.digest() == b"!1c\xd2;\x7f\x8as\xe5\x16\xc0~rsE\xf9"
 
 
 def test_mmh3_x64_128_sintdigest() -> None:
@@ -231,6 +248,19 @@ def test_mmh3_x64_128_utupledigest() -> None:
     hasher.update(b"The quic")
     hasher.update(b"k brown fox jumps over the lazy dog")
     assert hasher.utupledigest() == (8325606756057297185, 17961889624427075301)
+
+
+def test_mmh3_x64_128_copy() -> None:
+    hasher = mmh3.mmh3_x64_128(seed=0x9747B28C)
+    hasher.update(b"The quick brown fox")
+
+    hasher2 = hasher.copy()
+
+    hasher.update(b" jumps over the lazy dog")
+    assert hasher.digest() == b"!1c\xd2;\x7f\x8as\xe5\x16\xc0~rsE\xf9"
+
+    hasher2.update(b" jumps over the lazy dog")
+    assert hasher2.digest() == b"!1c\xd2;\x7f\x8as\xe5\x16\xc0~rsE\xf9"
 
 
 def test_mmh3_x86_128_basic_ops() -> None:
