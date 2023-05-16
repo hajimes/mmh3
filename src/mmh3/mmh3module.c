@@ -427,13 +427,16 @@ MMH3Hasher32_copy(MMH3Hasher32 *self, PyObject *Py_UNUSED(ignored))
 }
 
 static PyMethodDef MMH3Hasher32_methods[] = {
-    {"update", (PyCFunction)MMH3Hasher32_update, METH_O, "doc here"},
-    {"digest", (PyCFunction)MMH3Hasher32_digest, METH_NOARGS, "doc here"},
+    {"update", (PyCFunction)MMH3Hasher32_update, METH_O,
+     "Update this hash object's state with the provided string."},
+    {"digest", (PyCFunction)MMH3Hasher32_digest, METH_NOARGS,
+     "Return the digest value as a bytes object."},
     {"sintdigest", (PyCFunction)MMH3Hasher32_sintdigest, METH_NOARGS,
-     "doc here"},
+     "Return the digest value as a 32 bit signed integer."},
     {"uintdigest", (PyCFunction)MMH3Hasher32_uintdigest, METH_NOARGS,
-     "doc here"},
-    {"copy", (PyCFunction)MMH3Hasher32_copy, METH_NOARGS, "doc here"},
+     "Return the digest value as a 32 bit unsigned integer."},
+    {"copy", (PyCFunction)MMH3Hasher32_copy, METH_NOARGS,
+     "Return a copy of the hash object."},
     {NULL} /* Sentinel */
 };
 
@@ -462,9 +465,28 @@ static PyGetSetDef MMH3Hasher32_getsetters[] = {
     {NULL} /* Sentinel */
 };
 
+PyDoc_STRVAR(
+    MMH3Hasher32Type_doc,
+    "An mmh3_32 is an object used to calculate the murmurhash3_x86_32 hash\n"
+    "of a string of information.\n"
+    "\n"
+    "Methods:\n"
+    "\n"
+    "update(input) -- updates the current digest with an additional string\n"
+    "digest() -- return the current digest value\n"
+    "sintdigest() -- return the current digest as a 32 bit signed integer\n"
+    "uintdigest() -- return the current digest as a 32 bit unsigned integer\n"
+    "copy() -- return a copy of the current object\n"
+    "\n"
+    "Attributes:\n"
+    "\n"
+    "name -- the hash algorithm being used by this object\n"
+    "digest_size -- number of bytes in this hashes output\n"
+    "block_size -- number of bytes of the internal block of this algorithm");
+
 static PyTypeObject MMH3Hasher32Type = {
     PyVarObject_HEAD_INIT(NULL, 0).tp_name = "mmh3.mmh3_32",
-    .tp_doc = PyDoc_STR("MMH3_32"),
+    .tp_doc = MMH3Hasher32Type_doc,
     .tp_basicsize = sizeof(MMH3Hasher32),
     .tp_itemsize = 0,
     .tp_flags = Py_TPFLAGS_DEFAULT,
@@ -713,17 +735,20 @@ MMH3Hasher128x64_copy(MMH3Hasher128x64 *self, PyObject *Py_UNUSED(ignored))
 }
 
 static PyMethodDef MMH3Hasher128x64_methods[] = {
-    {"update", (PyCFunction)MMH3Hasher128x64_update, METH_O, "doc here"},
-    {"digest", (PyCFunction)MMH3Hasher128x64_digest, METH_NOARGS, "doc here"},
+    {"update", (PyCFunction)MMH3Hasher128x64_update, METH_O,
+     "Update this hash object's state with the provided string."},
+    {"digest", (PyCFunction)MMH3Hasher128x64_digest, METH_NOARGS,
+     "Return the digest value as a bytes object."},
     {"sintdigest", (PyCFunction)MMH3Hasher128x64_sintdigest, METH_NOARGS,
-     "doc here"},
+     "Return the digest value as a 128 bit signed integer."},
     {"uintdigest", (PyCFunction)MMH3Hasher128x64_uintdigest, METH_NOARGS,
-     "doc here"},
+     "Return the digest value as a 128 bit unsigned integer."},
     {"stupledigest", (PyCFunction)MMH3Hasher128x64_stupledigest, METH_NOARGS,
-     "doc here"},
+     "Return the digest value as a tuple of two 64 bit signed integers."},
     {"utupledigest", (PyCFunction)MMH3Hasher128x64_utupledigest, METH_NOARGS,
-     "doc here"},
-    {"copy", (PyCFunction)MMH3Hasher128x64_copy, METH_NOARGS, "doc here"},
+     "Return the digest value as a tuple of two 64 bit unsigned integers."},
+    {"copy", (PyCFunction)MMH3Hasher128x64_copy, METH_NOARGS,
+     "Return a copy of the hash object."},
     {NULL} /* Sentinel */
 };
 
@@ -753,9 +778,32 @@ static PyGetSetDef MMH3Hasher128x64_getsetters[] = {
     {NULL} /* Sentinel */
 };
 
+PyDoc_STRVAR(
+    MMH3Hasher128x64Type_doc,
+    "An mmh3_x64_128 is an object used to calculate the murmurhash3_x64_128\n"
+    "hash of a string of information.\n"
+    "\n"
+    "Methods:\n"
+    "\n"
+    "update(input) -- updates the current digest with an additional string\n"
+    "digest() -- return the current digest value\n"
+    "sintdigest() -- return the current digest as a 128 bit signed integer\n"
+    "uintdigest() -- return the current digest as a 128 bit unsigned integer\n"
+    "stupledigest() -- return the current digest as a tuple of two 64 bit\n"
+    "                  signed integers\n"
+    "utupledigest() -- return the current digest as a tuple of two 64 bit\n"
+    "                  unsigned integers\n"
+    "copy() -- return a copy of the current object\n"
+    "\n"
+    "Attributes:\n"
+    "\n"
+    "name -- the hash algorithm being used by this object\n"
+    "digest_size -- number of bytes in this hashes output\n"
+    "block_size -- number of bytes of the internal block of this algorithm");
+
 static PyTypeObject MMH3Hasher128x64Type = {
     PyVarObject_HEAD_INIT(NULL, 0).tp_name = "mmh3.mmh3_x64_128",
-    .tp_doc = PyDoc_STR("MMH3_X64_128"),
+    .tp_doc = MMH3Hasher128x64Type_doc,
     .tp_basicsize = sizeof(MMH3Hasher128x64),
     .tp_itemsize = 0,
     .tp_flags = Py_TPFLAGS_DEFAULT,
@@ -1005,17 +1053,20 @@ MMH3Hasher128x86_copy(MMH3Hasher128x86 *self, PyObject *Py_UNUSED(ignored))
 }
 
 static PyMethodDef MMH3Hasher128x86_methods[] = {
-    {"update", (PyCFunction)MMH3Hasher128x86_update, METH_O, "doc here"},
-    {"digest", (PyCFunction)MMH3Hasher128x86_digest, METH_NOARGS, "doc here"},
+    {"update", (PyCFunction)MMH3Hasher128x86_update, METH_O,
+     "Update this hash object's state with the provided string."},
+    {"digest", (PyCFunction)MMH3Hasher128x86_digest, METH_NOARGS,
+     "Return the digest value as a bytes object."},
     {"sintdigest", (PyCFunction)MMH3Hasher128x86_sintdigest, METH_NOARGS,
-     "doc here"},
+     "Return the digest value as a 128 bit signed integer."},
     {"uintdigest", (PyCFunction)MMH3Hasher128x86_uintdigest, METH_NOARGS,
-     "doc here"},
+     "Return the digest value as a 128 bit unsigned integer."},
     {"stupledigest", (PyCFunction)MMH3Hasher128x86_stupledigest, METH_NOARGS,
-     "doc here"},
+     "Return the digest value as a tuple of two 64 bit signed integers."},
     {"utupledigest", (PyCFunction)MMH3Hasher128x86_utupledigest, METH_NOARGS,
-     "doc here"},
-    {"copy", (PyCFunction)MMH3Hasher128x86_copy, METH_NOARGS, "doc here"},
+     "Return the digest value as a tuple of two 64 bit unsigned integers."},
+    {"copy", (PyCFunction)MMH3Hasher128x86_copy, METH_NOARGS,
+     "Return a copy of the hash object."},
     {NULL} /* Sentinel */
 };
 
@@ -1045,9 +1096,32 @@ static PyGetSetDef MMH3Hasher128x86_getsetters[] = {
     {NULL} /* Sentinel */
 };
 
+PyDoc_STRVAR(
+    MMH3Hasher128x86Type_doc,
+    "An mmh3_x86_128 is an object used to calculate the murmurhash3_x86_128\n"
+    "hash of a string of information.\n"
+    "\n"
+    "Methods:\n"
+    "\n"
+    "update(input) -- updates the current digest with an additional string\n"
+    "digest() -- return the current digest value\n"
+    "sintdigest() -- return the current digest as a 128 bit signed integer\n"
+    "uintdigest() -- return the current digest as a 128 bit unsigned integer\n"
+    "stupledigest() -- return the current digest as a tuple of two 64 bit\n"
+    "                  signed integers\n"
+    "utupledigest() -- return the current digest as a tuple of two 64 bit\n"
+    "                  unsigned integers\n"
+    "copy() -- return a copy of the current object\n"
+    "\n"
+    "Attributes:\n"
+    "\n"
+    "name -- the hash algorithm being used by this object\n"
+    "digest_size -- number of bytes in this hashes output\n"
+    "block_size -- number of bytes of the internal block of this algorithm");
+
 static PyTypeObject MMH3Hasher128x86Type = {
     PyVarObject_HEAD_INIT(NULL, 0).tp_name = "mmh3.mmh3_x86_128",
-    .tp_doc = PyDoc_STR("MMH3_X86_128"),
+    .tp_doc = MMH3Hasher128x86Type_doc,
     .tp_basicsize = sizeof(MMH3Hasher128x86),
     .tp_itemsize = 0,
     .tp_flags = Py_TPFLAGS_DEFAULT,
