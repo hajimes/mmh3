@@ -7,6 +7,10 @@
 #include <stdio.h>
 #include <string.h>
 
+#if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
+#include <byteswap.h>
+#endif
+
 #include "hashlib.h"
 #include "murmurhash3.h"
 
@@ -44,7 +48,7 @@ mmh3_hash(PyObject *self, PyObject *args, PyObject *keywds)
     uint32_t seed = 0;
     int32_t result[1];
     long long_result = 0;
-    int is_signed = 1;
+    unsigned char is_signed = 1;
 
     static char *kwlist[] = {(char *)"key", (char *)"seed", (char *)"signed",
                              NULL};
@@ -102,7 +106,7 @@ mmh3_hash_from_buffer(PyObject *self, PyObject *args, PyObject *keywds)
     uint32_t seed = 0;
     int32_t result[1];
     long long_result = 0;
-    int is_signed = 1;
+    unsigned char is_signed = 1;
 
     static char *kwlist[] = {(char *)"key", (char *)"seed", (char *)"signed",
                              NULL};
@@ -161,8 +165,8 @@ mmh3_hash64(PyObject *self, PyObject *args, PyObject *keywds)
     Py_ssize_t target_str_len;
     uint32_t seed = 0;
     uint64_t result[2];
-    char x64arch = 1;
-    int is_signed = 1;
+    unsigned char x64arch = 1;
+    unsigned char is_signed = 1;
 
     static char *kwlist[] = {(char *)"key", (char *)"seed", (char *)"x64arch",
                              (char *)"signed", NULL};
@@ -201,8 +205,8 @@ mmh3_hash128(PyObject *self, PyObject *args, PyObject *keywds)
     Py_ssize_t target_str_len;
     uint32_t seed = 0;
     uint64_t result[2];
-    char x64arch = 1;
-    char is_signed = 0;
+    unsigned char x64arch = 1;
+    unsigned char is_signed = 0;
 
     static char *kwlist[] = {(char *)"key", (char *)"seed", (char *)"x64arch",
                              (char *)"signed", NULL};
@@ -220,14 +224,19 @@ mmh3_hash128(PyObject *self, PyObject *args, PyObject *keywds)
         murmurhash3_x86_128(target_str, target_str_len, seed, result);
     }
 
+#if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
+    result[0] = bswap_64(result[0]);
+    result[1] = bswap_64(result[1]);
+#endif
+
     /**
      * _PyLong_FromByteArray is not a part of the official Python/C API
      * and may be removed in the future (although it is practically stable).
      * cf.
      * https://mail.python.org/pipermail/python-list/2006-August/372365.html
      */
-    PyObject *retval =
-        _PyLong_FromByteArray((unsigned char *)result, 16, 1, is_signed);
+    PyObject *retval = _PyLong_FromByteArray(
+        (unsigned char *)result, MMH3_128_DIGESTSIZE, 1, is_signed);
 
     return retval;
 }
@@ -245,8 +254,8 @@ mmh3_hash_bytes(PyObject *self, PyObject *args, PyObject *keywds)
     const char *target_str;
     Py_ssize_t target_str_len;
     uint32_t seed = 0;
-    uint32_t result[4];
-    char x64arch = 1;
+    uint64_t result[2];
+    unsigned char x64arch = 1;
 
     static char *kwlist[] = {(char *)"key", (char *)"seed", (char *)"x64arch",
                              NULL};
@@ -263,6 +272,11 @@ mmh3_hash_bytes(PyObject *self, PyObject *args, PyObject *keywds)
     else {
         murmurhash3_x86_128(target_str, target_str_len, seed, result);
     }
+
+#if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
+    result[0] = bswap_64(result[0]);
+    result[1] = bswap_64(result[1]);
+#endif
 
     char bytes[MMH3_128_DIGESTSIZE];
     memcpy(bytes, result, MMH3_128_DIGESTSIZE);
@@ -387,7 +401,13 @@ MMH3Hasher32_digest(MMH3Hasher32 *self, PyObject *Py_UNUSED(ignored))
 {
     uint32_t h = digest32_impl(self->h, self->buffer, self->length);
     char out[MMH3_32_DIGESTSIZE];
+
+#if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
+    ((uint32_t *)out)[0] = bswap_32(h);
+#else
     ((uint32_t *)out)[0] = h;
+#endif
+
     return PyBytes_FromStringAndSize(out, MMH3_32_DIGESTSIZE);
 }
 
@@ -537,7 +557,7 @@ MMH3Hasher128x64_init(MMH3Hasher128x64 *self, PyObject *args, PyObject *kwds)
 {
     static char *kwlist[] = {"seed", NULL};
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|I", kwlist, &self->h1))
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|K", kwlist, &self->h1))
         return -1;
 
     self->h2 = self->h1;
@@ -693,11 +713,16 @@ MMH3Hasher128x64_stupledigest(MMH3Hasher128x64 *self,
     digest_x64_128_impl(self->h1, self->h2, self->buffer1, self->buffer2,
                         self->length, out);
 
-    char *valflag = "LL";
-    PyObject *retval =
-        Py_BuildValue(valflag, ((uint64_t *)out)[0], ((uint64_t *)out)[1]);
+    const char *valflag = "LL";
+    uint64_t result1 = ((uint64_t *)out)[0];
+    uint64_t result2 = ((uint64_t *)out)[1];
 
-    return retval;
+#if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
+    result1 = bswap_64(result1);
+    result2 = bswap_64(result2);
+#endif
+
+    return Py_BuildValue(valflag, result1, result2);
 }
 
 static PyObject *
@@ -708,11 +733,16 @@ MMH3Hasher128x64_utupledigest(MMH3Hasher128x64 *self,
     digest_x64_128_impl(self->h1, self->h2, self->buffer1, self->buffer2,
                         self->length, out);
 
-    char *valflag = "KK";
-    PyObject *retval =
-        Py_BuildValue(valflag, ((uint64_t *)out)[0], ((uint64_t *)out)[1]);
+    const char *valflag = "KK";
+    uint64_t result1 = ((uint64_t *)out)[0];
+    uint64_t result2 = ((uint64_t *)out)[1];
 
-    return retval;
+#if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
+    result1 = bswap_64(result1);
+    result2 = bswap_64(result2);
+#endif
+
+    return Py_BuildValue(valflag, result1, result2);
 }
 
 static PyObject *
@@ -882,9 +912,6 @@ MMH3Hasher128x86_update(MMH3Hasher128x86 *self, PyObject *obj)
     uint32_t h3 = self->h3;
     uint32_t h4 = self->h4;
     uint32_t k1 = 0;
-    uint32_t k2 = 0;
-    uint32_t k3 = 0;
-    uint32_t k4 = 0;
 
     GET_BUFFER_VIEW_OR_ERROUT(obj, &buf);
 
@@ -1006,11 +1033,16 @@ MMH3Hasher128x86_stupledigest(MMH3Hasher128x86 *self,
                         self->buffer2, self->buffer3, self->buffer4,
                         self->length, out);
 
-    char *valflag = "LL";
-    PyObject *retval =
-        Py_BuildValue(valflag, ((uint64_t *)out)[0], ((uint64_t *)out)[1]);
+    const char *valflag = "LL";
+    uint64_t result1 = ((uint64_t *)out)[0];
+    uint64_t result2 = ((uint64_t *)out)[1];
 
-    return retval;
+#if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
+    result1 = bswap_64(result1);
+    result2 = bswap_64(result2);
+#endif
+
+    return Py_BuildValue(valflag, result1, result2);
 }
 
 static PyObject *
@@ -1022,11 +1054,16 @@ MMH3Hasher128x86_utupledigest(MMH3Hasher128x86 *self,
                         self->buffer2, self->buffer3, self->buffer4,
                         self->length, out);
 
-    char *valflag = "KK";
-    PyObject *retval =
-        Py_BuildValue(valflag, ((uint64_t *)out)[0], ((uint64_t *)out)[1]);
+    const char *valflag = "KK";
+    uint64_t result1 = ((uint64_t *)out)[0];
+    uint64_t result2 = ((uint64_t *)out)[1];
 
-    return retval;
+#if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
+    result1 = bswap_64(result1);
+    result2 = bswap_64(result2);
+#endif
+
+    return Py_BuildValue(valflag, result1, result2);
 }
 
 static PyObject *

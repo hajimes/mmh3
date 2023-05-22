@@ -23,6 +23,10 @@
 #endif
 #include <Python.h>
 
+#if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
+#include <byteswap.h>
+#endif
+
 //-----------------------------------------------------------------------------
 // Platform-specific functions and macros
 
@@ -64,7 +68,7 @@ typedef unsigned __int64 uint64_t;
 
 #else  // defined(_MSC_VER)
 
-#if defined(__GNUC__) && ((__GNUC__ > 4) || (__GNUC__ == 4 && GNUC_MINOR >= 4))
+#if ((__GNUC__ > 4) || (__GNUC__ == 4 && GNUC_MINOR >= 4))
 /* gcc version >= 4.4 4.1 = RHEL 5, 4.4 = RHEL 6. Don't inline for RHEL 5 gcc
  * which is 4.1*/
 #define FORCE_INLINE inline __attribute__((always_inline))
@@ -92,19 +96,28 @@ rotl64(uint64_t x, int8_t r)
 #endif  // !defined(_MSC_VER)
 
 //-----------------------------------------------------------------------------
-// Block read - if your platform needs to do endian-swapping or can only
-// handle aligned reads, do the conversion here
+// Block read - on little-endian machines this is a single load,
+// while on big-endian or unknown machines the byte accesses should
+// still get optimized into the most efficient instruction.
 
 static FORCE_INLINE uint32_t
 getblock32(const uint32_t *p, Py_ssize_t i)
 {
+#if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
+    return bswap_32(p[i]);
+#else
     return p[i];
+#endif
 }
 
 static FORCE_INLINE uint64_t
 getblock64(const uint64_t *p, Py_ssize_t i)
 {
+#if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
+    return bswap_64(p[i]);
+#else
     return p[i];
+#endif
 }
 
 //-----------------------------------------------------------------------------
@@ -234,9 +247,13 @@ digest_x64_128_impl(uint64_t h1, uint64_t h2, const uint64_t k1,
     h1 += h2;
     h2 += h1;
 
-    // TODO: do endian-swapping here for big-endian envs
+#if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
+    ((uint64_t *)out)[0] = bswap_64(h1);
+    ((uint64_t *)out)[1] = bswap_64(h2);
+#else
     ((uint64_t *)out)[0] = h1;
     ((uint64_t *)out)[1] = h2;
+#endif
 }
 
 static FORCE_INLINE void
@@ -278,10 +295,17 @@ digest_x86_128_impl(uint32_t h1, uint32_t h2, uint32_t h3, uint32_t h4,
     h3 += h1;
     h4 += h1;
 
+#if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
+    ((uint32_t *)out)[0] = bswap_32(h1);
+    ((uint32_t *)out)[1] = bswap_32(h2);
+    ((uint32_t *)out)[2] = bswap_32(h3);
+    ((uint32_t *)out)[3] = bswap_32(h4);
+#else
     ((uint32_t *)out)[0] = h1;
     ((uint32_t *)out)[1] = h2;
     ((uint32_t *)out)[2] = h3;
     ((uint32_t *)out)[3] = h4;
+#endif
 }
 
 //-----------------------------------------------------------------------------

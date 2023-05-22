@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "mmh3"
 version = "4.0.0.alpha1"
-description = "Python wrapper for MurmurHash (MurmurHash3), a set of fast and robust hash functions."
+description = "Python extension for MurmurHash (MurmurHash3), a set of fast and robust hash functions."
 readme = "README.md"
 license = {file = "LICENSE"}
 keywords = ["utility", "hash", "MurmurHash"]
@@ -17,7 +17,6 @@ classifiers = [
   "Intended Audience :: Developers",
   "License :: OSI Approved :: MIT License",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.7",
   "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
@@ -29,7 +28,6 @@ classifiers = [
 [project.optional-dependencies]
 test = [
   "mypy >= 1.0",
-  "numpy >= 1.21", # 1.21 is the last version which supports Python 3.7
   "pytest >= 7.0.0"
 ]
 

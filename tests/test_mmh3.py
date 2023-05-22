@@ -2,11 +2,7 @@
 import sys
 
 import mmh3
-import numpy as np
 from helper import u32_to_s32
-
-# Note that MurmurHash3 is endian-sensitive.
-# In big-endian environments, these tests may fail.
 
 
 def test_hash() -> None:
@@ -211,8 +207,8 @@ def test_hash128() -> None:
 def test_64bit() -> None:
     if sys.maxsize < (1 << 32):  # Skip this test under 32-bit environments
         return
-    a = np.zeros(2**32, dtype=np.int8)
-    assert mmh3.hash(a) == -1988950868
-    assert mmh3.hash64(a) == (-6319308327427928234, -8156928649350215884)
-    assert mmh3.hash128(a) == 189813591698865711411311444615608766294
-    assert mmh3.hash_bytes(a) == b"V\x8f}\xad\x8eNM\xa84\x07FU\x9c\xc4\xcc\x8e"
+    a = bytes(2**32 + 1)
+    assert mmh3.hash(a) == -1710109261
+    assert (
+        mmh3.hash_bytes(a) == b"\x821\x93\x0c\xe7\xa8\x02\x9d\xe5 \xa6\xf9\xeb8\xd6\x0e"
+    )

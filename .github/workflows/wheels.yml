@@ -13,25 +13,33 @@ on:  # yamllint disable-line rule:truthy
           - dummy
           - testpypi
           - pypi
-      cibw_build:
-        description: 'The CIBW_BUILD env for cibuildwheels'
-        required: true
-        default: "{cp37,cp38,cp39,cp310,cp311}\
-          -{manylinux_x86_64,manylinux_aarch64,\
-          manylinux_i686,win32,win_amd64,macosx_x86_64,\
-          macosx_universal2,macosx_arm64}"
       cibw_skip:
         description: 'The CIBW_SKIP env for cibuildwheels'
         required: true
-        default: 'cp37-{macosx_universal2,macosx_arm64}'
+        default: cp38-win_arm64
 
 jobs:
   build_wheels:
-    name: Build wheels on ${{ matrix.os }}
+    name: Build wheels on ${{ matrix.os }}_${{ matrix.archs }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-22.04, windows-2022, macOS-12]
+        os: [ubuntu-22.04]
+        archs: [x86_64, i686, aarch64, ppc64le, s390x]
+        build: [manylinux, musllinux]
+        include:
+          - os: windows-2022
+            archs: AMD64
+          - os: windows-2022
+            archs: x86
+          - os: windows-2022
+            archs: ARM64
+          - os: macOS-12
+            archs: x86_64
+          - os: macOS-12
+            archs: arm64
+          - os: macOS-12
+            archs: universal2
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -42,24 +50,19 @@ jobs:
       - name: Set up QEMU
         if: runner.os == 'Linux'
         uses: docker/setup-qemu-action@v2
-        with:
-          platforms: arm64
       - name: Build wheels
-        uses: joerick/cibuildwheel@v2.12.1
+        uses: pypa/cibuildwheel@v2.12.3
         with:
           output-dir: wheelhouse
         env:
-          CIBW_BUILD: ${{ github.event.inputs.cibw_build }}
+          CIBW_BUILD: "{cp38,cp39,cp310,cp311}-${{ matrix.build }}*"
           CIBW_SKIP: ${{ github.event.inputs.cibw_skip }}
-          CIBW_MANYLINUX_AARCH64_IMAGE: manylinux2014
-          CIBW_MANYLINUX_I686_IMAGE: manylinux2014
-          CIBW_ARCHS_LINUX: 'auto aarch64 i686'
-          CIBW_ARCHS_MACOS: 'auto arm64'
+          CIBW_ARCHS: ${{ matrix.archs }}
           CIBW_BUILD_FRONTEND: 'build'
-          CIBW_TEST_REQUIRES: 'pytest numpy'
+          CIBW_TEST_REQUIRES: 'pytest'
           CIBW_TEST_COMMAND: 'pytest {project}'
           # Until the day Apple silicon instances are available on GH Actions
-          CIBW_TEST_SKIP: '*-macosx_arm64'
+          CIBW_TEST_SKIP: '*-win_arm64 *-macosx_arm64'
       - uses: actions/upload-artifact@v3
         with:
           path: ./wheelhouse/*.whl
