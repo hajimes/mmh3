@@ -1,4 +1,15 @@
 # Changelog
+## 4.0.0 (2023-05-22)
+* Add experimental support for `hashlib`-compliant hasher classes (<https://github.com/hajimes/mmh3/issues/39>). Note that they are not yet fully tuned for performance.
+* Add support for type hints (<https://github.com/hajimes/mmh3/issues/44>).
+* Add wheels for more platforms (`musllinux`, `s390x`, `win_arm64`, and `macosx_universal2`).
+* Drop support for Python 3.7, as it will reach the end of life on 2023-06-27.
+* Switch license from CC0 to MIT (<https://github.com/hajimes/mmh3/issues/43>).
+* Add a code of conduct (the ACM Code of Ethics and Professional Conduct).
+* Backward incompatible changes:
+  * A hash function now returns the same value under big-endian platforms as that under little-endian ones (<https://github.com/hajimes/mmh3/issues/47>).
+  * Remove the `__version__` constant from the module (<https://github.com/hajimes/mmh3/issues/42>). Use `importlib.metadata` instead.
+
 ## 3.1.0 (2023-03-24)
 * Add support for Python 3.10 and 3.11. Thanks [wouter bolsterlee](https://github.com/wbolster) and [Dušan Nikolić](https://github.com/n-dusan)!
 * Drop support for Python 3.6; remove legacy code for Python 2.x at the source code level.

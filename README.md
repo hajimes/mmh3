@@ -4,22 +4,22 @@
 [![PyPi Version](https://img.shields.io/pypi/v/mmh3.svg?style=flat-square&logo=pypi&logoColor=white)](https://pypi.org/project/mmh3/)
 [![Python Versions](https://img.shields.io/pypi/pyversions/mmh3.svg)](https://pypi.org/project/mmh3/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/license/mit/)
-[![Total Downloads](https://pepy.tech/badge/mmh3)](https://pepy.tech/project/mmh3?versions=*&versions=3.*&versions=2.*)
-[![Recent Downloads](https://pepy.tech/badge/mmh3/month)](https://pepy.tech/project/mmh3?versions=*&versions=3.*&versions=2.*)
-[![Conda Version](https://img.shields.io/conda/vn/conda-forge/mmh3.svg?style=flat-square&logo=conda-forge&logoColor=white)](https://anaconda.org/conda-forge/mmh3)
+[![Total Downloads](https://pepy.tech/badge/mmh3)](https://pepy.tech/project/mmh3?versions=*&versions=4.*&versions=3.*&versions=2.*)
+[![Recent Downloads](https://pepy.tech/badge/mmh3/month)](https://pepy.tech/project/mmh3?versions=*&versions=4.*&versions=3.*&versions=2.*)
 
-mmh3 is a Python wrapper for [MurmurHash (MurmurHash3)](https://en.wikipedia.org/wiki/MurmurHash), a set of fast and robust non-cryptographic hash functions invented by Austin Appleby.
+mmh3 is a Python extension for [MurmurHash (MurmurHash3)](https://en.wikipedia.org/wiki/MurmurHash), a set of fast and robust non-cryptographic hash functions invented by Austin Appleby.
 
 Combined with probabilistic techniques like a [Bloom filter](https://en.wikipedia.org/wiki/Bloom_filter), [MinHash](https://en.wikipedia.org/wiki/MinHash), and [feature hashing](https://en.wikipedia.org/wiki/Feature_hashing), mmh3 allows you to develop high-performance systems in fields such as data mining, machine learning, and natural language processing.
 
 Another common use of mmh3 is to [calculate favicon hashes](https://gist.github.com/yehgdotnet/b9dfc618108d2f05845c4d8e28c5fc6a) used by [Shodan](https://www.shodan.io), the world's first IoT search engine.
 
 ## How to use
-Install:
+### Install
 ```shell
 pip install mmh3 # for macOS, use "pip3 install mmh3" and python3
 ```
 
+### Simple functions
 Quickstart:
 ```shell
 >>> import mmh3
@@ -67,7 +67,46 @@ Beware that `hash64` returns **two** values, because it uses the 128-bit version
 (-840311307571801102, -6739155424061121879)
 ```
 
+### `hashlib`-style hashers
+`mmh3` implements hashers whose interfaces are similar to `hashlib` in the standard library: `mmh3_32()` for 32 bit hashing, `mmh3_x64_128()` for 128 bit hashing optimized for x64 architectures, and `mmh3_x86_128()` for 128 bit hashing optimized for x86 architectures.
+
+In addition to the standard `digest()` method, each hasher has `sintdigest()`, which returns a signed integer, and `uintdigest()`, which returns an unsigned integer. 128 bit hashers also have `stupledigest()` and `utupledigest()` which return two 64 bit integers.
+
+Note that as of version 4.0.0, the implementation is still experimental and its performance can be unsatisfactory (especially `mmh3_x86_128()`). Also, `hexdigest()` is not supported. Use `digest().hex()` instead.
+
+```shell
+>>> import mmh3
+>>> hasher = mmh3.mmh3_x64_128(seed=42)
+>>> hasher.update(b"foo")
+>>> hasher.update(b"bar")
+>>> hasher.update("foo") # str inputs are not allowed for hashers
+TypeError: Strings must be encoded before hashing
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+>>> hasher.digest()
+b'\x82_n\xdd \xac\xb6j\xef\x99\xb1e\xc4\n\xc9\xfd'
+>>> hasher.sintdigest() # 128 bit signed int
+-2943813934500665152301506963178627198
+>>> hasher.uintdigest() # 128 bit unsigned int
+337338552986437798311073100468589584258
+>>> hasher.stupledigest() # two 64 bit signed ints
+(7689522670935629698, -159584473158936081)
+>>> hasher.utupledigest() # two 64 bit unsigned ints
+(7689522670935629698, 18287159600550615535)
+```
+
 ## Changelog
+### 4.0.0 (2023-05-22)
+* Add experimental support for `hashlib`-compliant hasher classes (<https://github.com/hajimes/mmh3/issues/39>). Note that they are not yet fully tuned for performance.
+* Add support for type hints (<https://github.com/hajimes/mmh3/issues/44>).
+* Add wheels for more platforms (`musllinux`, `s390x`, `win_arm64`, and `macosx_universal2`).
+* Drop support for Python 3.7, as it will reach the end of life on 2023-06-27.
+* Switch license from CC0 to MIT (<https://github.com/hajimes/mmh3/issues/43>).
+* Add a code of conduct (the ACM Code of Ethics and Professional Conduct).
+* Backward incompatible changes:
+  * A hash function now returns the same value under big-endian platforms as that under little-endian ones (<https://github.com/hajimes/mmh3/issues/47>).
+  * Remove the `__version__` constant from the module (<https://github.com/hajimes/mmh3/issues/42>). Use `importlib.metadata` instead.
+
 ### 3.1.0 (2023-03-24)
 * Add support for Python 3.10 and 3.11. Thanks [wouter bolsterlee](https://github.com/wbolster) and [Dušan Nikolić](https://github.com/n-dusan)!
 * Drop support for Python 3.6; remove legacy code for Python 2.x at the source code level.
@@ -83,19 +122,17 @@ Beware that `hash64` returns **two** values, because it uses the 128-bit version
 * Add support for Python 3.7, 3.8, and 3.9.
 * Migrate CI from Travis CI and AppVeyor to GitHub Actions.
 
-### 2.5.1 (2017-10-31)
-* Bugfix for `hash_bytes`. Thanks [doozr](https://github.com/doozr)!
-
 See [CHANGELOG.md](./CHANGELOG.md) for the complete changelog.
 
 ## License
 [MIT](./LICENSE), unless otherwise noted within a file.
 
-Note that as of 2023-03-30, the most recent official release of mmh3 is Version 3.1.0, which is released under CC0-1.0.
-
 ## Known Issues
 ### Getting different results from other MurmurHash3-based libraries
 By default, mmh3 returns **signed** values for 32-bit and 64-bit versions and **unsigned** values for `hash128`, due to historical reasons. Please use the keyword argument `signed` to obtain a desired result.
+
+From version 4.0.0, `mmh3` returns the same value under big-endian platforms
+    as that under little-endian ones, while the original C++ library is endian-sensitive. If you need to obtain the original-compliant results under big-endian environments, please use version 3.*.
 
 For compatibility with [Google Guava (Java)](https://github.com/google/guava), see <https://stackoverflow.com/questions/29932956/murmur3-hash-different-result-between-python-and-java-implementation>.
 
