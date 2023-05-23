@@ -39,7 +39,7 @@ AI is one of the most resource-demanding fields in computer science and engineer
 
 A notable technique is *feature hashing* [@Weinberger2009; @Shi2009]. In its simplest usage, when given a string-indexed data vector, it simply converts the vector into an integer-indexed data vector in which each index is the hash result of the original string index; collision values are simply summed. Despite its simple and intuitive usage, a machine-learning process with feature hashing is statistically guaranteed to be nearly as accurate as its original process. Feature hashing has been shown to be useful for various situations, including K-means clustering [@Senuma2011] and succinct model learning [@Senuma2016].
 
-Other popular techniques that leverage non-cryptographic hash functions include *Bloom Filter* [@10.1145/362686.362692], a compact data structure that tests whether an element is a member of a certain set (with false positive matches), and *MinHash* [@Broder1997a], an algorithm that quickly estimates the similarity of two sets.
+Other popular techniques that leverage non-cryptographic hash functions include *Bloom Filter* [@Bloom1970], a compact data structure that tests whether an element is a member of a certain set (with false positive matches), and *MinHash* [@Broder1997a], an algorithm that quickly estimates the similarity of two sets.
 
 `mmh3` has appears in various scholarly papers, including a study of Indian language NLP suites [@kakwani_indicnlpsuite_2020] and another about a secure system based on probabilistic structures [@adja_blockchain-based_2021]. It has also appeared in technical books and computer science texts [@gorelick_high_2020; @kumar_probabilistic_2021; @medjedovic_algorithms_2022].
 
