@@ -55,12 +55,12 @@ and win\_arm64), and macOS (Intel Mac and Apple Silicon). From version 4.0.0,
 `mmh3` has been published under the MIT License, an OSI-approved permissive
 open-source license.
 
-As of May 1, 2023, `mmh3` was being downloaded more than 2 million times
-per month, and it ranks as the 1,027th most downloaded PyPI package
-(of around 450,000 projects), showing that only 0.23% of the remaining packages
-in the PyPI ecosystem are more popular [@hugo_van_kemenade_2023_7882688].
-According to PePy, as of May 22, 2023, the total downloads of
-this library exceeded 78 millions.
+As of June 1, 2023, `mmh3` was being downloaded more than 2 million times
+per month, and it ranks as the 970th most downloaded PyPI package
+(of around 458,000 projects), showing that only 0.22% of the remaining packages
+in the PyPI ecosystem are more popular [@hugo_van_kemenade_2023_7994944].
+According to PePy, as of June 2, 2023, the total downloads of
+this library exceeded 79 millions.
 
 Libraries and organizations that directly use `mmh3` include
 Apache Iceberg (an open table format for analytic datasets),
