@@ -5,7 +5,6 @@ import re
 import textwrap
 from collections.abc import Callable
 
-
 ###
 # Simple classes to handle the transformation of the original code.
 #
@@ -81,18 +80,18 @@ class MMH3Header:
 
 class MMH3CodeBuilder:
     def __init__(self) -> None:
-        self.code = []
+        self._code = []
 
     def add(
         self, subcode: str, transforms: list[Callable[[str], str]] = []
     ) -> MMH3CodeBuilder:
-        self.code.append((subcode, transforms))
+        self._code.append((subcode, transforms))
         return self
 
     def build(self) -> str:
         new_code = ""
 
-        for subcode, transforms in self.code:
+        for subcode, transforms in self._code:
             for tr in transforms:
                 subcode = tr(subcode)
             new_code += subcode + "\n\n"

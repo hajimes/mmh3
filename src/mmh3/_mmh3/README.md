@@ -1,4 +1,4 @@
-# Algorithm implementations used by the `mmh3` module.
+# Algorithm implementations used by the `mmh3` module
 
 This directory contains C files that were generated from the
 [SMHasher](https://github.com/aappleby/smhasher) C++ project by Austin Appleby.
