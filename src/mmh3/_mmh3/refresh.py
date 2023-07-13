@@ -80,7 +80,7 @@ class MMH3Header:
 
 class MMH3CodeBuilder:
     def __init__(self) -> None:
-        self._code = []
+        self._code: list[tuple[str, list[Callable[[str], str]]]] = []
 
     def add(
         self, subcode: str, transforms: list[Callable[[str], str]] = []
