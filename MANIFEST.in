@@ -2,6 +2,11 @@ include src/mmh3/*.c
 include src/mmh3/*.h
 include src/mmh3/*.pyi
 include src/mmh3/py.typed
+include src/mmh3/_mmh3/*.c
+include src/mmh3/_mmh3/*.h
+include src/mmh3/_mmh3/FILE_HEADER
+include src/mmh3/_mmh3/README.md
+include src/mmh3/_mmh3/*.py
 include README.md
 include LICENSE
 include CHANGELOG.md

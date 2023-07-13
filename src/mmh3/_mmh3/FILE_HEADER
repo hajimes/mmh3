@@ -1,0 +1,15 @@
+/***
+ * This file is under MIT <year> Hajime Senuma, just like other files.
+ * See LICENSE for details.
+ *
+ * It was originally written by Austin Appleby in C++ under the public domain,
+ * but ported to PEP 7 C for Python 3.6 and later by the mmh3 project.
+ *
+ * Any issues should be reported to https://github.com/hajimes/mmh3/issues.
+ *
+ * The following is the original public domain notice by Austin Appleby.
+ */
+
+//-----------------------------------------------------------------------------
+// MurmurHash3 was written by Austin Appleby, and is placed in the public
+// domain. The author hereby disclaims copyright to this source code.

@@ -12,7 +12,7 @@
 #endif
 
 #include "hashlib.h"
-#include "murmurhash3.h"
+#include "_mmh3/murmurhash3.h"
 
 #if defined(_MSC_VER)
 typedef signed __int8 int8_t;
