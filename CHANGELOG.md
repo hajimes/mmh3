@@ -1,4 +1,8 @@
 # Changelog
+## 4.0.1 (2023-07-14)
+* Fix incorrect type hints.
+* Add support for type hints (<https://github.com/hajimes/mmh3/issues/48>).
+
 ## 4.0.0 (2023-05-22)
 * Add experimental support for `hashlib`-compliant hasher classes (<https://github.com/hajimes/mmh3/issues/39>). Note that they are not yet fully tuned for performance.
 * Add support for type hints (<https://github.com/hajimes/mmh3/issues/44>).
