@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mmh3"
-version = "4.0.1-beta"
+version = "4.0.1"
 description = "Python extension for MurmurHash (MurmurHash3), a set of fast and robust hash functions."
 readme = "README.md"
 license = {file = "LICENSE"}
