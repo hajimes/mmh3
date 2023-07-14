@@ -72,7 +72,7 @@ Beware that `hash64` returns **two** values, because it uses the 128-bit version
 
 In addition to the standard `digest()` method, each hasher has `sintdigest()`, which returns a signed integer, and `uintdigest()`, which returns an unsigned integer. 128 bit hashers also have `stupledigest()` and `utupledigest()` which return two 64 bit integers.
 
-Note that as of version 4.0.0, the implementation is still experimental and its performance can be unsatisfactory (especially `mmh3_x86_128()`). Also, `hexdigest()` is not supported. Use `digest().hex()` instead.
+Note that as of version 4.0.1, the implementation is still experimental and its performance can be unsatisfactory (especially `mmh3_x86_128()`). Also, `hexdigest()` is not supported. Use `digest().hex()` instead.
 
 ```shell
 >>> import mmh3
@@ -96,6 +96,10 @@ b'\x82_n\xdd \xac\xb6j\xef\x99\xb1e\xc4\n\xc9\xfd'
 ```
 
 ## Changelog
+### 4.0.1 (2023-07-14)
+* Fix incorrect type hints.
+* Refactor the project structure (<https://github.com/hajimes/mmh3/issues/48>).
+
 ### 4.0.0 (2023-05-22)
 * Add experimental support for `hashlib`-compliant hasher classes (<https://github.com/hajimes/mmh3/issues/39>). Note that they are not yet fully tuned for performance.
 * Add support for type hints (<https://github.com/hajimes/mmh3/issues/44>).
@@ -113,14 +117,6 @@ b'\x82_n\xdd \xac\xb6j\xef\x99\xb1e\xc4\n\xc9\xfd'
 * Add support for 32-bit architectures such as `i686` and `armv7l`. From now on, `hash` and `hash_from_buffer` on these architectures will generate the same hash values as those on other environments. Thanks [Danil Shein](https://github.com/dshein-alt)!
 * In relation to the above, `manylinux2014_i686` wheels are now available.
 * Support for hashing huge data (>16GB). Thanks [arieleizenberg](https://github.com/arieleizenberg)!
-
-### 3.0.0 (2021-02-23)
-* Python wheels are now available, thanks to the power of [cibuildwheel](https://github.com/joerick/cibuildwheel).
-  * Supported platforms are `manylinux1_x86_64`, `manylinux2010_x86_64`, `manylinux2014_aarch64`, `win32`, `win_amd64`, `macosx_10_9_x86_64`, and `macosx_11_0_arm64` (Apple Silicon).
-* Add support for newer macOS environments. Thanks [Matthew Honnibal](https://github.com/honnibal)!
-* Drop support for Python 2.7, 3.3, 3.4, and 3.5.
-* Add support for Python 3.7, 3.8, and 3.9.
-* Migrate CI from Travis CI and AppVeyor to GitHub Actions.
 
 See [CHANGELOG.md](./CHANGELOG.md) for the complete changelog.
 
