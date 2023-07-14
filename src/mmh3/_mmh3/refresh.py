@@ -20,6 +20,14 @@ class MMH3Source:
         self._code_lines = code.split("\n")
 
     @property
+    def note_comment(self) -> str:
+        return "\n".join(self._code_lines[4:8])
+
+    @property
+    def header_include(self) -> str:
+        return "\n".join(self._code_lines[9:10])
+
+    @property
     def macros(self) -> str:
         return "\n".join(self._code_lines[11:50])
 
@@ -290,6 +298,8 @@ def append_mur_macros(subcode: str) -> str:
         """
     )
 
+    subcode += "\n"
+
     subcode += textwrap.dedent(
         """\
         static FORCE_INLINE uint32_t
@@ -482,6 +492,15 @@ def generate_hasher_digest_x64_128(subcode: str) -> str:
 
     hasher_digests += textwrap.dedent(
         """\
+        //-----------------------------------------------------------------------------
+        // Finalization function
+        """
+    )
+
+    hasher_digests += "\n"
+
+    hasher_digests += textwrap.dedent(
+        """\
         static FORCE_INLINE void
         digest_x64_128_impl(uint64_t h1, uint64_t h2, const uint64_t k1,
             const uint64_t k2, const Py_ssize_t len, const char *out)
@@ -513,6 +532,9 @@ def generate_hasher_digest_x64_128(subcode: str) -> str:
 
 def fix_non_win_force_inline(subcode: str) -> str:
     """Fix the FORCE_INLINE macro so that it works on old GCC and RHEL.
+
+    Based on a commit from Micha Gorelick (@mynameisfiber).
+    https://github.com/hajimes/mmh3/pull/1
 
     Args:
         subcode (str): The code to be transformed.
@@ -574,18 +596,6 @@ def lowercase_function_names(subcode: str) -> str:
     return subcode
 
 
-def append_new_header_include(header_name: str) -> str:
-    """Append the include directive for new mmh3 header.
-
-    Args:
-        header_name (str): The name of the new header file.
-
-    Returns:
-        str: The code of the new include directive.
-    """
-    return '#include "' + header_name + '"'
-
-
 if __name__ == "__main__":
     file_path = os.path.realpath(__file__)
     dir_path = os.path.dirname(file_path)
@@ -610,7 +620,8 @@ if __name__ == "__main__":
 
         new_source_builder = MMH3CodeBuilder()
         new_source_builder.add(file_header)
-        new_source_builder.add(new_header_name, [append_new_header_include])
+        new_source_builder.add(source.note_comment)
+        new_source_builder.add(source.header_include, [str.lower])
         new_source_builder.add(
             source.body, [introduce_py_ssize_t, lowercase_function_names]
         )
@@ -642,16 +653,16 @@ if __name__ == "__main__":
             [transform_finalization_mixes],
         )
         new_header_builder.add(
+            source.finalization_x64_128,
+            [generate_hasher_digest_x64_128],
+        )
+        new_header_builder.add(
             source.constants_x86_128,
             [generate_hasher_digest_x86_128_pre],
         )
         new_header_builder.add(
             source.finalization_x86_128,
             [generate_hasher_digest_x86_128_main],
-        )
-        new_header_builder.add(
-            source.finalization_x64_128,
-            [generate_hasher_digest_x64_128],
         )
         new_header_builder.add(
             header.declarations,

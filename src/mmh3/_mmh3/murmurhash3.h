@@ -123,6 +123,7 @@ getblock64(const uint64_t *p, Py_ssize_t i)
 //-----------------------------------------------------------------------------
 // Building blocks for multiply and rotate (MUR) operations.
 // Names are taken from Google Guava's implementation
+
 static FORCE_INLINE uint32_t
 mixK1(uint32_t k1)
 {
@@ -227,6 +228,36 @@ fmix64(uint64_t k)
     return k;
 }
 
+//-----------------------------------------------------------------------------
+// Finalization function
+
+static FORCE_INLINE void
+digest_x64_128_impl(uint64_t h1, uint64_t h2, const uint64_t k1,
+                    const uint64_t k2, const Py_ssize_t len, const char *out)
+{
+    h1 ^= mixK1_x64_128(k1);
+    h2 ^= mixK2_x64_128(k2);
+    h1 ^= len;
+    h2 ^= len;
+
+    h1 += h2;
+    h2 += h1;
+
+    h1 = fmix64(h1);
+    h2 = fmix64(h2);
+
+    h1 += h2;
+    h2 += h1;
+
+#if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
+    ((uint64_t *)out)[0] = bswap_64(h1);
+    ((uint64_t *)out)[1] = bswap_64(h2);
+#else
+    ((uint64_t *)out)[0] = h1;
+    ((uint64_t *)out)[1] = h2;
+#endif
+}
+
 static FORCE_INLINE void
 digest_x86_128_impl(uint32_t h1, uint32_t h2, uint32_t h3, uint32_t h4,
                     const uint32_t k1, const uint32_t k2, const uint32_t k3,
@@ -275,33 +306,6 @@ digest_x86_128_impl(uint32_t h1, uint32_t h2, uint32_t h3, uint32_t h4,
     ((uint32_t *)out)[1] = h2;
     ((uint32_t *)out)[2] = h3;
     ((uint32_t *)out)[3] = h4;
-#endif
-}
-
-static FORCE_INLINE void
-digest_x64_128_impl(uint64_t h1, uint64_t h2, const uint64_t k1,
-                    const uint64_t k2, const Py_ssize_t len, const char *out)
-{
-    h1 ^= mixK1_x64_128(k1);
-    h2 ^= mixK2_x64_128(k2);
-    h1 ^= len;
-    h2 ^= len;
-
-    h1 += h2;
-    h2 += h1;
-
-    h1 = fmix64(h1);
-    h2 = fmix64(h2);
-
-    h1 += h2;
-    h2 += h1;
-
-#if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
-    ((uint64_t *)out)[0] = bswap_64(h1);
-    ((uint64_t *)out)[1] = bswap_64(h2);
-#else
-    ((uint64_t *)out)[0] = h1;
-    ((uint64_t *)out)[1] = h2;
 #endif
 }
 
