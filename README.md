@@ -4,8 +4,8 @@
 [![PyPi Version](https://img.shields.io/pypi/v/mmh3.svg?style=flat-square&logo=pypi&logoColor=white)](https://pypi.org/project/mmh3/)
 [![Python Versions](https://img.shields.io/pypi/pyversions/mmh3.svg)](https://pypi.org/project/mmh3/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/license/mit/)
-[![Total Downloads](https://pepy.tech/badge/mmh3)](https://pepy.tech/project/mmh3?versions=*&versions=4.*&versions=3.*&versions=2.*)
-[![Recent Downloads](https://pepy.tech/badge/mmh3/month)](https://pepy.tech/project/mmh3?versions=*&versions=4.*&versions=3.*&versions=2.*)
+[![Total Downloads](https://static.pepy.tech/badge/mmh3)](https://pepy.tech/project/mmh3?versions=*&versions=4.*&versions=3.*&versions=2.*)
+[![Recent Downloads](https://static.pepy.tech/badge/mmh3/month)](https://pepy.tech/project/mmh3?versions=*&versions=4.*&versions=3.*&versions=2.*)
 
 mmh3 is a Python extension for [MurmurHash (MurmurHash3)](https://en.wikipedia.org/wiki/MurmurHash), a set of fast and robust non-cryptographic hash functions invented by Austin Appleby.
 
