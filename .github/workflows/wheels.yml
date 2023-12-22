@@ -34,28 +34,28 @@ jobs:
             archs: x86
           - os: windows-2022
             archs: ARM64
-          - os: macOS-12
+          - os: macOS-13
             archs: x86_64
-          - os: macOS-12
+          - os: macOS-13
             archs: arm64
-          - os: macOS-12
+          - os: macOS-13
             archs: universal2
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.12'
       - name: Set up QEMU
         if: runner.os == 'Linux'
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.14.0
+        uses: pypa/cibuildwheel@v2.16.2
         with:
           output-dir: wheelhouse
         env:
-          CIBW_BUILD: "{cp38,cp39,cp310,cp311}-${{ matrix.build }}*"
+          CIBW_BUILD: "{cp38,cp39,cp310,cp311,cp312}-${{ matrix.build }}*"
           CIBW_SKIP: ${{ github.event.inputs.cibw_skip }}
           CIBW_ARCHS: ${{ matrix.archs }}
           CIBW_BUILD_FRONTEND: 'build'
@@ -63,7 +63,7 @@ jobs:
           CIBW_TEST_COMMAND: 'pytest {project}'
           # Until the day Apple silicon instances are available on GH Actions
           CIBW_TEST_SKIP: '*-win_arm64 *-macosx_arm64'
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           path: ./wheelhouse/*.whl
   build_sdist:
@@ -71,14 +71,14 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.12'
       - name: Build sdist
         run: python setup.py build sdist
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           path: dist/*.tar.gz
   publish:
@@ -89,9 +89,9 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
+          python-version: '3.12'
       - name: Set up built items
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: artifact
           path: dist
