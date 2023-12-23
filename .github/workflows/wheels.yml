@@ -77,7 +77,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Build sdist
-        run: python setup.py build sdist
+        run: python3 -m build --sdist
       - uses: actions/upload-artifact@v4
         with:
           path: dist/*.tar.gz
