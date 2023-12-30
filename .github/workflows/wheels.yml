@@ -7,10 +7,10 @@ on:  # yamllint disable-line rule:truthy
       repository:
         description: 'The repository to upload the package to'
         required: true
-        default: 'dummy'
+        default: 'none'
         type: choice
         options:
-          - dummy
+          - none
           - testpypi
           - pypi
       cibw_skip:
@@ -86,7 +86,7 @@ jobs:
         with:
           path: dist/*.tar.gz
   publish:
-    if: github.event.inputs.repository != 'dummy'
+    if: github.event.inputs.repository != 'none'
     name: 'Upload to PyPI/Test PyPI'
     runs-on: ubuntu-22.04
     needs: [build_wheels, build_sdist]
