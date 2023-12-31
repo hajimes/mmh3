@@ -65,7 +65,7 @@ jobs:
           CIBW_TEST_SKIP: '*-win_arm64 *-macosx_arm64'
       - uses: actions/upload-artifact@v4
         with:
-          name: wheels-${{ matrix.os }}-${{ matrix.archs }}-${{ matrix.build }}
+          name: Wheel-${{ matrix.os }}-${{ matrix.build }}${{ matrix.archs }}
           path: ./wheelhouse/*.whl
   build_sdist:
     name: Build a source distribution
@@ -98,7 +98,6 @@ jobs:
       - name: Set up built items
         uses: actions/download-artifact@v4
         with:
-          name: artifact
           path: dist
           merge-multiple: true
       - name: Install dependencies
