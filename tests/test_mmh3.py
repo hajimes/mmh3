@@ -189,7 +189,18 @@ def test_hash64() -> None:
         8325606756057297185,
         17961889624427075301,
     )
-    # TODO
+    assert mmh3.hash64("foo", signed=False, x64arch=True) == (
+        16316970633193145697,
+        9128664383759220103,
+    )
+    assert mmh3.hash64("foo", signed=False, x64arch=False) == (
+        696879859059209706,
+        6968798590746895717,
+    )
+    assert mmh3.hash64("foo", 0, True, False) == (
+        16316970633193145697,
+        9128664383759220103,
+    )
 
 
 def test_hash128() -> None:
@@ -201,7 +212,9 @@ def test_hash128() -> None:
     assert (
         mmh3.hash128("foo", 42, signed=True) == -124315475380607080215185174712879655950
     )
-    # TODO
+    assert (
+        mmh3.hash128("foo", 42, True, True) == -124315475380607080215185174712879655950
+    )
 
 
 def test_64bit() -> None:
