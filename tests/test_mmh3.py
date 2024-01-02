@@ -194,7 +194,7 @@ def test_hash64() -> None:
         9128664383759220103,
     )
     assert mmh3.hash64("foo", signed=False, x64arch=False) == (
-        696879859059209706,
+        6968798590592097061,
         6968798590746895717,
     )
     assert mmh3.hash64("foo", 0, True, False) == (
