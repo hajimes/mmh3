@@ -169,6 +169,11 @@ def test_hash_from_buffer() -> None:
 
 def test_hash_bytes() -> None:
     assert mmh3.hash_bytes("foo") == b"aE\xf5\x01W\x86q\xe2\x87}\xba+\xe4\x87\xaf~"
+    assert (
+        mmh3.hash_bytes("foo", 0, True)
+        == b"aE\xf5\x01W\x86q\xe2\x87}\xba+\xe4\x87\xaf~"
+    )
+    assert mmh3.hash_bytes("foo", 0, x64arch=False) == b"%\x1b|We%\xb6`e%\xb6`e%\xb6`"
     # TODO
 
 
