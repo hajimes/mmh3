@@ -22,11 +22,11 @@ jobs:
     steps:
       # Checks out a copy of your repository on the ubuntu-latest machine
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Runs the Super-Linter action
       - name: Run Super-Linter
-        uses: github/super-linter@v5
+        uses: super-linter/super-linter@v5.7.2
         env:
           DEFAULT_BRANCH: master
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
