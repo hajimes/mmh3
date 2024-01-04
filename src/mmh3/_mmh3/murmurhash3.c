@@ -237,10 +237,17 @@ murmurhash3_x86_128(const void *key, const Py_ssize_t len, uint32_t seed,
     h3 += h1;
     h4 += h1;
 
+#if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
+    ((uint32_t *)out)[0] = h2;
+    ((uint32_t *)out)[1] = h1;
+    ((uint32_t *)out)[2] = h4;
+    ((uint32_t *)out)[3] = h3;
+#else
     ((uint32_t *)out)[0] = h1;
     ((uint32_t *)out)[1] = h2;
     ((uint32_t *)out)[2] = h3;
     ((uint32_t *)out)[3] = h4;
+#endif
 }
 
 //-----------------------------------------------------------------------------
