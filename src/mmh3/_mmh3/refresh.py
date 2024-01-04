@@ -245,6 +245,39 @@ def transform_finalization_mixes(subcode: str) -> str:
     return subcode
 
 
+def transform_x86_128_return(subcode: str) -> str:
+    """Revise the return block of MurmurHash3_x86_128 so that it handles big endian.
+
+    Args:
+        subcode (str): The code to be transformed.
+
+    Returns:
+        str: The transformed code.
+    """
+
+    BYTE_SWAP_IF_BIG_ENDIAN = textwrap.dedent(
+        """\
+        #if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
+                ((uint32_t *)out)[0] = h2;
+                ((uint32_t *)out)[1] = h1;
+                ((uint32_t *)out)[2] = h4;
+                ((uint32_t *)out)[3] = h3;
+        #else
+            \\1
+        #endif
+        """
+    )
+
+    subcode = re.sub(
+        r"(\(\(uint32_t\*\)out\)\[0\] = h1;[\s\S]*\(\(uint32_t\*\)out\)\[3\] = h4;)",
+        BYTE_SWAP_IF_BIG_ENDIAN,
+        subcode,
+        flags=re.DOTALL | re.MULTILINE,
+    )
+
+    return subcode
+
+
 def expand_win_stdint_typedefs(subcode: str) -> str:
     """Delineate int type defitions for the older versions of the VS compiler.
 
@@ -623,7 +656,8 @@ if __name__ == "__main__":
         new_source_builder.add(source.note_comment)
         new_source_builder.add(source.header_include, [str.lower])
         new_source_builder.add(
-            source.body, [introduce_py_ssize_t, lowercase_function_names]
+            source.body,
+            [introduce_py_ssize_t, transform_x86_128_return, lowercase_function_names],
         )
 
         new_header_builder = MMH3CodeBuilder()
