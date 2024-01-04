@@ -173,7 +173,14 @@ def test_hash_bytes() -> None:
         mmh3.hash_bytes("foo", 0, True)
         == b"aE\xf5\x01W\x86q\xe2\x87}\xba+\xe4\x87\xaf~"
     )
-    assert mmh3.hash_bytes("foo", 0, x64arch=False) == b"%\x1b|We%\xb6`e%\xb6`e%\xb6`"
+
+    # Test vectors from https://github.com/PeterScott/murmur3/blob/master/test.c
+    assert mmh3.hash_bytes("Hello, world!", 123, x64arch=False) == (
+        0x9E37C886A41621625A1AACD761C9129E
+    ).to_bytes(16, "little")
+    assert mmh3.hash_bytes("", 123, x64arch=False) == (
+        0x26F3E79926F3E79926F3E799FEDC5245
+    ).to_bytes(16, "little")
     # TODO
 
 
@@ -198,13 +205,16 @@ def test_hash64() -> None:
         16316970633193145697,
         9128664383759220103,
     )
-    assert mmh3.hash64("foo", signed=False, x64arch=False) == (
-        6968798590592097061,
-        6968798590746895717,
+
+    # Test vectors from https://github.com/PeterScott/murmur3/blob/master/test.c
+    assert mmh3.hash64("Hello, world!", 123, signed=False, x64arch=False) == (
+        0x5A1AACD761C9129E,
+        0x9E37C886A4162162,
     )
-    assert mmh3.hash64("foo", 0, True, False) == (
-        16316970633193145697,
-        9128664383759220103,
+
+    assert mmh3.hash64("", 123, False, False) == (
+        0x26F3E799FEDC5245,
+        0x26F3E79926F3E799,
     )
 
 
@@ -217,9 +227,12 @@ def test_hash128() -> None:
     assert (
         mmh3.hash128("foo", 42, signed=True) == -124315475380607080215185174712879655950
     )
+    # Test vectors from https://github.com/PeterScott/murmur3/blob/master/test.c
     assert (
-        mmh3.hash128("foo", 42, True, True) == -124315475380607080215185174712879655950
+        mmh3.hash128("Hello, world!", 123, signed=False, x64arch=False)
+        == 0x9E37C886A41621625A1AACD761C9129E
     )
+    assert mmh3.hash128("", 123, False, False) == 0x26F3E79926F3E79926F3E799FEDC5245
 
 
 def test_64bit() -> None:
