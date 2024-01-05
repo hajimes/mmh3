@@ -44,4 +44,3 @@ src_paths = ["src/mmh3/__init__.pyi", "tests"]
 
 [tool.setuptools.packages.find]
 exclude = ["src/mmh3/_mmh3/refresh.py"]
-include-package-data = false

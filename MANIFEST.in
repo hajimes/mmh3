@@ -13,3 +13,4 @@ include MANIFEST.in
 exclude src/mmh3/_mmh3/refresh.py
 exclude src/mmh3/_mmh3/FILE_HEADER
 exclude src/mmh3/_mmh3/README.md
+prune src/mmh3/_mmh3
