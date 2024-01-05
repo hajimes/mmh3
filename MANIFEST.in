@@ -2,8 +2,7 @@ include src/mmh3/*.c
 include src/mmh3/*.h
 include src/mmh3/*.pyi
 include src/mmh3/py.typed
-include src/mmh3/_mmh3/*.c
-include src/mmh3/_mmh3/*.h
+include src/mmh3/_mmh3/*
 include README.md
 include LICENSE
 include CHANGELOG.md
@@ -11,3 +10,6 @@ include CODE_OF_CONDUCT.md
 include pyproject.toml
 include setup.py
 include MANIFEST.in
+exclude src/mmh3/_mmh3/refresh.py
+exclude src/mmh3/_mmh3/FILE_HEADER
+exclude src/mmh3/_mmh3/README.md
