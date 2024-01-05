@@ -1,4 +1,4 @@
-from setuptools import Extension, setup
+from setuptools import Extension, find_packages, setup
 
 mmh3module = Extension(
     "mmh3", sources=["./src/mmh3/mmh3module.c", "./src/mmh3/_mmh3/murmurhash3.c"]
@@ -6,5 +6,6 @@ mmh3module = Extension(
 
 setup(
     ext_modules=[mmh3module],
+    packages=find_packages(exclude=["./src/mmh3/_mmh3/refresh.py"]),
     package_data={"mmh3": ["./src/mmh3/py.typed", "./src/mmh3/**.pyi"]},
 )
