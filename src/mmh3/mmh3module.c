@@ -11,7 +11,7 @@
 #include <byteswap.h>
 #endif
 
-#include "_mmh3/murmurhash3.h"
+#include "murmurhash3.h"
 #include "hashlib.h"
 
 #if defined(_MSC_VER)
