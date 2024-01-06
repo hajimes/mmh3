@@ -1,4 +1,4 @@
-from setuptools import Extension, find_packages, setup
+from setuptools import Extension, setup
 
 mmh3module = Extension(
     "mmh3", sources=["./src/mmh3/mmh3module.c", "./src/mmh3/_mmh3/murmurhash3.c"]
