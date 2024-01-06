@@ -6,6 +6,5 @@ mmh3module = Extension(
 
 setup(
     ext_modules=[mmh3module],
-    packages=find_packages(exclude=["./src/mmh3/_mmh3/refresh.py"]),
     package_data={"mmh3": ["./src/mmh3/py.typed", "./src/mmh3/**.pyi"]},
 )
