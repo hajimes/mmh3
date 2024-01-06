@@ -5,7 +5,7 @@ This directory contains C files that were generated from the
 
 ## Updating _mmh3
 
-Use the `refresh.py` script in this directory to generate PEP 7-compliant C code from Appleby's original SMHasher project, instead of editing `_mmh3` files manually. Add transformation code to the `refresh.py` script to perform further edits.
+Use the `refresh.py` script ***within this directory*** to generate PEP 7-compliant C code from Appleby's original SMHasher project, instead of editing `_mmh3` files manually. Add transformation code to the `refresh.py` script to perform further edits.
 
 After file generation, use `clang-format` (with `.clang-format` in the top directory of the `mmh3` project) to format the generated code.
 
@@ -17,5 +17,5 @@ After file generation, use `clang-format` (with `.clang-format` in the top direc
 
 ## Generated files
 
-1. `./murmurhash3.c`
-1. `./murmurhash3.h`
+1. `../src/mmh3/murmurhash3.c`
+1. `../src/mmh3/murmurhash3.h`

@@ -640,8 +640,8 @@ if __name__ == "__main__":
     new_header_name = "murmurhash3.h"
     file_header_name = "FILE_HEADER"
 
-    new_source_path = os.path.join(dir_path, new_source_name)
-    new_header_path = os.path.join(dir_path, new_header_name)
+    new_source_path = os.path.join(dir_path, "../src/mmh3", new_source_name)
+    new_header_path = os.path.join(dir_path, "../src/mmh3", new_header_name)
     file_header_path = os.path.join(dir_path, file_header_name)
 
     with open(original_source_path, "r") as source_file, open(
