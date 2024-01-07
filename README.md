@@ -117,7 +117,7 @@ b'\x82_n\xdd \xac\xb6j\xef\x99\xb1e\xc4\n\xc9\xfd'
   * A hash function now returns the same value under big-endian platforms as that under little-endian ones (<https://github.com/hajimes/mmh3/issues/47>).
   * Remove the `__version__` constant from the module (<https://github.com/hajimes/mmh3/issues/42>). Use `importlib.metadata` instead.
 
-See [CHANGELOG.md](./CHANGELOG.md) for the complete changelog.
+See [CHANGELOG.md](./docs/CHANGELOG.md) for the complete changelog.
 
 ## License
 [MIT](./LICENSE), unless otherwise noted within a file.
