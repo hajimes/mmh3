@@ -152,6 +152,9 @@ Be careful so that these seeds do not exceed 32-bit. Unexpected results may happ
 -156908512
 ```
 
+## Contributing Guidelines
+See [CONTRIBUTING.md](./docs/CONTRIBUTING.md).
+
 ## Authors
 MurmurHash3 was originally developed by Austin Appleby and distributed under public domain [https://github.com/aappleby/smhasher](https://github.com/aappleby/smhasher).
 

@@ -1,8 +1,8 @@
-# mmh3 contributing guide
+# mmh3 Contributing Guidelines
 
 Thank you for your interest in contributing to the `mmh3` project!
 
-Read [README.md](README.md) to get an overview of the `mmh3` project,
+Read [README.md](../README.md) to get an overview of the `mmh3` project,
 and follow our [Code of Conduct](./CODE_OF_CONDUCT.md)
 (ACM Code of Ethics and Professional Conduct).
 
