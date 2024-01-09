@@ -60,7 +60,7 @@ Beware that `hash64` returns **two** values, because it uses the 128-bit version
 3812874078
 ```
 
-`hash64`, `hash128`, and `hash_bytes` have the third argument for architecture optimization. Use True for x64 and False for x86 (default: True):
+`hash64`, `hash128`, and `hash_bytes` have the third argument for architecture optimization (keyword arg: `x64arch`). Use True for x64 and False for x86 (default: True):
 
 ```shell
 >>> mmh3.hash64("foo", 42, True) 
@@ -72,7 +72,7 @@ Beware that `hash64` returns **two** values, because it uses the 128-bit version
 
 In addition to the standard `digest()` method, each hasher has `sintdigest()`, which returns a signed integer, and `uintdigest()`, which returns an unsigned integer. 128 bit hashers also have `stupledigest()` and `utupledigest()` which return two 64 bit integers.
 
-Note that as of version 4.0.1, the implementation is still experimental and its performance can be unsatisfactory (especially `mmh3_x86_128()`). Also, `hexdigest()` is not supported. Use `digest().hex()` instead.
+Note that as of version 4.1.0, the implementation is still experimental and its performance can be unsatisfactory (especially `mmh3_x86_128()`). Also, `hexdigest()` is not supported. Use `digest().hex()` instead.
 
 ```shell
 >>> import mmh3
@@ -96,6 +96,12 @@ b'\x82_n\xdd \xac\xb6j\xef\x99\xb1e\xc4\n\xc9\xfd'
 ```
 
 ## Changelog
+### 4.1.0 (2024-01-09)
+* Add support for Python 3.12.
+* Change the project structure to fix issues when using Bazel (<https://github.com/hajimes/mmh3/issues/50>).
+* Fix incorrect type hints (<https://github.com/hajimes/mmh3/issues/51>).
+* Fix invalid results on s390x when the arg `x64arch` of `hash64` or `hash_bytes` is set to `False` (<https://github.com/hajimes/mmh3/issues/52>).
+
 ### 4.0.1 (2023-07-14)
 * Fix incorrect type hints.
 * Refactor the project structure (<https://github.com/hajimes/mmh3/issues/48>).
@@ -111,14 +117,7 @@ b'\x82_n\xdd \xac\xb6j\xef\x99\xb1e\xc4\n\xc9\xfd'
   * A hash function now returns the same value under big-endian platforms as that under little-endian ones (<https://github.com/hajimes/mmh3/issues/47>).
   * Remove the `__version__` constant from the module (<https://github.com/hajimes/mmh3/issues/42>). Use `importlib.metadata` instead.
 
-### 3.1.0 (2023-03-24)
-* Add support for Python 3.10 and 3.11. Thanks [wouter bolsterlee](https://github.com/wbolster) and [Dušan Nikolić](https://github.com/n-dusan)!
-* Drop support for Python 3.6; remove legacy code for Python 2.x at the source code level.
-* Add support for 32-bit architectures such as `i686` and `armv7l`. From now on, `hash` and `hash_from_buffer` on these architectures will generate the same hash values as those on other environments. Thanks [Danil Shein](https://github.com/dshein-alt)!
-* In relation to the above, `manylinux2014_i686` wheels are now available.
-* Support for hashing huge data (>16GB). Thanks [arieleizenberg](https://github.com/arieleizenberg)!
-
-See [CHANGELOG.md](./CHANGELOG.md) for the complete changelog.
+See [CHANGELOG.md](./docs/CHANGELOG.md) for the complete changelog.
 
 ## License
 [MIT](./LICENSE), unless otherwise noted within a file.
@@ -152,6 +151,9 @@ Be careful so that these seeds do not exceed 32-bit. Unexpected results may happ
 >>> mmh3.hash("foo", 2 ** 34)
 -156908512
 ```
+
+## Contributing Guidelines
+See [CONTRIBUTING.md](./docs/CONTRIBUTING.md).
 
 ## Authors
 MurmurHash3 was originally developed by Austin Appleby and distributed under public domain [https://github.com/aappleby/smhasher](https://github.com/aappleby/smhasher).
