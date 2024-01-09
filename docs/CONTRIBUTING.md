@@ -13,7 +13,7 @@ simply submitting a bug report or a feature suggestion
 through the [issue tracker](https://github.com/hajimes/mmh3/issues).
 
 Before submitting a new issue, it's a good idea to check
-[Known Issues section on README](https://github.com/hajimes/mmh3#known-issues).
+the [Known Issues section on README](https://github.com/hajimes/mmh3#known-issues).
 
 ## Maintaining and developing the project
 
