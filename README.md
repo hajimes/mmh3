@@ -100,7 +100,7 @@ b'\x82_n\xdd \xac\xb6j\xef\x99\xb1e\xc4\n\xc9\xfd'
 * Add support for Python 3.12.
 * Change the project structure to fix issues when using Bazel (<https://github.com/hajimes/mmh3/issues/50>).
 * Fix incorrect type hints (<https://github.com/hajimes/mmh3/issues/51>).
-* Fix invalid results on s390x when the arg `x64arch` of `hash64` or `hash_bytes` is set to `False` (<https://github.com/hajimes/mmh3/issues/51>).
+* Fix invalid results on s390x when the arg `x64arch` of `hash64` or `hash_bytes` is set to `False` (<https://github.com/hajimes/mmh3/issues/52>).
 
 ### 4.0.1 (2023-07-14)
 * Fix incorrect type hints.
