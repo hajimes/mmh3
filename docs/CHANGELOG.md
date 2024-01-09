@@ -1,5 +1,5 @@
 # Changelog
-## 4.1.0 (2024-01-07)
+## 4.1.0 (2024-01-09)
 * Add support for Python 3.12.
 * Change the project structure to fix issues when using Bazel (<https://github.com/hajimes/mmh3/issues/50>).
 * Fix incorrect type hints (<https://github.com/hajimes/mmh3/issues/51>).

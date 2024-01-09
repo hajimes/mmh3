@@ -96,7 +96,7 @@ b'\x82_n\xdd \xac\xb6j\xef\x99\xb1e\xc4\n\xc9\xfd'
 ```
 
 ## Changelog
-### 4.1.0 (2024-01-07)
+### 4.1.0 (2024-01-09)
 * Add support for Python 3.12.
 * Change the project structure to fix issues when using Bazel (<https://github.com/hajimes/mmh3/issues/50>).
 * Fix incorrect type hints (<https://github.com/hajimes/mmh3/issues/51>).
