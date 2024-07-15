@@ -22,25 +22,19 @@ class BenchmarkHashFunction:
         self._reset(total_microseconds, run_microseconds)
 
     def _reset(self, total_microseconds, run_microseconds):
-        if run_microseconds == None:
+        if run_microseconds is None:
             self.run_microseconds = 1
         else:
             self.run_microseconds = run_microseconds
 
-        # Run the benchmark function until the time spent is greater than the run budget.
+        # Run the benchmark function
+        # until the time spent is greater than the run budget.
         # defaults to 1ms (in nanoseconds)
         self.run_budget_nanoseconds = self.run_microseconds * TIMELOOP_NANOSEC / 1000
 
         self.fastest_nanoseconds_per_run = float("inf")
         self.fastest_run_sum_of_return = -1
         self.number_of_loops = 1
-
-    def run(self, data):
-        run_budget_nonoseconds = self.run_budget_nonoseconds
-
-        run_time_min_nonoseconds = run_budget_nonoseconds / 2
-
-        return mmh3.hash(data)
 
     def benchmark_function(self, params):
         result = {}
@@ -170,7 +164,7 @@ if __name__ == "__main__":
     SMALL_SIZE_MAX_DEFAULT = 127
 
     hashes = [
-        {"name": "mmh3", "function": lambda x: mmh3.hash_bytes(bytes(x))},
+        {"name": "mmh3", "fuｂｌnction": lambda x: mmh3.hash_bytes(bytes(x))},
         {"name": "xxhash", "function": lambda x: xxhash.xxh128(bytes(x)).digest()},
         {"name": "pymmh3", "function": lambda x: pymmh3.hash_bytes(bytes(x))},
         {"name": "md5", "function": lambda x: hashlib.md5(bytes(x)).digest()},
