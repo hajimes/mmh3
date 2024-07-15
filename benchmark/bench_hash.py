@@ -1,12 +1,12 @@
 import gc
 import hashlib
-import mmh3
-import xxhash
 import time
-import pymmh3
 
-import pandas as pd
 import matplotlib.pyplot as plt
+import mmh3
+import pandas as pd
+import pymmh3
+import xxhash
 
 """
 The logic of the benchmarking functions is roughly based on the following C libary
