@@ -1,0 +1,8 @@
+site_name: mmh3
+docs_dir: docs
+repo_url: https://github.com/hajimes/mmh3
+theme:
+  name: readthedocs
+  highlightjs: true
+nav:
+  - Home: index.md
