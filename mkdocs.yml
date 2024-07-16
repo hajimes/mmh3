@@ -4,5 +4,15 @@ repo_url: https://github.com/hajimes/mmh3
 theme:
   name: readthedocs
   highlightjs: true
+  hljs_languages:
+      - shell
+  collapse_navigation: true
+  navigation_depth: 3
 nav:
   - Home: index.md
+  - contributing.md
+  - changelog.md
+  - CODE_OF_CONDUCT.md
+markdown_extensions:
+  - markdown_include.include:
+      base_path: .
