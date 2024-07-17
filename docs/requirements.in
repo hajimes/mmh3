@@ -1,2 +1,4 @@
 mkdocs
+mkdocstrings[python]
 markdown-include
+mmh3

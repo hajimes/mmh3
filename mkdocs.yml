@@ -10,9 +10,23 @@ theme:
   navigation_depth: 3
 nav:
   - Home: index.md
+  - api.md
   - contributing.md
   - changelog.md
   - CODE_OF_CONDUCT.md
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        # See: https://mkdocstrings.github.io/python/usage/
+        python:
+          options:
+            docstring_style: sphinx
+            preload_modules:
+            - 'mmh3'
+            load_external_modules: true
+            filters:
+            - "!^_"
 markdown_extensions:
   - markdown_include.include:
       base_path: .
