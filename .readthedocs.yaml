@@ -10,8 +10,8 @@ build:
   tools:
     python: "3.12"
 
-mkdocs:
-  configuration: mkdocs.yml
+sphinx:
+  configuration: docs/conf.py
 
 # Build all formats
 formats: all
