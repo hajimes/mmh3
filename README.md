@@ -1,4 +1,5 @@
 # mmh3
+[![Documentation Status](https://readthedocs.org/projects/mmh3/badge/?version=latest)](https://mmh3.readthedocs.io/en/latest/?badge=latest)
 [![GitHub Super-Linter](https://github.com/hajimes/mmh3/workflows/Super-Linter/badge.svg?branch=master)](https://github.com/hajimes/mmh3/actions?query=workflow%3ASuper-Linter+branch%3Amaster)
 [![Build](https://github.com/hajimes/mmh3/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/hajimes/mmh3/actions/workflows/build.yml?branch=master)
 [![PyPi Version](https://img.shields.io/pypi/v/mmh3.svg?style=flat-square&logo=pypi&logoColor=white)](https://pypi.org/project/mmh3/)
@@ -12,6 +13,8 @@ mmh3 is a Python extension for [MurmurHash (MurmurHash3)](https://en.wikipedia.o
 Combined with probabilistic techniques like a [Bloom filter](https://en.wikipedia.org/wiki/Bloom_filter), [MinHash](https://en.wikipedia.org/wiki/MinHash), and [feature hashing](https://en.wikipedia.org/wiki/Feature_hashing), mmh3 allows you to develop high-performance systems in fields such as data mining, machine learning, and natural language processing.
 
 Another common use of mmh3 is to [calculate favicon hashes](https://gist.github.com/yehgdotnet/b9dfc618108d2f05845c4d8e28c5fc6a) used by [Shodan](https://www.shodan.io), the world's first IoT search engine.
+
+This page offers a quick start guide. For more detailed information, see the [documentation](https://mmh3.readthedocs.io/en/latest/).
 
 ## How to use
 ### Install
@@ -117,10 +120,10 @@ b'\x82_n\xdd \xac\xb6j\xef\x99\xb1e\xc4\n\xc9\xfd'
   * A hash function now returns the same value under big-endian platforms as that under little-endian ones (<https://github.com/hajimes/mmh3/issues/47>).
   * Remove the `__version__` constant from the module (<https://github.com/hajimes/mmh3/issues/42>). Use `importlib.metadata` instead.
 
-See [CHANGELOG.md](./docs/CHANGELOG.md) for the complete changelog.
+See [Changelog](https://mmh3.readthedocs.io/en/latest/changelog.html) for the complete changelog.
 
 ## License
-[MIT](./LICENSE), unless otherwise noted within a file.
+[MIT](https://github.com/hajimes/mmh3/blob/master/LICENSE), unless otherwise noted within a file.
 
 ## Known Issues
 ### Getting different results from other MurmurHash3-based libraries
@@ -153,7 +156,7 @@ Be careful so that these seeds do not exceed 32-bit. Unexpected results may happ
 ```
 
 ## Contributing Guidelines
-See [CONTRIBUTING.md](./docs/CONTRIBUTING.md).
+See [Contributing](https://mmh3.readthedocs.io/en/latest/CONTRIBUTING.html).
 
 ## Authors
 MurmurHash3 was originally developed by Austin Appleby and distributed under public domain [https://github.com/aappleby/smhasher](https://github.com/aappleby/smhasher).

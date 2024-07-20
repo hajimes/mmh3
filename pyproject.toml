@@ -35,7 +35,7 @@ test = [
 [project.urls]
 Homepage = "https://pypi.org/project/mmh3/"
 Repository = "https://github.com/hajimes/mmh3"
-Changelog = "https://github.com/hajimes/mmh3/blob/master/docs/CHANGELOG.md"
+Changelog = "https://github.com/hajimes/mmh3/blob/master/docs/changelog.md"
 "Bug Tracker" = "https://github.com/hajimes/mmh3/issues"
 
 [tool.isort]
