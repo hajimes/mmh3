@@ -1,4 +1,3 @@
-mkdocs
-mkdocstrings[python]
-markdown-include
-mmh3
+myst-parser
+shibuya
+sphinx

@@ -59,7 +59,7 @@
 
 ## 2.3.2 (2017-05-26)
 
-* Relicensed from public domain to [CC0-1.0](./LICENSE).
+* Relicensed from public domain to CC0-1.0.
 
 ## 2.3.1 (2015-06-07)
 

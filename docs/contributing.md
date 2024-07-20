@@ -2,8 +2,8 @@
 
 Thank you for your interest in contributing to the `mmh3` project!
 
-Read [README.md](../README.md) to get an overview of the `mmh3` project,
-and follow our [Code of Conduct](./CODE_OF_CONDUCT.md)
+Read [README](https://github.com/hajimes/mmh3/blob/master/README.md) to get an overview of the `mmh3` project,
+and follow our [Code of Conduct](./CODE_OF_CONDUCT)
 (ACM Code of Ethics and Professional Conduct).
 
 ## Issues
