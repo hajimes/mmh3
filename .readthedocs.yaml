@@ -11,6 +11,7 @@ build:
     python: "3.12"
 
 sphinx:
+  builder: html
   configuration: docs/conf.py
 
 # Build all formats
