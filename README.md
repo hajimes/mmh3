@@ -117,10 +117,10 @@ b'\x82_n\xdd \xac\xb6j\xef\x99\xb1e\xc4\n\xc9\xfd'
   * A hash function now returns the same value under big-endian platforms as that under little-endian ones (<https://github.com/hajimes/mmh3/issues/47>).
   * Remove the `__version__` constant from the module (<https://github.com/hajimes/mmh3/issues/42>). Use `importlib.metadata` instead.
 
-See [CHANGELOG.md](./docs/CHANGELOG.md) for the complete changelog.
+See [Changelog](https://mmh3.readthedocs.io/en/latest/changelog.html) for the complete changelog.
 
 ## License
-[MIT](./LICENSE), unless otherwise noted within a file.
+[MIT](https://github.com/hajimes/mmh3/blob/master/LICENSE), unless otherwise noted within a file.
 
 ## Known Issues
 ### Getting different results from other MurmurHash3-based libraries
@@ -153,7 +153,7 @@ Be careful so that these seeds do not exceed 32-bit. Unexpected results may happ
 ```
 
 ## Contributing Guidelines
-See [CONTRIBUTING.md](./docs/CONTRIBUTING.md).
+See [Contributing](https://mmh3.readthedocs.io/en/latest/contributing.html).
 
 ## Authors
 MurmurHash3 was originally developed by Austin Appleby and distributed under public domain [https://github.com/aappleby/smhasher](https://github.com/aappleby/smhasher).
