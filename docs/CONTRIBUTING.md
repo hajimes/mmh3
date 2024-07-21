@@ -28,6 +28,10 @@ As of 4.1.0, the layout of the project is as follows:
 - `util`
   - `refresh.py`: file that generates `src/mmh3/murmurhash.c` and `src/mmh3/murmurhash.h` from the original MurmurHash3 C++ code. Edit this file to modify the contents of these files.
 
+### Benchmark utils
+
+Run `pip install -e ".[benchmark]"` to install the required packages for benchmarking.
+
 ### Testing
 
 Before submitting your changes, make sure to run the project's tests to ensure

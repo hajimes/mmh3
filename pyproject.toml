@@ -31,6 +31,12 @@ test = [
   "mypy >= 1.0",
   "pytest >= 7.0.0"
 ]
+benchmark = [
+  "matplotlib == 3.9.1",
+  "pandas == 2.2.2",
+  "pymmh3 == 0.0.5",
+  "xxhash == 3.4.1"
+]
 
 [project.urls]
 Homepage = "https://pypi.org/project/mmh3/"

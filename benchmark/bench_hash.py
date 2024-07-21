@@ -164,7 +164,7 @@ if __name__ == "__main__":
     SMALL_SIZE_MAX_DEFAULT = 127
 
     hashes = [
-        {"name": "mmh3", "fuｂｌnction": lambda x: mmh3.hash_bytes(bytes(x))},
+        {"name": "mmh3", "function": lambda x: mmh3.hash_bytes(bytes(x))},
         {"name": "xxhash", "function": lambda x: xxhash.xxh128(bytes(x)).digest()},
         {"name": "pymmh3", "function": lambda x: pymmh3.hash_bytes(bytes(x))},
         {"name": "md5", "function": lambda x: hashlib.md5(bytes(x)).digest()},
