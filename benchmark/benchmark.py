@@ -163,7 +163,7 @@ if __name__ == "__main__":
     SMALL_SIZE_MIN_DEFAULT = 1
     SMALL_SIZE_MAX_DEFAULT = 127
 
-    hashes = [
+    HASHES = [
         {"name": "mmh3", "function": lambda x: mmh3.hash_bytes(bytes(x))},
         {"name": "xxhash", "function": lambda x: xxhash.xxh128(bytes(x)).digest()},
         {"name": "pymmh3", "function": lambda x: pymmh3.hash_bytes(bytes(x))},
@@ -172,7 +172,7 @@ if __name__ == "__main__":
     ]
 
     benchmark_results = benchmark_throughput_small_inputs(
-        hashes, SMALL_SIZE_MIN_DEFAULT, SMALL_SIZE_MAX_DEFAULT
+        HASHES, SMALL_SIZE_MIN_DEFAULT, SMALL_SIZE_MAX_DEFAULT
     )
 
     df = pd.DataFrame(
@@ -186,5 +186,5 @@ if __name__ == "__main__":
         logy=True,
     )
 
-    plt.savefig("result.png")
+    plt.savefig("docs/images/throughput_small_inputs.png")
     plt.close("all")
