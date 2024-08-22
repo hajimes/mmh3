@@ -159,7 +159,7 @@ def benchmark_hash(
 
 
 def benchmark_throughput_small_inputs(
-    hashes: List[Callable], small_test_size_min: int, small_test_size_max: int
+    hashes: List[Dict[str, Any]], small_test_size_min: int, small_test_size_max: int
 ):
     """Benchmarks the throughput of a hash function on small inputs.
 
@@ -192,7 +192,7 @@ def benchmark_throughput_small_inputs(
 
 
 def benchmark_large_inputs(
-    hashes: List[Callable], large_test_log_min: int, large_test_log_max: int
+    hashes: List[Dict[str, Any]], large_test_log_min: int, large_test_log_max: int
 ):
     """Benchmarks the throughput of a hash function on large inputs.
 
