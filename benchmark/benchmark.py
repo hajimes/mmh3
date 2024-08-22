@@ -55,7 +55,7 @@ class BenchmarkHashFunction:
 
         return result
 
-    def run_timed_benchmarks(self, params: Dict[Any]):
+    def run_timed_benchmarks(self, params: Dict[str, Any]):
         time_spent = 0
 
         WOLKLOAD_MULTIPLIER = 10
@@ -145,7 +145,7 @@ def benchmark_hash(
         source_sizes.append(size)
         source_buffers.append(memoryview(source_buffer)[0:size])
 
-    params = {}
+    params: Dict[str, Any] = {}
     params["function"] = f
     params["source_buffers"] = source_buffers
     params["source_sizes"] = source_sizes
@@ -232,8 +232,6 @@ if __name__ == "__main__":
     SMALL_SIZE_MAX_DEFAULT = 127
     LARGE_SIZELOG_MIN_DEFAULT = 9
     LARGE_SIZELOG_MAX_DEFAULT = 27
-    # LARGE_SIZELOG_MIN_DEFAULT = 15
-    # LARGE_SIZELOG_MAX_DEFAULT = 24
 
     HASHES = [
         {"name": "mmh3", "function": lambda x: mmh3.hash_bytes(bytes(x))},
@@ -243,30 +241,25 @@ if __name__ == "__main__":
         {"name": "sha1", "function": lambda x: hashlib.sha1(bytes(x)).digest()},
     ]
 
-    # HASHES = [
-    #     {"name": "mmh3", "function": lambda x: mmh3.hash_bytes(bytes(x))},
-    #     {"name": "xxhash", "function": lambda x: xxhash.xxh128(bytes(x)).digest()}
-    # ]
+    print("Benchmarking small inputs")
+    benchmark_results = benchmark_throughput_small_inputs(
+        HASHES, SMALL_SIZE_MIN_DEFAULT, SMALL_SIZE_MAX_DEFAULT
+    )
 
-    # print('Benchmarking small inputs')
-    # benchmark_results = benchmark_throughput_small_inputs(
-    #     HASHES, SMALL_SIZE_MIN_DEFAULT, SMALL_SIZE_MAX_DEFAULT
-    # )
+    print("Generating plot")
+    df = pd.DataFrame(
+        benchmark_results,
+        index=list(range(SMALL_SIZE_MIN_DEFAULT, SMALL_SIZE_MAX_DEFAULT + 1)),
+    )
 
-    # print('Generating plot')
-    # df = pd.DataFrame(
-    #     benchmark_results,
-    #     index=list(range(SMALL_SIZE_MIN_DEFAULT, SMALL_SIZE_MAX_DEFAULT + 1)),
-    # )
+    plt.figure()
 
-    # plt.figure()
+    df.plot(
+        logy=True,
+    )
 
-    # df.plot(
-    #     logy=True,
-    # )
-
-    # plt.savefig("docs/images/throughput_small_inputs.png")
-    # plt.close("all")
+    plt.savefig("docs/images/throughput_small_inputs.png")
+    plt.close("all")
 
     print("Benchmarking large inputs")
     benchmark_results = benchmark_large_inputs(
