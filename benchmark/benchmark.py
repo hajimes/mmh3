@@ -1,7 +1,7 @@
 import gc
 import hashlib
 import time
-from collections.abc import Callable, List
+from typing import Any, Callable, Dict, List
 
 import matplotlib.pyplot as plt
 import mmh3
@@ -55,7 +55,7 @@ class BenchmarkHashFunction:
 
         return result
 
-    def run_timed_benchmarks(self, params):
+    def run_timed_benchmarks(self, params: Dict[Any]):
         time_spent = 0
 
         WOLKLOAD_MULTIPLIER = 10
@@ -189,6 +189,7 @@ def benchmark_throughput_small_inputs(
         data_result[h["name"]] = result
 
     return data_result
+
 
 def benchmark_large_inputs(
     hashes: List[Callable], large_test_log_min: int, large_test_log_max: int
