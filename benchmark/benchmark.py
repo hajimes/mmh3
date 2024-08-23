@@ -37,15 +37,40 @@ class BenchmarkHashFunction:
         self.fastest_run_sum_of_return = -1
         self.number_of_loops = 1
 
-    def benchmark_function(self, params):
+    def _warmup(self, params: Dict[str, Any]) -> None:
+        """Warm up the CPU by running the benchmark function.
+
+        The current implmentation follows the logic of the following C code:
+        https://github.com/Cyan4973/xxHash/blob/dbea33e47e7c0fe0b7c8592cd931c7430c1f130d/tests/bench/benchfn.c
+        It just fills the destination buffer with a constant value.
+
+        However, when bencharmking functions in PyPy, a warmup requires the actual function to be called.
+        See the faq of pytest-benchmark, as well as its code.
+        https://pytest-benchmark.readthedocs.io/en/latest/faq.html#frequently-asked-questions
+
+        As of version 4.1.0, mmh3 does not officially realase PyPy, so the warmup simply follows that of xxhash.
+        However, the future version of mmh3 may support PyPy, so this code may need to be adjusted.
+
+        Args:
+            params: The parameters for the benchmark function.
+        """
+
+        for i in range(params["number_of_blocks"]):
+            for j in range(len(params["destination"][i])):
+                params["destinations"][j][i] = 0xE5
+
+    def _benchmark_function(self, params: Dict[str, Any]) -> Dict[str, Any]:
         result = {}
+
+        self._warmup(params)
+        target_function = params["function"]
 
         clock_start = time.time_ns()
 
         for i in range(self.number_of_loops):
             for j in range(params["number_of_blocks"]):
                 b = params["source_buffers"][j]
-                params["destinations"][j] = params["function"](b)
+                params["destinations"][j] = target_function(b)
 
         clock_end = time.time_ns()
         time_spent = clock_end - clock_start
@@ -55,13 +80,25 @@ class BenchmarkHashFunction:
 
         return result
 
-    def run_timed_benchmarks(self, params: Dict[str, Any]):
+    def run_timed_benchmarks(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        """Runs the benchmark function until the time spent is greater than the run budget.
+
+        Runs the benchmark function with a number of loops that is automatically adjusted based on the
+        time spent in the previous run.
+        This technique is called the "calibration" in pytest-benchmark, whereas a budget is called a "ronud".
+
+        Args:
+            params: The parameters for the benchmark function.
+
+        Returns:
+            A dictionary containing the results of the benchmark.
+        """
         time_spent = 0
 
         WOLKLOAD_MULTIPLIER = 10
 
         while True:
-            run_result = self.benchmark_function(params)
+            run_result = self._benchmark_function(params)
 
             time_spent += run_result["loop_duration_nanoseconds"]
 
