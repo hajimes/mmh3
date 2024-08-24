@@ -96,7 +96,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Set up built items
-        uses: actions/download-artifact@v4.1.0
+        uses: actions/download-artifact@v4.1.8
         with:
           path: dist
           merge-multiple: true
