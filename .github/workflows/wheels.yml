@@ -63,7 +63,7 @@ jobs:
           CIBW_TEST_COMMAND: 'pytest {project}'
           # Until the day Apple silicon instances are available on GH Actions
           CIBW_TEST_SKIP: '*-win_arm64 *-macosx_arm64'
-      - uses: actions/upload-artifact@v4.0.0
+      - uses: actions/upload-artifact@v4.3.6
         with:
           name: Wheel-${{ matrix.os }}-${{ matrix.build }}${{ matrix.archs }}
           path: ./wheelhouse/*.whl
@@ -82,7 +82,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install setuptools
           python setup.py build sdist
-      - uses: actions/upload-artifact@v4.0.0
+      - uses: actions/upload-artifact@v4.3.6
         with:
           path: dist/*.tar.gz
   publish:
