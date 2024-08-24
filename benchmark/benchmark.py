@@ -55,9 +55,8 @@ class BenchmarkHashFunction:
             params: The parameters for the benchmark function.
         """
 
-        for i in range(params["number_of_blocks"]):
-            for j in range(len(params["destination"][i])):
-                params["destinations"][j][i] = 0xE5
+        for i in range(len(params["destinations"])):
+            params["destinations"][i] = 0xE5
 
     def _benchmark_function(self, params: Dict[str, Any]) -> Dict[str, Any]:
         result = {}
@@ -265,6 +264,17 @@ def benchmark_large_inputs(
 
 
 if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Benchmark hash functions.")
+    parser.add_argument(
+        "--benchmark-type",
+        type=str,
+        choices=["all", "large", "small-throughput-sequential"],
+        default="all",
+        help="The type of benchmarking to perform (default: all).",
+    )
+
     SMALL_SIZE_MIN_DEFAULT = 1
     SMALL_SIZE_MAX_DEFAULT = 127
     LARGE_SIZELOG_MIN_DEFAULT = 9
@@ -278,42 +288,48 @@ if __name__ == "__main__":
         {"name": "sha1", "function": lambda x: hashlib.sha1(bytes(x)).digest()},
     ]
 
-    print("Benchmarking small inputs")
-    benchmark_results = benchmark_throughput_small_inputs(
-        HASHES, SMALL_SIZE_MIN_DEFAULT, SMALL_SIZE_MAX_DEFAULT
-    )
+    args = parser.parse_args()
 
-    print("Generating plot")
-    df = pd.DataFrame(
-        benchmark_results,
-        index=list(range(SMALL_SIZE_MIN_DEFAULT, SMALL_SIZE_MAX_DEFAULT + 1)),
-    )
+    print(args.benchmark_type)
 
-    plt.figure()
+    if args.benchmark_type in ["small-throughput-sequential", "all"]:
+        print("Benchmarking the throughput of small inputs sequentially")
+        benchmark_results = benchmark_throughput_small_inputs(
+            HASHES, SMALL_SIZE_MIN_DEFAULT, SMALL_SIZE_MAX_DEFAULT
+        )
 
-    df.plot(
-        logy=True,
-    )
+        print("Generating plot")
+        df = pd.DataFrame(
+            benchmark_results,
+            index=list(range(SMALL_SIZE_MIN_DEFAULT, SMALL_SIZE_MAX_DEFAULT + 1)),
+        )
 
-    plt.savefig("docs/images/throughput_small_inputs.png")
-    plt.close("all")
+        plt.figure()
 
-    print("Benchmarking large inputs")
-    benchmark_results = benchmark_large_inputs(
-        HASHES, LARGE_SIZELOG_MIN_DEFAULT, LARGE_SIZELOG_MAX_DEFAULT
-    )
+        df.plot(
+            logy=True,
+        )
 
-    print("Generating plot")
-    df = pd.DataFrame(
-        benchmark_results,
-        index=list(range(LARGE_SIZELOG_MIN_DEFAULT, LARGE_SIZELOG_MAX_DEFAULT + 1)),
-    )
+        plt.savefig("docs/images/throughput_small_inputs.png")
+        plt.close("all")
 
-    plt.figure()
+    if args.benchmark_type in ["large", "all"]:
+        print("Benchmarking the throughput of large inputs sequentially")
+        benchmark_results = benchmark_large_inputs(
+            HASHES, LARGE_SIZELOG_MIN_DEFAULT, LARGE_SIZELOG_MAX_DEFAULT
+        )
 
-    df.plot(
-        logy=True,
-    )
+        print("Generating plot")
+        df = pd.DataFrame(
+            benchmark_results,
+            index=list(range(LARGE_SIZELOG_MIN_DEFAULT, LARGE_SIZELOG_MAX_DEFAULT + 1)),
+        )
 
-    plt.savefig("docs/images/throughput_large_inputs.png")
-    plt.close("all")
+        plt.figure()
+
+        df.plot(
+            logy=True,
+        )
+
+        plt.savefig("docs/images/throughput_large_inputs.png")
+        plt.close("all")
