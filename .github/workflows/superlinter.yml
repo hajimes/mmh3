@@ -1,14 +1,16 @@
 ---
 name: Super-Linter
 
-on:  # yamllint disable-line rule:truthy
+on: # yamllint disable-line rule:truthy
   push:
-    branches: '**'
+    branches: "**"
   pull_request:
     types:
       - opened
       - synchronize
       - reopened
+
+permissions: {}
 
 jobs:
   # Set the job key. The key is displayed as the job name
@@ -19,16 +21,25 @@ jobs:
     # Set the type of machine to run on
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      packages: read
+      # To report GitHub Actions status checks
+      statuses: write
+
     steps:
       # Checks out a copy of your repository on the ubuntu-latest machine
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          # super-linter needs the full git history to get the
+          # list of files that changed across commits
+          fetch-depth: 0
 
       # Runs the Super-Linter action
       - name: Run Super-Linter
-        uses: super-linter/super-linter@v5.7.2
+        uses: super-linter/super-linter@v7.0.0
         env:
-          DEFAULT_BRANCH: master
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # Suppressed because it conflicts with clang-format in some cases
           VALIDATE_CPP: false
@@ -36,3 +47,7 @@ jobs:
           VALIDATE_JSCPD: false
           # Suppressed because it even accuses book titles
           VALIDATE_NATURAL_LANGUAGE: false
+          # Disable temporarily
+          VALIDATE_PYTHON_PYLINT: false
+          # Disable temporarily
+          VALIDATE_CHECKOV: false

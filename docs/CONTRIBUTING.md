@@ -41,7 +41,7 @@ When you have modified the code in a way which may cause endian issues, you may 
 to locally test on s390x, the only big-endian platform officially supported by
 Python.
 
-[*Emulating a big-endian s390x with QEMU*](https://til.simonwillison.net/docker/emulate-s390x-with-qemu)
+[_Emulating a big-endian s390x with QEMU_](https://til.simonwillison.net/docker/emulate-s390x-with-qemu)
 by Simon Willison is a good introduction to Docker/QEMU settings for emulating
 s390x.
 

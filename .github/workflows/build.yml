@@ -3,7 +3,7 @@
 ---
 name: Build
 
-on:  # yamllint disable-line rule:truthy
+on: # yamllint disable-line rule:truthy
   push:
     branches:
       - master
@@ -14,8 +14,16 @@ on:  # yamllint disable-line rule:truthy
       - synchronize
       - reopened
 
+permissions: {}
+
 jobs:
   build:
+    permissions:
+      contents: read
+      packages: read
+      # To report GitHub Actions status checks
+      statuses: write
+
     strategy:
       matrix:
         os: [macOS-13, windows-2022, ubuntu-22.04]
