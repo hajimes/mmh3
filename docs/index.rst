@@ -14,7 +14,7 @@ mmh3 is a Python extension for `MurmurHash (MurmurHash3) <https://en.wikipedia.o
    :caption: Project documentation
 
    CONTRIBUTING
-   changelog
+   Changelog<changelog_link>
    CODE_OF_CONDUCT
 
 Indices and tables

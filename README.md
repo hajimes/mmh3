@@ -129,40 +129,43 @@ b'\x82_n\xdd \xac\xb6j\xef\x99\xb1e\xc4\n\xc9\xfd'
 
 ## Changelog
 
-### 4.1.0 (2024-01-09)
+### [Unreleased]
+
+#### Added
+
+- (planned: Add support for Python 3.13)
+- Add Read the Docs documentation (<https://github.com/hajimes/mmh3/issues/54>).
+- (planned: Document benchmark results
+  (<https://github.com/hajimes/mmh3/issues/53>)).
+
+#### Changed
+
+- Change the format of the changelog to conform to the Keep a Changelog
+  standard.
+
+### [4.1.0] - 2024-01-09
+
+#### Added
 
 - Add support for Python 3.12.
-- Change the project structure to fix issues when using Bazel
+
+#### Fixed
+
+- Fix issues with Bazel by changing the directory structure of the project
   (<https://github.com/hajimes/mmh3/issues/50>).
 - Fix incorrect type hints (<https://github.com/hajimes/mmh3/issues/51>).
 - Fix invalid results on s390x when the arg `x64arch` of `hash64` or
   `hash_bytes` is set to `False` (<https://github.com/hajimes/mmh3/issues/52>).
 
-### 4.0.1 (2023-07-14)
+### [4.0.1] - 2023-07-14
 
-- Fix incorrect type hints.
+#### Changed
+
 - Refactor the project structure (<https://github.com/hajimes/mmh3/issues/48>).
 
-### 4.0.0 (2023-05-22)
+#### Fixed
 
-- Add experimental support for `hashlib`-compliant hasher classes
-  (<https://github.com/hajimes/mmh3/issues/39>). Note that they are not yet
-  fully tuned for performance.
-- Add support for type hints (<https://github.com/hajimes/mmh3/issues/44>).
-- Add wheels for more platforms (`musllinux`, `s390x`, `win_arm64`, and
-  `macosx_universal2`).
-- Drop support for Python 3.7, as it will reach the end of life on 2023-06-27.
-- Switch license from CC0 to MIT (<https://github.com/hajimes/mmh3/issues/43>).
-- Add a code of conduct (the ACM Code of Ethics and Professional Conduct).
-- Backward incompatible changes:
-  - A hash function now returns the same value under big-endian platforms as
-    that under little-endian ones (<https://github.com/hajimes/mmh3/issues/47>).
-  - Remove the `__version__` constant from the module
-    (<https://github.com/hajimes/mmh3/issues/42>). Use `importlib.metadata`
-    instead.
-
-See [Changelog](https://mmh3.readthedocs.io/en/latest/changelog.html) for the
-complete changelog.
+- Fix incorrect type hints.
 
 ## License
 
@@ -280,3 +283,7 @@ is useful for OSINT and cybersecurity activities.
   (Eugene Scherba)
 - <https://github.com/ifduyue/python-xxhash>: Python bindings for xxHash (Yue
   Du)
+
+[unreleased]: https://github.com/hajimes/mmh3/compare/v4.1.0...HEAD
+[4.1.0]: https://github.com/hajimes/mmh3/compare/v4.0.1...v4.1.0
+[4.0.1]: https://github.com/hajimes/mmh3/compare/v4.0.0...v4.0.1
