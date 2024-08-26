@@ -5,7 +5,15 @@ All notable changes to this project will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 This project has adhered to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) since version 3.0.0.
 
-## Unreleased
+## [[Unreleased]]
+
+### Added
+
+- ~~Add support for Python 3.13~~ (planned).
+
+### Changed
+
+- Change the format of the changelog to conform to the Keep a Changelog standard.
 
 ## [4.1.0] - 2024-01-09
 
@@ -59,7 +67,6 @@ The major version bump is due to the backward incompatible changes.
 - Add support for 32-bit architectures such as `i686` and `armv7l`. From now on, `hash` and `hash_from_buffer` on these architectures will generate the same hash values as those on other environments. Thanks [Danil Shein](https://github.com/dshein-alt)!
 - In relation to the above, `manylinux2014_i686` wheels are now available.
 - Support for hashing huge data (>16GB). Thanks [arieleizenberg](https://github.com/arieleizenberg)!
-
 
 ### Removed
 
