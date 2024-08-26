@@ -129,6 +129,9 @@ b'\x82_n\xdd \xac\xb6j\xef\x99\xb1e\xc4\n\xc9\xfd'
 
 ## Changelog
 
+See [Changelog](https://mmh3.readthedocs.io/en/latest/changelog.html) for the
+complete changelog.
+
 ### [Unreleased]
 
 #### Added
