@@ -212,9 +212,8 @@ only.
 
 ### Added
 
-- As
-  [Softpedia collected mmh3 1.0 on April 27, 2011](https://web.archive.org/web/20110430172027/https://linux.softpedia.com/get/Programming/Libraries/mmh3-68314.shtml),
-  it must have been uploaded to PyPI on or slightly before this date.
+- As [Softpedia collected mmh3 1.0 on April 27, 2011], it must have been
+  uploaded to PyPI on or slightly before this date.
 
 [unreleased]: https://github.com/hajimes/mmh3/compare/v4.1.0...HEAD
 [4.1.0]: https://github.com/hajimes/mmh3/compare/v4.0.1...v4.1.0
@@ -232,4 +231,6 @@ only.
 [2.1]: https://github.com/hajimes/mmh3/compare/v2.0...v2.1
 [2.0]: https://github.com/hajimes/mmh3/releases/tag/v2.0
 [1.0]:
+  https://web.archive.org/web/20110430172027/https://linux.softpedia.com/get/Programming/Libraries/mmh3-68314.shtml
+[Softpedia collected mmh3 1.0 on April 27, 2011]:
   https://web.archive.org/web/20110430172027/https://linux.softpedia.com/get/Programming/Libraries/mmh3-68314.shtml
