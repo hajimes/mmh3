@@ -41,13 +41,14 @@ jobs:
         uses: super-linter/super-linter@v7.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LINTER_RULES_PATH: /
+          PYTHON_ISORT_CONFIG_FILE: pyproject.toml
+          PYTHON_PYLINT_CONFIG_FILE: pyproject.toml
           # Suppressed because it conflicts with clang-format in some cases
           VALIDATE_CPP: false
           # Suppressed because copy/paste is sometimes required at low level
           VALIDATE_JSCPD: false
           # Suppressed because it even accuses book titles
           VALIDATE_NATURAL_LANGUAGE: false
-          # Disable temporarily
-          VALIDATE_PYTHON_PYLINT: false
-          # Disable temporarily
+          # Disabled temporarily
           VALIDATE_CHECKOV: false

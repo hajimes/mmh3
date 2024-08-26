@@ -1,4 +1,5 @@
-# Configuration file for the Sphinx documentation builder.
+# pylint: disable=C0114,C0103
+# # Configuration file for the Sphinx documentation builder.
 #
 # For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
@@ -10,7 +11,7 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = "mmh3"
-copyright = "2011-2024, Hajime Senuma"
+project_copyright = "2011-2024, Hajime Senuma"
 author = "Hajime Senuma"
 
 # -- General configuration ---------------------------------------------------
