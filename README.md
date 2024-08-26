@@ -9,13 +9,23 @@
 [![Total Downloads](https://static.pepy.tech/badge/mmh3)](https://pepy.tech/project/mmh3?versions=*&versions=4.*&versions=3.*&versions=2.*)
 [![Recent Downloads](https://static.pepy.tech/badge/mmh3/month)](https://pepy.tech/project/mmh3?versions=*&versions=4.*&versions=3.*&versions=2.*)
 
-mmh3 is a Python extension for [MurmurHash (MurmurHash3)](https://en.wikipedia.org/wiki/MurmurHash), a set of fast and robust non-cryptographic hash functions invented by Austin Appleby.
+mmh3 is a Python extension for
+[MurmurHash (MurmurHash3)](https://en.wikipedia.org/wiki/MurmurHash), a set of
+fast and robust non-cryptographic hash functions invented by Austin Appleby.
 
-Combined with probabilistic techniques like a [Bloom filter](https://en.wikipedia.org/wiki/Bloom_filter), [MinHash](https://en.wikipedia.org/wiki/MinHash), and [feature hashing](https://en.wikipedia.org/wiki/Feature_hashing), mmh3 allows you to develop high-performance systems in fields such as data mining, machine learning, and natural language processing.
+Combined with probabilistic techniques like a
+[Bloom filter](https://en.wikipedia.org/wiki/Bloom_filter),
+[MinHash](https://en.wikipedia.org/wiki/MinHash), and
+[feature hashing](https://en.wikipedia.org/wiki/Feature_hashing), mmh3 allows
+you to develop high-performance systems in fields such as data mining, machine
+learning, and natural language processing.
 
-Another common use of mmh3 is to [calculate favicon hashes](https://gist.github.com/yehgdotnet/b9dfc618108d2f05845c4d8e28c5fc6a) used by [Shodan](https://www.shodan.io), the world's first IoT search engine.
+Another common use of mmh3 is to
+[calculate favicon hashes](https://gist.github.com/yehgdotnet/b9dfc618108d2f05845c4d8e28c5fc6a)
+used by [Shodan](https://www.shodan.io), the world's first IoT search engine.
 
-This page offers a quick start guide. For more detailed information, see the [documentation](https://mmh3.readthedocs.io/en/latest/).
+This page offers a quick start guide. For more detailed information, see the
+[documentation](https://mmh3.readthedocs.io/en/latest/).
 
 ## How to use
 
@@ -33,7 +43,7 @@ Quickstart:
 >>> import mmh3
 >>> mmh3.hash("foo") # returns a 32-bit signed int
 -156908512
->>> mmh3.hash("foo", 42) # uses 42 as a seed
+>>> mmh3.hash("foo", 42) # uses 42 as the seed
 -1322301282
 >>> mmh3.hash("foo", signed=False) # returns a 32-bit unsigned int
 4138058784
@@ -42,15 +52,15 @@ Quickstart:
 Other functions:
 
 ```shell
->>> mmh3.hash64("foo") # two 64 bit signed ints (by using the 128-bit algorithm as its backend)
+>>> mmh3.hash64("foo") # two 64-bit signed ints using the 128-bit algorithm
 (-2129773440516405919, 9128664383759220103)
->>> mmh3.hash64("foo", signed=False) #  two 64 bit unsigned ints
+>>> mmh3.hash64("foo", signed=False) # two 64-bit unsigned ints
 (16316970633193145697, 9128664383759220103)
->>> mmh3.hash128("foo", 42) # 128 bit unsigned int
+>>> mmh3.hash128("foo", 42) # 128-bit unsigned int
 215966891540331383248189432718888555506
->>> mmh3.hash128("foo", 42, signed=True) # 128 bit signed int
+>>> mmh3.hash128("foo", 42, signed=True) # 128-bit signed int
 -124315475380607080215185174712879655950
->>> mmh3.hash_bytes("foo") # 128 bit value as bytes
+>>> mmh3.hash_bytes("foo") # 128-bit value as bytes
 'aE\xf5\x01W\x86q\xe2\x87}\xba+\xe4\x87\xaf~'
 >>> import numpy as np
 >>> a = np.zeros(2 ** 32, dtype=np.int8)
@@ -58,9 +68,11 @@ Other functions:
 b'V\x8f}\xad\x8eNM\xa84\x07FU\x9c\xc4\xcc\x8e'
 ```
 
-Beware that `hash64` returns **two** values, because it uses the 128-bit version of MurmurHash3 as its backend.
+Beware that `hash64` returns **two** values, because it uses the 128-bit version
+of MurmurHash3 as its backend.
 
-`hash_from_buffer` hashes byte-likes without memory copying. The method is suitable when you hash a large memory-view such as `numpy.ndarray`.
+`hash_from_buffer` hashes byte-likes without memory copying. The method is
+suitable when you hash a large memory-view such as `numpy.ndarray`.
 
 ```shell
 >>> mmh3.hash_from_buffer(numpy.random.rand(100))
@@ -69,7 +81,9 @@ Beware that `hash64` returns **two** values, because it uses the 128-bit version
 3812874078
 ```
 
-`hash64`, `hash128`, and `hash_bytes` have the third argument for architecture optimization (keyword arg: `x64arch`). Use True for x64 and False for x86 (default: True):
+`hash64`, `hash128`, and `hash_bytes` have the third argument for architecture
+optimization (keyword arg: `x64arch`). Use True for x64 and False for x86
+(default: True):
 
 ```shell
 >>> mmh3.hash64("foo", 42, True)
@@ -78,11 +92,19 @@ Beware that `hash64` returns **two** values, because it uses the 128-bit version
 
 ### `hashlib`-style hashers
 
-`mmh3` implements hashers whose interfaces are similar to `hashlib` in the standard library: `mmh3_32()` for 32 bit hashing, `mmh3_x64_128()` for 128 bit hashing optimized for x64 architectures, and `mmh3_x86_128()` for 128 bit hashing optimized for x86 architectures.
+`mmh3` implements hashers whose interfaces are similar to `hashlib` in the
+standard library: `mmh3_32()` for 32 bit hashing, `mmh3_x64_128()` for 128 bit
+hashing optimized for x64 architectures, and `mmh3_x86_128()` for 128 bit
+hashing optimized for x86 architectures.
 
-In addition to the standard `digest()` method, each hasher has `sintdigest()`, which returns a signed integer, and `uintdigest()`, which returns an unsigned integer. 128 bit hashers also have `stupledigest()` and `utupledigest()` which return two 64 bit integers.
+In addition to the standard `digest()` method, each hasher has `sintdigest()`,
+which returns a signed integer, and `uintdigest()`, which returns an unsigned
+integer. 128 bit hashers also have `stupledigest()` and `utupledigest()` which
+return two 64 bit integers.
 
-Note that as of version 4.1.0, the implementation is still experimental and its performance can be unsatisfactory (especially `mmh3_x86_128()`). Also, `hexdigest()` is not supported. Use `digest().hex()` instead.
+Note that as of version 4.1.0, the implementation is still experimental and its
+performance can be unsatisfactory (especially `mmh3_x86_128()`). Also,
+`hexdigest()` is not supported. Use `digest().hex()` instead.
 
 ```shell
 >>> import mmh3
@@ -107,52 +129,78 @@ b'\x82_n\xdd \xac\xb6j\xef\x99\xb1e\xc4\n\xc9\xfd'
 
 ## Changelog
 
-### 4.1.0 (2024-01-09)
+See [Changelog](https://mmh3.readthedocs.io/en/latest/changelog.html) for the
+complete changelog.
+
+### [Unreleased]
+
+#### Added
+
+- (planned: Add support for Python 3.13)
+- Add Read the Docs documentation (<https://github.com/hajimes/mmh3/issues/54>).
+- (planned: Document benchmark results
+  (<https://github.com/hajimes/mmh3/issues/53>)).
+
+#### Changed
+
+- Change the format of the changelog to conform to the Keep a Changelog
+  standard.
+
+### [4.1.0] - 2024-01-09
+
+#### Added
 
 - Add support for Python 3.12.
-- Change the project structure to fix issues when using Bazel (<https://github.com/hajimes/mmh3/issues/50>).
+
+#### Fixed
+
+- Fix issues with Bazel by changing the directory structure of the project
+  (<https://github.com/hajimes/mmh3/issues/50>).
 - Fix incorrect type hints (<https://github.com/hajimes/mmh3/issues/51>).
-- Fix invalid results on s390x when the arg `x64arch` of `hash64` or `hash_bytes` is set to `False` (<https://github.com/hajimes/mmh3/issues/52>).
+- Fix invalid results on s390x when the arg `x64arch` of `hash64` or
+  `hash_bytes` is set to `False` (<https://github.com/hajimes/mmh3/issues/52>).
 
-### 4.0.1 (2023-07-14)
+### [4.0.1] - 2023-07-14
 
-- Fix incorrect type hints.
+#### Changed
+
 - Refactor the project structure (<https://github.com/hajimes/mmh3/issues/48>).
 
-### 4.0.0 (2023-05-22)
+#### Fixed
 
-- Add experimental support for `hashlib`-compliant hasher classes (<https://github.com/hajimes/mmh3/issues/39>). Note that they are not yet fully tuned for performance.
-- Add support for type hints (<https://github.com/hajimes/mmh3/issues/44>).
-- Add wheels for more platforms (`musllinux`, `s390x`, `win_arm64`, and `macosx_universal2`).
-- Drop support for Python 3.7, as it will reach the end of life on 2023-06-27.
-- Switch license from CC0 to MIT (<https://github.com/hajimes/mmh3/issues/43>).
-- Add a code of conduct (the ACM Code of Ethics and Professional Conduct).
-- Backward incompatible changes:
-  - A hash function now returns the same value under big-endian platforms as that under little-endian ones (<https://github.com/hajimes/mmh3/issues/47>).
-  - Remove the `__version__` constant from the module (<https://github.com/hajimes/mmh3/issues/42>). Use `importlib.metadata` instead.
-
-See [Changelog](https://mmh3.readthedocs.io/en/latest/changelog.html) for the complete changelog.
+- Fix incorrect type hints.
 
 ## License
 
-[MIT](https://github.com/hajimes/mmh3/blob/master/LICENSE), unless otherwise noted within a file.
+[MIT](https://github.com/hajimes/mmh3/blob/master/LICENSE), unless otherwise
+noted within a file.
 
 ## Known Issues
 
 ### Getting different results from other MurmurHash3-based libraries
 
-By default, mmh3 returns **signed** values for 32-bit and 64-bit versions and **unsigned** values for `hash128`, due to historical reasons. Please use the keyword argument `signed` to obtain a desired result.
+By default, mmh3 returns **signed** values for 32-bit and 64-bit versions and
+**unsigned** values for `hash128`, due to historical reasons. Please use the
+keyword argument `signed` to obtain a desired result.
 
-From version 4.0.0, `mmh3` returns the same value under big-endian platforms
-as that under little-endian ones, while the original C++ library is endian-sensitive. If you need to obtain the original-compliant results under big-endian environments, please use version 3.\*.
+From version 4.0.0, `mmh3` returns the same value under big-endian platforms as
+that under little-endian ones, while the original C++ library is
+endian-sensitive. If you need to obtain the original-compliant results under
+big-endian environments, please use version 3.\*.
 
-For compatibility with [Google Guava (Java)](https://github.com/google/guava), see <https://stackoverflow.com/questions/29932956/murmur3-hash-different-result-between-python-and-java-implementation>.
+For compatibility with [Google Guava (Java)](https://github.com/google/guava),
+see
+<https://stackoverflow.com/questions/29932956/murmur3-hash-different-result-between-python-and-java-implementation>.
 
-For compatibility with [murmur3 (Go)](https://pkg.go.dev/github.com/spaolacci/murmur3), see <https://github.com/hajimes/mmh3/issues/46>.
+For compatibility with
+[murmur3 (Go)](https://pkg.go.dev/github.com/spaolacci/murmur3), see
+<https://github.com/hajimes/mmh3/issues/46>.
 
 ### Unexpected results when given non 32-bit seeds
 
-Version 2.4 changed the type of seeds from signed 32-bit int to unsigned 32-bit int. The resulting values with signed seeds still remain the same as before, as long as they are 32-bit.
+Version 2.4 changed the type of seeds from signed 32-bit int to unsigned 32-bit
+int. The resulting values with signed seeds still remain the same as before, as
+long as they are 32-bit.
 
 ```shell
 >>> mmh3.hash("aaaa", -1756908916) # signed representation for 0x9747b28c
@@ -161,7 +209,8 @@ Version 2.4 changed the type of seeds from signed 32-bit int to unsigned 32-bit 
 1519878282
 ```
 
-Be careful so that these seeds do not exceed 32-bit. Unexpected results may happen with invalid values.
+Be careful so that these seeds do not exceed 32-bit. Unexpected results may
+happen with invalid values.
 
 ```shell
 >>> mmh3.hash("foo", 2 ** 33)
@@ -176,7 +225,9 @@ See [Contributing](https://mmh3.readthedocs.io/en/latest/CONTRIBUTING.html).
 
 ## Authors
 
-MurmurHash3 was originally developed by Austin Appleby and distributed under public domain [https://github.com/aappleby/smhasher](https://github.com/aappleby/smhasher).
+MurmurHash3 was originally developed by Austin Appleby and distributed under
+public domain
+[https://github.com/aappleby/smhasher](https://github.com/aappleby/smhasher).
 
 Ported and modified for Python by Hajime Senuma.
 
@@ -184,28 +235,58 @@ Ported and modified for Python by Hajime Senuma.
 
 ### Tutorials (High-Performance Computing)
 
-The following textbooks and tutorials are great sources to learn how to use mmh3 (and other hash algorithms in general) for high-performance computing.
+The following textbooks and tutorials are great sources to learn how to use mmh3
+(and other hash algorithms in general) for high-performance computing.
 
-- Chapter 11: _Using Less Ram_ in Micha Gorelick and Ian Ozsvald. 2014. _High Performance Python: Practical Performant Programming for Humans_. O'Reilly Media. [ISBN: 978-1-4493-6159-4](https://www.amazon.com/dp/1449361595).
-  - 2nd edition of the above (2020). [ISBN: 978-1492055020](https://www.amazon.com/dp/1492055026).
-- Max Burstein. February 2, 2013. _[Creating a Simple Bloom Filter](http://www.maxburstein.com/blog/creating-a-simple-bloom-filter/)_.
-- Duke University. April 14, 2016. _[Efficient storage of data in memory](http://people.duke.edu/~ccc14/sta-663-2016/20B_Big_Data_Structures.html)_.
-- Bugra Akyildiz. August 24, 2016. _[A Gentle Introduction to Bloom Filter](https://www.kdnuggets.com/2016/08/gentle-introduction-bloom-filter.html)_. KDnuggets.
+- Chapter 11: _Using Less Ram_ in Micha Gorelick and Ian Ozsvald. 2014. _High
+  Performance Python: Practical Performant Programming for Humans_. O'Reilly
+  Media. [ISBN: 978-1-4493-6159-4](https://www.amazon.com/dp/1449361595).
+  - 2nd edition of the above (2020).
+    [ISBN: 978-1492055020](https://www.amazon.com/dp/1492055026).
+- Max Burstein. February 2, 2013.
+  _[Creating a Simple Bloom Filter](http://www.maxburstein.com/blog/creating-a-simple-bloom-filter/)_.
+- Duke University. April 14, 2016.
+  _[Efficient storage of data in memory](http://people.duke.edu/~ccc14/sta-663-2016/20B_Big_Data_Structures.html)_.
+- Bugra Akyildiz. August 24, 2016.
+  _[A Gentle Introduction to Bloom Filter](https://www.kdnuggets.com/2016/08/gentle-introduction-bloom-filter.html)_.
+  KDnuggets.
 
 ### Tutorials (Internet of Things)
 
-[Shodan](https://www.shodan.io), the world's first [IoT](https://en.wikipedia.org/wiki/Internet_of_things) search engine, uses MurmurHash3 hash values for [favicons](https://en.wikipedia.org/wiki/Favicon) (icons associated with web pages). [ZoomEye](https://www.zoomeye.org) follows Shodan's convention.
-[Calculating these values with mmh3](https://gist.github.com/yehgdotnet/b9dfc618108d2f05845c4d8e28c5fc6a) is useful for OSINT and cybersecurity activities.
+[Shodan](https://www.shodan.io), the world's first
+[IoT](https://en.wikipedia.org/wiki/Internet_of_things) search engine, uses
+MurmurHash3 hash values for [favicons](https://en.wikipedia.org/wiki/Favicon)
+(icons associated with web pages). [ZoomEye](https://www.zoomeye.org) follows
+Shodan's convention.
+[Calculating these values with mmh3](https://gist.github.com/yehgdotnet/b9dfc618108d2f05845c4d8e28c5fc6a)
+is useful for OSINT and cybersecurity activities.
 
-- Jan Kopriva. April 19, 2021. _[Hunting phishing websites with favicon hashes](https://isc.sans.edu/diary/Hunting+phishing+websites+with+favicon+hashes/27326)_. SANS Internet Storm Center.
-- Nikhil Panwar. May 2, 2022. _[Using Favicons to Discover Phishing & Brand Impersonation Websites](https://bolster.ai/blog/how-to-use-favicons-to-find-phishing-websites)_. Bolster.
-- Faradaysec. July 25, 2022. _[Understanding Spring4Shell: How used is it?](https://faradaysec.com/understanding-spring4shell/)_. Faraday Security.
-- Debjeet. August 2, 2022. _[How To Find Assets Using Favicon Hashes](https://payatu.com/blog/favicon-hash/)_. Payatu.
+- Jan Kopriva. April 19, 2021.
+  _[Hunting phishing websites with favicon hashes](https://isc.sans.edu/diary/Hunting+phishing+websites+with+favicon+hashes/27326)_.
+  SANS Internet Storm Center.
+- Nikhil Panwar. May 2, 2022.
+  _[Using Favicons to Discover Phishing & Brand Impersonation Websites](https://bolster.ai/blog/how-to-use-favicons-to-find-phishing-websites)_.
+  Bolster.
+- Faradaysec. July 25, 2022.
+  _[Understanding Spring4Shell: How used is it?](https://faradaysec.com/understanding-spring4shell/)_.
+  Faraday Security.
+- Debjeet. August 2, 2022.
+  _[How To Find Assets Using Favicon Hashes](https://payatu.com/blog/favicon-hash/)_.
+  Payatu.
 
 ### Similar libraries
 
-- <https://github.com/wc-duck/pymmh3>: mmh3 in pure python (Fredrik Kihlander and Swapnil Gusani)
-- <https://github.com/escherba/python-cityhash>: Python bindings for CityHash (Eugene Scherba)
-- <https://github.com/veelion/python-farmhash>: Python bindings for FarmHash (Veelion Chong)
-- <https://github.com/escherba/python-metrohash>: Python bindings for MetroHash (Eugene Scherba)
-- <https://github.com/ifduyue/python-xxhash>: Python bindings for xxHash (Yue Du)
+- <https://github.com/wc-duck/pymmh3>: mmh3 in pure python (Fredrik Kihlander
+  and Swapnil Gusani)
+- <https://github.com/escherba/python-cityhash>: Python bindings for CityHash
+  (Eugene Scherba)
+- <https://github.com/veelion/python-farmhash>: Python bindings for FarmHash
+  (Veelion Chong)
+- <https://github.com/escherba/python-metrohash>: Python bindings for MetroHash
+  (Eugene Scherba)
+- <https://github.com/ifduyue/python-xxhash>: Python bindings for xxHash (Yue
+  Du)
+
+[unreleased]: https://github.com/hajimes/mmh3/compare/v4.1.0...HEAD
+[4.1.0]: https://github.com/hajimes/mmh3/compare/v4.0.1...v4.1.0
+[4.0.1]: https://github.com/hajimes/mmh3/compare/v4.0.0...v4.0.1
