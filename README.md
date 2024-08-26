@@ -52,9 +52,9 @@ Quickstart:
 Other functions:
 
 ```shell
->>> mmh3.hash64("foo")  # two 64-bit signed ints using the 128-bit algorithm
+>>> mmh3.hash64("foo") # two 64-bit signed ints using the 128-bit algorithm
 (-2129773440516405919, 9128664383759220103)
->>> mmh3.hash64("foo", signed=False) #  two 64-bit unsigned ints
+>>> mmh3.hash64("foo", signed=False) # two 64-bit unsigned ints
 (16316970633193145697, 9128664383759220103)
 >>> mmh3.hash128("foo", 42) # 128-bit unsigned int
 215966891540331383248189432718888555506
