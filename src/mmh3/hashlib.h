@@ -57,27 +57,28 @@
  * of PyObject_GetBuffer.  Sets an exception and issues the erraction
  * on any errors, e.g. 'return NULL' or 'goto error'.
  */
-#define GET_BUFFER_VIEW_OR_ERROR(obj, viewp, erraction)                        \
-  do {                                                                         \
-    if (PyUnicode_Check((obj))) {                                              \
-      PyErr_SetString(PyExc_TypeError,                                         \
-                      "Strings must be encoded before hashing");               \
-      erraction;                                                               \
-    }                                                                          \
-    if (!PyObject_CheckBuffer((obj))) {                                        \
-      PyErr_SetString(PyExc_TypeError,                                         \
-                      "object supporting the buffer API required");            \
-      erraction;                                                               \
-    }                                                                          \
-    if (PyObject_GetBuffer((obj), (viewp), PyBUF_SIMPLE) == -1) {              \
-      erraction;                                                               \
-    }                                                                          \
-    if ((viewp)->ndim > 1) {                                                   \
-      PyErr_SetString(PyExc_BufferError, "Buffer must be single dimension");   \
-      PyBuffer_Release((viewp));                                               \
-      erraction;                                                               \
-    }                                                                          \
-  } while (0)
+#define GET_BUFFER_VIEW_OR_ERROR(obj, viewp, erraction)                   \
+    do {                                                                  \
+        if (PyUnicode_Check((obj))) {                                     \
+            PyErr_SetString(PyExc_TypeError,                              \
+                            "Strings must be encoded before hashing");    \
+            erraction;                                                    \
+        }                                                                 \
+        if (!PyObject_CheckBuffer((obj))) {                               \
+            PyErr_SetString(PyExc_TypeError,                              \
+                            "object supporting the buffer API required"); \
+            erraction;                                                    \
+        }                                                                 \
+        if (PyObject_GetBuffer((obj), (viewp), PyBUF_SIMPLE) == -1) {     \
+            erraction;                                                    \
+        }                                                                 \
+        if ((viewp)->ndim > 1) {                                          \
+            PyErr_SetString(PyExc_BufferError,                            \
+                            "Buffer must be single dimension");           \
+            PyBuffer_Release((viewp));                                    \
+            erraction;                                                    \
+        }                                                                 \
+    } while (0)
 
-#define GET_BUFFER_VIEW_OR_ERROUT(obj, viewp)                                  \
-  GET_BUFFER_VIEW_OR_ERROR(obj, viewp, return NULL)
+#define GET_BUFFER_VIEW_OR_ERROUT(obj, viewp) \
+    GET_BUFFER_VIEW_OR_ERROR(obj, viewp, return NULL)
