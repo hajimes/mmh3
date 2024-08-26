@@ -43,7 +43,7 @@ Quickstart:
 >>> import mmh3
 >>> mmh3.hash("foo") # returns a 32-bit signed int
 -156908512
->>> mmh3.hash("foo", 42) # uses 42 as a seed
+>>> mmh3.hash("foo", 42) # uses 42 as the seed
 -1322301282
 >>> mmh3.hash("foo", signed=False) # returns a 32-bit unsigned int
 4138058784
@@ -52,15 +52,15 @@ Quickstart:
 Other functions:
 
 ```shell
->>> mmh3.hash64("foo") # two 64 bit signed ints (by using the 128-bit algorithm as its backend)
+>>> mmh3.hash64("foo")  # two 64-bit signed ints using the 128-bit algorithm
 (-2129773440516405919, 9128664383759220103)
->>> mmh3.hash64("foo", signed=False) #  two 64 bit unsigned ints
+>>> mmh3.hash64("foo", signed=False) #  two 64-bit unsigned ints
 (16316970633193145697, 9128664383759220103)
->>> mmh3.hash128("foo", 42) # 128 bit unsigned int
+>>> mmh3.hash128("foo", 42) # 128-bit unsigned int
 215966891540331383248189432718888555506
->>> mmh3.hash128("foo", 42, signed=True) # 128 bit signed int
+>>> mmh3.hash128("foo", 42, signed=True) # 128-bit signed int
 -124315475380607080215185174712879655950
->>> mmh3.hash_bytes("foo") # 128 bit value as bytes
+>>> mmh3.hash_bytes("foo") # 128-bit value as bytes
 'aE\xf5\x01W\x86q\xe2\x87}\xba+\xe4\x87\xaf~'
 >>> import numpy as np
 >>> a = np.zeros(2 ** 32, dtype=np.int8)

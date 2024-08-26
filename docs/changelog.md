@@ -6,11 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 This project has adhered to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html) since version 3.0.0.
 
-## [[Unreleased]]
+## [Unreleased]
 
 ### Added
 
-- ~~Add support for Python 3.13~~ (planned).
+- (planned: Add support for Python 3.13)
 
 ### Changed
 
