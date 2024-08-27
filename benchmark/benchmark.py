@@ -1,3 +1,11 @@
+"""Benchmark hash functions.
+
+A module to benchmark the throughput of hash functions.
+The logic of the benchmarking functions is roughly based on the following C libary
+https://github.com/Cyan4973/xxHash/tree/dev/tests/bench
+
+"""
+
 import gc
 import hashlib
 import time
@@ -8,12 +16,6 @@ import mmh3
 import pandas as pd
 import pymmh3
 import xxhash
-
-"""
-The logic of the benchmarking functions is roughly based on the following C libary
-https://github.com/Cyan4973/xxHash/tree/dev/tests/bench
-"""
-
 
 TIMELOOP_NANOSEC = 1000000000  # 1 second in nanoseconds
 
@@ -44,12 +46,13 @@ class BenchmarkHashFunction:
         https://github.com/Cyan4973/xxHash/blob/dbea33e47e7c0fe0b7c8592cd931c7430c1f130d/tests/bench/benchfn.c
         It just fills the destination buffer with a constant value.
 
-        However, when bencharmking functions in PyPy, a warmup requires the actual function to be called.
-        See the faq of pytest-benchmark, as well as its code.
+        However, when bencharmking functions in PyPy, a warmup requires the actual
+        function to be called. See the faq of pytest-benchmark, as well as its code.
         https://pytest-benchmark.readthedocs.io/en/latest/faq.html#frequently-asked-questions
 
-        As of version 4.1.0, mmh3 does not officially realase PyPy, so the warmup simply follows that of xxhash.
-        However, the future version of mmh3 may support PyPy, so this code may need to be adjusted.
+        As of version 4.1.0, mmh3 does not officially realase PyPy, so the warmup
+        simply follows that of xxhash. However, the future version of mmh3 may
+        support PyPy, so this code may need to be adjusted.
 
         Args:
             params: The parameters for the benchmark function.
@@ -80,11 +83,11 @@ class BenchmarkHashFunction:
         return result
 
     def run_timed_benchmarks(self, params: Dict[str, Any]) -> Dict[str, Any]:
-        """Runs the benchmark function until the time spent is greater than the run budget.
+        """Runs the benchmark until the time spent is greater than therun budget.
 
-        Runs the benchmark function with a number of loops that is automatically adjusted based on the
-        time spent in the previous run.
-        This technique is called the "calibration" in pytest-benchmark, whereas a budget is called a "ronud".
+        Runs the benchmark function with a number of loops that is automatically
+        adjusted based on the time spent in the previous run. This technique is called
+        the "calibration" in pytest-benchmark, whereas a budget is called a "round".
 
         Args:
             params: The parameters for the benchmark function.

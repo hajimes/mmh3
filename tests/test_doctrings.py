@@ -18,7 +18,8 @@ def test_function_docstrings() -> None:
     assert "__doc__" in dir(mmh3.hash64)
     assert mmh3.hash64.__doc__ is not None
     assert mmh3.hash64.__doc__.startswith(
-        "hash64(key[, seed=0, x64arch=True, signed=True]) -> (64-bit int, 64-bit int)\n\n"
+        "hash64(key[, seed=0, x64arch=True, signed=True]) "
+        + "-> (64-bit int, 64-bit int)\n\n"
     )
 
     assert "__doc__" in dir(mmh3.hash128)
