@@ -1,5 +1,6 @@
-# -*- coding: utf-8 -*-
+# pylint: disable=missing-module-docstring,missing-function-docstring
 import mmh3
+
 from helper import u32_to_s32
 
 

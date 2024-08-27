@@ -1,3 +1,6 @@
+# pylint: disable=missing-function-docstring
+"""A script to generate Murmurhash3 C files from the original C++ source."""
+
 from __future__ import annotations
 
 import os
@@ -87,12 +90,17 @@ class MMH3Header:
 
 
 class MMH3CodeBuilder:
+    """A builder class to generate the new MurmurHash3 C code."""
+
     def __init__(self) -> None:
         self._code: list[tuple[str, list[Callable[[str], str]]]] = []
 
     def add(
-        self, subcode: str, transforms: list[Callable[[str], str]] = []
+        self, subcode: str, transforms: list[Callable[[str], str]] | None = None
     ) -> MMH3CodeBuilder:
+        if transforms is None:
+            transforms = []
+
         self._code.append((subcode, transforms))
         return self
 
@@ -195,6 +203,7 @@ def transform_getblocks(subcode: str) -> str:
     Returns:
         str: The transformed code.
     """
+    # pylint: disable=invalid-name
 
     transformations = [
         ["FORCE_INLINE", "static FORCE_INLINE"],
@@ -254,6 +263,7 @@ def transform_x86_128_return(subcode: str) -> str:
     Returns:
         str: The transformed code.
     """
+    # pylint: disable=invalid-name
 
     BYTE_SWAP_IF_BIG_ENDIAN = textwrap.dedent(
         """\
@@ -287,6 +297,7 @@ def expand_win_stdint_typedefs(subcode: str) -> str:
     Returns:
         str: The transformed code.
     """
+    # pylint: disable=invalid-name
 
     MSC_STDINT_TYPEDEFS = textwrap.dedent(
         """\
@@ -575,6 +586,7 @@ def fix_non_win_force_inline(subcode: str) -> str:
     Returns:
         str: The transformed code.
     """
+    # pylint: disable=invalid-name
 
     NON_WIN_FORCE_INLINE_ORIGINAL = (
         "#define	FORCE_INLINE inline __attribute__((always_inline))"
@@ -636,17 +648,17 @@ if __name__ == "__main__":
     original_source_path = os.path.join(dir_path, "smhasher/src/MurmurHash3.cpp")
     original_header_path = os.path.join(dir_path, "smhasher/src/MurmurHash3.h")
 
-    new_source_name = "murmurhash3.c"
-    new_header_name = "murmurhash3.h"
-    file_header_name = "FILE_HEADER"
+    NEW_SOURCE_NAME = "murmurhash3.c"
+    NEW_HEADER_NAME = "murmurhash3.h"
+    FILE_HEADER_NAME = "FILE_HEADER"
 
-    new_source_path = os.path.join(dir_path, "../src/mmh3", new_source_name)
-    new_header_path = os.path.join(dir_path, "../src/mmh3", new_header_name)
-    file_header_path = os.path.join(dir_path, file_header_name)
+    new_source_path = os.path.join(dir_path, "../src/mmh3", NEW_SOURCE_NAME)
+    new_header_path = os.path.join(dir_path, "../src/mmh3", NEW_HEADER_NAME)
+    file_header_path = os.path.join(dir_path, FILE_HEADER_NAME)
 
-    with open(original_source_path, "r") as source_file, open(
-        original_header_path, "r"
-    ) as header_file, open(file_header_path, "r") as file_header_file:
+    with open(original_source_path, "r", encoding="utf-8") as source_file, open(
+        original_header_path, "r", encoding="utf-8"
+    ) as header_file, open(file_header_path, "r", encoding="utf-8") as file_header_file:
         source = MMH3Source(source_file.read())
         header = MMH3Header(header_file.read())
         file_header = file_header_file.read()
@@ -704,7 +716,7 @@ if __name__ == "__main__":
         )
         new_header_builder.add(header.header_guards_end)
 
-        with open(new_source_path, "w") as f:
+        with open(new_source_path, "w", encoding="utf-8") as f:
             f.write(new_source_builder.build())
-        with open(new_header_path, "w") as f:
+        with open(new_header_path, "w", encoding="utf-8") as f:
             f.write(new_header_builder.build())

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mmh3"
-version = "4.1.0"
+version = "4.2.0-alpha.4"
 description = "Python extension for MurmurHash (MurmurHash3), a set of fast and robust hash functions."
 readme = "README.md"
 license = {file = "LICENSE"}
@@ -22,6 +22,7 @@ classifiers = [
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Topic :: Software Development :: Libraries",
   "Topic :: Utilities"
 ]
@@ -46,4 +47,15 @@ Changelog = "https://github.com/hajimes/mmh3/blob/master/docs/changelog.md"
 
 [tool.isort]
 profile = "black"
-src_paths = ["src/mmh3/__init__.pyi", "tests"]
+src_paths = ["src/mmh3/__init__.pyi", "util", "tests"]
+
+[tool.pylint.main]
+# Use multiple processes to speed up Pylint.
+# The value 0 specifies the number of processors to be auto-detected.
+# This setting can be found in the template file of super-linter 7.0.0.
+jobs=0
+
+[tool.pylint."messages control"]
+# import-error: An error tricky to resolve, especially on super-linter.
+# wrong-import-order: Respect isort's import order.
+disable = ["import-error", "wrong-import-order"]

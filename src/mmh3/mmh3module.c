@@ -152,7 +152,8 @@ mmh3_hash_from_buffer(PyObject *self, PyObject *args, PyObject *keywds)
 
 PyDoc_STRVAR(
     mmh3_hash64_doc,
-    "hash64(key[, seed=0, x64arch=True, signed=True]) -> (64-bit int, 64-bit "
+    "hash64(key[, seed=0, x64arch=True, signed=True]) -> (64-bit int, "
+    "64-bit "
     "int)\n\n"
     "Return a tuple of two 64 bit integers given an input string. "
     "Calculated by the MurmurHash3_x{64, 86}_128 algorithm. Optimized "
@@ -190,13 +191,13 @@ mmh3_hash64(PyObject *self, PyObject *args, PyObject *keywds)
     return retval;
 }
 
-PyDoc_STRVAR(
-    mmh3_hash128_doc,
-    "hash128(key[, seed=0, x64arch=True, signed=False]]) -> 128-bit int\n\n"
-    "Return a 128 bit long integer. "
-    "Calculated by the MurmurHash3_x{64, 86}_128 algorithm. "
-    "Optimized for the x64 bit architecture "
-    "when x64arch=True, otherwise for x86.");
+PyDoc_STRVAR(mmh3_hash128_doc,
+             "hash128(key[, seed=0, x64arch=True, signed=False]]) -> 128-bit "
+             "int\n\n"
+             "Return a 128 bit long integer. "
+             "Calculated by the MurmurHash3_x{64, 86}_128 algorithm. "
+             "Optimized for the x64 bit architecture "
+             "when x64arch=True, otherwise for x86.");
 
 static PyObject *
 mmh3_hash128(PyObject *self, PyObject *args, PyObject *keywds)
@@ -488,10 +489,10 @@ static PyGetSetDef MMH3Hasher32_getsetters[] = {
     {NULL} /* Sentinel */
 };
 
-PyDoc_STRVAR(
-    MMH3Hasher32Type_doc,
-    "An mmh3_32 is an object used to calculate the murmurhash3_x86_32 hash\n"
-    "of a string of information.");
+PyDoc_STRVAR(MMH3Hasher32Type_doc,
+             "An mmh3_32 is an object used to calculate the "
+             "murmurhash3_x86_32 hash\n"
+             "of a string of information.");
 
 static PyTypeObject MMH3Hasher32Type = {
     PyVarObject_HEAD_INIT(NULL, 0).tp_name = "mmh3.mmh3_32",
@@ -765,7 +766,8 @@ static PyMethodDef MMH3Hasher128x64_methods[] = {
     {"stupledigest", (PyCFunction)MMH3Hasher128x64_stupledigest, METH_NOARGS,
      "Return the digest value as a tuple of two 64 bit signed integers."},
     {"utupledigest", (PyCFunction)MMH3Hasher128x64_utupledigest, METH_NOARGS,
-     "Return the digest value as a tuple of two 64 bit unsigned integers."},
+     "Return the digest value as a tuple of two 64 bit unsigned "
+     "integers."},
     {"copy", (PyCFunction)MMH3Hasher128x64_copy, METH_NOARGS,
      "Return a copy of the hash object."},
     {NULL} /* Sentinel */
@@ -799,10 +801,10 @@ static PyGetSetDef MMH3Hasher128x64_getsetters[] = {
     {NULL} /* Sentinel */
 };
 
-PyDoc_STRVAR(
-    MMH3Hasher128x64Type_doc,
-    "An mmh3_x64_128 is an object used to calculate the murmurhash3_x64_128\n"
-    "hash of a string of information.");
+PyDoc_STRVAR(MMH3Hasher128x64Type_doc,
+             "An mmh3_x64_128 is an object used to calculate the "
+             "murmurhash3_x64_128\n"
+             "hash of a string of information.");
 
 static PyTypeObject MMH3Hasher128x64Type = {
     PyVarObject_HEAD_INIT(NULL, 0).tp_name = "mmh3.mmh3_x64_128",
@@ -1074,7 +1076,8 @@ static PyMethodDef MMH3Hasher128x86_methods[] = {
     {"stupledigest", (PyCFunction)MMH3Hasher128x86_stupledigest, METH_NOARGS,
      "Return the digest value as a tuple of two 64 bit signed integers."},
     {"utupledigest", (PyCFunction)MMH3Hasher128x86_utupledigest, METH_NOARGS,
-     "Return the digest value as a tuple of two 64 bit unsigned integers."},
+     "Return the digest value as a tuple of two 64 bit unsigned "
+     "integers."},
     {"copy", (PyCFunction)MMH3Hasher128x86_copy, METH_NOARGS,
      "Return a copy of the hash object."},
     {NULL} /* Sentinel */
@@ -1108,10 +1111,10 @@ static PyGetSetDef MMH3Hasher128x86_getsetters[] = {
     {NULL} /* Sentinel */
 };
 
-PyDoc_STRVAR(
-    MMH3Hasher128x86Type_doc,
-    "An mmh3_x86_128 is an object used to calculate the murmurhash3_x86_128\n"
-    "hash of a string of information.");
+PyDoc_STRVAR(MMH3Hasher128x86Type_doc,
+             "An mmh3_x86_128 is an object used to calculate the "
+             "murmurhash3_x86_128\n"
+             "hash of a string of information.");
 
 static PyTypeObject MMH3Hasher128x86Type = {
     PyVarObject_HEAD_INIT(NULL, 0).tp_name = "mmh3.mmh3_x86_128",

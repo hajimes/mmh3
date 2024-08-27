@@ -1,7 +1,8 @@
-# -*- coding: utf-8 -*-
+# pylint: disable=missing-module-docstring,missing-function-docstring
 import sys
 
 import mmh3
+
 from helper import u32_to_s32
 
 
@@ -181,7 +182,6 @@ def test_hash_bytes() -> None:
     assert mmh3.hash_bytes("", 123, x64arch=False) == (
         0x26F3E79926F3E79926F3E799FEDC5245
     ).to_bytes(16, "little")
-    # TODO
 
 
 def test_hash64() -> None:

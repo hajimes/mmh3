@@ -1,3 +1,5 @@
+"""Setup script for the mmh3 package."""
+
 from setuptools import Extension, setup
 
 mmh3module = Extension(

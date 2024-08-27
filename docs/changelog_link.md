@@ -1,5 +1,5 @@
 <!-- markdownlint-disable -->
 
-```{include} ../README.md
+```{include} ../CHANGELOG.md
 
 ```
