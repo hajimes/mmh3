@@ -136,7 +136,7 @@ complete changelog.
 
 #### Added
 
-- (planned: Add support for Python 3.13)
+- Add support for Python 3.13
 - Add Read the Docs documentation (<https://github.com/hajimes/mmh3/issues/54>).
 - (planned: Document benchmark results
   (<https://github.com/hajimes/mmh3/issues/53>)).
