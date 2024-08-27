@@ -1,0 +1,19 @@
+---
+name: Build and Test Wheels
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  publish:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - name: "Test wheels build without uploading"
+        uses: ./.github/actions/wheels
+        with:
+          pypi-repository: "none"

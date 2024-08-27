@@ -1,0 +1,21 @@
+---
+name: Build and Upload Wheels to PyPI
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  publish:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - name: "Upload to PyPI"
+        uses: ./.github/actions/wheels
+        with:
+          pypi-repository: "pypi"
+          pypi-username: ${{ secrets.PYPI_USERNAME }}
+          pypi-password: ${{ secrets.PYPI_PASSWORD }}

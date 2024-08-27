@@ -1,0 +1,21 @@
+---
+name: Build and Upload Wheels to TestPyPI
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  publish:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - name: "Upload to TestPyPI"
+        uses: ./.github/actions/wheels
+        with:
+          pypi-repository: "testpypi"
+          pypi-username: ${{ secrets.TEST_PYPI_USERNAME }}
+          pypi-password: ${{ secrets.TEST_PYPI_PASSWORD }}
