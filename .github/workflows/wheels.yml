@@ -13,6 +13,8 @@ on:
       pypi-password:
         required: false
 
+permissions: {}
+
 jobs:
   build_wheels:
     name: Build wheels on ${{ matrix.os }}_${{ matrix.archs }}

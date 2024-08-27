@@ -50,5 +50,3 @@ jobs:
           VALIDATE_JSCPD: false
           # Suppressed because it even accuses book titles
           VALIDATE_NATURAL_LANGUAGE: false
-          # Disabled temporarily
-          VALIDATE_CHECKOV: false
