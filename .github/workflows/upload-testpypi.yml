@@ -8,14 +8,12 @@ permissions: {}
 
 jobs:
   publish:
-    runs-on: ubuntu-22.04
     permissions:
       contents: read
       packages: read
-    steps:
-      - name: "Upload to TestPyPI"
-        uses: ./.github/actions/wheels
-        with:
-          pypi-repository: "testpypi"
-          pypi-username: ${{ secrets.TEST_PYPI_USERNAME }}
-          pypi-password: ${{ secrets.TEST_PYPI_PASSWORD }}
+    uses: ./.github/workflows/wheels.yml
+    with:
+      pypi-repository: "testpypi"
+    secrets:
+      pypi-username: ${{ secrets.TEST_PYPI_USERNAME }}
+      pypi-password: ${{ secrets.TEST_PYPI_PASSWORD }}

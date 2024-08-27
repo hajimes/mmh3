@@ -1,0 +1,107 @@
+---
+name: Wheel-Builder
+
+on:
+  workflow_call:
+    inputs:
+      pypi-repository:
+        required: false
+        type: string
+    secrets:
+      pypi-username:
+        required: false
+      pypi-password:
+        required: false
+
+jobs:
+  build_wheels:
+    name: Build wheels on ${{ matrix.os }}_${{ matrix.archs }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-22.04]
+        archs: [x86_64, i686, aarch64, ppc64le, s390x]
+        build: [manylinux, musllinux]
+        include:
+          - os: windows-2022
+            archs: AMD64
+          - os: windows-2022
+            archs: x86
+          - os: windows-2022
+            archs: ARM64
+          - os: macOS-13
+            archs: x86_64
+          - os: macOS-13
+            archs: arm64
+          - os: macOS-13
+            archs: universal2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Set up QEMU
+        if: runner.os == 'Linux'
+        uses: docker/setup-qemu-action@v3
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.20.0
+        with:
+          output-dir: wheelhouse
+        env:
+          CIBW_BUILD: "{cp38,cp39,cp310,cp311,cp312}-${{ matrix.build }}*"
+          CIBW_SKIP: cp38-win_arm64
+          CIBW_ARCHS: ${{ matrix.archs }}
+          CIBW_BUILD_FRONTEND: "build"
+          CIBW_TEST_REQUIRES: "pytest"
+          CIBW_TEST_COMMAND: "pytest {project}"
+          # Until the day Apple silicon instances are available on GH Actions
+          CIBW_TEST_SKIP: "*-win_arm64 *-macosx_arm64"
+      - uses: actions/upload-artifact@v4.3.6
+        with:
+          name: Wheel-${{ matrix.os }}-${{ matrix.build }}${{ matrix.archs }}
+          path: ./wheelhouse/*.whl
+  build_sdist:
+    name: Build a source distribution
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build sdist
+        run: |
+          python -m pip install --upgrade pip
+          pip install setuptools
+          python setup.py build sdist
+      - uses: actions/upload-artifact@v4.3.6
+        with:
+          path: dist/*.tar.gz
+  publish:
+    if: ${{ inputs.pypi-repository == 'pypi' || inputs.pypi-repository == 'testpypi'}}
+    name: "Upload to PyPI/Test PyPI"
+    runs-on: ubuntu-22.04
+    needs: [build_wheels, build_sdist]
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Set up built items
+        uses: actions/download-artifact@v4.1.8
+        with:
+          path: dist
+          merge-multiple: true
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install setuptools wheel twine
+      - name: "Publish"
+        env:
+          TWINE_USERNAME: ${{ secrets.pypi-username }}
+          TWINE_PASSWORD: ${{ secrets.pypi-password }}
+        run: |
+          twine upload --repository ${{ inputs.pypi-repository }} dist/*
