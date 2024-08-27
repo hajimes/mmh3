@@ -59,3 +59,37 @@ Once you've pushed your changes to your fork, you can
 [create a pull request (PR)](https://github.com/hajimes/mmh3/pulls) on the main
 project repository. Please provide a clear and detailed description of your
 changes in the PR, and reference any related issues.
+
+## util directory
+
+### Algorithm implementations used by the `mmh3` module
+
+The `util` directory contains C files that were generated from the
+[SMHasher](https://github.com/aappleby/smhasher) C++ project by Austin Appleby.
+
+The idea of the subproject directory loosely follows the
+[`hashlib` implementation of CPython](https://github.com/python/cpython/tree/main/Modules/_hacl).
+
+### Updating mmh3 C code
+
+Try `git submodule update --init` to fetch Appleby's original SMHasher project
+as a git submodule. Then, run the `refresh.py` script to generate PEP
+7-compliant C code from the original project, instead of editing `murmurhash3.*`
+files manually.
+
+Add transformation code to the `refresh.py` script to perform
+further edits. Then, run `refresh.py` again to update the `murmurhash3.*` files.
+
+After file generation, use `clang-format` to format the generated code. Try
+`clang-format -i src/mmh3/*.{c,h}` from the project's top-level directory.
+
+### Local files
+
+1. `./README.md`
+1. `./refresh.py`
+1. `./FILE_HEADER`
+
+### Generated files
+
+1. `../src/mmh3/murmurhash3.c`
+1. `../src/mmh3/murmurhash3.h`
