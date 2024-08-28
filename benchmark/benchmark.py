@@ -22,8 +22,10 @@ K1 = 0b1001111000110111011110011011000110000101111010111100101010000111
 K2 = 0b1100001010110010101011100011110100100111110101001110101101001111
 MASK = 0xFFFFFFFFFFFFFFFF
 
+
 class BenchmarkHashFunction:
     """A class to benchmark a hash function."""
+
     # pylint: disable=too-few-public-methods
 
     def __init__(self, total_microseconds, run_microseconds):
@@ -73,10 +75,10 @@ class BenchmarkHashFunction:
 
         clock_start = time.time_ns()
 
-        for i in range(self.number_of_loops):
-            for j in range(params["number_of_blocks"]):
-                b = params["source_buffers"][j]
-                params["destinations"][j] = target_function(b)
+        for _ in range(self.number_of_loops):
+            for i in range(params["number_of_blocks"]):
+                b = params["source_buffers"][i]
+                params["destinations"][i] = target_function(b)
 
         clock_end = time.time_ns()
         time_spent = clock_end - clock_start
@@ -99,6 +101,8 @@ class BenchmarkHashFunction:
         Returns:
             A dictionary containing the results of the benchmark.
         """
+        # pylint: disable=invalid-name
+
         time_spent = 0
 
         WOLKLOAD_MULTIPLIER = 10
@@ -247,6 +251,8 @@ def benchmark_large_inputs(
 
     Returns: A dictionary containing the results of the benchmark.
     """
+    # pylint: disable=invalid-name
+
     BENCH_LARGE_TOTAL_MS = 1010
     BENCH_LARGE_ITERATION_MS = 490
 
