@@ -18,13 +18,15 @@ import pymmh3
 import xxhash
 
 TIMELOOP_NANOSEC = 1000000000  # 1 second in nanoseconds
-
+K1 = 0b1001111000110111011110011011000110000101111010111100101010000111
+K2 = 0b1100001010110010101011100011110100100111110101001110101101001111
+MASK = 0xFFFFFFFFFFFFFFFF
 
 class BenchmarkHashFunction:
-    def __init__(self, size, total_microseconds, run_microseconds):
-        self._reset(total_microseconds, run_microseconds)
+    """A class to benchmark a hash function."""
+    # pylint: disable=too-few-public-methods
 
-    def _reset(self, total_microseconds, run_microseconds):
+    def __init__(self, total_microseconds, run_microseconds):
         if run_microseconds is None:
             self.run_microseconds = 1
         else:
@@ -34,6 +36,8 @@ class BenchmarkHashFunction:
         # until the time spent is greater than the run budget.
         # defaults to 1ms (in nanoseconds)
         self.run_budget_nanoseconds = self.run_microseconds * TIMELOOP_NANOSEC / 1000
+
+        self.total_microseconds = total_microseconds
 
         self.fastest_nanoseconds_per_run = float("inf")
         self.fastest_run_sum_of_return = -1
@@ -141,11 +145,9 @@ def init_buffer(ba: bytearray) -> None:
     Args:
         ba: The buffer to initialize.
     """
-    K1 = 0b1001111000110111011110011011000110000101111010111100101010000111
-    K2 = 0b1100001010110010101011100011110100100111110101001110101101001111
-    MASK = 0xFFFFFFFFFFFFFFFF
     acc = K2
 
+    # pylint: disable=consider-using-enumerate
     for i in range(len(ba)):
         acc = (acc * K1) & MASK
         ba[i] = acc >> 56
@@ -165,6 +167,7 @@ def benchmark_hash(
     Returns:
         The time taken to hash the buffer in nanoseconds.
     """
+    # pylint: disable=invalid-name
 
     SIZE_TO_HASH_PER_ROUND = 200000
     HASH_ROUNDS_MAX = 1000
@@ -180,7 +183,7 @@ def benchmark_hash(
     source_buffers = []
     source_sizes = []
 
-    for i in range(number_of_blocks):
+    for _ in range(number_of_blocks):
         source_sizes.append(size)
         source_buffers.append(memoryview(source_buffer)[0:size])
 
@@ -191,7 +194,7 @@ def benchmark_hash(
     params["number_of_blocks"] = number_of_blocks
     params["destinations"] = [0] * number_of_blocks
 
-    bench = BenchmarkHashFunction(size, total_microseconds, run_microseconds)
+    bench = BenchmarkHashFunction(total_microseconds, run_microseconds)
     result = bench.run_timed_benchmarks(params)
 
     return result["nanoseconds_per_run"]
@@ -209,6 +212,8 @@ def benchmark_throughput_small_inputs(
 
     Returns: A dictionary containing the results of the benchmark.
     """
+    # pylint: disable=invalid-name
+
     BENCH_SMALL_TOTAL_MS = 490
     BENCH_SMALL_ITERATION_MS = 170
 
