@@ -23,7 +23,7 @@ K2 = 0b1100001010110010101011100011110100100111110101001110101101001111
 MASK = 0xFFFFFFFFFFFFFFFF
 
 
-class BenchmarkHashFunction:
+class Benchmarker:
     """A class to benchmark a hash function."""
 
     # pylint: disable=too-few-public-methods
@@ -198,7 +198,7 @@ def benchmark_hash(
     params["number_of_blocks"] = number_of_blocks
     params["destinations"] = [0] * number_of_blocks
 
-    bench = BenchmarkHashFunction(total_microseconds, run_microseconds)
+    bench = Benchmarker(total_microseconds, run_microseconds)
     result = bench.run_timed_benchmarks(params)
 
     return result["nanoseconds_per_run"]
