@@ -9,35 +9,34 @@
 [![Total Downloads](https://static.pepy.tech/badge/mmh3)](https://pepy.tech/project/mmh3?versions=*&versions=4.*&versions=3.*&versions=2.*)
 [![Recent Downloads](https://static.pepy.tech/badge/mmh3/month)](https://pepy.tech/project/mmh3?versions=*&versions=4.*&versions=3.*&versions=2.*)
 
-mmh3 is a Python extension for
+`mmh3` is a Python extension for
 [MurmurHash (MurmurHash3)](https://en.wikipedia.org/wiki/MurmurHash), a set of
 fast and robust non-cryptographic hash functions invented by Austin Appleby.
 
-Combined with probabilistic techniques like a
+By combining `mmh3` with probabilistic techniques like
 [Bloom filter](https://en.wikipedia.org/wiki/Bloom_filter),
 [MinHash](https://en.wikipedia.org/wiki/MinHash), and
-[feature hashing](https://en.wikipedia.org/wiki/Feature_hashing), mmh3 allows
-you to develop high-performance systems in fields such as data mining, machine
+[feature hashing](https://en.wikipedia.org/wiki/Feature_hashing), you can
+develop high-performance systems in fields such as data mining, machine
 learning, and natural language processing.
 
-Another common use of mmh3 is to
-[calculate favicon hashes](https://gist.github.com/yehgdotnet/b9dfc618108d2f05845c4d8e28c5fc6a)
-used by [Shodan](https://www.shodan.io), the world's first IoT search engine.
+Another popular use of `mmh3` is to
+[calculate favicon hashes](https://gist.github.com/yehgdotnet/b9dfc618108d2f05845c4d8e28c5fc6a),
+which are utilized by [Shodan](https://www.shodan.io), the world's first IoT
+search engine.
 
-This page offers a quick start guide. For more detailed information, see the
-[documentation](https://mmh3.readthedocs.io/en/latest/).
+This page provides a quick start guide. For more comprehensive information,
+please refer to the [documentation](https://mmh3.readthedocs.io/en/latest/).
 
-## How to use
-
-### Install
+## Installation
 
 ```shell
-pip install mmh3 # for macOS, use "pip3 install mmh3" and python3
+pip install mmh3
 ```
 
-### Simple functions
+## Usage
 
-Quickstart:
+### Basic usage
 
 ```shell
 >>> import mmh3
@@ -92,19 +91,19 @@ optimization (keyword arg: `x64arch`). Use True for x64 and False for x86
 
 ### `hashlib`-style hashers
 
-`mmh3` implements hashers whose interfaces are similar to `hashlib` in the
-standard library: `mmh3_32()` for 32 bit hashing, `mmh3_x64_128()` for 128 bit
-hashing optimized for x64 architectures, and `mmh3_x86_128()` for 128 bit
-hashing optimized for x86 architectures.
+`mmh3` implements hashers with interfaces similar to those in `hashlib` from
+the standard library: `mmh3_32()` for 32-bit hashing, `mmh3_x64_128()` for
+128-bit hashing optimized for x64 architectures, and `mmh3_x86_128()` for
+128-bit hashing optimized for x86 architectures.
 
-In addition to the standard `digest()` method, each hasher has `sintdigest()`,
-which returns a signed integer, and `uintdigest()`, which returns an unsigned
-integer. 128 bit hashers also have `stupledigest()` and `utupledigest()` which
-return two 64 bit integers.
+In addition to the standard `digest()` method, each hasher provides
+`sintdigest()`, which returns a signed integer, and `uintdigest()`, which
+returns an unsigned integer. The 128-bit hashers also include `stupledigest()`
+and `utupledigest()`, which return two 64 bit integers.
 
-Note that as of version 4.1.0, the implementation is still experimental and its
-performance can be unsatisfactory (especially `mmh3_x86_128()`). Also,
-`hexdigest()` is not supported. Use `digest().hex()` instead.
+Please note that as of version 4.1.0, the implementation is still experimental,
+and performance may be unsatisfactory (particularly `mmh3_x86_128()`).
+Additionally, `hexdigest()` is not supported; use `digest().hex()` instead.
 
 ```shell
 >>> import mmh3
@@ -177,16 +176,16 @@ noted within a file.
 
 ## Known Issues
 
-### Getting different results from other MurmurHash3-based libraries
+### Different results from other MurmurHash3-based libraries
 
-By default, mmh3 returns **signed** values for 32-bit and 64-bit versions and
-**unsigned** values for `hash128`, due to historical reasons. Please use the
-keyword argument `signed` to obtain a desired result.
+By default, `mmh3` returns **signed** values for the 32-bit and 64-bit versions
+and **unsigned** values for `hash128` due to historical reasons. To get the
+desired result, use the `signed` keyword argument.
 
-From version 4.0.0, `mmh3` returns the same value under big-endian platforms as
-that under little-endian ones, while the original C++ library is
-endian-sensitive. If you need to obtain the original-compliant results under
-big-endian environments, please use version 3.\*.
+Starting from version 4.0.0, `mmh3` returns the same values on big-endian
+platforms as it does on little-endian ones, whereas the original C++ library is
+endian-sensitive. If you need results that comply with the original library on
+big-endian systems, please use version 3.\*.
 
 For compatibility with [Google Guava (Java)](https://github.com/google/guava),
 see
@@ -198,9 +197,9 @@ For compatibility with
 
 ### Unexpected results when given non 32-bit seeds
 
-Version 2.4 changed the type of seeds from signed 32-bit int to unsigned 32-bit
-int. The resulting values with signed seeds still remain the same as before, as
-long as they are 32-bit.
+In version 2.4, the type of a seed was changed from a signed 32-bit integer to
+an unsigned 32-bit integer. However, the resulting values for signed seeds
+remain unchanged from previous versions, as long as they are 32-bit.
 
 ```shell
 >>> mmh3.hash("aaaa", -1756908916) # signed representation for 0x9747b28c
@@ -231,12 +230,12 @@ public domain
 
 Ported and modified for Python by Hajime Senuma.
 
-## See also
+## External Tutorials
 
-### Tutorials (High-Performance Computing)
+### High-performance computing
 
-The following textbooks and tutorials are great sources to learn how to use mmh3
-(and other hash algorithms in general) for high-performance computing.
+The following textbooks and tutorials are great resources for learning how to
+use `mmh3` (and other hash algorithms in general) for high-performance computing.
 
 - Chapter 11: _Using Less Ram_ in Micha Gorelick and Ian Ozsvald. 2014. _High
   Performance Python: Practical Performant Programming for Humans_. O'Reilly
@@ -251,7 +250,7 @@ The following textbooks and tutorials are great sources to learn how to use mmh3
   _[A Gentle Introduction to Bloom Filter](https://www.kdnuggets.com/2016/08/gentle-introduction-bloom-filter.html)_.
   KDnuggets.
 
-### Tutorials (Internet of Things)
+### Internet of things
 
 [Shodan](https://www.shodan.io), the world's first
 [IoT](https://en.wikipedia.org/wiki/Internet_of_things) search engine, uses
@@ -274,7 +273,7 @@ is useful for OSINT and cybersecurity activities.
   _[How To Find Assets Using Favicon Hashes](https://payatu.com/blog/favicon-hash/)_.
   Payatu.
 
-### Similar libraries
+## Related Libraries
 
 - <https://github.com/wc-duck/pymmh3>: mmh3 in pure python (Fredrik Kihlander
   and Swapnil Gusani)
