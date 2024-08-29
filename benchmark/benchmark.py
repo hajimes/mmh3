@@ -84,7 +84,6 @@ class Benchmarker:
             The time spent running the benchmark function in nanoseconds.
         """
 
-        # pylint: disable=invalid-name
         for i, _ in enumerate(destinations):
             destinations[i] = 0xE5
 
@@ -116,8 +115,6 @@ class Benchmarker:
         adjusted based on the time spent in the previous run. This technique is called
         the "calibration" in pytest-benchmark, whereas a budget is called a "round".
         """
-        # pylint: disable=invalid-name
-
         time_spent = 0
 
         source_buffer = bytearray(size + Benchmarker.MARGIN_FOR_LATENCY)
@@ -193,7 +190,6 @@ def benchmark_hash(
     Returns:
         The time taken to hash the buffer in nanoseconds.
     """
-    # pylint: disable=invalid-name
     bench = Benchmarker(run_microseconds, total_microseconds)
     return bench.run_calibrated_benchmark(f, size)
 
