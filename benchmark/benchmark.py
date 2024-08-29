@@ -95,8 +95,6 @@ class Benchmarker:
         source_buffers: list[memoryview],
         destinations: list[int],
     ) -> int:
-        result: dict[str, int | float] = {}
-
         self._warmup(destinations)
 
         clock_start = time.time_ns()
