@@ -6,12 +6,13 @@ https://github.com/Cyan4973/xxHash/tree/dev/tests/bench
 
 """
 
+# for list / dict notation in 3.8
 from __future__ import annotations
 
 import gc
 import hashlib
 import time
-from typing import Any, Callable, Dict, Final, List
+from typing import Any, Callable, Final
 
 import matplotlib.pyplot as plt
 import mmh3
@@ -87,7 +88,7 @@ class Benchmarker:
         number_of_blocks: int,
         source_buffers: list[memoryview],
         destinations: list[int],
-    ) -> Dict[str, Any]:
+    ) -> dict[str, float | int]:
         result = {}
 
         self._warmup(destinations)
@@ -107,7 +108,9 @@ class Benchmarker:
 
         return result
 
-    def run_calibrated_benchmark(self, f: Callable, size: int) -> Dict[str, Any]:
+    def run_calibrated_benchmark(
+        self, f: Callable, size: int
+    ) -> dict[str, float | int]:
         """Runs the benchmark until the time spent is greater than therun budget.
 
         Runs the benchmark function with a number of loops that is automatically
@@ -212,7 +215,7 @@ def benchmark_hash(
 
 
 def benchmark_throughput_small_inputs(
-    hashes: List[Dict[str, Any]], small_test_size_min: int, small_test_size_max: int
+    hashes: list[dict[str, Any]], small_test_size_min: int, small_test_size_max: int
 ):
     """Benchmarks the throughput of a hash function on small inputs.
 
@@ -247,7 +250,7 @@ def benchmark_throughput_small_inputs(
 
 
 def benchmark_large_inputs(
-    hashes: List[Dict[str, Any]], large_test_log_min: int, large_test_log_max: int
+    hashes: list[dict[str, Any]], large_test_log_min: int, large_test_log_max: int
 ):
     """Benchmarks the throughput of a hash function on large inputs.
 

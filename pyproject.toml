@@ -32,7 +32,7 @@ classifiers = [
 dev = [
   "mypy == 1.11.2",
   "pytest == 8.3.2",
-  "pandas == 2.2.2",
+  "pandas >= 2.0.0",
   "pymmh3 == 0.0.5",
   "xxhash == 3.4.1"
 ]
