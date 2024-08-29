@@ -88,8 +88,8 @@ class Benchmarker:
         number_of_blocks: int,
         source_buffers: list[memoryview],
         destinations: list[int],
-    ) -> dict[str, float | int]:
-        result = {}
+    ) -> dict[str, int | float]:
+        result: dict[str, int | float] = {}
 
         self._warmup(destinations)
 
@@ -110,7 +110,7 @@ class Benchmarker:
 
     def run_calibrated_benchmark(
         self, f: Callable, size: int
-    ) -> dict[str, float | int]:
+    ) -> dict[str, int | float]:
         """Runs the benchmark until the time spent is greater than therun budget.
 
         Runs the benchmark function with a number of loops that is automatically
@@ -173,7 +173,7 @@ class Benchmarker:
 
             break
 
-        result = {}
+        result: dict[str, int | float] = {}
         result["loop_duration_nanoseconds"] = time_spent
         result["nanoseconds_per_run"] = self.fastest_nanoseconds_per_run
 
