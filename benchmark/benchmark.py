@@ -75,7 +75,13 @@ class Benchmarker:
         support PyPy, so this code may need to be adjusted.
 
         Args:
-            params: The parameters for the benchmark function.
+            f: The hash function to benchmark.
+            number_of_blocks: The number of blocks to hash.
+            source_buffers: The buffers to hash.
+            destinations: The destinations for the hash results.
+
+        Returns:
+            The time spent running the benchmark function in nanoseconds.
         """
 
         # pylint: disable=invalid-name
@@ -88,7 +94,7 @@ class Benchmarker:
         number_of_blocks: int,
         source_buffers: list[memoryview],
         destinations: list[int],
-    ) -> dict[str, int | float]:
+    ) -> int:
         result: dict[str, int | float] = {}
 
         self._warmup(destinations)
@@ -103,25 +109,14 @@ class Benchmarker:
         clock_end = time.time_ns()
         time_spent = clock_end - clock_start
 
-        result["loop_duration_nanoseconds"] = time_spent
-        result["nanoseconds_per_run"] = time_spent / self.number_of_loops
+        return time_spent
 
-        return result
-
-    def run_calibrated_benchmark(
-        self, f: Callable, size: int
-    ) -> dict[str, int | float]:
+    def run_calibrated_benchmark(self, f: Callable, size: int) -> float:
         """Runs the benchmark until the time spent is greater than therun budget.
 
         Runs the benchmark function with a number of loops that is automatically
         adjusted based on the time spent in the previous run. This technique is called
         the "calibration" in pytest-benchmark, whereas a budget is called a "round".
-
-        Args:
-            params: The parameters for the benchmark function.
-
-        Returns:
-            A dictionary containing the results of the benchmark.
         """
         # pylint: disable=invalid-name
 
@@ -143,17 +138,17 @@ class Benchmarker:
         destinations = [0] * number_of_blocks
 
         while True:
-            run_result = self._benchmark_function(
+            loop_duration_nanoseconds = self._benchmark_function(
                 f, number_of_blocks, source_buffers, destinations
             )
 
-            time_spent += run_result["loop_duration_nanoseconds"]
+            nanoseconds_per_run = loop_duration_nanoseconds / self.number_of_loops
 
-            if run_result["loop_duration_nanoseconds"] > (
-                self.run_budget_nanoseconds / 50
-            ):
+            time_spent += loop_duration_nanoseconds
+
+            if loop_duration_nanoseconds > (self.run_budget_nanoseconds / 50):
                 fastest_run_ns = min(
-                    self.fastest_nanoseconds_per_run, run_result["nanoseconds_per_run"]
+                    self.fastest_nanoseconds_per_run, nanoseconds_per_run
                 )
                 self.number_of_loops = (
                     int(self.run_budget_nanoseconds / fastest_run_ns) + 1
@@ -161,23 +156,16 @@ class Benchmarker:
             else:
                 self.number_of_loops *= Benchmarker.WOLKLOAD_MULTIPLIER
 
-            if (
-                run_result["loop_duration_nanoseconds"]
-                < self.run_budget_nanoseconds / 2
-            ):
+            if loop_duration_nanoseconds < self.run_budget_nanoseconds / 2:
                 continue
 
-            if run_result["nanoseconds_per_run"] < self.fastest_nanoseconds_per_run:
-                self.fastest_nanoseconds_per_run = run_result["nanoseconds_per_run"]
-                self.fastest_run_sum_of_return = run_result["loop_duration_nanoseconds"]
+            if nanoseconds_per_run < self.fastest_nanoseconds_per_run:
+                self.fastest_nanoseconds_per_run = nanoseconds_per_run
+                self.fastest_run_sum_of_return = loop_duration_nanoseconds
 
             break
 
-        result: dict[str, int | float] = {}
-        result["loop_duration_nanoseconds"] = time_spent
-        result["nanoseconds_per_run"] = self.fastest_nanoseconds_per_run
-
-        return result
+        return self.fastest_nanoseconds_per_run
 
 
 def init_buffer(ba: bytearray) -> None:
@@ -209,9 +197,7 @@ def benchmark_hash(
     """
     # pylint: disable=invalid-name
     bench = Benchmarker(run_microseconds, total_microseconds)
-    result = bench.run_calibrated_benchmark(f, size)
-
-    return result["nanoseconds_per_run"]
+    return bench.run_calibrated_benchmark(f, size)
 
 
 def benchmark_throughput_small_inputs(
