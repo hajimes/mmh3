@@ -46,8 +46,6 @@ This project has adhered to
 
 ## [4.0.0] - 2023-05-22
 
-The major version bump is due to the backward incompatible changes.
-
 ### Added
 
 - Add experimental support for `hashlib`-compliant hasher classes
