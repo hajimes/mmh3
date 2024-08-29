@@ -39,7 +39,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install .
-          pip install ".[test]"
+          pip install ".[dev]"
       - name: Test with pytest
         run: python -m pytest
       - name: Test type hints with mypy

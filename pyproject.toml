@@ -28,11 +28,9 @@ classifiers = [
 ]
 
 [project.optional-dependencies]
-test = [
-  "mypy >= 1.0",
-  "pytest >= 7.0.0"
-]
-benchmark = [
+dev = [
+  "mypy == 1.11.2",
+  "pytest == 8.3.2",
   "matplotlib == 3.9.1",
   "pandas == 2.2.2",
   "pymmh3 == 0.0.5",

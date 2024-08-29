@@ -6,10 +6,12 @@ https://github.com/Cyan4973/xxHash/tree/dev/tests/bench
 
 """
 
+from __future__ import annotations
+
 import gc
 import hashlib
 import time
-from typing import Any, Callable, Dict, List
+from typing import Any, Callable, Dict, Final, List
 
 import matplotlib.pyplot as plt
 import mmh3
@@ -28,24 +30,35 @@ class Benchmarker:
 
     # pylint: disable=too-few-public-methods
 
-    def __init__(self, total_microseconds, run_microseconds):
-        if run_microseconds is None:
-            self.run_microseconds = 1
-        else:
-            self.run_microseconds = run_microseconds
+    SIZE_TO_HASH_PER_ROUND: Final[int] = 200000
+    HASH_ROUNDS_MAX: Final[int] = 1000
+
+    MARGIN_FOR_LATENCY: Final[int] = 1024
+
+    WOLKLOAD_MULTIPLIER: Final[int] = 10
+
+    def __init__(self, round_budget_ms: int, total_budget_ms: int):
+        """Initializes the Benchmarker.
+
+        Args:
+            round_budget_ms: The minimum time for each round to spend running
+                the hash function in milliseconds.
+            total_budget_ms: The total minimum time to spend benchmarking in
+                milliseconds.
+        """
 
         # Run the benchmark function
         # until the time spent is greater than the run budget.
         # defaults to 1ms (in nanoseconds)
-        self.run_budget_nanoseconds = self.run_microseconds * TIMELOOP_NANOSEC / 1000
+        self.run_budget_nanoseconds = round_budget_ms * TIMELOOP_NANOSEC / 1000
 
-        self.total_microseconds = total_microseconds
+        self.total_budget_ms = total_budget_ms
 
         self.fastest_nanoseconds_per_run = float("inf")
         self.fastest_run_sum_of_return = -1
         self.number_of_loops = 1
 
-    def _warmup(self, params: Dict[str, Any]) -> None:
+    def _warmup(self, destinations: list[int]) -> None:
         """Warm up the CPU by running the benchmark function.
 
         The current implmentation follows the logic of the following C code:
@@ -64,21 +77,26 @@ class Benchmarker:
             params: The parameters for the benchmark function.
         """
 
-        for i in range(len(params["destinations"])):
-            params["destinations"][i] = 0xE5
+        for i in range(len(destinations)):
+            destinations[i] = 0xE5
 
-    def _benchmark_function(self, params: Dict[str, Any]) -> Dict[str, Any]:
+    def _benchmark_function(
+        self,
+        f: Callable,
+        number_of_blocks: int,
+        source_buffers: list[bytearray],
+        destinations: list[int],
+    ) -> Dict[str, Any]:
         result = {}
 
-        self._warmup(params)
-        target_function = params["function"]
+        self._warmup(destinations)
 
         clock_start = time.time_ns()
 
         for _ in range(self.number_of_loops):
-            for i in range(params["number_of_blocks"]):
-                b = params["source_buffers"][i]
-                params["destinations"][i] = target_function(b)
+            for i in range(number_of_blocks):
+                b = source_buffers[i]
+                destinations[i] = f(b)
 
         clock_end = time.time_ns()
         time_spent = clock_end - clock_start
@@ -88,7 +106,7 @@ class Benchmarker:
 
         return result
 
-    def run_timed_benchmarks(self, params: Dict[str, Any]) -> Dict[str, Any]:
+    def run_calibrated_benchmark(self, f: Callable, size: int) -> Dict[str, Any]:
         """Runs the benchmark until the time spent is greater than therun budget.
 
         Runs the benchmark function with a number of loops that is automatically
@@ -105,10 +123,23 @@ class Benchmarker:
 
         time_spent = 0
 
-        WOLKLOAD_MULTIPLIER = 10
+        source_buffer = bytearray(size + Benchmarker.MARGIN_FOR_LATENCY)
+        init_buffer(source_buffer)
+
+        number_of_blocks = (Benchmarker.SIZE_TO_HASH_PER_ROUND // size) + 1
+        number_of_blocks = min(number_of_blocks, Benchmarker.HASH_ROUNDS_MAX)
+
+        source_buffers = []
+        source_sizes = []
+
+        for _ in range(number_of_blocks):
+            source_sizes.append(size)
+            source_buffers.append(memoryview(source_buffer)[0:size])
+
+        destinations = [0] * number_of_blocks
 
         while True:
-            run_result = self._benchmark_function(params)
+            run_result = self._benchmark_function(f, number_of_blocks, source_buffers, destinations)
 
             time_spent += run_result["loop_duration_nanoseconds"]
 
@@ -122,7 +153,7 @@ class Benchmarker:
                     int(self.run_budget_nanoseconds / fastest_run_ns) + 1
                 )
             else:
-                self.number_of_loops *= WOLKLOAD_MULTIPLIER
+                self.number_of_loops *= Benchmarker.WOLKLOAD_MULTIPLIER
 
             if (
                 run_result["loop_duration_nanoseconds"]
@@ -172,34 +203,8 @@ def benchmark_hash(
         The time taken to hash the buffer in nanoseconds.
     """
     # pylint: disable=invalid-name
-
-    SIZE_TO_HASH_PER_ROUND = 200000
-    HASH_ROUNDS_MAX = 1000
-
-    MARGIN_FOR_LATENCY = 1024
-
-    source_buffer = bytearray(size + MARGIN_FOR_LATENCY)
-    init_buffer(source_buffer)
-
-    number_of_blocks = (SIZE_TO_HASH_PER_ROUND // size) + 1
-    number_of_blocks = min(number_of_blocks, HASH_ROUNDS_MAX)
-
-    source_buffers = []
-    source_sizes = []
-
-    for _ in range(number_of_blocks):
-        source_sizes.append(size)
-        source_buffers.append(memoryview(source_buffer)[0:size])
-
-    params: Dict[str, Any] = {}
-    params["function"] = f
-    params["source_buffers"] = source_buffers
-    params["source_sizes"] = source_sizes
-    params["number_of_blocks"] = number_of_blocks
-    params["destinations"] = [0] * number_of_blocks
-
-    bench = Benchmarker(total_microseconds, run_microseconds)
-    result = bench.run_timed_benchmarks(params)
+    bench = Benchmarker(run_microseconds, total_microseconds)
+    result = bench.run_calibrated_benchmark(f, size)
 
     return result["nanoseconds_per_run"]
 
@@ -321,6 +326,8 @@ if __name__ == "__main__":
         plt.figure()
 
         df.plot(
+            xlabel="Input size (bytes)",
+            ylabel="Reciprocal throughput (ns/bytes)",
             logy=True,
         )
 
