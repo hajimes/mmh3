@@ -77,7 +77,8 @@ class Benchmarker:
             params: The parameters for the benchmark function.
         """
 
-        for i in range(len(destinations)):
+        # pylint: disable=invalid-name
+        for i, _ in enumerate(destinations):
             destinations[i] = 0xE5
 
     def _benchmark_function(
@@ -184,8 +185,7 @@ def init_buffer(ba: bytearray) -> None:
     """
     acc = K2
 
-    # pylint: disable=consider-using-enumerate
-    for i in range(len(ba)):
+    for i, _ in enumerate(ba):
         acc = (acc * K1) & MASK
         ba[i] = acc >> 56
 
