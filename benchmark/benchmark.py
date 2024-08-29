@@ -84,7 +84,7 @@ class Benchmarker:
         self,
         f: Callable,
         number_of_blocks: int,
-        source_buffers: list[bytearray],
+        source_buffers: list[memoryview],
         destinations: list[int],
     ) -> Dict[str, Any]:
         result = {}
@@ -139,7 +139,9 @@ class Benchmarker:
         destinations = [0] * number_of_blocks
 
         while True:
-            run_result = self._benchmark_function(f, number_of_blocks, source_buffers, destinations)
+            run_result = self._benchmark_function(
+                f, number_of_blocks, source_buffers, destinations
+            )
 
             time_spent += run_result["loop_duration_nanoseconds"]
 
@@ -190,7 +192,7 @@ def init_buffer(ba: bytearray) -> None:
 
 def benchmark_hash(
     f: Callable, size: int, total_microseconds: int, run_microseconds: int
-) -> int:
+) -> float:
     """Benchmarks a hash function by running it on a buffer of a given size.
 
     Args:

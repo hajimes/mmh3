@@ -19,8 +19,9 @@ higher than that of `hashlib` (`md5` and `sha1`) for small inputs.
 Figure 2: Throughput (reciprocal) for large inputs. Smaller is better.
 ```
 
-However, when the input size is large, the throughput of `xxhashh` is higher than that of `mmh3`.
-The result is exptected because of the speed differences between the backends of two hash functions.
+However, when the input size is large, the throughput of `xxhashh` is higher
+than that of `mmh3`. The result is exptected because of the speed differences
+between the backends of two hash functions.
 
 ## References
 
