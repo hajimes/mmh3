@@ -33,10 +33,15 @@ test = [
   "pytest == 8.3.2"
 ]
 dev = [
+  "matplotlib >= 3.7",
   "pandas >= 2.0.0",
   "pymmh3 == 0.0.5",
-  "xxhash == 3.5.0",
-  "matplotlib >= 3.7"
+  "xxhash == 3.5.0"
+]
+docs = [
+  "myst-parser == 4.0.0",
+  "shibuya == 2024.8.27",
+  "sphinx == 7.4.7"
 ]
 
 [project.urls]
