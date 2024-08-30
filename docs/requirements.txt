@@ -35,7 +35,7 @@ mdit-py-plugins==0.4.1
 mdurl==0.1.2
     # via markdown-it-py
 myst-parser==3.0.1
-    # via -r requirements.in
+    # via -r docs/requirements.in
 packaging==24.1
     # via sphinx
 pygments==2.18.0
@@ -44,13 +44,13 @@ pyyaml==6.0.1
     # via myst-parser
 requests==2.32.3
     # via sphinx
-shibuya==2024.7.13
-    # via -r requirements.in
+shibuya==2024.8.27
+    # via -r docs/requirements.in
 snowballstemmer==2.2.0
     # via sphinx
 sphinx==7.4.5
     # via
-    #   -r requirements.in
+    #   -r docs/requirements.in
     #   myst-parser
     #   shibuya
 sphinxcontrib-applehelp==1.0.8
