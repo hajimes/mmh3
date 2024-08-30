@@ -9,6 +9,7 @@ description = "Python extension for MurmurHash (MurmurHash3), a set of fast and 
 readme = "README.md"
 license = {file = "LICENSE"}
 keywords = ["utility", "hash", "MurmurHash"]
+requires-python = ">=3.8"
 authors = [
   {name = "Hajime Senuma", email="hajime.senuma@gmail.com"}
 ]
@@ -29,12 +30,12 @@ classifiers = [
 
 [project.optional-dependencies]
 test = [
-  "mypy >= 1.11.1",
+  "mypy == 1.11.2",
   "pytest == 8.3.2"
 ]
 dev = [
-  "matplotlib >= 3.7",
-  "pandas >= 2.0.0",
+  "matplotlib == 3.7.3",
+  "pandas == 2.0.3",
   "pymmh3 == 0.0.5",
   "xxhash == 3.5.0"
 ]
