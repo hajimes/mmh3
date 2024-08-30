@@ -25,13 +25,18 @@ between the backends of two hash functions.
 
 ## References
 
+- [timeit] (Python Standard Library).
 - Yann Collet. [xxHash].
 - Ionel Cristian Mărieș.
   [pytest-benchmark].
+- Tim Peters. 2002. [Chapter 17. Algorithms: Introduction] in _Python Cookbook_,
+  3rd ed. O'Reilly Media. ISBN: 978-0596001674.
 - Micha Gorelick and Ian Ozsvald. 2020.
   _[High Performance Python: Practical Performant Programming for Humans]_,
   2nd ed. O'Reilly Media. ISBN: 978-1492055020.
 
+[timeit]: https://docs.python.org/3/library/timeit.html
 [xxHash]: https://github.com/Cyan4973/xxHash
 [pytest-benchmark]: https://github.com/ionelmc/pytest-benchmark
+[Chapter 17. Algorithms: Introduction]: https://www.oreilly.com/library/view/python-cookbook/0596001673/ch17.html
 [High Performance Python: Practical Performant Programming for Humans]: https://www.oreilly.com/library/view/high-performance-python/9781492055013/

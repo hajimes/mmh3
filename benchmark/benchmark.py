@@ -35,6 +35,10 @@ class Benchmarker:
 
     WOLKLOAD_MULTIPLIER: Final[int] = 10
 
+    K1: Final[int] = 0b1001111000110111011110011011000110000101111010111100101010000111
+    K2: Final[int] = 0b1100001010110010101011100011110100100111110101001110101101001111
+    MASK: Final[int] = 0xFFFFFFFFFFFFFFFF
+
     def __init__(self, round_budget_ms: int, total_budget_ms: int):
         """Initializes the Benchmarker.
 
@@ -52,11 +56,11 @@ class Benchmarker:
 
         self.total_budget_ms = total_budget_ms
 
-        self.fastest_nanoseconds_per_run = float("inf")
+        self.__fastest_nanoseconds_per_run = float("inf")
         self.fastest_run_sum_of_return = -1
         self.number_of_loops = 1
 
-    def _warmup(self, destinations: list[int]) -> None:
+    def __warmup(self, destinations: list[int]) -> None:
         """Warm up the CPU by running the benchmark function.
 
         The current implmentation follows the logic of the following C code:
@@ -84,14 +88,14 @@ class Benchmarker:
         for i, _ in enumerate(destinations):
             destinations[i] = 0xE5
 
-    def _benchmark_function(
+    def __benchmark_function(
         self,
         f: Callable,
         number_of_blocks: int,
         source_buffers: list[memoryview],
         destinations: list[int],
     ) -> int:
-        self._warmup(destinations)
+        self.__warmup(destinations)
 
         gc.disable()
         clock_start = time.time_ns()
@@ -114,6 +118,13 @@ class Benchmarker:
         Runs the benchmark function with a number of loops that is automatically
         adjusted based on the time spent in the previous run. This technique is called
         the "calibration" in pytest-benchmark, whereas a budget is called a "round".
+
+        Args:
+            f: The hash function to benchmark.
+            size: The size of the buffer to hash.
+
+        Returns:
+            The time taken to hash the buffer in nanoseconds.
         """
         time_spent = 0
 
@@ -133,7 +144,7 @@ class Benchmarker:
         destinations = [0] * number_of_blocks
 
         while True:
-            loop_duration_nanoseconds = self._benchmark_function(
+            loop_duration_nanoseconds = self.__benchmark_function(
                 f, number_of_blocks, source_buffers, destinations
             )
 
@@ -143,7 +154,7 @@ class Benchmarker:
 
             if loop_duration_nanoseconds > (self.run_budget_nanoseconds / 50):
                 fastest_run_ns = min(
-                    self.fastest_nanoseconds_per_run, nanoseconds_per_run
+                    self.__fastest_nanoseconds_per_run, nanoseconds_per_run
                 )
                 self.number_of_loops = (
                     int(self.run_budget_nanoseconds / fastest_run_ns) + 1
@@ -154,13 +165,13 @@ class Benchmarker:
             if loop_duration_nanoseconds < self.run_budget_nanoseconds / 2:
                 continue
 
-            if nanoseconds_per_run < self.fastest_nanoseconds_per_run:
-                self.fastest_nanoseconds_per_run = nanoseconds_per_run
+            if nanoseconds_per_run < self.__fastest_nanoseconds_per_run:
+                self.__fastest_nanoseconds_per_run = nanoseconds_per_run
                 self.fastest_run_sum_of_return = loop_duration_nanoseconds
 
             break
 
-        return self.fastest_nanoseconds_per_run
+        return self.__fastest_nanoseconds_per_run
 
 
 def init_buffer(ba: bytearray) -> None:
@@ -169,14 +180,10 @@ def init_buffer(ba: bytearray) -> None:
     Args:
         ba: The buffer to initialize.
     """
-    K1: Final[int] = 0b1001111000110111011110011011000110000101111010111100101010000111
-    K2: Final[int] = 0b1100001010110010101011100011110100100111110101001110101101001111
-    MASK: Final[int] = 0xFFFFFFFFFFFFFFFF
-
-    acc = K2
+    acc = Benchmarker.K2
 
     for i, _ in enumerate(ba):
-        acc = (acc * K1) & MASK
+        acc = (acc * Benchmarker.K1) & Benchmarker.MASK
         ba[i] = acc >> 56
 
 
@@ -219,8 +226,8 @@ def benchmark_throughput_small_inputs(
 
     for h in hashes:
         result = []
+        print(h["name"])
         for i in range(small_test_size_min, small_test_size_max + 1):
-            print(h["name"], i)
             result.append(
                 benchmark_hash(
                     h["function"], i, BENCH_SMALL_TOTAL_MS, BENCH_SMALL_ITERATION_MS
@@ -252,8 +259,8 @@ def benchmark_large_inputs(
 
     for h in hashes:
         result = []
+        print(h["name"])
         for i in range(large_test_log_min, large_test_log_max + 1):
-            print(h["name"], i)
             gc.disable()
             result.append(
                 benchmark_hash(
