@@ -21,9 +21,6 @@ import pymmh3
 import xxhash
 
 TIMELOOP_NANOSEC = 1000000000  # 1 second in nanoseconds
-K1 = 0b1001111000110111011110011011000110000101111010111100101010000111
-K2 = 0b1100001010110010101011100011110100100111110101001110101101001111
-MASK = 0xFFFFFFFFFFFFFFFF
 
 
 class Benchmarker:
@@ -96,6 +93,7 @@ class Benchmarker:
     ) -> int:
         self._warmup(destinations)
 
+        gc.disable()
         clock_start = time.time_ns()
 
         for _ in range(self.number_of_loops):
@@ -104,6 +102,8 @@ class Benchmarker:
                 destinations[i] = f(b)
 
         clock_end = time.time_ns()
+        gc.enable()
+
         time_spent = clock_end - clock_start
 
         return time_spent
@@ -169,6 +169,10 @@ def init_buffer(ba: bytearray) -> None:
     Args:
         ba: The buffer to initialize.
     """
+    K1: Final[int] = 0b1001111000110111011110011011000110000101111010111100101010000111
+    K2: Final[int] = 0b1100001010110010101011100011110100100111110101001110101101001111
+    MASK: Final[int] = 0xFFFFFFFFFFFFFFFF
+
     acc = K2
 
     for i, _ in enumerate(ba):
@@ -217,13 +221,11 @@ def benchmark_throughput_small_inputs(
         result = []
         for i in range(small_test_size_min, small_test_size_max + 1):
             print(h["name"], i)
-            gc.disable()
             result.append(
                 benchmark_hash(
                     h["function"], i, BENCH_SMALL_TOTAL_MS, BENCH_SMALL_ITERATION_MS
                 )
             )
-            gc.enable()
         data_result[h["name"]] = result
 
     return data_result
