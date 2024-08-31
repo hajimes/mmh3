@@ -98,14 +98,14 @@ class Benchmarker:
         self.__warmup(destinations)
 
         gc.disable()
-        clock_start = time.time_ns()
+        clock_start = time.perf_counter_ns()
 
         for _ in range(self.number_of_loops):
             for i in range(number_of_blocks):
                 b = source_buffers[i]
                 destinations[i] = f(b)
 
-        clock_end = time.time_ns()
+        clock_end = time.perf_counter_ns()
         gc.enable()
 
         time_spent = clock_end - clock_start

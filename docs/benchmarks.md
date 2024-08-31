@@ -23,6 +23,26 @@ However, when the input size is large, the throughput of `xxhashh` is higher
 than that of `mmh3`. The result is exptected because of the speed differences
 between the backends of two hash functions.
 
+
+## Microbenchmarking in Python
+
+### Pregenerated iterator
+
+### 
+
+### Calibration
+
+The default values for calibration:
+
+- autorage of timeit in Python ST
+  - 200,000 microseconds
+- pytest-benchmark
+  - 5 microsconds (chosen as 10 x TIMER_RESOLUTION)
+- xxHash:
+  - 170 microseconds for small inputs (<= 128 bytes)
+  - 490 microseconds for large inputs
+
+
 ## References
 
 - [timeit] (Python Standard Library).
