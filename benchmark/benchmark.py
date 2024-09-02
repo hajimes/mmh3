@@ -85,6 +85,6 @@ if __name__ == "__main__":
 
     while fib1 <= M:
         runner.bench_time_func(
-            f"{fib1} bytes", hash_128_test, mmh3.hash_bytes, fib1, inner_loops=10
+            f"{fib1} bytes", perf_hash, mmh3.hash_bytes, fib1, inner_loops=10
         )
         fib1, fib2 = fib2, fib1 + fib2
