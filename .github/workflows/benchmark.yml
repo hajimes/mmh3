@@ -27,7 +27,6 @@ jobs:
           pip install --upgrade pip
           pip install .
           pip install ".[dev]"
-          yes | pip uninstall pyperf
       - name: Tune pyperf
         run: |
           sudo modprobe msr
