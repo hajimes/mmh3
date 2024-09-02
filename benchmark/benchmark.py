@@ -33,11 +33,12 @@ def init_buffer(ba: bytearray) -> bytearray:
     return ba
 
 
-def mmh3_128_test(loops: int, size: int) -> float:
+def perf_hash(loops: int, f: callable, size: int) -> float:
     """Benchmark the mmh3 hash function.
 
     Args:
         loops: The number of outer loops to run.
+        f: The hash function to benchmark
         size: The size of the buffer to hash.
 
     Returns:
@@ -61,30 +62,29 @@ def mmh3_128_test(loops: int, size: int) -> float:
 
     t0 = time.perf_counter()
     for _ in range_it:
-        mmh3.hash_bytes(data0)
-        mmh3.hash_bytes(data1)
-        mmh3.hash_bytes(data2)
-        mmh3.hash_bytes(data3)
-        mmh3.hash_bytes(data4)
-        mmh3.hash_bytes(data5)
-        mmh3.hash_bytes(data6)
-        mmh3.hash_bytes(data7)
-        mmh3.hash_bytes(data8)
-        mmh3.hash_bytes(data9)
+        f(data0)
+        f(data1)
+        f(data2)
+        f(data3)
+        f(data4)
+        f(data5)
+        f(data6)
+        f(data7)
+        f(data8)
+        f(data9)
 
     return time.perf_counter() - t0
 
 
 if __name__ == "__main__":
     runner = pyperf.Runner()
-    bench = runner.bench_time_func(
-        "mmh3-128_1024x1024", mmh3_128_test, 1024 * 1024, inner_loops=10
-    )
-    # bench.dump("mmh3-128_1024x1024.json", replace=True)
 
-    bench = runner.bench_time_func(
-        "mmh3-128_64", mmh3_128_test, 64, inner_loops=10
-    )
-    # bench.dump("mmh3-128_64.json", replace=True)
+    M = 1024
 
+    fib1, fib2 = 1, 2
 
+    while fib1 <= M:
+        runner.bench_time_func(
+            f"{fib1} bytes", hash_128_test, mmh3.hash_bytes, fib1, inner_loops=10
+        )
+        fib1, fib2 = fib2, fib1 + fib2

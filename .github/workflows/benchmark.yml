@@ -27,16 +27,11 @@ jobs:
           pip install --upgrade pip
           pip install .
           pip install ".[dev]"
-      - name: Tune pyperf
-        run: |
-          sudo modprobe msr
-          lscpu -a -e
-          lsmod | grep msr
-          sudo python -m pip install pyperf
-      - name: Tune pyperf contd
-        bash: |
-          set -exo pipefail
-          sudo pyperf system tune
-      # sudo LD_LIBRARY_PATH=$LD_LIBRARY_PATH python -m pyperf system tune
       - name: Benchmark hash functions
-        run: python benchmark/benchmark.py
+        run: |
+          mkdir var
+          python benchmark/benchmark.py -o var/benchmark.json
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          path: var/benchmark.json
