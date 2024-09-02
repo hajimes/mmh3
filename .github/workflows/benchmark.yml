@@ -7,8 +7,13 @@ on:
       - feature/introduce-pyperf
   workflow_dispatch:
 
+permissions: {}
+
 jobs:
   benchmark:
+    permissions:
+      contents: read
+      packages: read
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
@@ -29,6 +34,6 @@ jobs:
           lscpu -a -e
           lsmod | grep msr
           sudo python -m pip install pyperf
-          sudo LD_LIBRARY_PATH=$LD_LIBRARY_PATH python -m pyperf system tune
+      # sudo LD_LIBRARY_PATH=$LD_LIBRARY_PATH python -m pyperf system tune
       - name: Benchmark hash functions
         run: python becnhmark/bechmark.py
