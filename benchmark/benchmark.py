@@ -2,6 +2,7 @@
 
 import itertools
 import time
+from collections.abc import Callable
 from typing import Final
 
 import mmh3
@@ -33,7 +34,7 @@ def init_buffer(ba: bytearray) -> bytearray:
     return ba
 
 
-def perf_hash(loops: int, f: callable, size: int) -> float:
+def perf_hash(loops: int, f: Callable, size: int) -> float:
     """Benchmark the mmh3 hash function.
 
     Args:
@@ -44,6 +45,8 @@ def perf_hash(loops: int, f: callable, size: int) -> float:
     Returns:
         The time taken to hash the buffer in fractional seconds.
     """
+    # pylint: disable=too-many-locals
+
     range_it = itertools.repeat(None, loops)
 
     data = bytearray(size + 9)
