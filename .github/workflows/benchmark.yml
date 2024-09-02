@@ -20,7 +20,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          # pandas 2.0.3 does not have wheels for Python 3.12
+          # pandas 2.0.3 does not provide wheels for Python 3.12
           python-version: "3.11"
       - name: Install dependencies
         run: |
@@ -29,5 +29,6 @@ jobs:
           pip install ".[dev]"
       - name: Benchmark hash functions
         run: |
+          sudo python -m pip install pyperf
           sudo python -m pyperf system tune
           python becnhmark/bechmark.py
