@@ -34,6 +34,6 @@ jobs:
           lscpu -a -e
           lsmod | grep msr
           sudo python -m pip install pyperf
-          sudo python -m pyperf system tune >/dev/null
+          sudo LD_LIBRARY_PATH=$LD_LIBRARY_PATH python -m pyperf system tune
       - name: Benchmark hash functions
         run: python becnhmark/bechmark.py
