@@ -29,5 +29,5 @@ jobs:
           pip install ".[dev]"
       - name: Benchmark hash functions
         run: |
-          python -m pyperf system tune
+          sudo python -m pyperf system tune
           python becnhmark/bechmark.py
