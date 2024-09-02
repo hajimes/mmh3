@@ -27,8 +27,10 @@ jobs:
           pip install --upgrade pip
           pip install .
           pip install ".[dev]"
-      - name: Benchmark hash functions
+      - name: Tune pyperf
         run: |
+          sudo modprobe msr
           sudo python -m pip install pyperf
           sudo python -m pyperf system tune
-          python becnhmark/bechmark.py
+      - name: Benchmark hash functions
+        run: python becnhmark/bechmark.py
