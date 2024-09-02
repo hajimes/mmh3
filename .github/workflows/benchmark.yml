@@ -36,4 +36,4 @@ jobs:
           sudo python -m pip install pyperf
       # sudo LD_LIBRARY_PATH=$LD_LIBRARY_PATH python -m pyperf system tune
       - name: Benchmark hash functions
-        run: python becnhmark/bechmark.py
+        run: python benchmark/benchmark.py
