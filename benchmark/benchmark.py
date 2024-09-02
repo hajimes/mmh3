@@ -78,6 +78,13 @@ def mmh3_128_test(loops: int, size: int) -> float:
 if __name__ == "__main__":
     runner = pyperf.Runner()
     bench = runner.bench_time_func(
-        "mmh3-128_1024", mmh3_128_test, 1024 * 1024, inner_loops=10
+        "mmh3-128_1024x1024", mmh3_128_test, 1024 * 1024, inner_loops=10
     )
-    bench.dump("mmh3-128_1024.json", replace=True)
+    # bench.dump("mmh3-128_1024x1024.json", replace=True)
+
+    bench = runner.bench_time_func(
+        "mmh3-128_64", mmh3_128_test, 64, inner_loops=10
+    )
+    # bench.dump("mmh3-128_64.json", replace=True)
+
+

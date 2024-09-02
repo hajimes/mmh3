@@ -33,6 +33,10 @@ jobs:
           lscpu -a -e
           lsmod | grep msr
           sudo python -m pip install pyperf
+      - name: Tune pyperf contd
+        bash: |
+          set -exo pipefail
+          sudo pyperf system tune
       # sudo LD_LIBRARY_PATH=$LD_LIBRARY_PATH python -m pyperf system tune
       - name: Benchmark hash functions
         run: python benchmark/benchmark.py
