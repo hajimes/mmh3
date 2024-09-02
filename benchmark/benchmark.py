@@ -1,6 +1,8 @@
+"""Benchmark module for various hash functions."""
+
 import itertools
 import time
-from typing import Any, Callable, Final
+from typing import Final
 
 import mmh3
 import pyperf
@@ -12,6 +14,9 @@ MASK: Final[int] = 0xFFFFFFFFFFFFFFFF
 
 def init_buffer(ba: bytearray) -> bytearray:
     """Initializes a byte array with a pattern.
+
+    Initializes a byte array with a pattern based on xxHash's benchmarking.
+    https://github.com/Cyan4973/xxHash/blob/dev/tests/bench/benchHash.c
 
     Args:
         ba: The byte array to initialize.
@@ -29,6 +34,15 @@ def init_buffer(ba: bytearray) -> bytearray:
 
 
 def mmh3_128_test(loops: int, size: int) -> float:
+    """Benchmark the mmh3 hash function.
+
+    Args:
+        loops: The number of outer loops to run.
+        size: The size of the buffer to hash.
+
+    Returns:
+        The time taken to hash the buffer in fractional seconds.
+    """
     range_it = itertools.repeat(None, loops)
 
     data = bytearray(size + 9)
@@ -63,5 +77,7 @@ def mmh3_128_test(loops: int, size: int) -> float:
 
 if __name__ == "__main__":
     runner = pyperf.Runner()
-    bench = runner.bench_time_func("mmh3-128_1024", mmh3_128_test, 1024 * 1024, inner_loops=10)
-    bench.dump("m.json", replace=True)
+    bench = runner.bench_time_func(
+        "mmh3-128_1024", mmh3_128_test, 1024 * 1024, inner_loops=10
+    )
+    bench.dump("mmh3-128_1024.json", replace=True)
