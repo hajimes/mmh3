@@ -42,7 +42,7 @@ dev = [
 ]
 docs = [
   "myst-parser == 4.0.0",
-  "shibuya == 2024.8.27",
+  "shibuya == 2024.8.30",
   "sphinx == 8.0.2"
 ]
 
