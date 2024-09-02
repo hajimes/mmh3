@@ -2,6 +2,9 @@
 name: Benchmarking hash functions
 
 on:
+  push:
+    branches:
+      - feature/introduce-pyperf
   workflow_dispatch:
 
 permissions: {}
