@@ -27,9 +27,12 @@ jobs:
           pip install --upgrade pip
           pip install .
           pip install ".[dev]"
+          pip uninstall pyperf
       - name: Tune pyperf
         run: |
           sudo modprobe msr
+          lscpu -a -e
+          lsmod | grep msr
           sudo python -m pip install pyperf
           sudo python -m pyperf system tune
       - name: Benchmark hash functions
