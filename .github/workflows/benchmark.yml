@@ -2,9 +2,6 @@
 name: Benchmark
 
 on:
-  push:
-    branches:
-      - feature/introduce-pyperf
   workflow_dispatch:
 
 permissions: {}
