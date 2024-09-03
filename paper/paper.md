@@ -1,5 +1,5 @@
 ---
-title: 'mmh3: A Python extension for MurmurHash3'
+title: "mmh3: A Python extension for MurmurHash3"
 tags:
   - Python
   - hash
@@ -13,14 +13,14 @@ authors:
     orcid: 0000-0001-8542-1768
     affiliation: 1
 affiliations:
- - name: University of Tokyo
-   index: 1
+  - name: University of Tokyo
+    index: 1
 date: 22 May 2023
 bibliography: paper.bib
-
 ---
 
 <!-- markdownlint-disable MD025 -->
+
 # Summary
 
 This decade has witnessed the rapid evolution of artificial intelligence (AI),
@@ -50,8 +50,8 @@ as it offers both simple one-shot hash functions and hasher classes that allow
 incremental updating, whose methods are compliant to `hashlib`, a part of the
 Python Standard Library. The library provides Python wheels (i.e., pre-built
 binary packages) for immediate use on various platforms, including Linux
-(x86\_64, aarch64, i686, ppc64le, and s390x), Windows (win32, win\_amd64,
-and win\_arm64), and macOS (Intel Mac and Apple Silicon). From version 4.0.0,
+(x86_64, aarch64, i686, ppc64le, and s390x), Windows (win32, win_amd64,
+and win_arm64), and macOS (Intel Mac and Apple Silicon). From version 4.0.0,
 `mmh3` has been published under the MIT License, an OSI-approved permissive
 open-source license.
 
@@ -79,7 +79,7 @@ and engineering. To mitigate this problem, various techniques are employed
 under main systems, in which non-cryptographic hash functions play key roles
 in a number of algorithms and data structures.
 
-A notable technique is *feature hashing* [@Weinberger2009; @Shi2009]. In its
+A notable technique is _feature hashing_ [@Weinberger2009; @Shi2009]. In its
 simplest usage, when given a string-indexed data vector, it simply converts the
 vector into an integer-indexed data vector in which each index is the hash
 result of the original string index; collision values are simply summed.
@@ -90,9 +90,9 @@ including K-means clustering [@Senuma2011]
 and succinct model learning [@Senuma2016].
 
 Other popular techniques that leverage non-cryptographic hash functions include
-*Bloom Filter* [@Bloom1970], a compact data structure that tests whether an
+_Bloom Filter_ [@Bloom1970], a compact data structure that tests whether an
 element is a member of a certain set (with false positive matches), and
-*MinHash* [@Broder1997a], an algorithm that quickly estimates the similarity of
+_MinHash_ [@Broder1997a], an algorithm that quickly estimates the similarity of
 two sets.
 
 `mmh3` has appears in various scholarly papers, including a study of Indian
