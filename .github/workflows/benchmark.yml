@@ -17,7 +17,19 @@ jobs:
 
     strategy:
       matrix:
-        hash: [mmh3_32, mmh3_128, pymmh3_128, md5]
+        hash:
+          [
+            mmh3_32,
+            mmh3_128,
+            xxh_32,
+            xxh_64,
+            xxh3_64,
+            xxh3_128,
+            pymmh3_32,
+            pymmh3_128,
+            md5,
+            sha1,
+          ]
 
     runs-on: ubuntu-22.04
     steps:
@@ -37,7 +49,7 @@ jobs:
         run: |
           mkdir var
           python benchmark/benchmark.py -o var/${{ matrix.hash }}.json \
-            --test-hash ${{ matrix.hash }} --test-buffer-size-max 1024
+            --test-hash ${{ matrix.hash }} --test-buffer-size-max 134217728
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -56,9 +68,10 @@ jobs:
       - name: Zip benchmark results
         run: |
           mkdir var
-          zip -r var/benchmark_results.zip ./artifacts
+          mkdir var/benchmark_all_results
+          cp artifacts/*/*.json var/benchmark_all_results
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: benchmark-results
-          path: var/benchmark_results.zip
+          path: var/benchmark_all_results

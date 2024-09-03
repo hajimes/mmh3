@@ -10,6 +10,7 @@ from typing import Final
 import mmh3
 import pymmh3
 import pyperf
+import xxhash
 
 K1: Final[int] = 0b1001111000110111011110011011000110000101111010111100101010000111
 K2: Final[int] = 0b1100001010110010101011100011110100100111110101001110101101001111
@@ -96,8 +97,14 @@ def add_cmdline_args(cmd: list, args) -> None:
 HASHES = OrderedDict()
 HASHES["mmh3_32"] = mmh3.hash
 HASHES["mmh3_128"] = mmh3.hash_bytes
+HASHES["xxh_32"] = xxhash.xxh32_digest
+HASHES["xxh_64"] = xxhash.xxh64_digest
+HASHES["xxh3_64"] = xxhash.xxh3_64_digest
+HASHES["xxh3_128"] = xxhash.xxh3_128_digest
+HASHES["pymmh3_32"] = pymmh3.hash
 HASHES["pymmh3_128"] = pymmh3.hash128
 HASHES["md5"] = lambda ba: hashlib.md5(ba).digest()
+HASHES["sha1"] = lambda ba: hashlib.sha1(ba).digest()
 
 if __name__ == "__main__":
     runner = pyperf.Runner(add_cmdline_args=add_cmdline_args)
@@ -117,11 +124,15 @@ if __name__ == "__main__":
         default=1024,
     )
 
-    args = runner.parse_args()
+    process_args = runner.parse_args()
     fib1, fib2 = 1, 2
 
-    while fib1 <= args.test_buffer_size_max:
+    while fib1 <= process_args.test_buffer_size_max:
         runner.bench_time_func(
-            f"{fib1} bytes", perf_hash, HASHES[args.test_hash], fib1, inner_loops=10
+            f"{fib1} bytes",
+            perf_hash,
+            HASHES[process_args.test_hash],
+            fib1,
+            inner_loops=10,
         )
         fib1, fib2 = fib2, fib1 + fib2
