@@ -96,7 +96,7 @@ two sets.
 `mmh3` has appears in various scholarly papers, including a study of Indian
 language NLP suites [@kakwani_indicnlpsuite_2020] and another about a secure
 system based on probabilistic structures [@adja_blockchain-based_2021].
-It has also appeared in technical books andcomputer science texts
+It has also appeared in technical books and computer science texts
 [@gorelick_high_2020; @kumar_probabilistic_2021; @medjedovic_algorithms_2022].
 
 ## Internet of Things
