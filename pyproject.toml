@@ -34,7 +34,7 @@ test = [
   "pytest == 8.3.2"
 ]
 dev = [
-  "matplotlib == 3.7.3",
+  "matplotlib == 3.9.2",
   "pandas == 2.0.3",
   "pymmh3 == 0.0.5",
   "pyperf == 2.7.0",
