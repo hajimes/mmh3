@@ -1,3 +1,5 @@
+"""Plot the graph of the benchmark results."""
+
 import argparse
 import hashlib
 import os
@@ -30,9 +32,9 @@ if __name__ == "__main__":
     parser.add_argument("filenames", nargs="+")
     args = parser.parse_args()
 
-    data_result = {}
-    data_digest_size_result = {}
-    index = []
+    data_result: dict[str, list[float]] = {}
+    data_digest_size_result: dict[str, list[float]] = {}
+    index: list[int] = []
 
     for file_name in args.filenames:
         suite = pyperf.BenchmarkSuite.load(file_name)
