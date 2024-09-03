@@ -100,10 +100,6 @@ HASHES["pymmh3_128"] = pymmh3.hash128
 HASHES["md5"] = lambda ba: hashlib.md5(ba).digest()
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        prog="Benchmarker", description="Benchmark hash functions"
-    )
-
     runner = pyperf.Runner(add_cmdline_args=add_cmdline_args)
 
     runner.argparser.add_argument(
