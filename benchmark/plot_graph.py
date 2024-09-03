@@ -13,14 +13,12 @@ import xxhash
 DIGEST_SIZES = {
     "mmh3_32": mmh3.mmh3_32().digest_size,
     "mmh3_128": mmh3.mmh3_x64_128().digest_size,
-    "md5": hashlib.md5().digest_size,
-    "sha1": hashlib.sha1().digest_size,
     "xxh_32": xxhash.xxh32().digest_size,
     "xxh_64": xxhash.xxh64().digest_size,
     "xxh3_64": xxhash.xxh3_64().digest_size,
     "xxh3_128": xxhash.xxh3_128().digest_size,
-    "pymmh3_32": mmh3.mmh3_32().digest_size,
-    "pymmh3_128": mmh3.mmh3_x64_128().digest_size,
+    "md5": hashlib.md5().digest_size,
+    "sha1": hashlib.sha1().digest_size,
 }
 
 LATENCY_FILE_NAME = "latency.png"
@@ -29,6 +27,7 @@ OUTPUT_BANDWIDTH_FILE_NAME = "output_bandwidth.png"
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
+    parser.add_argument("--output-dir", required=True)
     parser.add_argument("filenames", nargs="+")
     args = parser.parse_args()
 
@@ -52,26 +51,36 @@ if __name__ == "__main__":
             latency_ns = bench.median() * 1000 * 1000 * 1000
             data_result[hash_name].append(latency_ns)
             data_digest_size_result[hash_name].append(
-                (DIGEST_SIZES[hash_name] / bench.median()) / 1024
+                (DIGEST_SIZES[hash_name] / bench.median()) / (1024 * 1024)
             )
 
-    df = pd.DataFrame(data_result, index=index)
-    df2 = pd.DataFrame(data_digest_size_result, index=index)
+    df_latency = pd.DataFrame(data_result, index=index)
+    df_latency = df_latency[DIGEST_SIZES.keys()]
+    df_bandwidth = pd.DataFrame(
+        data_digest_size_result, index=df_latency.index / (1024 * 1024)
+    )
+    df_bandwidth = df_bandwidth[DIGEST_SIZES.keys()]
 
     plt.rcParams["figure.dpi"] = 72 * 3
 
     plt.figure()
 
-    df.plot(xlabel="Input size (bytes)", ylabel="Benchmark time (ns)")
-    plt.savefig(LATENCY_FILE_NAME)
+    df_large_data = df_latency.copy()
+    df_large_data = df_large_data / 1000 / 1000
+    df_large_data.index = df_latency.index / (1024 * 1024)
+    df_large_data.plot(xlabel="Input size (MB)", ylabel="Latency (ms)")
+    plt.savefig(os.path.join(args.output_dir, LATENCY_FILE_NAME))
 
-    df_small_data = df[df.index < 256]
+    df_small_data = df_latency[df_latency.index <= 1024]
+    df_small_data = df_small_data.drop(columns=["md5", "sha1"])
     df_small_data.plot(
-        xlabel="Input size (bytes)", ylabel="Benchmark time (ns)", logy=True
+        xlabel="Input size (bytes)", ylabel="Latency (ns)", logx=True, logy=True
     )
-    plt.savefig(LATENCY_SMALL_FILE_NAME)
+    plt.savefig(os.path.join(args.output_dir, LATENCY_SMALL_FILE_NAME))
 
-    df2.plot(xlabel="Input size (bytes)", ylabel="Output bandwidth (kB/s)", logy=True)
-    plt.savefig(OUTPUT_BANDWIDTH_FILE_NAME)
+    df_bandwidth.plot(
+        xlabel="Input size (MB)", ylabel="Output bandwidth (MB/s)", logy=True
+    )
+    plt.savefig(os.path.join(args.output_dir, OUTPUT_BANDWIDTH_FILE_NAME))
 
     plt.close("all")

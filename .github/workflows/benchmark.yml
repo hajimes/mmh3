@@ -23,13 +23,12 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          # pandas 2.0.3 does not provide wheels for Python 3.12
-          python-version: "3.11"
+          python-version: "3.12"
       - name: Install dependencies
         run: |
           pip install --upgrade pip
           pip install .
-          pip install ".[dev]"
+          pip install ".[benchmark]"
       - name: Benchmark hash functions
         run: |
           mkdir var
