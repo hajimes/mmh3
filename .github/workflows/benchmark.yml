@@ -22,8 +22,6 @@ jobs:
             xxh_64,
             xxh3_64,
             xxh3_128,
-            pymmh3_32,
-            pymmh3_128,
             md5,
             sha1,
           ]
