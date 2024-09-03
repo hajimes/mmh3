@@ -1,22 +1,19 @@
 ---
-name: Build and Upload Wheels
+name: Wheel-Builder
 
-on:  # yamllint disable-line rule:truthy
-  workflow_dispatch:
+on:
+  workflow_call:
     inputs:
-      repository:
-        description: 'The repository to upload the package to'
-        required: true
-        default: 'dummy'
-        type: choice
-        options:
-          - dummy
-          - testpypi
-          - pypi
-      cibw_skip:
-        description: 'The CIBW_SKIP env for cibuildwheels'
-        required: true
-        default: cp38-win_arm64
+      pypi-repository:
+        required: false
+        type: string
+    secrets:
+      pypi-username:
+        required: false
+      pypi-password:
+        required: false
+
+permissions: {}
 
 jobs:
   build_wheels:
@@ -34,74 +31,78 @@ jobs:
             archs: x86
           - os: windows-2022
             archs: ARM64
-          - os: macOS-12
+          - os: macOS-13
             archs: x86_64
-          - os: macOS-12
+          - os: macOS-14
             archs: arm64
-          - os: macOS-12
+          - os: macOS-14
             archs: universal2
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.12"
       - name: Set up QEMU
         if: runner.os == 'Linux'
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.12.3
+        uses: pypa/cibuildwheel@v2.20.0
         with:
           output-dir: wheelhouse
         env:
-          CIBW_BUILD: "{cp38,cp39,cp310,cp311}-${{ matrix.build }}*"
-          CIBW_SKIP: ${{ github.event.inputs.cibw_skip }}
+          CIBW_BUILD: "{cp38,cp39,cp310,cp311,cp312,cp313}-${{ matrix.build }}*"
+          CIBW_SKIP: cp38-win_arm64
           CIBW_ARCHS: ${{ matrix.archs }}
-          CIBW_BUILD_FRONTEND: 'build'
-          CIBW_TEST_REQUIRES: 'pytest'
-          CIBW_TEST_COMMAND: 'pytest {project}'
-          # Until the day Apple silicon instances are available on GH Actions
-          CIBW_TEST_SKIP: '*-win_arm64 *-macosx_arm64'
-      - uses: actions/upload-artifact@v3
+          CIBW_BUILD_FRONTEND: "build"
+          CIBW_TEST_REQUIRES: "pytest"
+          CIBW_TEST_COMMAND: "pytest {project}"
+          CIBW_TEST_SKIP: "*-win_arm64 cp38-macosx_*:arm64"
+      - uses: actions/upload-artifact@v4.4.0
         with:
+          name: Wheel-${{ matrix.os }}-${{ matrix.build }}${{ matrix.archs }}
           path: ./wheelhouse/*.whl
   build_sdist:
     name: Build a source distribution
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.12"
       - name: Build sdist
-        run: python setup.py build sdist
-      - uses: actions/upload-artifact@v3
+        run: |
+          python -m pip install --upgrade pip
+          pip install setuptools
+          python setup.py build sdist
+      - uses: actions/upload-artifact@v4.4.0
         with:
           path: dist/*.tar.gz
   publish:
-    name: 'Upload to PyPI/Test PyPI'
+    if: ${{ inputs.pypi-repository == 'pypi' || inputs.pypi-repository == 'testpypi'}}
+    name: "Upload to PyPI/Test PyPI"
     runs-on: ubuntu-22.04
     needs: [build_wheels, build_sdist]
     steps:
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.12"
       - name: Set up built items
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4.1.8
         with:
-          name: artifact
           path: dist
+          merge-multiple: true
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install setuptools wheel twine
-      - name: Publish
+      - name: "Publish"
         env:
-          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+          TWINE_USERNAME: ${{ secrets.pypi-username }}
+          TWINE_PASSWORD: ${{ secrets.pypi-password }}
         run: |
-          twine upload --repository ${{ github.event.inputs.repository }} dist/*
+          twine upload --repository ${{ inputs.pypi-repository }} dist/*

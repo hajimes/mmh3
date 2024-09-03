@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring,missing-function-docstring
 import mmh3
 
 
@@ -36,4 +37,4 @@ def test_function_docstrings() -> None:
 def test_module_docstring() -> None:
     assert "__doc__" in dir(mmh3)
     assert mmh3.__doc__ is not None
-    assert mmh3.__doc__.startswith("mmh3 is a Python front-end to MurmurHash3")
+    assert mmh3.__doc__.startswith("A Python front-end to MurmurHash3")

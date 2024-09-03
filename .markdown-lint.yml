@@ -1,0 +1,6 @@
+# MD024/no-duplicate-heading : Multiple headings with the same content : https://github.com/DavidAnson/markdownlint/blob/v0.34.0/doc/md024.md
+MD024:
+  # Only check sibling headings (default is false)
+  # Set to true to conform to the Keep a Changelog format
+  # See also https://github.com/olivierlacan/keep-a-changelog/issues/274#issuecomment-484065486
+  siblings_only: true

@@ -1,0 +1,19 @@
+---
+name: Build and Upload Wheels to PyPI
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  publish:
+    permissions:
+      contents: read
+      packages: read
+    uses: ./.github/workflows/wheels.yml
+    with:
+      pypi-repository: "pypi"
+    secrets:
+      pypi-username: ${{ secrets.PYPI_USERNAME }}
+      pypi-password: ${{ secrets.PYPI_PASSWORD }}

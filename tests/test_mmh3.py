@@ -1,7 +1,8 @@
-# -*- coding: utf-8 -*-
+# pylint: disable=missing-module-docstring,missing-function-docstring
 import sys
 
 import mmh3
+
 from helper import u32_to_s32
 
 
@@ -169,7 +170,18 @@ def test_hash_from_buffer() -> None:
 
 def test_hash_bytes() -> None:
     assert mmh3.hash_bytes("foo") == b"aE\xf5\x01W\x86q\xe2\x87}\xba+\xe4\x87\xaf~"
-    # TODO
+    assert (
+        mmh3.hash_bytes("foo", 0, True)
+        == b"aE\xf5\x01W\x86q\xe2\x87}\xba+\xe4\x87\xaf~"
+    )
+
+    # Test vectors from https://github.com/PeterScott/murmur3/blob/master/test.c
+    assert mmh3.hash_bytes("Hello, world!", 123, x64arch=False) == (
+        0x9E37C886A41621625A1AACD761C9129E
+    ).to_bytes(16, "little")
+    assert mmh3.hash_bytes("", 123, x64arch=False) == (
+        0x26F3E79926F3E79926F3E799FEDC5245
+    ).to_bytes(16, "little")
 
 
 def test_hash64() -> None:
@@ -189,7 +201,21 @@ def test_hash64() -> None:
         8325606756057297185,
         17961889624427075301,
     )
-    # TODO
+    assert mmh3.hash64("foo", signed=False, x64arch=True) == (
+        16316970633193145697,
+        9128664383759220103,
+    )
+
+    # Test vectors from https://github.com/PeterScott/murmur3/blob/master/test.c
+    assert mmh3.hash64("Hello, world!", 123, signed=False, x64arch=False) == (
+        0x5A1AACD761C9129E,
+        0x9E37C886A4162162,
+    )
+
+    assert mmh3.hash64("", 123, False, False) == (
+        0x26F3E799FEDC5245,
+        0x26F3E79926F3E799,
+    )
 
 
 def test_hash128() -> None:
@@ -201,7 +227,12 @@ def test_hash128() -> None:
     assert (
         mmh3.hash128("foo", 42, signed=True) == -124315475380607080215185174712879655950
     )
-    # TODO
+    # Test vectors from https://github.com/PeterScott/murmur3/blob/master/test.c
+    assert (
+        mmh3.hash128("Hello, world!", 123, signed=False, x64arch=False)
+        == 0x9E37C886A41621625A1AACD761C9129E
+    )
+    assert mmh3.hash128("", 123, False, False) == 0x26F3E79926F3E79926F3E799FEDC5245
 
 
 def test_64bit() -> None:

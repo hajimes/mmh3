@@ -14,8 +14,8 @@
 // MurmurHash3 was written by Austin Appleby, and is placed in the public
 // domain. The author hereby disclaims copyright to this source code.
 
-#ifndef MURMURHASH3_H_
-#define MURMURHASH3_H_
+#ifndef _MURMURHASH3_H_
+#define _MURMURHASH3_H_
 
 // To handle 64-bit data; see https://docs.python.org/3/c-api/arg.html
 #ifndef PY_SSIZE_T_CLEAN
@@ -32,7 +32,8 @@
 
 // Microsoft Visual Studio
 
-#if defined(_MSC_VER)
+#if defined(_MSC_VER) && (_MSC_VER < 1600)
+
 typedef signed __int8 int8_t;
 typedef signed __int32 int32_t;
 typedef signed __int64 int64_t;
@@ -96,9 +97,8 @@ rotl64(uint64_t x, int8_t r)
 #endif  // !defined(_MSC_VER)
 
 //-----------------------------------------------------------------------------
-// Block read - on little-endian machines this is a single load,
-// while on big-endian or unknown machines the byte accesses should
-// still get optimized into the most efficient instruction.
+// Block read - if your platform needs to do endian-swapping or can only
+// handle aligned reads, do the conversion here
 
 static FORCE_INLINE uint32_t
 getblock32(const uint32_t *p, Py_ssize_t i)
@@ -136,7 +136,6 @@ mixK1(uint32_t k1)
 
     return k1;
 }
-
 static FORCE_INLINE uint32_t
 mixH1(uint32_t h1, const uint32_t h2, const uint8_t shift, const uint32_t c1)
 {
@@ -146,7 +145,16 @@ mixH1(uint32_t h1, const uint32_t h2, const uint8_t shift, const uint32_t c1)
 
     return h1;
 }
+static FORCE_INLINE uint64_t
+mixK_x64_128(uint64_t k1, const uint8_t shift, const uint64_t c1,
+             const uint64_t c2)
+{
+    k1 *= c1;
+    k1 = ROTL64(k1, shift);
+    k1 *= c2;
 
+    return k1;
+}
 static FORCE_INLINE uint64_t
 mixK1_x64_128(uint64_t k1)
 {
@@ -159,7 +167,6 @@ mixK1_x64_128(uint64_t k1)
 
     return k1;
 }
-
 static FORCE_INLINE uint64_t
 mixK2_x64_128(uint64_t k2)
 {
@@ -172,7 +179,6 @@ mixK2_x64_128(uint64_t k2)
 
     return k2;
 }
-
 static FORCE_INLINE uint64_t
 mixH_x64_128(uint64_t h1, uint64_t h2, const uint8_t shift, const uint32_t c)
 {
@@ -182,7 +188,6 @@ mixH_x64_128(uint64_t h1, uint64_t h2, const uint8_t shift, const uint32_t c)
 
     return h1;
 }
-
 static FORCE_INLINE uint64_t
 mixK_x86_128(uint32_t k, const uint8_t shift, const uint32_t c1,
              const uint32_t c2)
@@ -214,13 +219,10 @@ fmix32(uint32_t h)
 static FORCE_INLINE uint64_t
 fmix64(uint64_t k)
 {
-    const uint64_t fmix_c1 = BIG_CONSTANT(0xff51afd7ed558ccd);
-    const uint64_t fmix_c2 = BIG_CONSTANT(0xc4ceb9fe1a85ec53);
-
     k ^= k >> 33;
-    k *= fmix_c1;
+    k *= BIG_CONSTANT(0xff51afd7ed558ccd);
     k ^= k >> 33;
-    k *= fmix_c2;
+    k *= BIG_CONSTANT(0xc4ceb9fe1a85ec53);
     k ^= k >> 33;
 
     return k;
@@ -228,13 +230,13 @@ fmix64(uint64_t k)
 
 //-----------------------------------------------------------------------------
 // Finalization function
+
 static FORCE_INLINE void
 digest_x64_128_impl(uint64_t h1, uint64_t h2, const uint64_t k1,
                     const uint64_t k2, const Py_ssize_t len, const char *out)
 {
     h1 ^= mixK1_x64_128(k1);
     h2 ^= mixK2_x64_128(k2);
-
     h1 ^= len;
     h2 ^= len;
 
@@ -270,7 +272,6 @@ digest_x86_128_impl(uint32_t h1, uint32_t h2, uint32_t h3, uint32_t h4,
     h2 ^= mixK_x86_128(k2, 16, c2, c3);
     h3 ^= mixK_x86_128(k3, 17, c3, c4);
     h4 ^= mixK_x86_128(k4, 18, c4, c1);
-
     h1 ^= len;
     h2 ^= len;
     h3 ^= len;
@@ -321,4 +322,4 @@ murmurhash3_x64_128(const void *key, Py_ssize_t len, uint32_t seed, void *out);
 
 //-----------------------------------------------------------------------------
 
-#endif  // MURMURHASH3_H_
+#endif  // _MURMURHASH3_H_
