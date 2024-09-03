@@ -1,11 +1,14 @@
 """Benchmark module for various hash functions."""
 
+import hashlib
 import itertools
 import time
+from collections import OrderedDict
 from collections.abc import Callable
 from typing import Final
 
 import mmh3
+import pymmh3
 import pyperf
 
 K1: Final[int] = 0b1001111000110111011110011011000110000101111010111100101010000111
@@ -79,15 +82,50 @@ def perf_hash(loops: int, f: Callable, size: int) -> float:
     return time.perf_counter() - t0
 
 
+def add_cmdline_args(cmd: list, args) -> None:
+    """Add command line arguments to the runner.
+
+    Args:
+        cmd: The command line arguments to extend.
+        args: The parsed command line arguments.
+    """
+    cmd.extend(("--test-hash", args.test_hash))
+    cmd.extend(("--test-buffer-size-max", str(args.test_buffer_size_max)))
+
+
+HASHES = OrderedDict()
+HASHES["mmh3_32"] = mmh3.hash
+HASHES["mmh3_128"] = mmh3.hash_bytes
+HASHES["pymmh3_128"] = pymmh3.hash128
+HASHES["md5"] = lambda ba: hashlib.md5(ba).digest()
+
 if __name__ == "__main__":
-    runner = pyperf.Runner()
+    parser = argparse.ArgumentParser(
+        prog="Benchmarker", description="Benchmark hash functions"
+    )
 
-    M = 1024
+    runner = pyperf.Runner(add_cmdline_args=add_cmdline_args)
 
+    runner.argparser.add_argument(
+        "--test-hash",
+        type=str,
+        help="Type of hash function to benchmark",
+        required=True,
+        choices=HASHES.keys(),
+    )
+
+    runner.argparser.add_argument(
+        "--test-buffer-size-max",
+        type=int,
+        help="The maximum size of the buffer to hash (default: 1024)",
+        default=1024,
+    )
+
+    args = runner.parse_args()
     fib1, fib2 = 1, 2
 
-    while fib1 <= M:
+    while fib1 <= args.test_buffer_size_max:
         runner.bench_time_func(
-            f"{fib1} bytes", perf_hash, mmh3.hash_bytes, fib1, inner_loops=10
+            f"{fib1} bytes", perf_hash, HASHES[args.test_hash], fib1, inner_loops=10
         )
         fib1, fib2 = fib2, fib1 + fib2

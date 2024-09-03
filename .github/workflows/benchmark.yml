@@ -14,9 +14,15 @@ jobs:
     permissions:
       contents: read
       packages: read
+
+    strategy:
+      matrix:
+        hash: [mmh3_32, mmh3_128, pymmh3_128, md5]
+
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -30,8 +36,29 @@ jobs:
       - name: Benchmark hash functions
         run: |
           mkdir var
-          python benchmark/benchmark.py -o var/benchmark.json
+          python benchmark/benchmark.py -o var/${{ matrix.hash }}.json \
+            --test-hash ${{ matrix.hash }} --test-buffer-size-max 1024
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          path: var/benchmark.json
+          name: benchmark-result-${{ matrix.hash }}
+          path: var/${{ matrix.hash }}.json
+  postprocess:
+    name: Postprocess benchmark results
+    runs-on: ubuntu-22.04
+    needs: benchmark
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: ./artifacts
+      - name: Zip benchmark results
+        run: |
+          mkdir var
+          zip -r var/benchmark_results.zip ./artifacts
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-results
+          path: var/benchmark_results.zip
