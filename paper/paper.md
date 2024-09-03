@@ -13,9 +13,9 @@ authors:
     orcid: 0000-0001-8542-1768
     affiliation: 1
 affiliations:
-  - name: University of Tokyo
+  - name: National Institute of Informatics
     index: 1
-date: 22 May 2023
+date: 3 Sep 2024
 bibliography: paper.bib
 ---
 
@@ -55,20 +55,18 @@ and win_arm64), and macOS (Intel Mac and Apple Silicon). From version 4.0.0,
 `mmh3` has been published under the MIT License, an OSI-approved permissive
 open-source license.
 
-As of June 1, 2023, `mmh3` was being downloaded more than 2 million times
-per month, and it ranks as the 970th most downloaded PyPI package
-(of around 458,000 projects), showing that only 0.22% of the remaining packages
-in the PyPI ecosystem are more popular [@hugo_van_kemenade_2023_7994944].
-According to PePy, as of June 2, 2023, the total downloads of
-this library exceeded 79 millions.
+As of Sep 1, 2024, `mmh3` was being downloaded more than 4 million times
+per month, and it ranks as the 973th most downloaded PyPI package
+(of around 566,000 projects), showing that only 0.17% of the remaining packages
+in the PyPI ecosystem are more popular [@hugo_van_kemenade_2024_13624792].
+According to PePy, as of Sep 1, 2024, the total downloads of
+this library exceeded 130 millions.
 
 Libraries and organizations that directly use `mmh3` include
 Apache Iceberg (an open table format for analytic datasets),
 PyMilvus (a Python SDK for Milvus, an open-source vector database),
 Shodan (the world’s first IoT search engine),
 and pocsuite3 (open-source remote vulnerability testing framework).
-Those that contain `mmh3` as an indirect dependency include
-the ChatGPT Retrieval Plugin by OpenAI.
 
 # Statement of need
 
