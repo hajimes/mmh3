@@ -1,6 +1,7 @@
 # Benchmarks
 
 ## Settings
+
 - Python environment
   - CPython 3.12.5 (64-bit)
 - Ubuntu 22.04 instance on GitHub Actions
