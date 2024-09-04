@@ -128,6 +128,17 @@ non-cryptographic hashes, `xxhash` by Yue Du [@du_xxhash_2014] is another
 popular hash library, featuring xxHash developed by
 Yan Collet [@collet_xxhash_2012].
 
+# Benchmarks
+
+![Output bandwidth]{label="bandwidth"}(../docs/_static/bandwidth.png)
+
+Figure \ref{bandwidth} shows the output bandwidth of...
+
+Figure \autoref{bandwidth} shows the output bandwidth of...
+
+![Output bandwidth for small inputs](../docs/_static/bandwidth_small.png)
+
+
 # Acknowledgements
 
 The author expresses his deep gratitude to Professor Akiko Aizawa for her
