@@ -130,7 +130,7 @@ Yan Collet [@collet_xxhash_2012].
 
 # Benchmarks
 
-![Output bandwidth {label="bandwidth"}](../docs/_static/bandwidth.png)
+![Output bandwidth \label{bandwidth}](../docs/_static/bandwidth.png)
 
 Figure \ref{bandwidth} shows the output bandwidth of...
 
