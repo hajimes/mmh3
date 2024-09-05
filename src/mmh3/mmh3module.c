@@ -279,9 +279,7 @@ mmh3_hash_bytes(PyObject *self, PyObject *args, PyObject *keywds)
     result[1] = bswap_64(result[1]);
 #endif
 
-    char bytes[MMH3_128_DIGESTSIZE];
-    memcpy(bytes, result, MMH3_128_DIGESTSIZE);
-    return PyBytes_FromStringAndSize(bytes, MMH3_128_DIGESTSIZE);
+    return PyBytes_FromStringAndSize((char *)result, MMH3_128_DIGESTSIZE);
 }
 
 static PyMethodDef Mmh3Methods[] = {
