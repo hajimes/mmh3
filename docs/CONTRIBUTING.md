@@ -50,10 +50,10 @@ that everything is working as expected.
 
 Try
 
-```bash
-$ pip install ".[test]"
-$ pytest
-$ mypy --strict tests
+```shell
+pip install ".[test]"
+pytest
+mypy --strict tests
 ```
 
 ### (Optional) Testing on s390x
