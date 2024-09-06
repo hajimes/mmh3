@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import os
+from typing import TypeVar
 
 import matplotlib.pyplot as plt
 import mmh3
@@ -10,8 +11,10 @@ import pandas as pd
 import pyperf
 import xxhash
 
+T = TypeVar("T")
 
-def pad_with_nan(data: dict[list[float]]) -> dict[list[float]]:
+
+def pad_with_nan(data: dict[T, list[float]]) -> dict[T, list[float]]:
     """Pad the data with NaN values to make the length of all lists equal.
 
     Args:
