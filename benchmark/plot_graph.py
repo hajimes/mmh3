@@ -72,7 +72,7 @@ if __name__ == "__main__":
     )
     plt.savefig(os.path.join(args.output_dir, BANDWIDTH_FILE_NAME))
 
-    df_bandwidth_small = df_bandwidth.copy()
+    df_bandwidth_small = df_bandwidth / 1024 /1024
     df_bandwidth_small = df_bandwidth_small.drop(columns=["md5", "sha1"])
     df_bandwidth_small = df_bandwidth_small[df_bandwidth_small.index <= 1024]
     df_bandwidth_small.plot(
