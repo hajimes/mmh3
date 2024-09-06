@@ -130,9 +130,9 @@ python benchmark/benchmark.py -o results/mmh3_128.json \
             --test-hash mmh3_128 --test-buffer-size-max 134217728
 ```
 
-As of version 4.2.0, the following hash functions are available for
-benchmarking: mmh3_32, mmh3_128, xxh_32, xxh_64, xxh3_64, xxh3_128, pymmh3_32,
-pymmh3_128, md5, and sha1.
+As of version 4.2.0, the following hash function identifiers are available for
+benchmarking: `mmh3_32`, `mmh3_128`, `xxh_32`, `xxh_64`, `xxh3_64`, `xxh3_128`,
+`pymmh3_32`, `pymmh3_128`, `md5`, and `sha1`.
 
 The owner of the repository can run the benchmark on GitHub Actions by using
 the workflow defined in `.github/workflows/benchmark.yml`.
@@ -146,6 +146,8 @@ python benchmark/plot_graph.py --output-dir docs/_static RESULT_DIR/*.json
 ```
 
 where `RESULT_DIR` is the directory containing the benchmark results.
+The names of json files should be in the format of `HASH_IDENTIFER.json`, e.g.,
+`mmh3_128.json`.
 
 As for the result of benchmarks themselves, see [Benchmarks](./benchmarks.md).
 

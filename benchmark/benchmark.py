@@ -15,6 +15,19 @@ K1: Final[int] = 0b1001111000110111011110011011000110000101111010111100101010000
 K2: Final[int] = 0b1100001010110010101011100011110100100111110101001110101101001111
 MASK: Final[int] = 0xFFFFFFFFFFFFFFFF
 
+HASHES = {
+    "mmh3_32": mmh3.hash,
+    "mmh3_128": mmh3.hash_bytes,
+    "xxh_32": xxhash.xxh32_digest,
+    "xxh_64": xxhash.xxh64_digest,
+    "xxh3_64": xxhash.xxh3_64_digest,
+    "xxh3_128": xxhash.xxh3_128_digest,
+    "md5": lambda ba: hashlib.md5(ba).digest(),
+    "sha1": lambda ba: hashlib.sha1(ba).digest(),
+    "pymmh3_32": pymmh3.hash,
+    "pymmh3_128": pymmh3.hash128,
+}
+
 
 def init_buffer(ba: bytearray) -> bytearray:
     """Initializes a byte array with a pattern.
@@ -92,19 +105,6 @@ def add_cmdline_args(cmd: list, args) -> None:
     cmd.extend(("--test-hash", args.test_hash))
     cmd.extend(("--test-buffer-size-max", str(args.test_buffer_size_max)))
 
-
-HASHES = {
-    "mmh3_32": mmh3.hash,
-    "mmh3_128": mmh3.hash_bytes,
-    "xxh_32": xxhash.xxh32_digest,
-    "xxh_64": xxhash.xxh64_digest,
-    "xxh3_64": xxhash.xxh3_64_digest,
-    "xxh3_128": xxhash.xxh3_128_digest,
-    "pymmh3_32": pymmh3.hash,
-    "pymmh3_128": pymmh3.hash128,
-    "md5": lambda ba: hashlib.md5(ba).digest(),
-    "sha1": lambda ba: hashlib.sha1(ba).digest(),
-}
 
 if __name__ == "__main__":
     runner = pyperf.Runner(add_cmdline_args=add_cmdline_args)

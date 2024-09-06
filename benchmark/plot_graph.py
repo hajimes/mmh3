@@ -10,6 +10,38 @@ import pandas as pd
 import pyperf
 import xxhash
 
+
+def pad_with_nan(data: dict[list[float]]) -> dict[list[float]]:
+    """Pad the data with NaN values to make the length of all lists equal.
+
+    Args:
+        data: The data to pad.
+
+    Returns:
+        The padded data.
+    """
+
+    max_len = max(len(v) for v in data.values())
+    for k, v in data.items():
+        data[k] = v + [float("nan")] * (max_len - len(v))
+
+    return data
+
+
+def ordered_intersection(list1: list, list2: list) -> list:
+    """Return the intersection of two lists in the order of the first list.
+
+    Args:
+        list1: The first list.
+        list2: The second list.
+
+    Returns:
+        The intersection of the two lists in the order of the first list.
+    """
+
+    return [item for item in list1 if item in list2]
+
+
 DIGEST_SIZES = {
     "mmh3_32": mmh3.mmh3_32().digest_size,
     "mmh3_128": mmh3.mmh3_x64_128().digest_size,
@@ -19,6 +51,8 @@ DIGEST_SIZES = {
     "xxh3_128": xxhash.xxh3_128().digest_size,
     "md5": hashlib.md5().digest_size,
     "sha1": hashlib.sha1().digest_size,
+    "pymmh3_32": mmh3.mmh3_32().digest_size,
+    "pymmh3_128": mmh3.mmh3_x64_128().digest_size,
 }
 
 BANDWIDTH_FILE_NAME = "bandwidth.png"
@@ -56,10 +90,16 @@ if __name__ == "__main__":
             )
             result_latency[hash_name].append(latency_seconds)
 
+    result_bandwidth = pad_with_nan(result_bandwidth)
+    result_latency = pad_with_nan(result_latency)
+
+    ordered_hash_names = ordered_intersection(
+        DIGEST_SIZES.keys(), result_bandwidth.keys()
+    )
     df_bandwidth = pd.DataFrame(result_bandwidth, index=index)
-    df_bandwidth = df_bandwidth[DIGEST_SIZES.keys()]
+    df_bandwidth = df_bandwidth[ordered_hash_names]
     df_latency = pd.DataFrame(result_latency, index=index)
-    df_latency = df_latency[DIGEST_SIZES.keys()]
+    df_latency = df_latency[ordered_hash_names]
 
     plt.rcParams["figure.dpi"] = 72 * 3
 
