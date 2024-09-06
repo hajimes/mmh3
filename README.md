@@ -38,7 +38,7 @@ pip install mmh3
 
 ### Basic usage
 
-```shell
+```pycon
 >>> import mmh3
 >>> mmh3.hash("foo") # returns a 32-bit signed int
 -156908512
@@ -50,7 +50,7 @@ pip install mmh3
 
 Other functions:
 
-```shell
+```pycon
 >>> mmh3.hash64("foo") # two 64-bit signed ints using the 128-bit algorithm
 (-2129773440516405919, 9128664383759220103)
 >>> mmh3.hash64("foo", signed=False) # two 64-bit unsigned ints
@@ -73,7 +73,7 @@ of MurmurHash3 as its backend.
 `hash_from_buffer` hashes byte-likes without memory copying. The method is
 suitable when you hash a large memory-view such as `numpy.ndarray`.
 
-```shell
+```pycon
 >>> mmh3.hash_from_buffer(numpy.random.rand(100))
 -2137204694
 >>> mmh3.hash_from_buffer(numpy.random.rand(100), signed=False)
@@ -84,7 +84,7 @@ suitable when you hash a large memory-view such as `numpy.ndarray`.
 optimization (keyword arg: `x64arch`). Use True for x64 and False for x86
 (default: True):
 
-```shell
+```pycon
 >>> mmh3.hash64("foo", 42, True)
 (-840311307571801102, -6739155424061121879)
 ```
@@ -105,7 +105,7 @@ Please note that as of version 4.1.0, the implementation is still experimental,
 and performance may be unsatisfactory (particularly `mmh3_x86_128()`).
 Additionally, `hexdigest()` is not supported; use `digest().hex()` instead.
 
-```shell
+```pycon
 >>> import mmh3
 >>> hasher = mmh3.mmh3_x64_128(seed=42)
 >>> hasher.update(b"foo")
@@ -135,6 +135,7 @@ complete changelog.
 
 #### Added
 
+- Slightly improve the performance of the `hash_bytes` function.
 - Add support for Python 3.13.
 - Add Read the Docs documentation (<https://github.com/hajimes/mmh3/issues/54>).
 - (planned: Document benchmark results
@@ -142,7 +143,7 @@ complete changelog.
 
 #### Changed
 
-- Change the format of the changelog to conform to the Keep a Changelog
+- Change the format of CHANGELOG.md to conform to the Keep a Changelog
   standard.
 
 ### [4.1.0] - 2024-01-09
@@ -201,7 +202,7 @@ In version 2.4, the type of a seed was changed from a signed 32-bit integer to
 an unsigned 32-bit integer. However, the resulting values for signed seeds
 remain unchanged from previous versions, as long as they are 32-bit.
 
-```shell
+```pycon
 >>> mmh3.hash("aaaa", -1756908916) # signed representation for 0x9747b28c
 1519878282
 >>> mmh3.hash("aaaa", 2538058380) # unsigned representation for 0x9747b28c
@@ -211,7 +212,7 @@ remain unchanged from previous versions, as long as they are 32-bit.
 Be careful so that these seeds do not exceed 32-bit. Unexpected results may
 happen with invalid values.
 
-```shell
+```pycon
 >>> mmh3.hash("foo", 2 ** 33)
 -156908512
 >>> mmh3.hash("foo", 2 ** 34)

@@ -10,6 +10,7 @@ This project has adhered to
 
 ### Added
 
+- Slightly improve the performance of the `hash_bytes` function.
 - Add support for Python 3.13.
 - Add Read the Docs documentation (<https://github.com/hajimes/mmh3/issues/54>).
 - (planned: Document benchmark results
@@ -17,7 +18,7 @@ This project has adhered to
 
 ### Changed
 
-- Change the format of the changelog to conform to the Keep a Changelog
+- Change the format of CHANGELOG.md to conform to the Keep a Changelog
   standard.
 
 ## [4.1.0] - 2024-01-09
@@ -187,7 +188,7 @@ Thanks!
 Beware that due to this revision, **the result of 32-bit version of 2.1 is NOT
 the same as that of 2.0**. E.g.,:
 
-```shell
+```pycon
 >>> mmh3.hash("foo") # in mmh3 2.0
 -292180858
 >>> mmh3.hash("foo") # in mmh3 2.1
