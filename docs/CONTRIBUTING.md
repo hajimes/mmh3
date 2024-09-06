@@ -3,8 +3,8 @@
 Thank you for your interest in contributing to the `mmh3` project. We
 appreciate your support and look forward to your contributions.
 
-Please read [README](https://github.com/hajimes/mmh3/blob/master/README.md) to get an
-overview of the `mmh3` project, and follow our
+Please read [README](https://github.com/hajimes/mmh3/blob/master/README.md) to
+get an overview of the `mmh3` project, and follow our
 [Code of Conduct](./CODE_OF_CONDUCT) (ACM Code of Ethics and Professional
 Conduct).
 
@@ -111,9 +111,9 @@ After file generation, use `clang-format` to format the generated code. Try
 
 To run benchmarks locally, try the following command:
 
-```bash
-$ pip install ".[benchmark]"
-$ python benchmark/benchmark.py -o OUTPUT_FILE \
+```shell
+pip install ".[benchmark]"
+python benchmark/benchmark.py -o OUTPUT_FILE \
             --test-hash HASH_NAME --test-buffer-size-max HASH_SIZE
 ```
 
@@ -123,10 +123,10 @@ in bytes.
 
 For example,
 
-```bash
-$ pip install ".[benchmark]"
-$ mkdir results
-$ python benchmark/benchmark.py -o results/mmh3_128.json \
+```shell
+pip install ".[benchmark]"
+mkdir results
+python benchmark/benchmark.py -o results/mmh3_128.json \
             --test-hash mmh3_128 --test-buffer-size-max 134217728
 ```
 
@@ -140,9 +140,9 @@ the workflow defined in `.github/workflows/benchmark.yml`.
 After obtaining the benchmark results, you can plot graphs by `plot_graph.py`.
 The following is an example of how to run the script:
 
-```bash
-$ pip install ".[benchmark]" ".[plot]"
-$ python benchmark/plot_graph.py --output-dir docs/_static RESULT_DIR/*.json
+```shell
+pip install ".[benchmark]" ".[plot]"
+python benchmark/plot_graph.py --output-dir docs/_static RESULT_DIR/*.json
 ```
 
 where `RESULT_DIR` is the directory containing the benchmark results.
@@ -157,9 +157,9 @@ located in the `docs`. The documentation is automatically built and
 
 To build the documentation locally, use the following command:
 
-```bash
-$ pip install ".[docs]"
-$ make -C docs html
+```shell
+pip install ".[docs]"
+make -C docs html
 ```
 
 To check the result of the built documentation, open
