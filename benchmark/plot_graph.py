@@ -31,7 +31,7 @@ def pad_with_nan(data: dict[T, list[float]]) -> dict[T, list[float]]:
     return data
 
 
-def ordered_intersection(list1: list, list2: list) -> list:
+def ordered_intersection(list1: list[T], list2: list[T]) -> list[T]:
     """Return the intersection of two lists in the order of the first list.
 
     Args:
@@ -97,7 +97,7 @@ if __name__ == "__main__":
     result_latency = pad_with_nan(result_latency)
 
     ordered_hash_names = ordered_intersection(
-        DIGEST_SIZES.keys(), result_bandwidth.keys()
+        list(DIGEST_SIZES.keys()), list(result_bandwidth.keys())
     )
     df_bandwidth = pd.DataFrame(result_bandwidth, index=index)
     df_bandwidth = df_bandwidth[ordered_hash_names]
