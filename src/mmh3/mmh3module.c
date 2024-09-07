@@ -32,6 +32,11 @@ typedef unsigned __int64 uint64_t;
 #define MMH3_32_BLOCKSIZE 12
 #define MMH3_128_BLOCKSIZE 32
 
+typedef void (*mmh3_128_func_t)(const void *key, Py_ssize_t len, uint32_t seed,
+                                void *out);
+static const mmh3_128_func_t mmh3_128_func[2] = {murmurhash3_x86_128,
+                                                 murmurhash3_x64_128};
+
 //-----------------------------------------------------------------------------
 // One shot functions
 
@@ -180,12 +185,7 @@ mmh3_hash64(PyObject *self, PyObject *args, PyObject *keywds)
         return NULL;
     }
 
-    if (x64arch == 1) {
-        murmurhash3_x64_128(target_str, target_str_len, seed, result);
-    }
-    else {
-        murmurhash3_x86_128(target_str, target_str_len, seed, result);
-    }
+    mmh3_128_func[x64arch](target_str, target_str_len, seed, result);
 
     PyObject *retval = Py_BuildValue(valflag[is_signed], result[0], result[1]);
     return retval;
@@ -218,12 +218,7 @@ mmh3_hash128(PyObject *self, PyObject *args, PyObject *keywds)
         return NULL;
     }
 
-    if (x64arch == 1) {
-        murmurhash3_x64_128(target_str, target_str_len, seed, result);
-    }
-    else {
-        murmurhash3_x86_128(target_str, target_str_len, seed, result);
-    }
+    mmh3_128_func[x64arch](target_str, target_str_len, seed, result);
 
 #if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
     result[0] = bswap_64(result[0]);
@@ -267,12 +262,7 @@ mmh3_hash_bytes(PyObject *self, PyObject *args, PyObject *keywds)
         return NULL;
     }
 
-    if (x64arch == 1) {
-        murmurhash3_x64_128(target_str, target_str_len, seed, result);
-    }
-    else {
-        murmurhash3_x86_128(target_str, target_str_len, seed, result);
-    }
+    mmh3_128_func[x64arch](target_str, target_str_len, seed, result);
 
 #if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
     result[0] = bswap_64(result[0]);
