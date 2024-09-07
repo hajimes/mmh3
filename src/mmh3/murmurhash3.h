@@ -312,7 +312,8 @@ digest_x86_128_impl(uint32_t h1, uint32_t h2, uint32_t h3, uint32_t h4,
 //-----------------------------------------------------------------------------
 
 static FORCE_INLINE void
-murmurhash3_x86_32(const void *key, const Py_ssize_t len, const uint32_t seed, const void *out)
+murmurhash3_x86_32(const void *key, const Py_ssize_t len, const uint32_t seed,
+                   const void *out)
 {
     const uint8_t *data = (const uint8_t *)key;
     const Py_ssize_t nblocks = len / 4;
@@ -372,10 +373,12 @@ murmurhash3_x86_32(const void *key, const Py_ssize_t len, const uint32_t seed, c
 //-----------------------------------------------------------------------------
 
 void
-murmurhash3_x86_128(const void *key, const Py_ssize_t len, const uint32_t seed, const void *out);
+murmurhash3_x86_128(const void *key, const Py_ssize_t len, const uint32_t seed,
+                    const void *out);
 
 void
-murmurhash3_x64_128(const void *key, const Py_ssize_t len, const uint32_t seed, const void *out);
+murmurhash3_x64_128(const void *key, const Py_ssize_t len, const uint32_t seed,
+                    const void *out);
 
 //-----------------------------------------------------------------------------
 
