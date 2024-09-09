@@ -225,7 +225,7 @@ arises: which statistic should serve as the most representative result? Common
 choices include the mean, minimum, and median.
 
 Traditionally, the minimum value has been favored to minimize the impact of
-outliers. For insntace, the note on
+outliers. For instance, the note on
 [timeit.Timer.repeat()](https://docs.python.org/3/library/timeit.html#timeit.Timer.repeat)
 in the Python Standard Library recommends using the minimum value.
 This is because higher values are likely the results of influence by external
