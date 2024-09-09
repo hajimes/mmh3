@@ -46,3 +46,5 @@ jobs:
           systemctl status irqbalance
           which irqbalance
           sudo systemctl stop irqbalance
+          systemctl status irqbalance
+          numactl --hardware
