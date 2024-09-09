@@ -187,7 +187,7 @@ def test_by_pytest_fixture(benchmark):
     benchmark(time.sleep, 0.05)
 ```
 
-The above approach still has a limitation. If　we want to microbenchmark a set
+The above approach still has a limitation. If 　 we want to microbenchmark a set
 of statements rather than a predefined function, we need to write a wrapper
 function for these statements, which introduces overhead.
 
@@ -199,12 +199,14 @@ this is `timeit.Timer.timeit()` in the Python Standard Library. Gorelick and
 Ozsvald (2020) also recommend using `timeit` for benchmarking small functions.
 
 ```{literalinclude} ./examples/timeit_timeit.py
+
 ```
 
 In addition, `pyperf` provides an [advanced implementation of
 timeit()](https://pyperf.readthedocs.io/en/latest/api.html#Runner.timeit).
 
 ```{literalinclude} ./examples/pyperf_timeit.py
+
 ```
 
 The second approach is to have the user write a function that returns the
@@ -214,6 +216,7 @@ tool. The
 function in pyperf follows this method.
 
 ```{literalinclude} ./examples/bench_time_func_example.py
+
 ```
 
 While this approach can be more tedious, it has the advantage of being fully
@@ -299,7 +302,9 @@ def bench_my_function_3(loops: int) -> float:
 ```
 
 ```{seealso}
-- Tim Peters. 2002. [Chapter 17. Algorithms: Introduction](https://www.oreilly.com/library/view/python-cookbook/0596001673/ch17.html) in _Python Cookbook_,
+- Tim Peters. 2002.
+[Chapter 17. Algorithms: Introduction](https://www.oreilly.com/library/view/python-cookbook/0596001673/ch17.html)
+in _Python Cookbook_,
   3rd ed. O'Reilly Media. ISBN: 978-0596001674.
 - Python Standard Library. [timeit.py](https://github.com/python/cpython/blob/3.12/Lib/timeit.py).
 ```
