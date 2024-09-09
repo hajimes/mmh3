@@ -167,7 +167,7 @@ def bench_my_function_1(loops: int) -> float:
 
     # After return, divide the result by loops to get the average time
     return time.perf_counter() - t0
-``` 
+```
 ````
 
 To mitigate this, create the iterator before starting the timer.
@@ -241,12 +241,13 @@ strongly opposes the use of minimum and advocates for the mean instead.
 With proper system tuning and a sufficiently large number of warmups/runs,
 the noises and outliers caued by external factors should be significantly
 reduced and follow a normal distribution. In such cases, relying on the
-minimum can overlook important outliers caused by *internal* factors within the
+minimum can overlook important outliers caused by _internal_ factors within the
 function being tested, making the mean a more reliable indicator of performance.
 
 In fact, the `timeit` function in Jupyter and IPython, which initially used
 the minimum, switched to using the mean and standard deviation in 2016
-(Gorelick and Ozsvald, 2020, p. 32). That same year, [PyPy2.7 v5.6](https://github.com/pypy/pypy/blob/f7cadf679738f8f6cf54b707c5516c7a0343dea0/pypy/doc/whatsnew-pypy2-5.6.0.rst)
+(Gorelick and Ozsvald, 2020, p. 32). That same year,
+[PyPy2.7 v5.6](https://github.com/pypy/pypy/blob/f7cadf679738f8f6cf54b707c5516c7a0343dea0/pypy/doc/whatsnew-pypy2-5.6.0.rst)
 also adopted the mean and standard deviation for `timeit`, stating that the
 minimum can often be misleading.
 
