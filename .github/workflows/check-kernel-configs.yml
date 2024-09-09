@@ -43,3 +43,6 @@ jobs:
           echo 1 | sudo tee /proc/sys/kernel/perf_event_max_sample_rate > /dev/null
           echo -n "perf_event_max_sample_rate now updated to: "; cat /proc/sys/kernel/perf_event_max_sample_rate
           echo -n "randomize_va_space: "; cat /proc/sys/kernel/randomize_va_space
+          systemctl status irqbalance
+          which irqbalance
+          sudo systemctl stop irqbalance
