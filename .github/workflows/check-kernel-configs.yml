@@ -47,5 +47,3 @@ jobs:
           which irqbalance
           sudo systemctl stop irqbalance
           systemctl status irqbalance
-          sudo apt install numactl
-          numactl --hardware
