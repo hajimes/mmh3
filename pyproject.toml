@@ -56,7 +56,7 @@ Changelog = "https://github.com/hajimes/mmh3/blob/master/CHANGELOG.md"
 
 [tool.isort]
 profile = "black"
-src_paths = ["src/mmh3/__init__.pyi", "util", "tests"]
+src_paths = ["src/mmh3/__init__.pyi", "util", "tests", "benchmark", "docs"]
 
 [tool.pylint.main]
 # Use multiple processes to speed up Pylint.

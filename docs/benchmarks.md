@@ -94,6 +94,7 @@ result, the difference between two calls might even be negative.
 ```python
 import time
 
+
 def bench_my_function_1() -> float:
     t0 = time.time()
 
@@ -111,6 +112,7 @@ tasks.
 
 ```python
 import time
+
 
 def bench_my_function_2() -> float:
     t0 = time.perf_counter()
@@ -144,7 +146,94 @@ function of pyperf 2.7.0 expects the return value to be the differences of
 `time.perf_counter_ns()`. Choose the appropriate function depending on your
 approach.
 
+### Elminate the function call overhead
+
+```{note}
+Key points: for casual microbenchmarking, use
+[timeit.Timer.timeit()](https://docs.python.org/3/library/timeit.html#timeit.Timer.timeit)
+from the Python Standard Library. For more robust benchmarking, use
+[Runner.timeit()](https://pyperf.readthedocs.io/en/latest/api.html#Runner.timeit)
+or
+[Runner.bench_time_func()](https://pyperf.readthedocs.io/en/latest/api.html#Runner.bench_time_func)
+in `pyperf`.
+```
+
+Conceptually, benchmarking can be viewed as a dectorator pattern that measures
+the time taken to execute a set of statements before and after execution.
+In Python 3, such decorators can be implemented cleanly using function
+annotations. For most cases, unless microbenchmarking for small functions,
+this solution is optimal. Always remember the mantra: "Premature optimization
+is the root of all evil" (Donald Knuth). Prioritize elegance and
+maintainability as core principles. The following code, based on an example
+from Gorelick and Ozsvald (2020), demonstrates a decorator that measures the
+execution time of a function.
+
+````{warning}
+```{literalinclude} ./examples/benchmark_decorator_example.py
+```
+````
+
+However, when testing very small functions, the function call overhead can
+become non-neglibile. To address this, `pytest-benchmark` provides a convenient
+approach by offering the benchmarking function as a fixture for each unit test.
+Users can simply pass the function to be tested as an argument to this fixture.
+
+```python
+import time
+
+
+def test_by_pytest_fixture(benchmark):
+    # 0.05 is passed as the first argument to the function time.sleep
+    benchmark(time.sleep, 0.05)
+```
+
+The above approach still has a limitation. If　we want to microbenchmark a set
+of statements rather than a predefined function, we need to write a wrapper
+function for these statements, which introduces overhead.
+
+There are two ways to avoid this overhead.
+
+The first approach is to use the built-in function `compile` to dymamically
+create an executable instance of statements from a string. A good example of
+this is `timeit.Timer.timeit()` in the Python Standard Library. Gorelick and
+Ozsvald (2020) also recommend using `timeit` for benchmarking small functions.
+
+```{literalinclude} ./examples/timeit_timeit.py
+```
+
+In addition, `pyperf` provides an [advanced implementation of
+timeit()](https://pyperf.readthedocs.io/en/latest/api.html#Runner.timeit).
+
+```{literalinclude} ./examples/pyperf_timeit.py
+```
+
+The second approach is to have the user write a function that returns the
+execution time of statemets, and then pass this function to the benchmarking
+tool. The
+[bench_time_func()](https://pyperf.readthedocs.io/en/latest/api.html#Runner.bench_time_func)
+function in pyperf follows this method.
+
+```{literalinclude} ./examples/bench_time_func_example.py
+```
+
+While this approach can be more tedious, it has the advantage of being fully
+supported by linters and IDEs, as the code is not embedded in a string.
+
+```{seealso}
+- Python Standard Library.
+  [timeit.Timer.timeit()](https://docs.python.org/3/library/timeit.html#timeit.Timer.timeit)
+- [pytest-benchmark: Usage](https://pytest-benchmark.readthedocs.io/en/latest/usage.html)
+- [pyperf: Runner class](https://pyperf.readthedocs.io/en/latest/api.html#runner-class)
+- Micha Gorelick and Ian Ozsvald. 2020.
+  High Performance Python: Practical Performant Programming for Humans,
+  2nd ed. O'Reilly Media. ISBN: 978-1492055020. pp. 30-33.
+```
+
 ### Iterator pre-instantiation
+
+```{note}
+Key points: call `range()` or `itertools.repeat()` before starting the timer.
+```
 
 In its simplest form, mircrobenchmarking a function involves writing a loop
 that calls the function multiple times and measures the total time taken.
@@ -158,6 +247,7 @@ significant.
 ````{warning}
 ```python
 import time
+
 
 def bench_my_function_1(loops: int) -> float:
     t0 = time.perf_counter()
@@ -174,6 +264,7 @@ To mitigate this, create the iterator before starting the timer.
 
 ```python
 import time
+
 
 def bench_my_function_2(loops: int) -> float:
     it = range(loops)
@@ -195,6 +286,7 @@ loop.
 import itertools
 import time
 
+
 def bench_my_function_3(loops: int) -> float:
     it = itertools.repeat(None, loops)
     t0 = time.perf_counter()
@@ -206,11 +298,11 @@ def bench_my_function_3(loops: int) -> float:
     return time.perf_counter() - t0
 ```
 
-References:
-
-- Tim Peters. 2002. [Chapter 17. Algorithms: Introduction] in _Python Cookbook_,
+```{seealso}
+- Tim Peters. 2002. [Chapter 17. Algorithms: Introduction](https://www.oreilly.com/library/view/python-cookbook/0596001673/ch17.html) in _Python Cookbook_,
   3rd ed. O'Reilly Media. ISBN: 978-0596001674.
-- Python Standard Library. [timeit.py].
+- Python Standard Library. [timeit.py](https://github.com/python/cpython/blob/3.12/Lib/timeit.py).
+```
 
 ### Mean, minimum, or median?
 
@@ -298,7 +390,7 @@ However, as of version 2.7.0, the `pyperf system tune` command does not support
 Ubuntu instances on GitHub Actions.
 
 ```{seealso}
-- [aaaa](https://pyperf.readthedocs.io/en/latest/system.html)
+- [pyperf: Tune the system for benchmarks](https://pyperf.readthedocs.io/en/latest/system.html)
 - Victor Stinner. 2016.
 [My journey to stable benchmark, part 1 (system)](https://vstinner.github.io/journey-to-stable-benchmark-system.html)
 ```
@@ -309,5 +401,3 @@ Ubuntu instances on GitHub Actions.
 [pyperf]: https://github.com/psf/pyperf
 [pyperformance]: https://github.com/python/pyperformance
 [pytest-benchmark]: https://github.com/ionelmc/pytest-benchmark
-[timeit.py]: https://github.com/python/cpython/blob/3.12/Lib/timeit.py
-[Chapter 17. Algorithms: Introduction]: https://www.oreilly.com/library/view/python-cookbook/0596001673/ch17.html
