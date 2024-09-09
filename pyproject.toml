@@ -59,7 +59,7 @@ profile = "black"
 src_paths = ["src/mmh3/__init__.pyi", "util", "tests", "benchmark", "docs"]
 
 [tool.pylint.main]
-ignore-paths = '^docs/examples/.*$'
+ignore-paths = ["docs/examples"]
 
 # Use multiple processes to speed up Pylint.
 # The value 0 specifies the number of processors to be auto-detected.

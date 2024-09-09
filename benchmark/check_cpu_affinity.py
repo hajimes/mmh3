@@ -1,3 +1,5 @@
+"""Check the CPU affinity of the current process."""
+
 # from https://www.geeksforgeeks.org/python-os-sched_setaffinity-method/
 # Python program to explain os.sched_setaffinity() method
 
@@ -15,11 +17,11 @@ print("Number of CPUs:", os.cpu_count())
 # os.sched_getaffinity() method
 # 0 as PID represents the
 # calling process
-pid = 0
-affinity = os.sched_getaffinity(pid)
+PID = 0
+affinity = os.sched_getaffinity(PID)
 
 # Print the result
-print("Process is eligible to run on:", affinity)
+print(f"Process is eligible to run on: {affinity}")
 
 
 # Change the CPU affinity mask
@@ -31,16 +33,16 @@ print("Process is eligible to run on:", affinity)
 # these 2 CPUs (0, 1) i.e process can
 # run on these CPUs only
 affinity_mask = {0, 1}
-pid = 0
+PID = 0
 os.sched_setaffinity(0, affinity_mask)
-print("CPU affinity mask is modified for process id % s" % pid)
+print(f"CPU affinity mask is modified for process id {PID}")
 
 
 # Now again, Get the set of CPUs
 # on which the calling process
 # is eligible to run.
-pid = 0
-affinity = os.sched_getaffinity(pid)
+PID = 0
+affinity = os.sched_getaffinity(PID)
 
 # Print the result
-print("Now, process is eligible to run on:", affinity)
+print(f"Now, process is eligible to run on: {affinity}")
