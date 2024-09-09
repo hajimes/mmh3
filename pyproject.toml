@@ -68,4 +68,4 @@ ignore-paths = ["docs"]
 [tool.pylint."messages control"]
 # import-error: An error tricky to resolve, especially on super-linter.
 # wrong-import-order: Respect isort's import order.
-disable = ["import-error", "wrong-import-order"]
+disable = ["import-error", "wrong-import-order", "missing-module-docstring"]
