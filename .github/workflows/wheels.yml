@@ -59,7 +59,7 @@ jobs:
           CIBW_TEST_REQUIRES: "pytest"
           CIBW_TEST_COMMAND: "pytest {project}"
           CIBW_TEST_SKIP: "*-win_arm64 cp38-macosx_*:arm64"
-      - uses: actions/upload-artifact@v4.4.0
+      - uses: actions/upload-artifact@v4
         with:
           name: Wheel-${{ matrix.os }}-${{ matrix.build }}${{ matrix.archs }}
           path: ./wheelhouse/*.whl
@@ -78,7 +78,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install setuptools
           python setup.py build sdist
-      - uses: actions/upload-artifact@v4.4.0
+      - uses: actions/upload-artifact@v4
         with:
           path: dist/*.tar.gz
   publish:
@@ -92,7 +92,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Set up built items
-        uses: actions/download-artifact@v4.1.8
+        uses: actions/download-artifact@v4
         with:
           path: dist
           merge-multiple: true
