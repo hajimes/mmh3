@@ -32,7 +32,7 @@ jobs:
           declare -a hash_list=("mmh3_32" "mmh3_128" "xxh_32" "xxh_64" \
              "xxh3_64" "xxh3_128" "md5" "sha1")
           for hash_name in "${hash_list[@]}"; do
-            python benchmark/benchmark.py -o var/${hash_name}.json \
+            python benchmark/benchmark.py -o var/"${hash_name}".json \
               --test-hash "${hash_name}" \
               --test-buffer-size-max "$BENCHMARK_MAX_SIZE"
           done
