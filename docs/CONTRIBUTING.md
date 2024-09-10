@@ -2,8 +2,6 @@
 
 Thank you for your interest in contributing to the `mmh3` project. We
 appreciate your support and look forward to your contributions.
-Thank you for your interest in contributing to the `mmh3` project. We
-appreciate your support and look forward to your contributions.
 
 Please read [README](https://github.com/hajimes/mmh3/blob/master/README.md) to
 get an overview of the `mmh3` project, and follow our
