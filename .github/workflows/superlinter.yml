@@ -61,4 +61,4 @@ jobs:
       - name: run pylint
         run: |
           pip install pylint
-          pylint $(git ls-files '*.py')
+          pylint "$(git ls-files '*.py')"

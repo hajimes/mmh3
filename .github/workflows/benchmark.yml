@@ -33,8 +33,8 @@ jobs:
              "xxh3_64" "xxh3_128" "md5" "sha1")
           for hash_name in "${hash_list[@]}"; do
             python benchmark/benchmark.py -o var/${hash_name}.json \
-              --test-hash ${hash_name} \
-              --test-buffer-size-max ${{ env.BENCHMARK_MAX_SIZE }}
+              --test-hash "${hash_name}" \
+              --test-buffer-size-max "$BENCHMARK_MAX_SIZE"
           done
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
