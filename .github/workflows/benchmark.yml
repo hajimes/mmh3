@@ -28,7 +28,7 @@ jobs:
           pip install ".[benchmark]"
       - name: Tune the system for benchmarking
         run: |
-          echo "Run \"lscpu -a -e\""
+          echo "Running \"lscpu -a -e\"..."
           lscpu -a -e
 
           echo -n "Checking randomize_va_space: "
@@ -56,6 +56,7 @@ jobs:
           declare -a hash_list=("mmh3_32" "mmh3_128" "xxh_32" "xxh_64" \
              "xxh3_64" "xxh3_128" "md5" "sha1")
           for hash_name in "${hash_list[@]}"; do
+            echo "${hash_name}"
             taskset -c 2,3 python benchmark/benchmark.py \
               -o var/"${hash_name}".json \
               --test-hash "${hash_name}" \
