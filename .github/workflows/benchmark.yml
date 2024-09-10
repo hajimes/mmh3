@@ -13,7 +13,6 @@ jobs:
       packages: read
     runs-on: ubuntu-22.04
     env:
-      HASH_LIST: "(mmh3_32 mmh3_128 xxh_32 xxh_64 xxh3_64 xxh3_128 md5 sha1)"
       BENCHMARK_MAX_SIZE: 2097152
     steps:
       - name: Checkout
@@ -30,7 +29,9 @@ jobs:
       - name: Benchmark hash functions
         run: |
           mkdir var
-          for hash_name in "${${{ env.HASH_LIST }}[@]}"; do
+          hash_list = ("mmh3_32" "mmh3_128" "xxh_32" "xxh_64" "xxh3_64"\
+            "xxh3_128" "md5" "sha1")
+          for hash_name in "${hash_list[@]}"; do
             python benchmark/benchmark.py -o var/${hash_name}.json \
               --test-hash ${hash_name} \
               --test-buffer-size-max ${{ env.BENCHMARK_MAX_SIZE }}
