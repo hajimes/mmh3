@@ -58,7 +58,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: 3.12
-      - name: run pylint
+      - name: Run pylint
         run: |
           pip install pylint
           pylint --recursive=y .
