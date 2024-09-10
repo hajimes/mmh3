@@ -30,7 +30,7 @@ jobs:
       - name: Benchmark hash functions
         run: |
           mkdir var
-          for hash_name in "${{ env.HASH_LIST }}"; do
+          for hash_name in "${HASH_LIST[@]}"; do
             python benchmark/benchmark.py -o var/${hash_name}.json \
               --test-hash ${hash_name} \
               --test-buffer-size-max ${{ env.BENCHMARK_MAX_SIZE }}
