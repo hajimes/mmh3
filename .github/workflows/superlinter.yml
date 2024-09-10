@@ -38,12 +38,11 @@ jobs:
 
       # Runs the Super-Linter action
       - name: Run Super-Linter
-        uses: super-linter/super-linter@v7.1.0
+        uses: super-linter/super-linter@v7.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LINTER_RULES_PATH: /
           PYTHON_ISORT_CONFIG_FILE: pyproject.toml
-          PYTHON_PYLINT_CONFIG_FILE: pyproject.toml
           # Suppressed because it conflicts with clang-format in some cases
           VALIDATE_CPP: false
           # Suppressed because copy/paste is sometimes required at low level
