@@ -109,9 +109,9 @@ if __name__ == "__main__":
     plt.figure()
 
     df_bandwidth_all = df_bandwidth / 1024
-    df_bandwidth_all.index = df_bandwidth_all.index / (1024 * 1024)
+    df_bandwidth_all.index = df_bandwidth_all.index / 1024
     df_bandwidth_all.plot(
-        xlabel="Input size (MB)", ylabel="Output bandwidth (kB/s)", logy=True
+        xlabel="Input size (KiB)", ylabel="Output bandwidth (KiB/s)", logy=True
     )
     plt.savefig(os.path.join(args.output_dir, BANDWIDTH_FILE_NAME))
 
@@ -119,13 +119,13 @@ if __name__ == "__main__":
     df_bandwidth_small = df_bandwidth_small.drop(columns=["md5", "sha1"])
     df_bandwidth_small = df_bandwidth_small[df_bandwidth_small.index <= 1024]
     df_bandwidth_small.plot(
-        xlabel="Input size (bytes)", ylabel="Output bandwidth (MB/s)"
+        xlabel="Input size (bytes)", ylabel="Output bandwidth (MiB/s)"
     )
     plt.savefig(os.path.join(args.output_dir, BANDWIDTH_SMALL_FILE_NAME))
 
     df_latency_all = df_latency * 1000
     df_latency_all.index = df_latency_all.index / (1024 * 1024)
-    df_latency_all.plot(xlabel="Input size (MB)", ylabel="Latency (ms)")
+    df_latency_all.plot(xlabel="Input size (MiB)", ylabel="Latency (ms)")
     plt.savefig(os.path.join(args.output_dir, LATENCY_FILE_NAME))
 
     df_latency_small = df_latency * 1000 * 1000 * 1000
