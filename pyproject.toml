@@ -59,7 +59,13 @@ profile = "black"
 src_paths = ["src/mmh3/__init__.pyi", "util", "tests", "benchmark", "docs"]
 
 [tool.pylint]
-ignore-paths = ["docs/examples/.*"]
+ignore-paths = [
+  "^build",
+  "^venv",
+  "^.venv",
+  "^docs/examples/",
+  "^src/mmh3/__init__.pyi"
+]
 # Use multiple processes to speed up Pylint.
 # The value 0 specifies the number of processors to be auto-detected.
 # This setting can be found in the template file of super-linter 7.0.0.
