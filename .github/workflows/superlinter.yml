@@ -38,7 +38,7 @@ jobs:
 
       # Runs the Super-Linter action
       - name: Run Super-Linter
-        uses: super-linter/super-linter@v7.0.0
+        uses: super-linter/super-linter@v7.1.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LINTER_RULES_PATH: /
@@ -50,3 +50,15 @@ jobs:
           VALIDATE_JSCPD: false
           # Suppressed because it even accuses book titles
           VALIDATE_NATURAL_LANGUAGE: false
+          # Suppressed because it does not honor the ignore-paths option
+          VALIDATE_PYTHON_PYLINT: false
+      # super-linter 7 does not honor the ignore-paths option of pylint
+      # so we run pylint separately
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+      - name: run pylint
+        run: |
+          pip install pylint
+          pylint $(git ls-files '*.py')
