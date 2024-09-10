@@ -396,6 +396,10 @@ Ubuntu instances on GitHub Actions.
 
 ```{seealso}
 - [pyperf: Tune the system for benchmarks](https://pyperf.readthedocs.io/en/latest/system.html)
+- Manuel Bernhardt. 2023.
+[On pinning and isolating CPU cores](https://manuel.bernhardt.io/posts/2023-11-16-core-pinning/)
+- Jaime Rodríguez-Guerra. 2021.
+[Is GitHub Actions suitable for running benchmarks?](https://labs.quansight.org/blog/2021/08/github-actions-benchmarks)
 - Victor Stinner. 2016.
 [My journey to stable benchmark, part 1 (system)](https://vstinner.github.io/journey-to-stable-benchmark-system.html)
 ```
