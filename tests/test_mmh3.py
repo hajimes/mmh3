@@ -54,10 +54,6 @@ def test_hash() -> None:
         "The quick brown fox jumps over the lazy dog", u32_to_s32(0x9747B28C)
     ) == u32_to_s32(0x2FA826CD)
 
-    assert mmh3.hash(
-        "The quick brown fox jumps over the lazy dog", u32_to_s32(0x9747B28C)
-    ) == u32_to_s32(0x2FA826CD)
-
 
 def test_hash_unsigned() -> None:
     assert mmh3.hash("foo", signed=False) == 4138058784
@@ -235,6 +231,113 @@ def test_hash128() -> None:
     assert mmh3.hash128("", 123, False, False) == 0x26F3E79926F3E79926F3E799FEDC5245
 
 
+def test_mmh3_32_digest() -> None:
+    assert mmh3.mmh3_32_digest(b"") == b"\0\0\0\0"
+    assert mmh3.mmh3_32_digest(b"", 0) == b"\0\0\0\0"
+    assert mmh3.mmh3_32_digest(b"", seed=0) == b"\0\0\0\0"
+    assert mmh3.mmh3_32_digest(b"\x21\x43\x65\x87", 0) == (0xF55B516B).to_bytes(
+        4, "little"
+    )
+    assert mmh3.mmh3_32_digest(b"\x21\x43\x65\x87", u32_to_s32(0x5082EDEE)) == (
+        0x2362F9DE
+    ).to_bytes(4, "little")
+    assert mmh3.mmh3_32_digest(b"\x21\x43\x65", 0) == (0x7E4A8634).to_bytes(4, "little")
+    assert mmh3.mmh3_32_digest(b"\x21\x43", 0) == (0xA0F7B07A).to_bytes(4, "little")
+    assert mmh3.mmh3_32_digest(b"\x21", 0) == (0x72661CF4).to_bytes(4, "little")
+    assert mmh3.mmh3_32_digest(b"\xff\xff\xff\xff", 0) == (0x76293B50).to_bytes(
+        4, "little"
+    )
+    assert mmh3.mmh3_32_digest(b"\x00\x00\x00\x00", 0) == (0x2362F9DE).to_bytes(
+        4, "little"
+    )
+    assert mmh3.mmh3_32_digest(b"\x00\x00\x00", 0) == (0x85F0B427).to_bytes(4, "little")
+    assert mmh3.mmh3_32_digest(b"\x00\x00", 0) == (0x30F4C306).to_bytes(4, "little")
+    assert mmh3.mmh3_32_digest(b"\x00", 0) == (0x514E28B7).to_bytes(4, "little")
+
+    assert mmh3.mmh3_32_digest("aaaa", 0x9747B28C) == (0x5A97808A).to_bytes(4, "little")
+    assert mmh3.mmh3_32_digest("aaa", 0x9747B28C) == (0x283E0130).to_bytes(4, "little")
+    assert mmh3.mmh3_32_digest("aa", 0x9747B28C) == (0x5D211726).to_bytes(4, "little")
+    assert mmh3.mmh3_32_digest("a", 0x9747B28C) == (0x7FA09EA6).to_bytes(4, "little")
+
+    assert mmh3.mmh3_32_digest("abcd", 0x9747B28C) == (0xF0478627).to_bytes(4, "little")
+    assert mmh3.mmh3_32_digest("abc", 0x9747B28C) == (0xC84A62DD).to_bytes(4, "little")
+    assert mmh3.mmh3_32_digest("ab", 0x9747B28C) == (0x74875592).to_bytes(4, "little")
+    assert mmh3.mmh3_32_digest("a", 0x9747B28C) == (0x7FA09EA6).to_bytes(4, "little")
+
+    assert mmh3.mmh3_32_digest("Hello, world!", 0x9747B28C) == (0x24884CBA).to_bytes(
+        4, "little"
+    )
+
+    assert mmh3.mmh3_32_digest("ππππππππ".encode("utf-8"), 0x9747B28C) == (
+        0xD58063C1
+    ).to_bytes(4, "little")
+
+    assert mmh3.mmh3_32_digest("a" * 256, 0x9747B28C) == (0x37405BDC).to_bytes(
+        4, "little"
+    )
+
+    assert mmh3.mmh3_32_digest("abc", 0) == (0xB3DD93FA).to_bytes(4, "little")
+    assert mmh3.mmh3_32_digest(
+        "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq", 0
+    ) == (0xEE925B90).to_bytes(4, "little")
+
+    assert mmh3.mmh3_32_digest(
+        "The quick brown fox jumps over the lazy dog", 0x9747B28C
+    ) == (0x2FA826CD).to_bytes(4, "little")
+
+    assert mmh3.mmh3_32_digest(bytearray(b"aaaa"), 0x9747B28C) == (0x5A97808A).to_bytes(
+        4, "little"
+    )
+    v = memoryview(b"aaaa")
+    assert mmh3.mmh3_32_digest(v, 0x9747B28C) == (0x5A97808A).to_bytes(4, "little")
+    assert mmh3.mmh3_32_digest(v[1:3], 0x9747B28C) == (0x5D211726).to_bytes(4, "little")
+
+
+def test_mmh3_x64_128_digest() -> None:
+    assert (
+        mmh3.mmh3_x64_128_digest("foo")
+        == b"aE\xf5\x01W\x86q\xe2\x87}\xba+\xe4\x87\xaf~"
+    )
+
+    assert (
+        mmh3.mmh3_x64_128_digest(
+            b"The quick brown fox jumps over the lazy dog", 0x9747B28C
+        )
+        == b"!1c\xd2;\x7f\x8as\xe5\x16\xc0~rsE\xf9"
+    )
+
+    v = bytearray(b"bar boo bar")
+    mv = memoryview(v)
+    v[4] = ord('f')
+    
+    assert (
+        mmh3.mmh3_x64_128_digest(mv[4:7])
+        == b"aE\xf5\x01W\x86q\xe2\x87}\xba+\xe4\x87\xaf~"
+    )
+
+
+def test_mmh3_x86_128_digest() -> None:
+    assert mmh3.mmh3_x86_128_digest("", 123) == (
+        0x26F3E79926F3E79926F3E799FEDC5245
+    ).to_bytes(16, "little")
+
+    assert mmh3.mmh3_x86_128_digest(b"Hello, world!", 123) == (
+        0x9E37C886A41621625A1AACD761C9129E
+    ).to_bytes(16, "little")
+
+    assert mmh3.mmh3_x86_128_digest(bytearray(b"Hello, world!"), 123) == (
+        0x9E37C886A41621625A1AACD761C9129E
+    ).to_bytes(16, "little")
+
+    v = bytearray(b"hello, world!!!")
+    mv = memoryview(v)
+    v[0] = ord('H')
+    
+    assert mmh3.mmh3_x86_128_digest(mv[0:13], 123) == (
+        0x9E37C886A41621625A1AACD761C9129E
+    ).to_bytes(16, "little")
+
+
 def test_64bit() -> None:
     if sys.maxsize < (1 << 32):  # Skip this test under 32-bit environments
         return
@@ -243,3 +346,8 @@ def test_64bit() -> None:
     assert (
         mmh3.hash_bytes(a) == b"\x821\x93\x0c\xe7\xa8\x02\x9d\xe5 \xa6\xf9\xeb8\xd6\x0e"
     )
+
+
+# from hex string "0xff00de" to integer
+def hex_to_int(hex_str: str) -> int:
+    return int(hex_str, 16)

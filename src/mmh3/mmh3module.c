@@ -124,6 +124,8 @@ mmh3_hash_from_buffer(PyObject *self, PyObject *args, PyObject *keywds)
 
     murmurhash3_x86_32(target_buf.buf, target_buf.len, seed, result);
 
+    PyBuffer_Release(&target_buf);
+
 #if defined(_MSC_VER)
     /* for Windows envs */
     long_result = result[0];
@@ -282,6 +284,99 @@ mmh3_hash_bytes(PyObject *self, PyObject *args, PyObject *keywds)
     return PyBytes_FromStringAndSize((char *)result, MMH3_128_DIGESTSIZE);
 }
 
+PyDoc_STRVAR(mmh3_mmh3_32_digest_doc,
+             "mmh3_32_digest(key[, seed=0]) -> bytes\n\n"
+             "Return a hash value from a memory buffer as bytes. "
+             "Calculated by the MurmurHash3_x86_32 algorithm. "
+             "Designed for large memory-views such as numpy arrays.");
+
+static PyObject *
+mmh3_mmh3_32_digest(PyObject *self, PyObject *args, PyObject *keywds)
+{
+    Py_buffer target_buf;
+    uint32_t seed = 0;
+    const char result[MMH3_32_DIGESTSIZE];
+
+    static char *kwlist[] = {(char *)"key", (char *)"seed", NULL};
+
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s*|I", kwlist, &target_buf,
+                                     &seed)) {
+        return NULL;
+    }
+
+    murmurhash3_x86_32(target_buf.buf, target_buf.len, seed, result);
+    PyBuffer_Release(&target_buf);
+
+#if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
+    ((uint32_t *)result)[0] = bswap_32(((uint32_t *)result)[0]);
+#endif
+
+    return PyBytes_FromStringAndSize((unsigned char *)result,
+                                     MMH3_32_DIGESTSIZE);
+}
+
+PyDoc_STRVAR(mmh3_mmh3_x64_128_digest_doc,
+             "mmh3_x64_128_digest(key[, seed=0]) -> bytes\n\n"
+             "Return a hash value from a memory buffer as bytes. "
+             "Calculated by the MurmurHash3_x64_128 algorithm. "
+             "Designed for large memory-views such as numpy arrays.");
+
+static PyObject *
+mmh3_mmh3_x64_128_digest(PyObject *self, PyObject *args, PyObject *keywds)
+{
+    Py_buffer target_buf;
+    uint32_t seed = 0;
+    const uint64_t result[2];
+
+    static char *kwlist[] = {(char *)"key", (char *)"seed", NULL};
+
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s*|I", kwlist, &target_buf,
+                                     &seed)) {
+        return NULL;
+    }
+
+    murmurhash3_x64_128(target_buf.buf, target_buf.len, seed, result);
+    PyBuffer_Release(&target_buf);
+
+#if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
+    result[0] = bswap_64(result[0]);
+    result[1] = bswap_64(result[1]);
+#endif
+
+    return PyBytes_FromStringAndSize((char *)result, MMH3_128_DIGESTSIZE);
+}
+
+PyDoc_STRVAR(mmh3_mmh3_x86_128_digest_doc,
+             "mmh3_x86_128_digest(key[, seed=0]) -> bytes\n\n"
+             "Return a hash value from a memory buffer as bytes. "
+             "Calculated by the MurmurHash3_x86_128 algorithm. "
+             "Designed for large memory-views such as numpy arrays.");
+
+static PyObject *
+mmh3_mmh3_x86_128_digest(PyObject *self, PyObject *args, PyObject *keywds)
+{
+    Py_buffer target_buf;
+    uint32_t seed = 0;
+    const uint64_t result[2];
+
+    static char *kwlist[] = {(char *)"key", (char *)"seed", NULL};
+
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s*|I", kwlist, &target_buf,
+                                     &seed)) {
+        return NULL;
+    }
+
+    murmurhash3_x86_128(target_buf.buf, target_buf.len, seed, result);
+    PyBuffer_Release(&target_buf);
+
+#if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
+    result[0] = bswap_64(result[0]);
+    result[1] = bswap_64(result[1]);
+#endif
+
+    return PyBytes_FromStringAndSize((char *)result, MMH3_128_DIGESTSIZE);
+}
+
 static PyMethodDef Mmh3Methods[] = {
     {"hash", (PyCFunction)mmh3_hash, METH_VARARGS | METH_KEYWORDS,
      mmh3_hash_doc},
@@ -293,6 +388,12 @@ static PyMethodDef Mmh3Methods[] = {
      mmh3_hash128_doc},
     {"hash_bytes", (PyCFunction)mmh3_hash_bytes, METH_VARARGS | METH_KEYWORDS,
      mmh3_hash_bytes_doc},
+    {"mmh3_32_digest", (PyCFunction)mmh3_mmh3_32_digest,
+     METH_VARARGS | METH_KEYWORDS, mmh3_mmh3_32_digest_doc},
+    {"mmh3_x64_128_digest", (PyCFunction)mmh3_mmh3_x64_128_digest,
+     METH_VARARGS | METH_KEYWORDS, mmh3_mmh3_x64_128_digest_doc},
+    {"mmh3_x86_128_digest", (PyCFunction)mmh3_mmh3_x86_128_digest,
+     METH_VARARGS | METH_KEYWORDS, mmh3_mmh3_x86_128_digest_doc},
     {NULL, NULL, 0, NULL}};
 
 //-----------------------------------------------------------------------------
