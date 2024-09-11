@@ -375,7 +375,7 @@ mmh3_mmh3_x64_128_digest(PyObject *self, PyObject *args, PyObject *keywds)
 {
     Py_buffer target_buf;
     uint32_t seed = 0;
-    const uint64_t result[2];
+    uint64_t result[2];
 
     static char *kwlist[] = {(char *)"key", (char *)"seed", NULL};
 
@@ -406,7 +406,7 @@ mmh3_mmh3_x86_128_digest(PyObject *self, PyObject *args, PyObject *keywds)
 {
     Py_buffer target_buf;
     uint32_t seed = 0;
-    const uint64_t result[2];
+    uint64_t result[2];
 
     static char *kwlist[] = {(char *)"key", (char *)"seed", NULL};
 
