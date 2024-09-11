@@ -315,10 +315,11 @@ mmh3_mmh3_32_digest(PyObject *self, PyObject *args, PyObject *keywds)
                                      MMH3_32_DIGESTSIZE);
 }
 
-PyDoc_STRVAR(mmh3_mmh3_32_sintdigest_doc,
-             "mmh3_32_sintdigest(key[, seed=0]) -> bytes\n\n"
-             "Return a 32 bit signed integer from a memory buffer as bytes. "
-             "Calculated by the MurmurHash3_x86_32 algorithm. ");
+PyDoc_STRVAR(
+    mmh3_mmh3_32_sintdigest_doc,
+    "mmh3_32_sintdigest(key[, seed=0]) -> 32-bit int\n\n"
+    "Return a hash value from a memory buffer as a signed 32-bit integer. "
+    "Calculated by the MurmurHash3_x86_32 algorithm. ");
 
 static PyObject *
 mmh3_mmh3_32_sintdigest(PyObject *self, PyObject *args, PyObject *keywds)
@@ -340,10 +341,11 @@ mmh3_mmh3_32_sintdigest(PyObject *self, PyObject *args, PyObject *keywds)
     return PyLong_FromLong(result[0]);
 }
 
-PyDoc_STRVAR(mmh3_mmh3_32_uintdigest_doc,
-             "mmh3_32_uintdigest(key[, seed=0]) -> bytes\n\n"
-             "Return a 32 bit unsigned integer from a memory buffer as bytes. "
-             "Calculated by the MurmurHash3_x86_32 algorithm. ");
+PyDoc_STRVAR(
+    mmh3_mmh3_32_uintdigest_doc,
+    "mmh3_32_uintdigest(key[, seed=0]) -> 32-bit int\n\n"
+    "Return a hash value from a memory buffer as an unsigned 32-bit integer. "
+    "Calculated by the MurmurHash3_x86_32 algorithm. ");
 
 static PyObject *
 mmh3_mmh3_32_uintdigest(PyObject *self, PyObject *args, PyObject *keywds)
@@ -395,6 +397,86 @@ mmh3_mmh3_x64_128_digest(PyObject *self, PyObject *args, PyObject *keywds)
     return PyBytes_FromStringAndSize((char *)result, MMH3_128_DIGESTSIZE);
 }
 
+PyDoc_STRVAR(
+    mmh3_mmh3_x64_128_sintdigest_doc,
+    "mmh3_x64_128_sintdigest(key[, seed=0]) -> int\n\n"
+    "Return a hash value from a memory buffer as a signed 128-bit integer. "
+    "Calculated by the MurmurHash3_x64_128 algorithm. ");
+
+static PyObject *
+mmh3_mmh3_x64_128_sintdigest(PyObject *self, PyObject *args, PyObject *keywds)
+{
+    Py_buffer target_buf;
+    uint32_t seed = 0;
+    uint64_t result[2];
+
+    static char *kwlist[] = {(char *)"key", (char *)"seed", NULL};
+
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s*|I", kwlist, &target_buf,
+                                     &seed)) {
+        return NULL;
+    }
+
+    murmurhash3_x64_128(target_buf.buf, target_buf.len, seed, result);
+    PyBuffer_Release(&target_buf);
+
+#if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
+    result[0] = bswap_64(result[0]);
+    result[1] = bswap_64(result[1]);
+#endif
+
+    /**
+     * _PyLong_FromByteArray is not a part of the official Python/C API
+     * and may be removed in the future (although it is practically stable).
+     * cf.
+     * https://mail.python.org/pipermail/python-list/2006-August/372365.html
+     */
+    PyObject *retval = _PyLong_FromByteArray((unsigned char *)result,
+                                             MMH3_128_DIGESTSIZE, 1, 1);
+
+    return retval;
+}
+
+PyDoc_STRVAR(
+    mmh3_mmh3_x64_128_uintdigest_doc,
+    "mmh3_x64_128_uintdigest(key[, seed=0]) -> int\n\n"
+    "Return a hash value from a memory buffer as an unsigned 128-bit integer. "
+    "Calculated by the MurmurHash3_x64_128 algorithm. ");
+
+static PyObject *
+mmh3_mmh3_x64_128_uintdigest(PyObject *self, PyObject *args, PyObject *keywds)
+{
+    Py_buffer target_buf;
+    uint32_t seed = 0;
+    uint64_t result[2];
+
+    static char *kwlist[] = {(char *)"key", (char *)"seed", NULL};
+
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s*|I", kwlist, &target_buf,
+                                     &seed)) {
+        return NULL;
+    }
+
+    murmurhash3_x64_128(target_buf.buf, target_buf.len, seed, result);
+    PyBuffer_Release(&target_buf);
+
+#if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
+    result[0] = bswap_64(result[0]);
+    result[1] = bswap_64(result[1]);
+#endif
+
+    /**
+     * _PyLong_FromByteArray is not a part of the official Python/C API
+     * and may be removed in the future (although it is practically stable).
+     * cf.
+     * https://mail.python.org/pipermail/python-list/2006-August/372365.html
+     */
+    PyObject *retval = _PyLong_FromByteArray((unsigned char *)result,
+                                             MMH3_128_DIGESTSIZE, 1, 0);
+
+    return retval;
+}
+
 PyDoc_STRVAR(mmh3_mmh3_x86_128_digest_doc,
              "mmh3_x86_128_digest(key[, seed=0]) -> bytes\n\n"
              "Return a hash value from a memory buffer as bytes. "
@@ -426,6 +508,86 @@ mmh3_mmh3_x86_128_digest(PyObject *self, PyObject *args, PyObject *keywds)
     return PyBytes_FromStringAndSize((char *)result, MMH3_128_DIGESTSIZE);
 }
 
+PyDoc_STRVAR(
+    mmh3_mmh3_x86_128_sintdigest_doc,
+    "mmh3_x86_128_sintdigest(key[, seed=0]) -> int\n\n"
+    "Return a hash value from a memory buffer as a signed 128-bit integer. "
+    "Calculated by the MurmurHash3_x86_128 algorithm. ");
+
+static PyObject *
+mmh3_mmh3_x86_128_sintdigest(PyObject *self, PyObject *args, PyObject *keywds)
+{
+    Py_buffer target_buf;
+    uint32_t seed = 0;
+    uint64_t result[2];
+
+    static char *kwlist[] = {(char *)"key", (char *)"seed", NULL};
+
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s*|I", kwlist, &target_buf,
+                                     &seed)) {
+        return NULL;
+    }
+
+    murmurhash3_x86_128(target_buf.buf, target_buf.len, seed, result);
+    PyBuffer_Release(&target_buf);
+
+#if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
+    result[0] = bswap_64(result[0]);
+    result[1] = bswap_64(result[1]);
+#endif
+
+    /**
+     * _PyLong_FromByteArray is not a part of the official Python/C API
+     * and may be removed in the future (although it is practically stable).
+     * cf.
+     * https://mail.python.org/pipermail/python-list/2006-August/372365.html
+     */
+    PyObject *retval = _PyLong_FromByteArray((unsigned char *)result,
+                                             MMH3_128_DIGESTSIZE, 1, 1);
+
+    return retval;
+}
+
+PyDoc_STRVAR(
+    mmh3_mmh3_x86_128_uintdigest_doc,
+    "mmh3_x86_128_uintdigest(key[, seed=0]) -> int\n\n"
+    "Return a hash value from a memory buffer as an unsigned 128-bit integer. "
+    "Calculated by the MurmurHash3_x86_128 algorithm. ");
+
+static PyObject *
+mmh3_mmh3_x86_128_uintdigest(PyObject *self, PyObject *args, PyObject *keywds)
+{
+    Py_buffer target_buf;
+    uint32_t seed = 0;
+    uint64_t result[2];
+
+    static char *kwlist[] = {(char *)"key", (char *)"seed", NULL};
+
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s*|I", kwlist, &target_buf,
+                                     &seed)) {
+        return NULL;
+    }
+
+    murmurhash3_x86_128(target_buf.buf, target_buf.len, seed, result);
+    PyBuffer_Release(&target_buf);
+
+#if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
+    result[0] = bswap_64(result[0]);
+    result[1] = bswap_64(result[1]);
+#endif
+
+    /**
+     * _PyLong_FromByteArray is not a part of the official Python/C API
+     * and may be removed in the future (although it is practically stable).
+     * cf.
+     * https://mail.python.org/pipermail/python-list/2006-August/372365.html
+     */
+    PyObject *retval = _PyLong_FromByteArray((unsigned char *)result,
+                                             MMH3_128_DIGESTSIZE, 1, 0);
+
+    return retval;
+}
+
 static PyMethodDef Mmh3Methods[] = {
     {"hash", (PyCFunction)mmh3_hash, METH_VARARGS | METH_KEYWORDS,
      mmh3_hash_doc},
@@ -445,8 +607,16 @@ static PyMethodDef Mmh3Methods[] = {
      METH_VARARGS | METH_KEYWORDS, mmh3_mmh3_32_uintdigest_doc},
     {"mmh3_x64_128_digest", (PyCFunction)mmh3_mmh3_x64_128_digest,
      METH_VARARGS | METH_KEYWORDS, mmh3_mmh3_x64_128_digest_doc},
+    {"mmh3_x64_128_sintdigest", (PyCFunction)mmh3_mmh3_x64_128_sintdigest,
+     METH_VARARGS | METH_KEYWORDS, mmh3_mmh3_x64_128_sintdigest_doc},
+    {"mmh3_x64_128_uintdigest", (PyCFunction)mmh3_mmh3_x64_128_uintdigest,
+     METH_VARARGS | METH_KEYWORDS, mmh3_mmh3_x64_128_uintdigest_doc},
     {"mmh3_x86_128_digest", (PyCFunction)mmh3_mmh3_x86_128_digest,
      METH_VARARGS | METH_KEYWORDS, mmh3_mmh3_x86_128_digest_doc},
+    {"mmh3_x86_128_sintdigest", (PyCFunction)mmh3_mmh3_x86_128_sintdigest,
+     METH_VARARGS | METH_KEYWORDS, mmh3_mmh3_x86_128_sintdigest_doc},
+    {"mmh3_x86_128_uintdigest", (PyCFunction)mmh3_mmh3_x86_128_uintdigest,
+     METH_VARARGS | METH_KEYWORDS, mmh3_mmh3_x86_128_uintdigest_doc},
     {NULL, NULL, 0, NULL}};
 
 //-----------------------------------------------------------------------------
@@ -605,9 +775,9 @@ static PyMethodDef MMH3Hasher32_methods[] = {
     {"digest", (PyCFunction)MMH3Hasher32_digest, METH_NOARGS,
      "Return the digest value as a bytes object."},
     {"sintdigest", (PyCFunction)MMH3Hasher32_sintdigest, METH_NOARGS,
-     "Return the digest value as a 32 bit signed integer."},
+     "Return the digest value as a 32-bit signed integer."},
     {"uintdigest", (PyCFunction)MMH3Hasher32_uintdigest, METH_NOARGS,
-     "Return the digest value as a 32 bit unsigned integer."},
+     "Return the digest value as a 32-bit unsigned integer."},
     {"copy", (PyCFunction)MMH3Hasher32_copy, METH_NOARGS,
      "Return a copy of the hash object."},
     {NULL} /* Sentinel */

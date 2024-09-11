@@ -451,6 +451,26 @@ def test_mmh3_x64_128_digest() -> None:
     )
 
 
+def test_mmh3_x64_128_sintdigest() -> None:
+    assert mmh3.mmh3_x64_128_sintdigest(b"") == 0
+
+    assert (
+        mmh3.mmh3_x64_128_sintdigest(
+            b"The quick brown fox jumps over the lazy dog", 0x9747B28C
+        )
+        == -8943985938913228316176695348732677855
+    )
+
+
+def test_mmh3_x64_128_uintdigest() -> None:
+    assert mmh3.mmh3_x64_128_uintdigest(b"") == 0
+
+    assert (
+        mmh3.mmh3_x64_128_uintdigest(b"foo", 42)
+        == 215966891540331383248189432718888555506
+    )
+
+
 def test_mmh3_x86_128_digest() -> None:
     assert mmh3.mmh3_x86_128_digest("", 123) == (
         0x26F3E79926F3E79926F3E799FEDC5245
@@ -471,6 +491,27 @@ def test_mmh3_x86_128_digest() -> None:
     assert mmh3.mmh3_x86_128_digest(mv[0:13], 123) == (
         0x9E37C886A41621625A1AACD761C9129E
     ).to_bytes(16, "little")
+
+
+def test_mmh3_x86_128_sintdigest() -> None:
+    assert mmh3.mmh3_x64_128_sintdigest(b"") == 0
+
+    assert (
+        mmh3.mmh3_x64_128_sintdigest(
+            b"The quick brown fox jumps over the lazy dog", 0x9747B28C
+        )
+        == -8943985938913228316176695348732677855
+    )
+
+
+def test_mmh3_x86_128_uintdigest() -> None:
+    assert mmh3.mmh3_x64_128_uintdigest(b"") == 0
+
+    # Test vector from https://github.com/PeterScott/murmur3/blob/master/test.c
+    assert (
+        mmh3.mmh3_x86_128_uintdigest(b"Hello, world!", 123)
+        == 0x9E37C886A41621625A1AACD761C9129E
+    )
 
 
 def test_64bit() -> None:
