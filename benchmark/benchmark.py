@@ -16,8 +16,8 @@ K2: Final[int] = 0b1100001010110010101011100011110100100111110101001110101101001
 MASK: Final[int] = 0xFFFFFFFFFFFFFFFF
 
 HASHES = {
-    "mmh3_32": mmh3.hash,
-    "mmh3_128": mmh3.hash_bytes,
+    "mmh3_32": mmh3.mmh3_32_digest,
+    "mmh3_128": mmh3.mmh3_x64_128_digest,
     "xxh_32": xxhash.xxh32_digest,
     "xxh_64": xxhash.xxh64_digest,
     "xxh3_64": xxhash.xxh3_64_digest,
