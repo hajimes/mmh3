@@ -308,8 +308,8 @@ def test_mmh3_x64_128_digest() -> None:
 
     v = bytearray(b"bar boo bar")
     mv = memoryview(v)
-    v[4] = ord('f')
-    
+    v[4] = ord("f")
+
     assert (
         mmh3.mmh3_x64_128_digest(mv[4:7])
         == b"aE\xf5\x01W\x86q\xe2\x87}\xba+\xe4\x87\xaf~"
@@ -331,8 +331,8 @@ def test_mmh3_x86_128_digest() -> None:
 
     v = bytearray(b"hello, world!!!")
     mv = memoryview(v)
-    v[0] = ord('H')
-    
+    v[0] = ord("H")
+
     assert mmh3.mmh3_x86_128_digest(mv[0:13], 123) == (
         0x9E37C886A41621625A1AACD761C9129E
     ).to_bytes(16, "little")
