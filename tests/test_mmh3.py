@@ -293,6 +293,141 @@ def test_mmh3_32_digest() -> None:
     assert mmh3.mmh3_32_digest(v[1:3], 0x9747B28C) == (0x5D211726).to_bytes(4, "little")
 
 
+def test_mmh3_sintdigest() -> None:
+    assert mmh3.mmh3_32_sintdigest("foo") == -156908512
+    assert mmh3.mmh3_32_sintdigest(b"foo") == -156908512
+    assert mmh3.mmh3_32_sintdigest(bytearray(b"foo")) == -156908512
+    assert mmh3.mmh3_32_sintdigest(memoryview(b"foobar")[0:3]) == -156908512
+
+    # Test vectors devised by Ian Boyd
+    # https://stackoverflow.com/a/31929528
+    assert mmh3.mmh3_32_sintdigest(b"", seed=0) == 0
+    assert mmh3.mmh3_32_sintdigest(b"", seed=1) == 0x514E28B7
+    assert mmh3.mmh3_32_sintdigest(b"", seed=u32_to_s32(0xFFFFFFFF)) == u32_to_s32(
+        0x81F16F39
+    )
+    assert mmh3.mmh3_32_sintdigest(b"\x21\x43\x65\x87", 0) == u32_to_s32(0xF55B516B)
+    assert mmh3.mmh3_32_sintdigest(
+        b"\x21\x43\x65\x87", u32_to_s32(0x5082EDEE)
+    ) == u32_to_s32(0x2362F9DE)
+    assert mmh3.mmh3_32_sintdigest(b"\x21\x43\x65", 0) == u32_to_s32(0x7E4A8634)
+    assert mmh3.mmh3_32_sintdigest(b"\x21\x43", 0) == u32_to_s32(0xA0F7B07A)
+    assert mmh3.mmh3_32_sintdigest(b"\x21", 0) == u32_to_s32(0x72661CF4)
+    assert mmh3.mmh3_32_sintdigest(b"\xff\xff\xff\xff", 0) == u32_to_s32(0x76293B50)
+    assert mmh3.mmh3_32_sintdigest(b"\x00\x00\x00\x00", 0) == u32_to_s32(0x2362F9DE)
+    assert mmh3.mmh3_32_sintdigest(b"\x00\x00\x00", 0) == u32_to_s32(0x85F0B427)
+    assert mmh3.mmh3_32_sintdigest(b"\x00\x00", 0) == u32_to_s32(0x30F4C306)
+    assert mmh3.mmh3_32_sintdigest(b"\x00", 0) == u32_to_s32(0x514E28B7)
+
+    assert mmh3.mmh3_32_sintdigest("aaaa", u32_to_s32(0x9747B28C)) == u32_to_s32(
+        0x5A97808A
+    )
+    assert mmh3.mmh3_32_sintdigest("aaa", u32_to_s32(0x9747B28C)) == u32_to_s32(
+        0x283E0130
+    )
+    assert mmh3.mmh3_32_sintdigest("aa", u32_to_s32(0x9747B28C)) == u32_to_s32(
+        0x5D211726
+    )
+    assert mmh3.mmh3_32_sintdigest("a", u32_to_s32(0x9747B28C)) == u32_to_s32(
+        0x7FA09EA6
+    )
+
+    assert mmh3.mmh3_32_sintdigest("abcd", u32_to_s32(0x9747B28C)) == u32_to_s32(
+        0xF0478627
+    )
+    assert mmh3.mmh3_32_sintdigest("abc", u32_to_s32(0x9747B28C)) == u32_to_s32(
+        0xC84A62DD
+    )
+    assert mmh3.mmh3_32_sintdigest("ab", u32_to_s32(0x9747B28C)) == u32_to_s32(
+        0x74875592
+    )
+    assert mmh3.mmh3_32_sintdigest("a", u32_to_s32(0x9747B28C)) == u32_to_s32(
+        0x7FA09EA6
+    )
+
+    assert mmh3.mmh3_32_sintdigest(
+        "Hello, world!", u32_to_s32(0x9747B28C)
+    ) == u32_to_s32(0x24884CBA)
+
+    assert mmh3.mmh3_32_sintdigest(
+        "ππππππππ".encode("utf-8"), u32_to_s32(0x9747B28C)
+    ) == u32_to_s32(0xD58063C1)
+
+    assert mmh3.mmh3_32_sintdigest("a" * 256, u32_to_s32(0x9747B28C)) == u32_to_s32(
+        0x37405BDC
+    )
+
+    assert mmh3.mmh3_32_sintdigest("abc", 0) == u32_to_s32(0xB3DD93FA)
+    assert mmh3.mmh3_32_sintdigest(
+        "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq", 0
+    ) == u32_to_s32(0xEE925B90)
+
+    assert mmh3.mmh3_32_sintdigest(
+        "The quick brown fox jumps over the lazy dog", u32_to_s32(0x9747B28C)
+    ) == u32_to_s32(0x2FA826CD)
+
+
+def test_mmh3_uintdigest() -> None:
+    assert mmh3.mmh3_32_uintdigest("foo") == 4138058784
+    assert mmh3.mmh3_32_uintdigest(b"foo") == 4138058784
+    assert mmh3.mmh3_32_uintdigest(bytearray(b"foo")) == 4138058784
+    assert mmh3.mmh3_32_uintdigest(memoryview(b"foobar")[0:3]) == 4138058784
+
+    # Test vectors devised by Ian Boyd
+    # https://stackoverflow.com/a/31929528
+    assert mmh3.mmh3_32_uintdigest(b"", seed=0) == 0
+    assert mmh3.mmh3_32_uintdigest(b"", seed=1) == 0x514E28B7
+    assert mmh3.mmh3_32_uintdigest(b"", seed=0xFFFFFFFF) == 0x81F16F39
+    assert mmh3.mmh3_32_uintdigest(b"\x21\x43\x65\x87", 0) == 0xF55B516B
+    assert mmh3.mmh3_32_uintdigest(b"\x21\x43\x65\x87", 0x5082EDEE) == 0x2362F9DE
+    assert mmh3.mmh3_32_uintdigest(b"\x21\x43\x65", 0) == 0x7E4A8634
+    assert mmh3.mmh3_32_uintdigest(b"\x21\x43", 0) == 0xA0F7B07A
+    assert mmh3.mmh3_32_uintdigest(b"\x21", 0) == 0x72661CF4
+    assert mmh3.mmh3_32_uintdigest(b"\xff\xff\xff\xff", 0) == 0x76293B50
+    assert mmh3.mmh3_32_uintdigest(b"\x00\x00\x00\x00", 0) == 0x2362F9DE
+    assert mmh3.mmh3_32_uintdigest(b"\x00\x00\x00", 0) == 0x85F0B427
+    assert mmh3.mmh3_32_uintdigest(b"\x00\x00", 0) == 0x30F4C306
+    assert mmh3.mmh3_32_uintdigest(b"\x00", 0) == 0x514E28B7
+
+    assert mmh3.mmh3_32_uintdigest("aaaa", 0x9747B28C) == 0x5A97808A
+    assert mmh3.mmh3_32_uintdigest("aaa", 0x9747B28C) == 0x283E0130
+    assert mmh3.mmh3_32_uintdigest("aa", 0x9747B28C) == 0x5D211726
+    assert mmh3.mmh3_32_uintdigest("a", 0x9747B28C) == 0x7FA09EA6
+
+    assert mmh3.mmh3_32_uintdigest("abcd", 0x9747B28C) == 0xF0478627
+    assert mmh3.mmh3_32_uintdigest("abc", 0x9747B28C) == 0xC84A62DD
+    assert mmh3.mmh3_32_uintdigest("ab", 0x9747B28C) == 0x74875592
+    assert mmh3.mmh3_32_uintdigest("a", 0x9747B28C) == 0x7FA09EA6
+
+    assert mmh3.mmh3_32_uintdigest("Hello, world!", 0x9747B28C) == 0x24884CBA
+
+    assert mmh3.mmh3_32_uintdigest("ππππππππ".encode("utf-8"), 0x9747B28C) == 0xD58063C1
+
+    assert mmh3.mmh3_32_uintdigest("a" * 256, 0x9747B28C) == 0x37405BDC
+
+    assert mmh3.mmh3_32_uintdigest("abc", 0) == 0xB3DD93FA
+    assert (
+        mmh3.mmh3_32_uintdigest(
+            "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq", 0
+        )
+        == 0xEE925B90
+    )
+
+    assert (
+        mmh3.mmh3_32_uintdigest(
+            "The quick brown fox jumps over the lazy dog", 0x9747B28C
+        )
+        == 0x2FA826CD
+    )
+
+    assert (
+        mmh3.mmh3_32_uintdigest(
+            "The quick brown fox jumps over the lazy dog", 0x9747B28C
+        )
+        == 0x2FA826CD
+    )
+
+
 def test_mmh3_x64_128_digest() -> None:
     assert (
         mmh3.mmh3_x64_128_digest("foo")

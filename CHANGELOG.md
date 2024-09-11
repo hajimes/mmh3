@@ -10,6 +10,8 @@ This project has adhered to
 
 ### Added
 
+- Add `digest` functions that accept a non-immutable buffer as input
+  and process it without internal copying.
 - Slightly improve the performance of the `hash_bytes` function.
 - Add support for Python 3.13.
 - Add Read the Docs documentation (<https://github.com/hajimes/mmh3/issues/54>).
@@ -20,6 +22,10 @@ This project has adhered to
 
 - Change the format of CHANGELOG.md to conform to the Keep a Changelog
   standard.
+
+### Fixed
+
+- Fix a reference leak in the `hash_from_buffer()` function.
 
 ## [4.1.0] - 2024-01-09
 

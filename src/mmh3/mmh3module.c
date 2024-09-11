@@ -315,11 +315,60 @@ mmh3_mmh3_32_digest(PyObject *self, PyObject *args, PyObject *keywds)
                                      MMH3_32_DIGESTSIZE);
 }
 
+PyDoc_STRVAR(mmh3_mmh3_32_sintdigest_doc,
+             "mmh3_32_sintdigest(key[, seed=0]) -> bytes\n\n"
+             "Return a 32 bit signed integer from a memory buffer as bytes. "
+             "Calculated by the MurmurHash3_x86_32 algorithm. ");
+
+static PyObject *
+mmh3_mmh3_32_sintdigest(PyObject *self, PyObject *args, PyObject *keywds)
+{
+    Py_buffer target_buf;
+    uint32_t seed = 0;
+    int32_t result[1];
+
+    static char *kwlist[] = {(char *)"key", (char *)"seed", NULL};
+
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s*|I", kwlist, &target_buf,
+                                     &seed)) {
+        return NULL;
+    }
+
+    murmurhash3_x86_32(target_buf.buf, target_buf.len, seed, result);
+    PyBuffer_Release(&target_buf);
+
+    return PyLong_FromLong(result[0]);
+}
+
+PyDoc_STRVAR(mmh3_mmh3_32_uintdigest_doc,
+             "mmh3_32_uintdigest(key[, seed=0]) -> bytes\n\n"
+             "Return a 32 bit unsigned integer from a memory buffer as bytes. "
+             "Calculated by the MurmurHash3_x86_32 algorithm. ");
+
+static PyObject *
+mmh3_mmh3_32_uintdigest(PyObject *self, PyObject *args, PyObject *keywds)
+{
+    Py_buffer target_buf;
+    uint32_t seed = 0;
+    uint32_t result[1];
+
+    static char *kwlist[] = {(char *)"key", (char *)"seed", NULL};
+
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s*|I", kwlist, &target_buf,
+                                     &seed)) {
+        return NULL;
+    }
+
+    murmurhash3_x86_32(target_buf.buf, target_buf.len, seed, result);
+    PyBuffer_Release(&target_buf);
+
+    return PyLong_FromUnsignedLong(result[0]);
+}
+
 PyDoc_STRVAR(mmh3_mmh3_x64_128_digest_doc,
              "mmh3_x64_128_digest(key[, seed=0]) -> bytes\n\n"
              "Return a hash value from a memory buffer as bytes. "
-             "Calculated by the MurmurHash3_x64_128 algorithm. "
-             "Designed for large memory-views such as numpy arrays.");
+             "Calculated by the MurmurHash3_x64_128 algorithm. ");
 
 static PyObject *
 mmh3_mmh3_x64_128_digest(PyObject *self, PyObject *args, PyObject *keywds)
@@ -390,6 +439,10 @@ static PyMethodDef Mmh3Methods[] = {
      mmh3_hash_bytes_doc},
     {"mmh3_32_digest", (PyCFunction)mmh3_mmh3_32_digest,
      METH_VARARGS | METH_KEYWORDS, mmh3_mmh3_32_digest_doc},
+    {"mmh3_32_sintdigest", (PyCFunction)mmh3_mmh3_32_sintdigest,
+     METH_VARARGS | METH_KEYWORDS, mmh3_mmh3_32_sintdigest_doc},
+    {"mmh3_32_uintdigest", (PyCFunction)mmh3_mmh3_32_uintdigest,
+     METH_VARARGS | METH_KEYWORDS, mmh3_mmh3_32_uintdigest_doc},
     {"mmh3_x64_128_digest", (PyCFunction)mmh3_mmh3_x64_128_digest,
      METH_VARARGS | METH_KEYWORDS, mmh3_mmh3_x64_128_digest_doc},
     {"mmh3_x86_128_digest", (PyCFunction)mmh3_mmh3_x86_128_digest,
