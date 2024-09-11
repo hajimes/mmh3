@@ -471,6 +471,26 @@ def test_mmh3_x64_128_uintdigest() -> None:
     )
 
 
+def test_mmh3_x64_128_stupledigest() -> None:
+    assert mmh3.mmh3_x64_128_stupledigest(b"") == (0, 0)
+
+    assert mmh3.mmh3_x64_128_stupledigest(
+        memoryview(b"The quick brown fox jumps over the lazy dog"), 0x9747B28C
+    ) == (
+        8325606756057297185,
+        -484854449282476315,
+    )
+
+
+def test_mmh3_x64_128_utupledigest() -> None:
+    assert mmh3.mmh3_x64_128_utupledigest(b"") == (0, 0)
+
+    assert mmh3.mmh3_x64_128_utupledigest(memoryview(b"foo")) == (
+        16316970633193145697,
+        9128664383759220103,
+    )
+
+
 def test_mmh3_x86_128_digest() -> None:
     assert mmh3.mmh3_x86_128_digest("", 123) == (
         0x26F3E79926F3E79926F3E799FEDC5245
@@ -511,6 +531,27 @@ def test_mmh3_x86_128_uintdigest() -> None:
     assert (
         mmh3.mmh3_x86_128_uintdigest(b"Hello, world!", 123)
         == 0x9E37C886A41621625A1AACD761C9129E
+    )
+
+
+def test_mmh3_x86_128_stupledigest() -> None:
+    assert mmh3.mmh3_x86_128_stupledigest(b"") == (0, 0)
+
+    assert mmh3.mmh3_x86_128_stupledigest(
+        memoryview(b"The quick brown fox jumps over the lazy dog"), 0x9747B28C
+    ) == (
+        5528275682885686622,
+        -3623575540584727908,
+    )
+
+
+def test_mmh3_x86_128_utupledigest() -> None:
+    assert mmh3.mmh3_x86_128_utupledigest(b"") == (0, 0)
+
+    # Test vector from https://github.com/PeterScott/murmur3/blob/master/test.c
+    assert mmh3.mmh3_x86_128_utupledigest(memoryview(b"Hello, world!"), 123) == (
+        0x5A1AACD761C9129E,
+        0x9E37C886A4162162,
     )
 
 
