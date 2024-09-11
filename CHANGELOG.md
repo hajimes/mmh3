@@ -11,21 +11,25 @@ This project has adhered to
 ### Added
 
 - Add `digest` functions that accept a non-immutable buffer as input
-  and process it without internal copying.
+  and process it without internal copying
+  ([#75](https://github.com/hajimes/mmh3/issues/75)).
 - Slightly improve the performance of the `hash_bytes` function.
 - Add support for Python 3.13.
-- Add Read the Docs documentation (<https://github.com/hajimes/mmh3/issues/54>).
+- Add Read the Docs documentation
+  ([#54](https://github.com/hajimes/mmh3/issues/54)).
 - (planned: Document benchmark results
-  (<https://github.com/hajimes/mmh3/issues/53>)).
+  ([#53](https://github.com/hajimes/mmh3/issues/53))).
 
 ### Changed
 
-- Change the format of CHANGELOG.md to conform to the Keep a Changelog
-  standard.
+- Change the format of CHANGELOG.md to conform to the
+  [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) standard
+  ([#63](https://github.com/hajimes/mmh3/issues/63)).
 
 ### Fixed
 
-- Fix a reference leak in the `hash_from_buffer()` function.
+- Fix a reference leak in the `hash_from_buffer()` function
+  ([#75](https://github.com/hajimes/mmh3/issues/75)).
 
 ## [4.1.0] - 2024-01-09
 
@@ -36,16 +40,18 @@ This project has adhered to
 ### Fixed
 
 - Fix issues with Bazel by changing the directory structure of the project
-  (<https://github.com/hajimes/mmh3/issues/50>).
-- Fix incorrect type hints (<https://github.com/hajimes/mmh3/issues/51>).
+  ([#50](https://github.com/hajimes/mmh3/issues/50)).
+- Fix incorrect type hints ([#51](https://github.com/hajimes/mmh3/issues/51)).
 - Fix invalid results on s390x when the arg `x64arch` of `hash64` or
-  `hash_bytes` is set to `False` (<https://github.com/hajimes/mmh3/issues/52>).
+  `hash_bytes` is set to `False`
+  ([#52](https://github.com/hajimes/mmh3/issues/52)).
 
 ## [4.0.1] - 2023-07-14
 
 ### Changed
 
-- Refactor the project structure (<https://github.com/hajimes/mmh3/issues/48>).
+- Refactor the project structure
+  ([#48](https://github.com/hajimes/mmh3/issues/48)).
 
 ### Fixed
 
@@ -56,25 +62,27 @@ This project has adhered to
 ### Added
 
 - Add experimental support for `hashlib`-compliant hasher classes
-  (<https://github.com/hajimes/mmh3/issues/39>). Note that they are not yet
+  ([#39](https://github.com/hajimes/mmh3/issues/39)). Note that they are not yet
   fully tuned for performance.
-- Add support for type hints (<https://github.com/hajimes/mmh3/issues/44>).
+- Add support for type hints ([#44](https://github.com/hajimes/mmh3/issues/44)).
 - Add wheels for more platforms (`musllinux`, `s390x`, `win_arm64`, and
   `macosx_universal2`).
 - Add a code of conduct (the ACM Code of Ethics and Professional Conduct).
 
 ### Changed
 
-- Switch license from CC0 to MIT (<https://github.com/hajimes/mmh3/issues/43>).
+- Switch license from CC0 to MIT
+  ([#43](https://github.com/hajimes/mmh3/issues/43)).
 
 ### Removed
 
 - Drop support for Python 3.7, as it will reach the end of life on 2023-06-27.
 - Backward incompatible changes:
   - A hash function now returns the same value under big-endian platforms as
-    that under little-endian ones (<https://github.com/hajimes/mmh3/issues/47>).
+    that under little-endian ones
+    ([#47](https://github.com/hajimes/mmh3/issues/47)).
   - Remove the `__version__` constant from the module
-    (<https://github.com/hajimes/mmh3/issues/42>). Use `importlib.metadata`
+    ([#42](https://github.com/hajimes/mmh3/issues/42)). Use `importlib.metadata`
     instead.
 
 ## [3.1.0] - 2023-03-24

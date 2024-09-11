@@ -136,21 +136,25 @@ complete changelog.
 #### Added
 
 - Add `digest` functions that accept a non-immutable buffer as input
-  and process it without internal copying.
+  and process it without internal copying
+  ([#75](https://github.com/hajimes/mmh3/issues/75)).
 - Slightly improve the performance of the `hash_bytes` function.
 - Add support for Python 3.13.
-- Add Read the Docs documentation (<https://github.com/hajimes/mmh3/issues/54>).
+- Add Read the Docs documentation
+  ([#54](https://github.com/hajimes/mmh3/issues/54)).
 - (planned: Document benchmark results
-  (<https://github.com/hajimes/mmh3/issues/53>)).
+  ([#53](https://github.com/hajimes/mmh3/issues/53))).
 
-### Changed
+#### Changed
 
-- Change the format of CHANGELOG.md to conform to the Keep a Changelog
-  standard.
+- Change the format of CHANGELOG.md to conform to the
+  [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) standard
+  ([#63](https://github.com/hajimes/mmh3/issues/63)).
 
-### Fixed
+#### Fixed
 
-- Fix a reference leak in the `hash_from_buffer()` function.
+- Fix a reference leak in the `hash_from_buffer()` function
+  ([#75](https://github.com/hajimes/mmh3/issues/75)).
 
 ### [4.1.0] - 2024-01-09
 
