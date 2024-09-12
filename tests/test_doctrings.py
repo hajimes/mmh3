@@ -6,7 +6,7 @@ def test_function_docstrings() -> None:
     assert "__doc__" in dir(mmh3.hash)
     assert mmh3.hash.__doc__ is not None
     assert mmh3.hash.__doc__.startswith(
-        "hash(key[, seed=0, signed=True]) -> 32-bit int\n\n"
+        "hash(key: bytes | str, seed: int = 0, signed: bool = True) -> int\n\n"
     )
 
     assert "__doc__" in dir(mmh3.hash_from_buffer)
