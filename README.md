@@ -155,6 +155,7 @@ complete changelog.
 
 - Fix a reference leak in the `hash_from_buffer()` function
   ([#75](https://github.com/hajimes/mmh3/issues/75)).
+- Fix type hints.
 
 ### [4.1.0] - 2024-01-09
 
