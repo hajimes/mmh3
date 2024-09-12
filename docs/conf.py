@@ -17,7 +17,7 @@ author = "Hajime Senuma"
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ["sphinx.ext.autodoc", "sphinx.ext.napoleon", "myst_parser"]
+extensions = ["sphinx.ext.autodoc", "sphinx.ext.napoleon", "sphinx_copybutton", "myst_parser"]
 
 templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
@@ -30,3 +30,5 @@ html_static_path = ["_static"]
 html_theme_options = {
     "github_url": "https://github.com/hajimes/mmh3",
 }
+
+autodoc_member_order = "groupwise"

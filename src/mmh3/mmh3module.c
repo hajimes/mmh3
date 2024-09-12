@@ -35,10 +35,18 @@ typedef unsigned __int64 uint64_t;
 //-----------------------------------------------------------------------------
 // One shot functions
 
-PyDoc_STRVAR(mmh3_hash_doc,
-             "hash(key[, seed=0, signed=True]) -> 32-bit int\n\n"
-             "Return a hash value as a 32-bit integer. "
-             "Calculated by the MurmurHash3_x86_32 algorithm.");
+PyDoc_STRVAR(
+    mmh3_hash_doc,
+    "hash(key: bytes | str, seed: int = 0, signed: bool = True) -> int\n\n"
+    "Return a hash value as a 32-bit integer.\n\n"
+    "Calculated by the MurmurHash3_x86_32 algorithm.\n\n"
+    "Args:\n"
+    "    key: The input data to hash.\n"
+    "    seed: The seed value.\n\n"
+    "    signed: If True, return a signed integer. Otherwise, return an "
+    "unsigned.\n\n"
+    "Returns:\n"
+    "    The hash value as a 32-bit integer.\n\n");
 
 static PyObject *
 mmh3_hash(PyObject *self, PyObject *args, PyObject *keywds)
@@ -605,9 +613,16 @@ mmh3_mmh3_x86_128_sintdigest(PyObject *self, PyObject *args, PyObject *keywds)
 
 PyDoc_STRVAR(
     mmh3_mmh3_x86_128_uintdigest_doc,
-    "mmh3_x86_128_uintdigest(key[, seed=0]) -> int\n\n"
+    "mmh3_x86_128_uintdigest(key: ReadbleBuffer | str, seed: int = 0) -> "
+    "int\n\n"
     "Return a hash value from a memory buffer as an unsigned 128-bit integer. "
-    "Calculated by the MurmurHash3_x86_128 algorithm. ");
+    "Calculated by the MurmurHash3_x86_128 algorithm.\n\n"
+    "Args:\n"
+    "    key: The input data to hash.\n"
+    "    seed: The seed value.\n\n"
+    "Returns:\n"
+    "    The hash value as an unsigned 128-bit integer.\n\n"
+    ".. versionadded:: 4.2.0\n\n");
 
 static PyObject *
 mmh3_mmh3_x86_128_uintdigest(PyObject *self, PyObject *args, PyObject *keywds)
@@ -890,7 +905,11 @@ MMH3Hasher32_copy(MMH3Hasher32 *self, PyObject *Py_UNUSED(ignored))
 
 static PyMethodDef MMH3Hasher32_methods[] = {
     {"update", (PyCFunction)MMH3Hasher32_update, METH_O,
-     "Update this hash object's state with the provided string."},
+     PyDoc_STR("update(data: ReadableBuffer) -> None\n\n"
+               "Update this hash object's state with the provided bytes-like "
+               "object.\n\n"
+               "Args:\n"
+               "    data: The buffer to hash.\n\n")},
     {"digest", (PyCFunction)MMH3Hasher32_digest, METH_NOARGS,
      "Return the digest value as a bytes object."},
     {"sintdigest", (PyCFunction)MMH3Hasher32_sintdigest, METH_NOARGS,
