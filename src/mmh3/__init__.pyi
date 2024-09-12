@@ -1,16 +1,13 @@
 # to use list, tuple, dict ... in Python 3.7 and 3.8
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Protocol, Union, final
+from typing import TYPE_CHECKING, Union, final
 
 if TYPE_CHECKING:
     from _typeshed import ReadableBuffer
 
-class IntArrayLike(Protocol):
-    def __getitem__(self, index) -> int: ...
-
 HashableImmutable = Union[str, bytes]
-HashableBuffer = Union[HashableImmutable, ReadableBuffer, IntArrayLike]
+HashableBuffer = Union[HashableImmutable, ReadableBuffer]
 
 def hash(key: HashableImmutable, seed: int = 0, signed: bool = True) -> int: ...
 def hash_from_buffer(
@@ -49,7 +46,7 @@ def mmh3_x86_128_utupledigest(
 
 class Hasher:
     def __init__(self, seed: int = 0) -> None: ...
-    def update(self, input: HashableBuffer) -> None: ...
+    def update(self, input: ReadableBuffer) -> None: ...
     def digest(self) -> bytes: ...
     def sintdigest(self) -> int: ...
     def uintdigest(self) -> int: ...
