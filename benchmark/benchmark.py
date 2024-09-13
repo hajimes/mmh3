@@ -2,6 +2,8 @@
 
 import hashlib
 import itertools
+import math
+import random
 import time
 from collections.abc import Callable
 from typing import Final
@@ -51,7 +53,7 @@ def init_buffer(ba: bytearray) -> bytearray:
 
 
 def perf_hash(loops: int, f: Callable, size: int) -> float:
-    """Benchmark the mmh3 hash function.
+    """Benchmark a hash function.
 
     Args:
         loops: The number of outer loops to run.
@@ -62,6 +64,9 @@ def perf_hash(loops: int, f: Callable, size: int) -> float:
         The time taken to hash the buffer in fractional seconds.
     """
     # pylint: disable=too-many-locals
+
+    if size <= 0:
+        raise ValueError("size must be greater than 0")
 
     range_it = itertools.repeat(None, loops)
 
@@ -77,7 +82,7 @@ def perf_hash(loops: int, f: Callable, size: int) -> float:
     data6 = bytes(data[6 : size + 6])
     data7 = bytes(data[7 : size + 7])
     data8 = bytes(data[8 : size + 8])
-    data9 = bytes(data[8 : size + 9])
+    data9 = bytes(data[9 : size + 9])
 
     t0 = time.perf_counter()
     for _ in range_it:
@@ -91,6 +96,63 @@ def perf_hash(loops: int, f: Callable, size: int) -> float:
         f(data7)
         f(data8)
         f(data9)
+
+    return time.perf_counter() - t0
+
+
+def perf_hash_random(loops: int, f: Callable, size: int) -> float:
+    """Benchmark a hash function in a non-uniform way.
+
+    Args:
+        loops: The number of outer loops to run.
+        f: The hash function to benchmark
+        size: The size of the buffer to hash.
+
+    Returns:
+        The time taken to hash the buffer in fractional seconds.
+    """
+    # pylint: disable=too-many-locals
+
+    if size <= 0:
+        raise ValueError("size must be greater than 0")
+
+    range_it = itertools.repeat(None, loops)
+    number_inner_loops = 10
+    random.seed(42)
+
+    n = 0
+
+    generate_size = lambda size: random.randint(
+        math.ceil(size * 0.9), math.floor(size * 1.1)
+    )
+
+    size0 = generate_size(size)
+    size1 = generate_size(size)
+    size2 = generate_size(size)
+    size3 = generate_size(size)
+    size4 = generate_size(size)
+    size5 = generate_size(size)
+    size6 = generate_size(size)
+    size7 = generate_size(size)
+    size8 = generate_size(size)
+    size9 = generate_size(size)
+
+    data = bytearray(math.floor(size * 1.1) + 255)
+    view_to_hash = memoryview(bytes(init_buffer(data)))
+    v1 = view_to_hash.toreadonly()
+
+    t0 = time.perf_counter()
+    for _ in range_it:
+        n = f(view_to_hash[n : n + size0])[0]
+        n = f(view_to_hash[n : n + size1])[0]
+        n = f(view_to_hash[n : n + size2])[0]
+        n = f(view_to_hash[n : n + size3])[0]
+        n = f(view_to_hash[n : n + size4])[0]
+        n = f(view_to_hash[n : n + size5])[0]
+        n = f(view_to_hash[n : n + size6])[0]
+        n = f(view_to_hash[n : n + size7])[0]
+        n = f(view_to_hash[n : n + size8])[0]
+        n = f(view_to_hash[n : n + size9])[0]
 
     return time.perf_counter() - t0
 
@@ -130,7 +192,7 @@ if __name__ == "__main__":
     while fib1 <= process_args.test_buffer_size_max:
         runner.bench_time_func(
             f"{fib1} bytes",
-            perf_hash,
+            perf_hash_random,
             HASHES[process_args.test_hash],
             fib1,
             inner_loops=10,
