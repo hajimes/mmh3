@@ -2,13 +2,12 @@
 from __future__ import annotations
 
 import sys
-from typing import TYPE_CHECKING, Union, final
+from typing import Union, final
 
 if sys.version_info >= (3, 12):
     from collections.abc import Buffer
 else:
-    if TYPE_CHECKING:
-        from _typeshed import ReadableBuffer as Buffer
+    from _typeshed import ReadableBuffer as Buffer
 
 def hash(key: Union[bytes, str], seed: int = 0, signed: bool = True) -> int: ...
 def hash_from_buffer(
@@ -51,7 +50,7 @@ class Hasher:
     def digest(self) -> bytes: ...
     def sintdigest(self) -> int: ...
     def uintdigest(self) -> int: ...
-    def copy(self) -> Hasher: ...
+    def copy(self) -> Buffer: ...
     @property
     def digest_size(self) -> int: ...
     @property
