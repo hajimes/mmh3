@@ -1193,18 +1193,23 @@ MMH3Hasher32_get_name(PyObject *self, void *closure)
 
 static PyGetSetDef MMH3Hasher32_getsetters[] = {
     {"digest_size", (getter)MMH3Hasher32_get_digest_size, NULL,
-     "number of bytes in this hashes output", NULL},
+     "int: Number of bytes in this hashes output", NULL},
     {"block_size", (getter)MMH3Hasher32_get_block_size, NULL,
-     "number of bytes of the internal block of this algorithm", NULL},
+     "int: Number of bytes of the internal block of this algorithm", NULL},
     {"name", (getter)MMH3Hasher32_get_name, NULL,
-     "the hash algorithm being used by this object", NULL},
+     "str: The hash algorithm being used by this object", NULL},
     {NULL} /* Sentinel */
 };
 
-PyDoc_STRVAR(MMH3Hasher32Type_doc,
-             "An mmh3_32 is an object used to calculate the "
-             "murmurhash3_x86_32 hash\n"
-             "of a string of information.");
+PyDoc_STRVAR(
+    MMH3Hasher32Type_doc,
+    "__init__(seed=0)\n"
+    "\n"
+    "Hasher for incrementally calculating the murmurhash3_x86_32 hash.\n"
+    "\n"
+    "Args:\n"
+    "    seed (int): The seed value. Must be an integer in the range "
+    "[0, 0xFFFFFFFF].\n");
 
 static PyTypeObject MMH3Hasher32Type = {
     PyVarObject_HEAD_INIT(NULL, 0).tp_name = "mmh3.mmh3_32",
@@ -1538,10 +1543,15 @@ static PyGetSetDef MMH3Hasher128x64_getsetters[] = {
     {NULL} /* Sentinel */
 };
 
-PyDoc_STRVAR(MMH3Hasher128x64Type_doc,
-             "An mmh3_x64_128 is an object used to calculate the "
-             "murmurhash3_x64_128\n"
-             "hash of a string of information.");
+PyDoc_STRVAR(
+    MMH3Hasher128x64Type_doc,
+    "__init__(seed=0)\n"
+    "\n"
+    "Hasher for incrementally calculating the murmurhash3_x64_128 hash.\n"
+    "\n"
+    "Args:\n"
+    "    seed (int): The seed value. Must be an integer in the range "
+    "[0, 0xFFFFFFFF].\n");
 
 static PyTypeObject MMH3Hasher128x64Type = {
     PyVarObject_HEAD_INIT(NULL, 0).tp_name = "mmh3.mmh3_x64_128",
@@ -1847,18 +1857,23 @@ MMH3Hasher128x86_get_name(PyObject *self, void *closure)
 
 static PyGetSetDef MMH3Hasher128x86_getsetters[] = {
     {"digest_size", (getter)MMH3Hasher128x86_get_digest_size, NULL,
-     "number of bytes in this hashes output", NULL},
+     "int: Number of bytes in this hashes output", NULL},
     {"block_size", (getter)MMH3Hasher128x86_get_block_size, NULL,
-     "number of bytes of the internal block of this algorithm", NULL},
+     "int: Number of bytes of the internal block of this algorithm", NULL},
     {"name", (getter)MMH3Hasher128x86_get_name, NULL,
-     "the hash algorithm being used by this object", NULL},
+     "str: Te hash algorithm being used by this object", NULL},
     {NULL} /* Sentinel */
 };
 
-PyDoc_STRVAR(MMH3Hasher128x86Type_doc,
-             "An mmh3_x86_128 is an object used to calculate the "
-             "murmurhash3_x86_128\n"
-             "hash of a string of information.");
+PyDoc_STRVAR(
+    MMH3Hasher128x86Type_doc,
+    "__init__(seed=0)\n"
+    "\n"
+    "Hasher for incrementally calculating the murmurhash3_x86_128 hash.\n"
+    "\n"
+    "Args:\n"
+    "    seed (int): The seed value. Must be an integer in the range "
+    "[0, 0xFFFFFFFF].\n");
 
 static PyTypeObject MMH3Hasher128x86Type = {
     PyVarObject_HEAD_INIT(NULL, 0).tp_name = "mmh3.mmh3_x86_128",
