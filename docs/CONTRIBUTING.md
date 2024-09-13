@@ -149,6 +149,8 @@ where `RESULT_DIR` is the directory containing the benchmark results.
 The names of json files should be in the format of `HASH_IDENTIFER.json`, e.g.,
 `mmh3_128.json`.
 
+As for the result of benchmarks themselves, see [Benchmarks](./benchmarks.md).
+
 ## Documentation
 
 Project documentation files are mainly written in the Markdown format and are
