@@ -7,8 +7,9 @@
 
 ## Functions for immutables
 
-The following functions are used to hash immutables, that is, `bytes` and `str`.
-The string inputs are converted to bytes with `utf-8` encoding.
+The following functions are used to hash immutable types, specifically
+`bytes` and `str`. String inputs are automatically converted to `bytes` using
+UTF-8 encoding before hashing.
 
 ```{eval-rst}
 .. autofunction:: mmh3.hash
@@ -19,7 +20,23 @@ The string inputs are converted to bytes with `utf-8` encoding.
 
 ## Functions for Buffer
 
-The following functions are used to hash non-immutable buffers.
+The following functions are used to hash types that implement the buffer
+protocol such as `bytes`, `bytearray`, `memoryview`, and `numpy` arrays.
+String inputs are also supported and are automatically converted to `bytes`
+using UTF-8 encoding before hashing.
+
+The buffer protocol,
+[originally implemented as a part of Python/C API](https://docs.python.org/3/c-api/buffer.html),
+was formally defined as a Python-level API in
+[PEP 688](https://peps.python.org/pep-0688/)
+in 2022 and its corresponding type hint was introduced as
+[collections.abc.Buffer](https://docs.python.org/3/library/collections.abc.html#collections.abc.Buffer)
+in Python 3.12. For earlier Python versions, `mmh3` uses a type alias for the
+type hint
+[\_typeshed.ReadableBuffer](https://github.com/python/typeshed/blob/d326c9bd424ad60c2b63c2ca1c5c1006c61c3562/stdlib/_typeshed/__init__.pyi#L281),
+which is itself an alias for
+[typing_extensions.Buffer](https://typing-extensions.readthedocs.io/en/latest/#typing_extensions.Buffer),
+the backported type hint for `collections.abc.Buffer`.
 
 ```{eval-rst}
 .. autofunction:: mmh3.hash_from_buffer
