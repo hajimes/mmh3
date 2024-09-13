@@ -52,6 +52,18 @@ def init_buffer(ba: bytearray) -> bytearray:
     return ba
 
 
+def generate_size(size: int) -> int:
+    """Generate a random size for a buffer.
+
+    Args:
+        size: The size of the buffer to hash.
+
+    Returns:
+        The random size of the buffer.
+    """
+    return random.randint(math.ceil(size * 0.9), math.floor(size * 1.1))
+
+
 def perf_hash(loops: int, f: Callable, size: int) -> float:
     """Benchmark a hash function.
 
@@ -117,14 +129,9 @@ def perf_hash_random(loops: int, f: Callable, size: int) -> float:
         raise ValueError("size must be greater than 0")
 
     range_it = itertools.repeat(None, loops)
-    number_inner_loops = 10
     random.seed(42)
 
     n = 0
-
-    generate_size = lambda size: random.randint(
-        math.ceil(size * 0.9), math.floor(size * 1.1)
-    )
 
     size0 = generate_size(size)
     size1 = generate_size(size)
@@ -139,7 +146,6 @@ def perf_hash_random(loops: int, f: Callable, size: int) -> float:
 
     data = bytearray(math.floor(size * 1.1) + 255)
     view_to_hash = memoryview(bytes(init_buffer(data)))
-    v1 = view_to_hash.toreadonly()
 
     t0 = time.perf_counter()
     for _ in range_it:
