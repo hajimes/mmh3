@@ -1,16 +1,15 @@
 # API Reference
 
 ```{caution}
-  This reference contains functions that are not yet released in the stable version.
+  This reference contains functions that are not yet released in the stable
+  version.
 ```
 
-## Basic functions
+## Functions for immutables
 
-The following functions are used to hash read-only bytes-like objects, e.g.,
-`bytes` and `str`.
+The following functions are used to hash immutables, that is, `bytes` and `str`.
+ The string inputs are converted to bytes with `utf-8` encoding.
 
-Strings are converted to C strings
-before hashing with `utf-8` encoding.
 
 ```{eval-rst}
 .. autofunction:: mmh3.hash
@@ -19,7 +18,7 @@ before hashing with `utf-8` encoding.
 .. autofunction:: mmh3.hash_bytes
 ```
 
-## Functions for non-immutable buffers
+## Functions for Buffer
 
 The following functions are used to hash non-immutable buffers.
 
@@ -45,17 +44,14 @@ The following functions are used to hash non-immutable buffers.
 ```{eval-rst}
 .. autoclass:: mmh3.mmh3_32
    :members:
-   :special-members: __init__,
 ```
 
 ```{eval-rst}
 .. autoclass:: mmh3.mmh3_x64_128
    :members:
-   :special-members: __init__,
 ```
 
 ```{eval-rst}
 .. autoclass:: mmh3.mmh3_x86_128
    :members:
-   :special-members: __init__,
 ```

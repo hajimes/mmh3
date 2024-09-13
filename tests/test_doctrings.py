@@ -6,25 +6,25 @@ def test_function_docstrings() -> None:
     assert "__doc__" in dir(mmh3.hash)
     assert mmh3.hash.__doc__ is not None
     assert mmh3.hash.__doc__.startswith(
-        "hash(key: bytes | str, seed: int = 0, signed: bool = True) -> int\n\n"
+        "hash(key[, seed=0, signed=True]) -> int\n\n"
     )
 
     assert "__doc__" in dir(mmh3.hash_from_buffer)
     assert mmh3.hash_from_buffer.__doc__ is not None
     assert mmh3.hash_from_buffer.__doc__.startswith(
-        "hash_from_buffer(key[, seed=0, signed=True]) -> 32-bit int\n\n"
+        "hash_from_buffer(key[, seed=0, signed=True]) -> int\n\n"
     )
 
     assert "__doc__" in dir(mmh3.hash64)
     assert mmh3.hash64.__doc__ is not None
     assert mmh3.hash64.__doc__.startswith(
-        "hash64(key[, seed=0, x64arch=True, signed=True]) -> (64-bit int, 64-bit int)\n\n"
+        "hash64(key[, seed=0, x64arch=True, signed=True]) -> tuple[int, int]\n\n"
     )
 
     assert "__doc__" in dir(mmh3.hash128)
     assert mmh3.hash128.__doc__ is not None
     assert mmh3.hash128.__doc__.startswith(
-        "hash128(key[, seed=0, x64arch=True, signed=False]]) -> 128-bit int\n\n"
+        "hash128(key[, seed=0, x64arch=True, signed=False]]) -> int\n\n"
     )
 
     assert "__doc__" in dir(mmh3.hash_bytes)

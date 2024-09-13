@@ -37,16 +37,21 @@ typedef unsigned __int64 uint64_t;
 
 PyDoc_STRVAR(
     mmh3_hash_doc,
-    "hash(key: bytes | str, seed: int = 0, signed: bool = True) -> int\n\n"
-    "Return a hash value as a 32-bit integer.\n\n"
-    "Calculated by the MurmurHash3_x86_32 algorithm.\n\n"
+    "hash(key[, seed=0, signed=True]) -> int\n"
+    "\n"
+    "Return a hash as a 32-bit integer.\n"
+    "\n"
+    "Calculated by the MurmurHash3_x86_32 algorithm.\n"
+    "\n"
     "Args:\n"
-    "    key: The input data to hash.\n"
-    "    seed: The seed value.\n\n"
-    "    signed: If True, return a signed integer. Otherwise, return an "
-    "unsigned.\n\n"
+    "    key (bytes | str): The input data to hash.\n"
+    "    seed (int): The seed value. Must be an integer in the range [0, "
+    "0xFFFFFFFF].\n"
+    "    signed (bool): If True, return a signed integer. Otherwise, return "
+    "an unsigned integer.\n"
+    "\n"
     "Returns:\n"
-    "    The hash value as a 32-bit integer.\n\n");
+    "    int: The hash value as a 32-bit integer.\n");
 
 static PyObject *
 mmh3_hash(PyObject *self, PyObject *args, PyObject *keywds)
@@ -101,11 +106,24 @@ mmh3_hash(PyObject *self, PyObject *args, PyObject *keywds)
 #endif  // defined(_MSC_VER)
 }
 
-PyDoc_STRVAR(mmh3_hash_from_buffer_doc,
-             "hash_from_buffer(key[, seed=0, signed=True]) -> 32-bit int\n\n"
-             "Return a hash value from a memory buffer as a 32-bit integer. "
-             "Calculated by the MurmurHash3_x86_32 algorithm. "
-             "Designed for large memory-views such as numpy arrays.");
+PyDoc_STRVAR(
+    mmh3_hash_from_buffer_doc,
+    "hash_from_buffer(key[, seed=0, signed=True]) -> int\n"
+    "\n"
+    "Return a hash from a memory buffer as a 32-bit integer.\n"
+    "\n"
+    "Calculated by the MurmurHash3_x86_32 algorithm. Designed for large "
+    "memory-views such as numpy arrays.\n"
+    "\n"
+    "Args:\n"
+    "    key (Buffer): The input data to hash.\n"
+    "    seed (int): The seed value. Must be an integer in the range [0, "
+    "0xFFFFFFFF].\n"
+    "    signed (bool): If True, return a signed integer. Otherwise, return "
+    "an unsigned integer.\n"
+    "\n"
+    "Returns:\n"
+    "    int: The hash value as a 32-bit integer.\n");
 
 static PyObject *
 mmh3_hash_from_buffer(PyObject *self, PyObject *args, PyObject *keywds)
@@ -162,12 +180,24 @@ mmh3_hash_from_buffer(PyObject *self, PyObject *args, PyObject *keywds)
 
 PyDoc_STRVAR(
     mmh3_hash64_doc,
-    "hash64(key[, seed=0, x64arch=True, signed=True]) -> (64-bit int, "
-    "64-bit "
-    "int)\n\n"
-    "Return a tuple of two 64 bit integers given an input string. "
-    "Calculated by the MurmurHash3_x{64, 86}_128 algorithm. Optimized "
-    "for the x64 bit architecture when x64arch=True, otherwise for x86.");
+    "hash64(key[, seed=0, x64arch=True, signed=True]) -> tuple[int, int]\n"
+    "\n"
+    "Return a hash as a tuple of two 64-bit integers.\n"
+    "\n"
+    "Calculated by the MurmurHash3_x{64, 86}_128 algorithm.\n"
+    "\n"
+    "Args:\n"
+    "    key (bytes | str): The input data to hash.\n"
+    "    seed (int): The seed value. Must be an integer in the range [0, "
+    "0xFFFFFFFF].\n"
+    "    x64arch (bool): If True, use an algorithm optimized for 64-bit "
+    "architecture. Otherwise, use one optimized for 32-bit architecture.\n"
+    "    signed (bool): If True, return a signed integer. Otherwise, return "
+    "an unsigned integer.\n"
+    "\n"
+    "Returns:\n"
+    "    tuple[int, int]: The hash value as a tuple of two 64-bit "
+    "integers.\n");
 
 static PyObject *
 mmh3_hash64(PyObject *self, PyObject *args, PyObject *keywds)
@@ -201,13 +231,21 @@ mmh3_hash64(PyObject *self, PyObject *args, PyObject *keywds)
     return retval;
 }
 
-PyDoc_STRVAR(mmh3_hash128_doc,
-             "hash128(key[, seed=0, x64arch=True, signed=False]]) -> 128-bit "
-             "int\n\n"
-             "Return a 128 bit long integer. "
-             "Calculated by the MurmurHash3_x{64, 86}_128 algorithm. "
-             "Optimized for the x64 bit architecture "
-             "when x64arch=True, otherwise for x86.");
+PyDoc_STRVAR(
+    mmh3_hash128_doc,
+    "hash128(key[, seed=0, x64arch=True, signed=False]]) -> int\n\n"
+    "Return a hash as a 128-bit integer.\n\n"
+    "Calculated by the MurmurHash3_x{64, 86}_128 algorithm.\n\n"
+    "Args:\n"
+    "    key (bytes | str): The input data to hash.\n"
+    "    seed (int): The seed value. Must be an integer in the range [0, "
+    "0xFFFFFFFF]. \n\n"
+    "    x64arch (bool): If True, use an algorithm optimized for 64-bit "
+    "architecture. Otherwise, use one optimized for 32-bit architecture.\n\n"
+    "    signed (bool): If True, return a signed integer. Otherwise, return "
+    "an unsigned integer.\n\n"
+    "Returns:\n"
+    "    int: The hash value as a 128-bit integer.\n\n");
 
 static PyObject *
 mmh3_hash128(PyObject *self, PyObject *args, PyObject *keywds)
@@ -255,9 +293,17 @@ mmh3_hash128(PyObject *self, PyObject *args, PyObject *keywds)
 PyDoc_STRVAR(
     mmh3_hash_bytes_doc,
     "hash_bytes(key[, seed=0, x64arch=True]) -> bytes\n\n"
-    "Return a 128 bit hash value as bytes for a string. Optimized for "
-    "the x64 bit architecture when "
-    "x64arch=True, otherwise for the x86.");
+    "Return a 16-byte hash of the bytes type.\n\n"
+    "Args:\n"
+    "    key (bytes | str): The input data to hash.\n"
+    "    seed (int): The seed value. Must be an integer in the range [0, "
+    "0xFFFFFFFF].\n"
+    "    x64arch (bool): If True, use an algorithm optimized for 64-bit "
+    "architecture. Otherwise, use one optimized for 32-bit architecture.\n"
+    "\n"
+    "Returns:\n"
+    "    bytes: The hash value as the bytes type with a length of 16 bytes "
+    "(128 bits).\n");
 
 static PyObject *
 mmh3_hash_bytes(PyObject *self, PyObject *args, PyObject *keywds)
@@ -292,11 +338,22 @@ mmh3_hash_bytes(PyObject *self, PyObject *args, PyObject *keywds)
     return PyBytes_FromStringAndSize((char *)result, MMH3_128_DIGESTSIZE);
 }
 
-PyDoc_STRVAR(mmh3_mmh3_32_digest_doc,
-             "mmh3_32_digest(key[, seed=0]) -> bytes\n\n"
-             "Return a hash value from a memory buffer as bytes. "
-             "Calculated by the MurmurHash3_x86_32 algorithm. "
-             "Designed for large memory-views such as numpy arrays.");
+PyDoc_STRVAR(
+    mmh3_mmh3_32_digest_doc,
+    "mmh3_32_digest(key[, seed=0]) -> bytes\n"
+    "\n"
+    "Return a hash value for the given buffer as bytes whose length is 4.\n"
+    "\n"
+    "Calculated by the MurmurHash3_x86_32 algorithm.\n"
+    "\n"
+    "Args:\n"
+    "    key (Buffer): The input buffer to hash.\n"
+    "    seed (int): The seed value. Must be an integer in the range [0, "
+    "0xFFFFFFFF].\n"
+    "\n"
+    "Returns:\n"
+    "    bytes: The hash value as the bytes type with a length of 4 bytes "
+    "(32 bits).\n");
 
 static PyObject *
 mmh3_mmh3_32_digest(PyObject *self, PyObject *args, PyObject *keywds)
@@ -573,9 +630,20 @@ mmh3_mmh3_x86_128_digest(PyObject *self, PyObject *args, PyObject *keywds)
 
 PyDoc_STRVAR(
     mmh3_mmh3_x86_128_sintdigest_doc,
-    "mmh3_x86_128_sintdigest(key[, seed=0]) -> int\n\n"
-    "Return a hash value from a memory buffer as a signed 128-bit integer. "
-    "Calculated by the MurmurHash3_x86_128 algorithm. ");
+    "mmh3_x86_128_sintdigest(key[, seed=0]) -> int\n"
+    "\n"
+    "Return a hash for the given buffer as a signed 128-bit integer.\n"
+    "\n"
+    "Calculated by the MurmurHash3_x86_128 algorithm.\n"
+    "\n"
+    "Args:\n"
+    "    key (Buffer | str): The input buffer to hash.\n"
+    "    seed (int): The seed value.\n"
+    "\n"
+    "Returns:\n"
+    "    int: The hash value as an signed 128-bit integer.\n"
+    "\n"
+    ".. versionadded:: 4.2.0\n");
 
 static PyObject *
 mmh3_mmh3_x86_128_sintdigest(PyObject *self, PyObject *args, PyObject *keywds)
@@ -613,16 +681,20 @@ mmh3_mmh3_x86_128_sintdigest(PyObject *self, PyObject *args, PyObject *keywds)
 
 PyDoc_STRVAR(
     mmh3_mmh3_x86_128_uintdigest_doc,
-    "mmh3_x86_128_uintdigest(key: ReadbleBuffer | str, seed: int = 0) -> "
-    "int\n\n"
-    "Return a hash value from a memory buffer as an unsigned 128-bit integer. "
-    "Calculated by the MurmurHash3_x86_128 algorithm.\n\n"
+    "mmh3_x86_128_uintdigest(key[, seed=0]) -> int\n"
+    "\n"
+    "Return a hash for the given buffer as an unsigned 128-bit integer.\n"
+    "\n"
+    "Calculated by the MurmurHash3_x86_128 algorithm.\n"
+    "\n"
     "Args:\n"
-    "    key: The input data to hash.\n"
-    "    seed: The seed value.\n\n"
+    "    key (Buffer | str): The input buffer to hash.\n"
+    "    seed (int): The seed value.\n"
+    "\n"
     "Returns:\n"
-    "    The hash value as an unsigned 128-bit integer.\n\n"
-    ".. versionadded:: 4.2.0\n\n");
+    "    int: The hash value as an unsigned 128-bit integer.\n"
+    "\n"
+    ".. versionadded:: 4.2.0\n");
 
 static PyObject *
 mmh3_mmh3_x86_128_uintdigest(PyObject *self, PyObject *args, PyObject *keywds)
@@ -790,6 +862,9 @@ MMH3Hasher32_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
     return (PyObject *)self;
 }
 
+/* It is impossible to add docstring for __init__ in Python C extension.
+  Therefore, the contsructor docstring should be described in the class
+  docstring. See also https://stackoverflow.com/q/11913492 */
 static int
 MMH3Hasher32_init(MMH3Hasher32 *self, PyObject *args, PyObject *kwds)
 {
@@ -800,6 +875,13 @@ MMH3Hasher32_init(MMH3Hasher32 *self, PyObject *args, PyObject *kwds)
 
     return 0;
 }
+
+PyDoc_STRVAR(MMH3Hasher32_update_doc,
+             "update(data)\n\n"
+             "Update this hash object's state with the provided bytes-like "
+             "object.\n\n"
+             "Args:\n"
+             "    data (Buffer): The buffer to hash.\n\n");
 
 static PyObject *
 MMH3Hasher32_update(MMH3Hasher32 *self, PyObject *obj)
@@ -853,6 +935,12 @@ digest32_impl(uint32_t h, uint64_t k1, Py_ssize_t length)
     return h;
 }
 
+PyDoc_STRVAR(MMH3Hasher32_digest_doc,
+             "digest() -> bytes\n\n"
+             "Return the digest value as a bytes object object.\n\n"
+             "Returns:\n"
+             "    bytes: The digest value.\n\n");
+
 static PyObject *
 MMH3Hasher32_digest(MMH3Hasher32 *self, PyObject *Py_UNUSED(ignored))
 {
@@ -867,6 +955,12 @@ MMH3Hasher32_digest(MMH3Hasher32 *self, PyObject *Py_UNUSED(ignored))
 
     return PyBytes_FromStringAndSize(out, MMH3_32_DIGESTSIZE);
 }
+
+PyDoc_STRVAR(MMH3Hasher32_sintdigest_doc,
+             "sintdigest() -> int\n\n"
+             "Return the digest value as a 32-bit signed integer.\n\n"
+             "Returns:\n"
+             "    int: The digest value as a 32-bit signed integer.\n\n");
 
 static PyObject *
 MMH3Hasher32_sintdigest(MMH3Hasher32 *self, PyObject *Py_UNUSED(ignored))
@@ -905,15 +999,15 @@ MMH3Hasher32_copy(MMH3Hasher32 *self, PyObject *Py_UNUSED(ignored))
 
 static PyMethodDef MMH3Hasher32_methods[] = {
     {"update", (PyCFunction)MMH3Hasher32_update, METH_O,
-     PyDoc_STR("update(data: ReadableBuffer) -> None\n\n"
-               "Update this hash object's state with the provided bytes-like "
-               "object.\n\n"
-               "Args:\n"
-               "    data: The buffer to hash.\n\n")},
-    {"digest", (PyCFunction)MMH3Hasher32_digest, METH_NOARGS,
-     "Return the digest value as a bytes object."},
+     MMH3Hasher32_update_doc},
+    {
+        "digest",
+        (PyCFunction)MMH3Hasher32_digest,
+        METH_NOARGS,
+        MMH3Hasher32_digest_doc,
+    },
     {"sintdigest", (PyCFunction)MMH3Hasher32_sintdigest, METH_NOARGS,
-     "Return the digest value as a 32-bit signed integer."},
+     MMH3Hasher32_sintdigest_doc},
     {"uintdigest", (PyCFunction)MMH3Hasher32_uintdigest, METH_NOARGS,
      "Return the digest value as a 32-bit unsigned integer."},
     {"copy", (PyCFunction)MMH3Hasher32_copy, METH_NOARGS,
@@ -1216,7 +1310,7 @@ MMH3Hasher128x64_copy(MMH3Hasher128x64 *self, PyObject *Py_UNUSED(ignored))
 
 static PyMethodDef MMH3Hasher128x64_methods[] = {
     {"update", (PyCFunction)MMH3Hasher128x64_update, METH_O,
-     "Update this hash object's state with the provided string."},
+     MMH3Hasher32_update_doc},
     {"digest", (PyCFunction)MMH3Hasher128x64_digest, METH_NOARGS,
      "Return the digest value as a bytes object."},
     {"sintdigest", (PyCFunction)MMH3Hasher128x64_sintdigest, METH_NOARGS,

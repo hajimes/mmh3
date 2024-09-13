@@ -36,4 +36,7 @@ html_theme_options = {
     "github_url": "https://github.com/hajimes/mmh3",
 }
 
+# -- Options for autodoc -------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html
+
 autodoc_member_order = "groupwise"
