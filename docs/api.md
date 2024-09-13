@@ -8,8 +8,7 @@
 ## Functions for immutables
 
 The following functions are used to hash immutables, that is, `bytes` and `str`.
- The string inputs are converted to bytes with `utf-8` encoding.
-
+The string inputs are converted to bytes with `utf-8` encoding.
 
 ```{eval-rst}
 .. autofunction:: mmh3.hash

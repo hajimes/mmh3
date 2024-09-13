@@ -5,9 +5,7 @@ import mmh3
 def test_function_docstrings() -> None:
     assert "__doc__" in dir(mmh3.hash)
     assert mmh3.hash.__doc__ is not None
-    assert mmh3.hash.__doc__.startswith(
-        "hash(key[, seed=0, signed=True]) -> int\n\n"
-    )
+    assert mmh3.hash.__doc__.startswith("hash(key[, seed=0, signed=True]) -> int\n\n")
 
     assert "__doc__" in dir(mmh3.hash_from_buffer)
     assert mmh3.hash_from_buffer.__doc__ is not None
