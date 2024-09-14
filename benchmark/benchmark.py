@@ -17,19 +17,6 @@ K1: Final[int] = 0b1001111000110111011110011011000110000101111010111100101010000
 K2: Final[int] = 0b1100001010110010101011100011110100100111110101001110101101001111
 MASK: Final[int] = 0xFFFFFFFFFFFFFFFF
 
-HASHES = {
-    "mmh3_32": mmh3.mmh3_32_digest,
-    "mmh3_128": mmh3.mmh3_x64_128_digest,
-    "xxh_32": xxhash.xxh32_digest,
-    "xxh_64": xxhash.xxh64_digest,
-    "xxh3_64": xxhash.xxh3_64_digest,
-    "xxh3_128": xxhash.xxh3_128_digest,
-    "md5": lambda ba: hashlib.md5(ba).digest(),
-    "sha1": lambda ba: hashlib.sha1(ba).digest(),
-    "pymmh3_32": pymmh3.hash,
-    "pymmh3_128": pymmh3.hash128,
-}
-
 
 def init_buffer(ba: bytearray) -> bytearray:
     """Initializes a byte array with a pattern.
@@ -117,7 +104,7 @@ def perf_hash(loops: int, f: Callable, size: int) -> float:
 
 
 def perf_hash_random(loops: int, f: Callable, size: int) -> float:
-    """Benchmark a hash function in a non-uniform way.
+    """Benchmark a hash function with varying data sizes.
 
     Args:
         loops: The number of outer loops to run.
@@ -170,8 +157,11 @@ def perf_hash_random(loops: int, f: Callable, size: int) -> float:
     return time.perf_counter() - t0
 
 
-def perf_hash_random_latency(loops: int, f: Callable, size: int) -> float:
-    """Benchmark a hash function with overhead costs.
+def perf_hash_latency(loops: int, f: Callable, size: int) -> float:
+    """Benchmark a hash function with overhead costs with varying data sizes.
+
+    Based on xxHash's ``benchLatency`` function.
+    https://github.com/Cyan4973/xxHash/blob/dev/tests/bench/benchHash.c
 
     Args:
         loops: The number of outer loops to run.
@@ -229,7 +219,28 @@ def add_cmdline_args(cmd: list, args) -> None:
         args: The parsed command line arguments.
     """
     cmd.extend(("--test-hash", args.test_hash))
+    cmd.extend(("--test-type", args.test_type))
     cmd.extend(("--test-buffer-size-max", str(args.test_buffer_size_max)))
+
+
+HASHES = {
+    "mmh3_32": mmh3.mmh3_32_digest,
+    "mmh3_128": mmh3.mmh3_x64_128_digest,
+    "xxh_32": xxhash.xxh32_digest,
+    "xxh_64": xxhash.xxh64_digest,
+    "xxh3_64": xxhash.xxh3_64_digest,
+    "xxh3_128": xxhash.xxh3_128_digest,
+    "md5": lambda ba: hashlib.md5(ba).digest(),
+    "sha1": lambda ba: hashlib.sha1(ba).digest(),
+    "pymmh3_32": pymmh3.hash,
+    "pymmh3_128": pymmh3.hash128,
+}
+
+BENCHMARKING_TYPES = {
+    "naive": perf_hash,
+    "random": perf_hash_random,
+    "latency": perf_hash_latency,
+}
 
 
 if __name__ == "__main__":
@@ -241,6 +252,14 @@ if __name__ == "__main__":
         help="Type of hash function to benchmark",
         required=True,
         choices=HASHES.keys(),
+    )
+
+    runner.argparser.add_argument(
+        "--test-type",
+        type=str,
+        help="Type of benchmarking to perform",
+        choices=BENCHMARKING_TYPES.keys(),
+        default="random",
     )
 
     runner.argparser.add_argument(
@@ -256,7 +275,7 @@ if __name__ == "__main__":
     while fib1 <= process_args.test_buffer_size_max:
         runner.bench_time_func(
             f"{fib1} bytes",
-            perf_hash_random,
+            BENCHMARKING_TYPES[process_args.test_type],
             HASHES[process_args.test_hash],
             fib1,
             inner_loops=10,
