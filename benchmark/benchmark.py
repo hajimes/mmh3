@@ -137,8 +137,6 @@ def perf_hash_random(loops: int, f: Callable, size: int) -> float:
     inner_loops = 10
     extra_size = 255
 
-    n = 0
-
     data = bytearray(size + extra_size)
     data = init_buffer(data)
 
@@ -193,16 +191,16 @@ def perf_hash_random_latency(loops: int, f: Callable, size: int) -> float:
 
     n = 0
 
-    size0 = generate_size(size)
-    size1 = generate_size(size)
-    size2 = generate_size(size)
-    size3 = generate_size(size)
-    size4 = generate_size(size)
-    size5 = generate_size(size)
-    size6 = generate_size(size)
-    size7 = generate_size(size)
-    size8 = generate_size(size)
-    size9 = generate_size(size)
+    size0 = generate_size(size, 0.1)
+    size1 = generate_size(size, 0.1)
+    size2 = generate_size(size, 0.1)
+    size3 = generate_size(size, 0.1)
+    size4 = generate_size(size, 0.1)
+    size5 = generate_size(size, 0.1)
+    size6 = generate_size(size, 0.1)
+    size7 = generate_size(size, 0.1)
+    size8 = generate_size(size, 0.1)
+    size9 = generate_size(size, 0.1)
 
     data = bytearray(math.floor(size * 1.1) + 255)
     view_to_hash = memoryview(bytes(init_buffer(data)))
