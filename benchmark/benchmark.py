@@ -52,16 +52,20 @@ def init_buffer(ba: bytearray) -> bytearray:
     return ba
 
 
-def generate_size(size: int) -> int:
+def generate_size(size: int, p: float) -> int:
     """Generate a random size for a buffer.
 
     Args:
         size: The size of the buffer to hash.
+        p: The percentage of the buffer size to vary.
 
     Returns:
         The random size of the buffer.
     """
-    return random.randint(math.ceil(size * 0.9), math.floor(size * 1.1))
+    lower = math.ceil(size * (1 - p))
+    upper = math.floor(size * (1 + p))
+
+    return random.randint(lower, upper)
 
 
 def perf_hash(loops: int, f: Callable, size: int) -> float:
@@ -114,6 +118,62 @@ def perf_hash(loops: int, f: Callable, size: int) -> float:
 
 def perf_hash_random(loops: int, f: Callable, size: int) -> float:
     """Benchmark a hash function in a non-uniform way.
+
+    Args:
+        loops: The number of outer loops to run.
+        f: The hash function to benchmark
+        size: The size of the buffer to hash.
+
+    Returns:
+        The time taken to hash the buffer in fractional seconds.
+    """
+    # pylint: disable=too-many-locals
+
+    if size <= 0:
+        raise ValueError("size must be greater than 0")
+
+    range_it = itertools.repeat(None, loops)
+    random.seed(42)
+    inner_loops = 10
+    extra_size = 255
+
+    n = 0
+
+    data = bytearray(size + extra_size)
+    data = init_buffer(data)
+
+    pos_list = [random.randint(0, extra_size) for _ in range(inner_loops)]
+    size_list = [generate_size(size, 0.1) for _ in range(inner_loops)]
+
+    data0 = bytes(data[pos_list[0] : pos_list[0] + size_list[0]])
+    data1 = bytes(data[pos_list[1] : pos_list[1] + size_list[1]])
+    data2 = bytes(data[pos_list[2] : pos_list[2] + size_list[2]])
+    data3 = bytes(data[pos_list[3] : pos_list[3] + size_list[3]])
+    data4 = bytes(data[pos_list[4] : pos_list[4] + size_list[4]])
+    data5 = bytes(data[pos_list[5] : pos_list[5] + size_list[5]])
+    data6 = bytes(data[pos_list[6] : pos_list[6] + size_list[6]])
+    data7 = bytes(data[pos_list[7] : pos_list[7] + size_list[7]])
+    data8 = bytes(data[pos_list[8] : pos_list[8] + size_list[8]])
+    data9 = bytes(data[pos_list[9] : pos_list[9] + size_list[9]])
+
+    t0 = time.perf_counter()
+    for _ in range_it:
+        f(data0)
+        f(data1)
+        f(data2)
+        f(data3)
+        f(data4)
+        f(data5)
+        f(data6)
+        f(data7)
+        f(data8)
+        f(data9)
+
+    return time.perf_counter() - t0
+
+
+def perf_hash_random_latency(loops: int, f: Callable, size: int) -> float:
+    """Benchmark a hash function with overhead costs.
 
     Args:
         loops: The number of outer loops to run.
