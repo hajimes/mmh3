@@ -98,6 +98,9 @@ ENV/
 # mkdocs documentation
 /site
 
+# pytest
+.pytest_cache/
+
 # mypy
 .mypy_cache/
 
@@ -106,3 +109,7 @@ ENV/
 
 # vscode
 .vscode/
+
+# Directory from an external source created by git submodule update --init
+# Adding this path is useful for other tools like markdwonlint and prettier
+util/smhasher/
