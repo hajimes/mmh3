@@ -43,17 +43,53 @@ As of version 4.2.0, the project layout is structured as follows:
 - `docs`: project documentation directory
 - `.github/workflows`: GitHub Actions workflows
 
-## Testing
+## Project setup
 
-Before submitting your changes, make sure to run the project's tests to ensure
-that everything is working as expected.
-
-Try
+Run:
 
 ```shell
-pip install ".[test]"
-pytest
-mypy --strict tests
+git clone https://github.com/hajimes/mmh3.git
+```
+
+This project uses `tox` to automate testing and other tasks. You can install
+`tox` by running:
+
+```shell
+pipx install tox
+```
+
+In addition, `npx` (included with `npm` >= 5.2.0) is required within the `tox`
+environments to run linters.
+
+## Testing and linting
+
+Before submitting your changes, make sure to run the project's tests to ensure
+everything is working as expected.
+
+To run all tests, use the following command:
+
+```shell
+tox
+```
+
+During development, you can run the tests for a specific environment by
+specifying the environment name. For example, to run tests for a specific
+version of Python (e.g., Python 3.12), use:
+
+```shell
+tox -e py312
+```
+
+For type checking, run:
+
+```shell
+tox -e type
+```
+
+To run linters with automated formatting, use:
+
+```shell
+tox -e lint
 ```
 
 ### (Optional) Testing on s390x
@@ -83,18 +119,15 @@ The `util` directory contains C files that were generated from the
 The idea of the subproject directory loosely follows the
 [`hashlib` implementation of CPython](https://github.com/python/cpython/tree/main/Modules/_hacl).
 
-### Updating mmh3 C code
+### Updating mmh3 core C code
 
-Try `git submodule update --init` to fetch Appleby's original SMHasher project
-as a git submodule. Then, run `python util/refresh.py` to generate PEP
-7-compliant C code from the original project, instead of editing `murmurhash3.*`
-files manually.
+Run `tox -e build-cfiles`. This will fetch Appleby's original SMHasher project
+as a git submodule and then generate PEP 7-compliant C code from the original
+project.
 
-To perform further edits, add transformation code to the `refresh.py` script.
-Then, run `refresh.py` again to update the `murmurhash3.*` files.
-
-After file generation, use `clang-format` to format the generated code. Try
-`clang-format -i src/mmh3/*.{c,h}` from the project's top-level directory.
+To perform further edits, add transformation code to the `refresh.py` script,
+instead of editing `murmurhash3.*` files manually.
+Then, run `tox -e build-cfiles` again to update the `murmurhash3.*` files.
 
 ### Local files
 
@@ -141,7 +174,7 @@ After obtaining the benchmark results, you can plot graphs by `plot_graph.py`.
 The following is an example of how to run the script:
 
 ```shell
-pip install ".[benchmark]" ".[plot]"
+pip install ".[benchmark,plot]"
 python benchmark/plot_graph.py --output-dir docs/_static RESULT_DIR/*.json
 ```
 
@@ -158,8 +191,7 @@ located in the `docs`. The documentation is automatically built and
 To build the documentation locally, use the following command:
 
 ```shell
-pip install ".[docs]"
-make -C docs html
+tox -e docs
 ```
 
 To check the result of the built documentation, open
