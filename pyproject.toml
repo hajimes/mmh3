@@ -30,8 +30,17 @@ classifiers = [
 
 [project.optional-dependencies]
 test = [
-  "mypy == 1.11.2",
-  "pytest == 8.3.2"
+  "pytest == 8.3.2",
+  "pytest-sugar == 1.0.0"
+]
+lint = [
+  "black == 24.8.0",
+  "clang-format == 18.1.8",
+  "isort == 5.13.2",
+  "pylint == 3.2.7"
+]
+type = [
+  "mypy == 1.11.2"
 ]
 docs = [
   "myst-parser == 4.0.0",
@@ -64,6 +73,7 @@ ignore-paths = [
   "^build",
   "^venv",
   "^.venv",
+  "^.tox",
   "^src/mmh3/__init__.pyi"
 ]
 # Use multiple processes to speed up Pylint.
