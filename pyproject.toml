@@ -1,5 +1,5 @@
 [build-system]
-# setuptools >= 74.1.0 is required to build C extensions from pyproject.toml.
+# setuptools >= 74.1.0 required to build C extensions via pyproject.toml
 requires = ["setuptools >= 74.1.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
