@@ -20,7 +20,7 @@ to see if the problem has already been noted.
 
 ## Project structure
 
-As of version 4.2.0, the project layout is structured as follows:
+As of version 5.0.0-dev, the project layout is structured as follows:
 
 - `src/mmh3`
   - `mmh3module.c`: the main file that serves as the interface between Python
