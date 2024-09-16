@@ -25,12 +25,15 @@ This project has adhered to
 - Change the format of CHANGELOG.md to conform to the
   [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) standard
   ([#63](https://github.com/hajimes/mmh3/issues/63)).
+- **Backward-incompatible**: Change the constructors of hasher classes to
+  accept a buffer as the first argument.
 
 ### Fixed
 
 - Fix a reference leak in the `hash_from_buffer()` function
   ([#75](https://github.com/hajimes/mmh3/issues/75)).
-- Fix type hints.
+- Fix type hints ([#76](https://github.com/hajimes/mmh3/issues/76),
+  [#77](https://github.com/hajimes/mmh3/issues/77)).
 
 ## [4.1.0] - 2024-01-09
 

@@ -1,8 +1,8 @@
 # API Reference
 
 ```{caution}
-  This reference contains functions that are not yet released in the stable
-  version.
+  This reference contains functions and APIs that are not yet released in the
+  stable version (4.1.0).
 ```
 
 ## Functions for immutables
