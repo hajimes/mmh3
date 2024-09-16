@@ -371,7 +371,7 @@ PyDoc_STRVAR(
     ".. versionadded:: 5.0.0\n");
 
 static PyObject *
-mmh3_mmh3_32_digest(PyObject *self, PyObject *args, PyObject *keywds)
+mmh3_mmh3_32_digest(PyObject *self, PyObject *args)
 {
     Py_buffer target_buf;
     uint32_t seed = 0;
@@ -410,7 +410,7 @@ PyDoc_STRVAR(
     ".. versionadded:: 5.0.0\n");
 
 static PyObject *
-mmh3_mmh3_32_sintdigest(PyObject *self, PyObject *args, PyObject *keywds)
+mmh3_mmh3_32_sintdigest(PyObject *self, PyObject *args)
 {
     Py_buffer target_buf;
     uint32_t seed = 0;
@@ -445,7 +445,7 @@ PyDoc_STRVAR(
     ".. versionadded:: 5.0.0\n");
 
 static PyObject *
-mmh3_mmh3_32_uintdigest(PyObject *self, PyObject *args, PyObject *keywds)
+mmh3_mmh3_32_uintdigest(PyObject *self, PyObject *args)
 {
     Py_buffer target_buf;
     uint32_t seed = 0;
@@ -481,7 +481,7 @@ PyDoc_STRVAR(
     ".. versionadded:: 5.0.0\n");
 
 static PyObject *
-mmh3_mmh3_x64_128_digest(PyObject *self, PyObject *args, PyObject *keywds)
+mmh3_mmh3_x64_128_digest(PyObject *self, PyObject *args)
 {
     Py_buffer target_buf;
     uint32_t seed = 0;
@@ -521,7 +521,7 @@ PyDoc_STRVAR(
     ".. versionadded:: 5.0.0\n");
 
 static PyObject *
-mmh3_mmh3_x64_128_sintdigest(PyObject *self, PyObject *args, PyObject *keywds)
+mmh3_mmh3_x64_128_sintdigest(PyObject *self, PyObject *args)
 {
     Py_buffer target_buf;
     uint32_t seed = 0;
@@ -570,7 +570,7 @@ PyDoc_STRVAR(
     ".. versionadded:: 5.0.0\n");
 
 static PyObject *
-mmh3_mmh3_x64_128_uintdigest(PyObject *self, PyObject *args, PyObject *keywds)
+mmh3_mmh3_x64_128_uintdigest(PyObject *self, PyObject *args)
 {
     Py_buffer target_buf;
     uint32_t seed = 0;
@@ -620,8 +620,7 @@ PyDoc_STRVAR(
     ".. versionadded:: 5.0.0\n");
 
 static PyObject *
-mmh3_mmh3_x64_128_stupledigest(PyObject *self, PyObject *args,
-                               PyObject *keywds)
+mmh3_mmh3_x64_128_stupledigest(PyObject *self, PyObject *args)
 {
     Py_buffer target_buf;
     uint32_t seed = 0;
@@ -659,8 +658,7 @@ PyDoc_STRVAR(
     ".. versionadded:: 5.0.0\n");
 
 static PyObject *
-mmh3_mmh3_x64_128_utupledigest(PyObject *self, PyObject *args,
-                               PyObject *keywds)
+mmh3_mmh3_x64_128_utupledigest(PyObject *self, PyObject *args)
 {
     Py_buffer target_buf;
     uint32_t seed = 0;
@@ -697,7 +695,7 @@ PyDoc_STRVAR(
     ".. versionadded:: 5.0.0\n");
 
 static PyObject *
-mmh3_mmh3_x86_128_digest(PyObject *self, PyObject *args, PyObject *keywds)
+mmh3_mmh3_x86_128_digest(PyObject *self, PyObject *args)
 {
     Py_buffer target_buf;
     uint32_t seed = 0;
@@ -737,7 +735,7 @@ PyDoc_STRVAR(
     ".. versionadded:: 5.0.0\n");
 
 static PyObject *
-mmh3_mmh3_x86_128_sintdigest(PyObject *self, PyObject *args, PyObject *keywds)
+mmh3_mmh3_x86_128_sintdigest(PyObject *self, PyObject *args)
 {
     Py_buffer target_buf;
     uint32_t seed = 0;
@@ -786,7 +784,7 @@ PyDoc_STRVAR(
     ".. versionadded:: 5.0.0\n");
 
 static PyObject *
-mmh3_mmh3_x86_128_uintdigest(PyObject *self, PyObject *args, PyObject *keywds)
+mmh3_mmh3_x86_128_uintdigest(PyObject *self, PyObject *args)
 {
     Py_buffer target_buf;
     uint32_t seed = 0;
@@ -836,8 +834,7 @@ PyDoc_STRVAR(
     ".. versionadded:: 5.0.0\n");
 
 static PyObject *
-mmh3_mmh3_x86_128_stupledigest(PyObject *self, PyObject *args,
-                               PyObject *keywds)
+mmh3_mmh3_x86_128_stupledigest(PyObject *self, PyObject *args)
 {
     Py_buffer target_buf;
     uint32_t seed = 0;
@@ -875,8 +872,7 @@ PyDoc_STRVAR(
     ".. versionadded:: 5.0.0\n");
 
 static PyObject *
-mmh3_mmh3_x86_128_utupledigest(PyObject *self, PyObject *args,
-                               PyObject *keywds)
+mmh3_mmh3_x86_128_utupledigest(PyObject *self, PyObject *args)
 {
     Py_buffer target_buf;
     uint32_t seed = 0;
@@ -894,16 +890,16 @@ mmh3_mmh3_x86_128_utupledigest(PyObject *self, PyObject *args,
 }
 
 static PyMethodDef Mmh3Methods[] = {
-    {"hash", (PyCFunction)mmh3_hash, METH_VARARGS | METH_KEYWORDS,
+    {"hash", (PyCFunctionWithKeywords)mmh3_hash, METH_VARARGS | METH_KEYWORDS,
      mmh3_hash_doc},
-    {"hash_from_buffer", (PyCFunction)mmh3_hash_from_buffer,
+    {"hash_from_buffer", (PyCFunctionWithKeywords)mmh3_hash_from_buffer,
      METH_VARARGS | METH_KEYWORDS, mmh3_hash_from_buffer_doc},
-    {"hash64", (PyCFunction)mmh3_hash64, METH_VARARGS | METH_KEYWORDS,
-     mmh3_hash64_doc},
-    {"hash128", (PyCFunction)mmh3_hash128, METH_VARARGS | METH_KEYWORDS,
-     mmh3_hash128_doc},
-    {"hash_bytes", (PyCFunction)mmh3_hash_bytes, METH_VARARGS | METH_KEYWORDS,
-     mmh3_hash_bytes_doc},
+    {"hash64", (PyCFunctionWithKeywords)mmh3_hash64,
+     METH_VARARGS | METH_KEYWORDS, mmh3_hash64_doc},
+    {"hash128", (PyCFunctionWithKeywords)mmh3_hash128,
+     METH_VARARGS | METH_KEYWORDS, mmh3_hash128_doc},
+    {"hash_bytes", (PyCFunctionWithKeywords)mmh3_hash_bytes,
+     METH_VARARGS | METH_KEYWORDS, mmh3_hash_bytes_doc},
     {"mmh3_32_digest", (PyCFunction)mmh3_mmh3_32_digest, METH_VARARGS,
      mmh3_mmh3_32_digest_doc},
     {"mmh3_32_sintdigest", (PyCFunction)mmh3_mmh3_32_sintdigest, METH_VARARGS,
