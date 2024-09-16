@@ -32,6 +32,28 @@ typedef unsigned __int64 uint64_t;
 #define MMH3_32_BLOCKSIZE 12
 #define MMH3_128_BLOCKSIZE 32
 
+#define MMH3_VALIDATE_ARGS_AND_SET_SEED(nargs, args, seed)                  \
+    if (nargs < 1) {                                                        \
+        PyErr_SetString(PyExc_TypeError,                                    \
+                        "function takes at least 1 argument (0 given)");    \
+        return NULL;                                                        \
+    }                                                                       \
+    if (nargs > 2) {                                                        \
+        PyErr_Format(PyExc_TypeError,                                       \
+                     "function takes at most 2 arguments (%d given)",       \
+                     (int)nargs);                                           \
+        return NULL;                                                        \
+    }                                                                       \
+    if (nargs == 2) {                                                       \
+        if (!PyLong_Check(args[1])) {                                       \
+            PyErr_Format(PyExc_TypeError,                                   \
+                         "'%s' object cannot be interpreted as an integer", \
+                         Py_TYPE(args[1])->tp_name);                        \
+            return NULL;                                                    \
+        }                                                                   \
+        seed = (uint32_t)PyLong_AsLong(args[1]);                            \
+    }
+
 //-----------------------------------------------------------------------------
 // One shot functions
 
@@ -371,15 +393,15 @@ PyDoc_STRVAR(
     ".. versionadded:: 5.0.0\n");
 
 static PyObject *
-mmh3_mmh3_32_digest(PyObject *self, PyObject *args)
+mmh3_mmh3_32_digest(PyObject *self, PyObject *const *args, Py_ssize_t nargs)
 {
     Py_buffer target_buf;
     uint32_t seed = 0;
     char result[MMH3_32_DIGESTSIZE];
 
-    if (!PyArg_ParseTuple(args, "y*|I", &target_buf, &seed)) {
-        return NULL;
-    }
+    MMH3_VALIDATE_ARGS_AND_SET_SEED(nargs, args, seed);
+
+    GET_BUFFER_VIEW_OR_ERROUT(args[0], &target_buf);
 
     murmurhash3_x86_32(target_buf.buf, target_buf.len, seed, result);
     PyBuffer_Release(&target_buf);
@@ -481,15 +503,16 @@ PyDoc_STRVAR(
     ".. versionadded:: 5.0.0\n");
 
 static PyObject *
-mmh3_mmh3_x64_128_digest(PyObject *self, PyObject *args)
+mmh3_mmh3_x64_128_digest(PyObject *self, PyObject *const *args,
+                         Py_ssize_t nargs)
 {
     Py_buffer target_buf;
     uint32_t seed = 0;
     uint64_t result[2];
 
-    if (!PyArg_ParseTuple(args, "y*|I", &target_buf, &seed)) {
-        return NULL;
-    }
+    MMH3_VALIDATE_ARGS_AND_SET_SEED(nargs, args, seed);
+
+    GET_BUFFER_VIEW_OR_ERROUT(args[0], &target_buf);
 
     murmurhash3_x64_128(target_buf.buf, target_buf.len, seed, result);
     PyBuffer_Release(&target_buf);
@@ -904,14 +927,14 @@ static PyMethodDef Mmh3Methods[] = {
      mmh3_hash128_doc},
     {"hash_bytes", (PyCFunction)mmh3_hash_bytes, METH_VARARGS | METH_KEYWORDS,
      mmh3_hash_bytes_doc},
-    {"mmh3_32_digest", (PyCFunction)mmh3_mmh3_32_digest, METH_VARARGS,
+    {"mmh3_32_digest", (PyCFunction)mmh3_mmh3_32_digest, METH_FASTCALL,
      mmh3_mmh3_32_digest_doc},
     {"mmh3_32_sintdigest", (PyCFunction)mmh3_mmh3_32_sintdigest, METH_VARARGS,
      mmh3_mmh3_32_sintdigest_doc},
     {"mmh3_32_uintdigest", (PyCFunction)mmh3_mmh3_32_uintdigest, METH_VARARGS,
      mmh3_mmh3_32_uintdigest_doc},
     {"mmh3_x64_128_digest", (PyCFunction)mmh3_mmh3_x64_128_digest,
-     METH_VARARGS, mmh3_mmh3_x64_128_digest_doc},
+     METH_FASTCALL, mmh3_mmh3_x64_128_digest_doc},
     {"mmh3_x64_128_sintdigest", (PyCFunction)mmh3_mmh3_x64_128_sintdigest,
      METH_VARARGS, mmh3_mmh3_x64_128_sintdigest_doc},
     {"mmh3_x64_128_uintdigest", (PyCFunction)mmh3_mmh3_x64_128_uintdigest,
