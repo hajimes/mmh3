@@ -1623,62 +1623,18 @@ typedef struct {
 
 static PyTypeObject MMH3Hasher128x86Type;
 
-static void
-MMH3Hasher128x86_dealloc(MMH3Hasher128x86 *self)
-{
-    Py_TYPE(self)->tp_free((PyObject *)self);
-}
-
-static PyObject *
-MMH3Hasher128x86_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
-{
-    MMH3Hasher128x86 *self;
-    self = (MMH3Hasher128x86 *)type->tp_alloc(type, 0);
-    if (self != NULL) {
-        self->h1 = 0;
-        self->h2 = 0;
-        self->h3 = 0;
-        self->h4 = 0;
-        self->buffer1 = 0;
-        self->buffer2 = 0;
-        self->buffer3 = 0;
-        self->buffer4 = 0;
-        self->shift = 0;
-        self->length = 0;
-    }
-    return (PyObject *)self;
-}
-
-static int
-MMH3Hasher128x86_init(MMH3Hasher128x86 *self, PyObject *args, PyObject *kwds)
-{
-    static char *kwlist[] = {"seed", NULL};
-
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|I", kwlist, &self->h1))
-        return -1;
-
-    self->h2 = self->h1;
-    self->h3 = self->h1;
-    self->h4 = self->h1;
-
-    return 0;
-}
-
-static PyObject *
-MMH3Hasher128x86_update(MMH3Hasher128x86 *self, PyObject *obj)
+static FORCE_INLINE void
+update_x86_128_impl(MMH3Hasher128x86 *self, Py_buffer *buf)
 {
     Py_ssize_t i = 0;
-    Py_buffer buf;
     uint32_t h1 = self->h1;
     uint32_t h2 = self->h2;
     uint32_t h3 = self->h3;
     uint32_t h4 = self->h4;
     uint32_t k1 = 0;
 
-    GET_BUFFER_VIEW_OR_ERROUT(obj, &buf);
-
-    for (; i < buf.len; i++) {
-        k1 = ((uint8_t *)buf.buf)[i];
+    for (; i < buf->len; i++) {
+        k1 = ((uint8_t *)buf->buf)[i];
         if (self->shift < 32) {  // TODO: use bit ops
             self->buffer1 |= k1 << self->shift;
         }
@@ -1720,12 +1676,71 @@ MMH3Hasher128x86_update(MMH3Hasher128x86 *self, PyObject *obj)
         }
     }
 
-    PyBuffer_Release(&buf);
+    PyBuffer_Release(buf);
 
     self->h1 = h1;
     self->h2 = h2;
     self->h3 = h3;
     self->h4 = h4;
+}
+
+static void
+MMH3Hasher128x86_dealloc(MMH3Hasher128x86 *self)
+{
+    Py_TYPE(self)->tp_free((PyObject *)self);
+}
+
+static PyObject *
+MMH3Hasher128x86_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
+{
+    MMH3Hasher128x86 *self;
+    self = (MMH3Hasher128x86 *)type->tp_alloc(type, 0);
+    if (self != NULL) {
+        self->h1 = 0;
+        self->h2 = 0;
+        self->h3 = 0;
+        self->h4 = 0;
+        self->buffer1 = 0;
+        self->buffer2 = 0;
+        self->buffer3 = 0;
+        self->buffer4 = 0;
+        self->shift = 0;
+        self->length = 0;
+    }
+    return (PyObject *)self;
+}
+
+static int
+MMH3Hasher128x86_init(MMH3Hasher128x86 *self, PyObject *args, PyObject *kwds)
+{
+    Py_buffer target_buf = {0};
+    static char *kwlist[] = {"data", "seed", NULL};
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|y*I", kwlist, &target_buf,
+                                     &self->h1))
+        return -1;
+
+    self->h2 = self->h1;
+    self->h3 = self->h1;
+    self->h4 = self->h1;
+
+    if (target_buf.buf != NULL) {
+        // target_buf will be released in update_x86_128_impl
+        update_x86_128_impl(self, &target_buf);
+    }
+
+    return 0;
+}
+
+static PyObject *
+MMH3Hasher128x86_update(MMH3Hasher128x86 *self, PyObject *obj)
+{
+    Py_buffer buf;
+
+    GET_BUFFER_VIEW_OR_ERROUT(obj, &buf);
+
+    // buf will be released in update_x86_128_impl
+    update_x86_128_impl(self, &buf);
 
     Py_RETURN_NONE;
 }

@@ -20,6 +20,11 @@ def test_mmh3_32_digest() -> None:
     hasher.update(b" world!")
     assert hasher.digest() == b"\xBA\x4C\x88\x24"
 
+    hasher = mmh3.mmh3_32(b"", 0x9747B28C)
+    hasher.update(b"Hello,")
+    hasher.update(b" world!")
+    assert hasher.digest() == b"\xBA\x4C\x88\x24"
+
     hasher = mmh3.mmh3_32(b"Hello,", 0x9747B28C)
     hasher.update(b" world!")
     assert hasher.digest() == b"\xBA\x4C\x88\x24"
@@ -143,6 +148,10 @@ def test_mmh3_x64_128_digest() -> None:
     assert hasher.digest() == b"aE\xf5\x01W\x86q\xe2\x87}\xba+\xe4\x87\xaf~"
 
     hasher = mmh3.mmh3_x64_128(seed=0x9747B28C)
+    hasher.update(b"The quick brown fox jumps over the lazy dog")
+    assert hasher.digest() == b"!1c\xd2;\x7f\x8as\xe5\x16\xc0~rsE\xf9"
+
+    hasher = mmh3.mmh3_x64_128(b"", 0x9747B28C)
     hasher.update(b"The quick brown fox jumps over the lazy dog")
     assert hasher.digest() == b"!1c\xd2;\x7f\x8as\xe5\x16\xc0~rsE\xf9"
 
@@ -322,6 +331,25 @@ def test_mmh3_x86_128_digest() -> None:
 
     hasher = mmh3.mmh3_x86_128(seed=0x9747B28C)
     hasher.update(b"The quick brown fox ju")
+    hasher.update(b"mps ove")
+    hasher.update(b"r the la")
+    hasher.update(b"zy dog")
+    assert hasher.digest() == b"^\xd5\xd4\x8aqa\xb8L\x9c:\xa7\x8e>y\xb6\xcd"
+
+    hasher = mmh3.mmh3_x86_128(b"", 0x9747B28C)
+    hasher.update(b"The quick brown fox ju")
+    hasher.update(b"mps ove")
+    hasher.update(b"r the la")
+    hasher.update(b"zy dog")
+    assert hasher.digest() == b"^\xd5\xd4\x8aqa\xb8L\x9c:\xa7\x8e>y\xb6\xcd"
+
+    hasher = mmh3.mmh3_x86_128(b"The quick brown fox ju", seed=0x9747B28C)
+    hasher.update(b"mps ove")
+    hasher.update(b"r the la")
+    hasher.update(b"zy dog")
+    assert hasher.digest() == b"^\xd5\xd4\x8aqa\xb8L\x9c:\xa7\x8e>y\xb6\xcd"
+
+    hasher = mmh3.mmh3_x86_128(b"The quick brown fox ju", 0x9747B28C)
     hasher.update(b"mps ove")
     hasher.update(b"r the la")
     hasher.update(b"zy dog")

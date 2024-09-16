@@ -150,12 +150,15 @@ complete changelog.
 - Change the format of CHANGELOG.md to conform to the
   [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) standard
   ([#63](https://github.com/hajimes/mmh3/issues/63)).
+- **Backward-incompatible**: Change the constructors of hasher classes to
+  accept a buffer as the first argument.
 
 #### Fixed
 
 - Fix a reference leak in the `hash_from_buffer()` function
   ([#75](https://github.com/hajimes/mmh3/issues/75)).
-- Fix type hints.
+- Fix type hints ([#76](https://github.com/hajimes/mmh3/issues/76),
+  [#77](https://github.com/hajimes/mmh3/issues/77)).
 
 ### [4.1.0] - 2024-01-09
 
@@ -166,20 +169,11 @@ complete changelog.
 #### Fixed
 
 - Fix issues with Bazel by changing the directory structure of the project
-  (<https://github.com/hajimes/mmh3/issues/50>).
-- Fix incorrect type hints (<https://github.com/hajimes/mmh3/issues/51>).
+  ([#50](https://github.com/hajimes/mmh3/issues/50)).
+- Fix incorrect type hints ([#51](https://github.com/hajimes/mmh3/issues/51)).
 - Fix invalid results on s390x when the arg `x64arch` of `hash64` or
-  `hash_bytes` is set to `False` (<https://github.com/hajimes/mmh3/issues/52>).
-
-### [4.0.1] - 2023-07-14
-
-#### Changed
-
-- Refactor the project structure (<https://github.com/hajimes/mmh3/issues/48>).
-
-#### Fixed
-
-- Fix incorrect type hints.
+  `hash_bytes` is set to `False`
+  ([#52](https://github.com/hajimes/mmh3/issues/52)).
 
 ## License
 

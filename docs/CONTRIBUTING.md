@@ -102,6 +102,14 @@ by Python.
 by Simon Willison is a good introduction to Docker/QEMU settings for emulating
 s390x.
 
+If the above does not work, you may also want to try the following:
+
+```shell
+docker run --rm --privileged tonistiigi/binfmt --install all
+docker buildx create --name mybuilder --use
+docker run -it multiarch/ubuntu-core:s390x-focal /bin/bash
+```
+
 ## Pull request
 
 Once you've pushed your changes to your fork, you can
@@ -160,7 +168,7 @@ For example,
 pip install ".[benchmark]"
 mkdir results
 python benchmark/benchmark.py -o results/mmh3_128.json \
-            --test-hash mmh3_128 --test-buffer-size-max 134217728
+            --test-hash mmh3_128 --test-buffer-size-max 262144
 ```
 
 As of version 4.2.0, the following hash function identifiers are available for
