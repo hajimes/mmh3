@@ -889,17 +889,21 @@ mmh3_mmh3_x86_128_utupledigest(PyObject *self, PyObject *args)
     return retval;
 }
 
+// Casting to PyCFunction is mandatory for
+//   METH_VARARGS | METH_KEYWORDS functions.
+// See
+// https://docs.python.org/3/extending/extending.html#keyword-parameters-for-extension-functions
 static PyMethodDef Mmh3Methods[] = {
-    {"hash", (PyCFunctionWithKeywords)mmh3_hash, METH_VARARGS | METH_KEYWORDS,
+    {"hash", (PyCFunction)mmh3_hash, METH_VARARGS | METH_KEYWORDS,
      mmh3_hash_doc},
-    {"hash_from_buffer", (PyCFunctionWithKeywords)mmh3_hash_from_buffer,
+    {"hash_from_buffer", (PyCFunction)mmh3_hash_from_buffer,
      METH_VARARGS | METH_KEYWORDS, mmh3_hash_from_buffer_doc},
-    {"hash64", (PyCFunctionWithKeywords)mmh3_hash64,
-     METH_VARARGS | METH_KEYWORDS, mmh3_hash64_doc},
-    {"hash128", (PyCFunctionWithKeywords)mmh3_hash128,
-     METH_VARARGS | METH_KEYWORDS, mmh3_hash128_doc},
-    {"hash_bytes", (PyCFunctionWithKeywords)mmh3_hash_bytes,
-     METH_VARARGS | METH_KEYWORDS, mmh3_hash_bytes_doc},
+    {"hash64", (PyCFunction)mmh3_hash64, METH_VARARGS | METH_KEYWORDS,
+     mmh3_hash64_doc},
+    {"hash128", (PyCFunction)mmh3_hash128, METH_VARARGS | METH_KEYWORDS,
+     mmh3_hash128_doc},
+    {"hash_bytes", (PyCFunction)mmh3_hash_bytes, METH_VARARGS | METH_KEYWORDS,
+     mmh3_hash_bytes_doc},
     {"mmh3_32_digest", (PyCFunction)mmh3_mmh3_32_digest, METH_VARARGS,
      mmh3_mmh3_32_digest_doc},
     {"mmh3_32_sintdigest", (PyCFunction)mmh3_mmh3_32_sintdigest, METH_VARARGS,
