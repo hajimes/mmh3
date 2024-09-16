@@ -129,13 +129,13 @@ The idea of the subproject directory loosely follows the
 
 ### Updating mmh3 core C code
 
-Run `tox -e build-cfiles`. This will fetch Appleby's original SMHasher project
+Run `tox -e build_cfiles`. This will fetch Appleby's original SMHasher project
 as a git submodule and then generate PEP 7-compliant C code from the original
 project.
 
 To perform further edits, add transformation code to the `refresh.py` script,
 instead of editing `murmurhash3.*` files manually.
-Then, run `tox -e build-cfiles` again to update the `murmurhash3.*` files.
+Then, run `tox -e build_cfiles` again to update the `murmurhash3.*` files.
 
 ### Local files
 

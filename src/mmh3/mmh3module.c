@@ -37,7 +37,7 @@ typedef unsigned __int64 uint64_t;
 
 PyDoc_STRVAR(
     mmh3_hash_doc,
-    "hash(key[, seed=0, signed=True]) -> int\n"
+    "hash(key, seed=0, signed=True) -> int\n"
     "\n"
     "Return a hash as a 32-bit integer.\n"
     "\n"
@@ -108,7 +108,7 @@ mmh3_hash(PyObject *self, PyObject *args, PyObject *keywds)
 
 PyDoc_STRVAR(
     mmh3_hash_from_buffer_doc,
-    "hash_from_buffer(key[, seed=0, signed=True]) -> int\n"
+    "hash_from_buffer(key, seed=0, signed=True) -> int\n"
     "\n"
     "Return a hash for the buffer as a 32-bit integer.\n"
     "\n"
@@ -116,14 +116,19 @@ PyDoc_STRVAR(
     "memory-views such as numpy arrays.\n"
     "\n"
     "Args:\n"
-    "    key (Buffer | str): The bufer to hash.\n"
+    "    key (Buffer | str): The bufer to hash. String inputs are also\n"
+    "        supported and are automatically converted to `bytes` using\n"
+    "        UTF-8 encoding before hashing.\n"
     "    seed (int): The seed value. Must be an integer in the range [0, "
     "0xFFFFFFFF].\n"
     "    signed (bool): If True, return a signed integer. Otherwise, return "
     "an unsigned integer.\n"
     "\n"
     "Returns:\n"
-    "    int: The hash value as a 32-bit integer.\n");
+    "    int: The hash value as a 32-bit integer.\n"
+    "\n"
+    ".. deprecated:: 5.0.0\n"
+    "    Use ``mmh3_32_sintdigest()`` or ``mmh3_32_uintdigest()`` instead.\n");
 
 static PyObject *
 mmh3_hash_from_buffer(PyObject *self, PyObject *args, PyObject *keywds)
@@ -180,7 +185,7 @@ mmh3_hash_from_buffer(PyObject *self, PyObject *args, PyObject *keywds)
 
 PyDoc_STRVAR(
     mmh3_hash64_doc,
-    "hash64(key[, seed=0, x64arch=True, signed=True]) -> tuple[int, int]\n"
+    "hash64(key, seed=0, x64arch=True, signed=True) -> tuple[int, int]\n"
     "\n"
     "Return a hash as a tuple of two 64-bit integers.\n"
     "\n"
@@ -233,7 +238,7 @@ mmh3_hash64(PyObject *self, PyObject *args, PyObject *keywds)
 
 PyDoc_STRVAR(
     mmh3_hash128_doc,
-    "hash128(key[, seed=0, x64arch=True, signed=False]]) -> int\n"
+    "hash128(key, seed=0, x64arch=True, signed=False) -> int\n"
     "\n"
     "Return a hash as a 128-bit integer.\n\n"
     "Calculated by the MurmurHash3_x{64, 86}_128 algorithm.\n"
@@ -295,7 +300,7 @@ mmh3_hash128(PyObject *self, PyObject *args, PyObject *keywds)
 
 PyDoc_STRVAR(
     mmh3_hash_bytes_doc,
-    "hash_bytes(key[, seed=0, x64arch=True]) -> bytes\n"
+    "hash_bytes(key, seed=0, x64arch=True) -> bytes\n"
     "\n"
     "Return a 16-byte hash of the ``bytes`` type.\n"
     "\n"
@@ -343,16 +348,19 @@ mmh3_hash_bytes(PyObject *self, PyObject *args, PyObject *keywds)
     return PyBytes_FromStringAndSize((char *)result, MMH3_128_DIGESTSIZE);
 }
 
+//-----------------------------------------------------------------------------
+// Functions that accept a buffer
+
 PyDoc_STRVAR(
     mmh3_mmh3_32_digest_doc,
-    "mmh3_32_digest(key[, seed=0]) -> bytes\n"
+    "mmh3_32_digest(key, seed=0, /) -> bytes\n"
     "\n"
     "Return a 4-byte hash of the ``bytes`` type for the buffer.\n"
     "\n"
     "Calculated by the MurmurHash3_x86_32 algorithm.\n"
     "\n"
     "Args:\n"
-    "    key (Buffer | str): The input buffer to hash.\n"
+    "    key (Buffer): The input buffer to hash.\n"
     "    seed (int): The seed value. Must be an integer in the range [0, "
     "0xFFFFFFFF].\n"
     "\n"
@@ -369,10 +377,7 @@ mmh3_mmh3_32_digest(PyObject *self, PyObject *args, PyObject *keywds)
     uint32_t seed = 0;
     char result[MMH3_32_DIGESTSIZE];
 
-    static char *kwlist[] = {(char *)"key", (char *)"seed", NULL};
-
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s*|I", kwlist, &target_buf,
-                                     &seed)) {
+    if (!PyArg_ParseTuple(args, "y*|I", &target_buf, &seed)) {
         return NULL;
     }
 
@@ -388,14 +393,14 @@ mmh3_mmh3_32_digest(PyObject *self, PyObject *args, PyObject *keywds)
 
 PyDoc_STRVAR(
     mmh3_mmh3_32_sintdigest_doc,
-    "mmh3_32_sintdigest(key[, seed=0]) -> int\n"
+    "mmh3_32_sintdigest(key, seed=0, /) -> int\n"
     "\n"
     "Return a hash for the buffer as a 32-bit signed integer.\n"
     "\n"
     "Calculated by the MurmurHash3_x86_32 algorithm.\n"
     "\n"
     "Args:\n"
-    "    key (Buffer | str): The input buffer to hash.\n"
+    "    key (Buffer): The input buffer to hash.\n"
     "    seed (int): The seed value. Must be an integer in the range [0, "
     "0xFFFFFFFF].\n"
     "\n"
@@ -411,10 +416,7 @@ mmh3_mmh3_32_sintdigest(PyObject *self, PyObject *args, PyObject *keywds)
     uint32_t seed = 0;
     int32_t result[1];
 
-    static char *kwlist[] = {(char *)"key", (char *)"seed", NULL};
-
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s*|I", kwlist, &target_buf,
-                                     &seed)) {
+    if (!PyArg_ParseTuple(args, "y*|I", &target_buf, &seed)) {
         return NULL;
     }
 
@@ -426,14 +428,14 @@ mmh3_mmh3_32_sintdigest(PyObject *self, PyObject *args, PyObject *keywds)
 
 PyDoc_STRVAR(
     mmh3_mmh3_32_uintdigest_doc,
-    "mmh3_32_uintdigest(key[, seed=0]) -> int\n"
+    "mmh3_32_uintdigest(key, seed=0, /) -> int\n"
     "\n"
     "Return a hash for the buffer as a 32-bit unsigned integer.\n"
     "\n"
     "Calculated by the MurmurHash3_x86_32 algorithm.\n"
     "\n"
     "Args:\n"
-    "    key (Buffer | str): The input buffer to hash.\n"
+    "    key (Buffer): The input buffer to hash.\n"
     "    seed (int): The seed value. Must be an integer in the range [0, "
     "0xFFFFFFFF].\n"
     "\n"
@@ -449,10 +451,7 @@ mmh3_mmh3_32_uintdigest(PyObject *self, PyObject *args, PyObject *keywds)
     uint32_t seed = 0;
     uint32_t result[1];
 
-    static char *kwlist[] = {(char *)"key", (char *)"seed", NULL};
-
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s*|I", kwlist, &target_buf,
-                                     &seed)) {
+    if (!PyArg_ParseTuple(args, "y*|I", &target_buf, &seed)) {
         return NULL;
     }
 
@@ -464,14 +463,14 @@ mmh3_mmh3_32_uintdigest(PyObject *self, PyObject *args, PyObject *keywds)
 
 PyDoc_STRVAR(
     mmh3_mmh3_x64_128_digest_doc,
-    "mmh3_x64_128_digest(key[, seed=0]) -> bytes\n"
+    "mmh3_x64_128_digest(key, seed=0, /) -> bytes\n"
     "\n"
     "Return a 16-byte hash of the ``bytes`` type for the buffer.\n"
     "\n"
     "Calculated by the MurmurHash3_x64_128 algorithm.\n"
     "\n"
     "Args:\n"
-    "    key (Buffer | str): The input buffer to hash.\n"
+    "    key (Buffer): The input buffer to hash.\n"
     "    seed (int): The seed value. Must be an integer in the range [0, "
     "0xFFFFFFFF].\n"
     "\n"
@@ -488,10 +487,7 @@ mmh3_mmh3_x64_128_digest(PyObject *self, PyObject *args, PyObject *keywds)
     uint32_t seed = 0;
     uint64_t result[2];
 
-    static char *kwlist[] = {(char *)"key", (char *)"seed", NULL};
-
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s*|I", kwlist, &target_buf,
-                                     &seed)) {
+    if (!PyArg_ParseTuple(args, "y*|I", &target_buf, &seed)) {
         return NULL;
     }
 
@@ -508,14 +504,14 @@ mmh3_mmh3_x64_128_digest(PyObject *self, PyObject *args, PyObject *keywds)
 
 PyDoc_STRVAR(
     mmh3_mmh3_x64_128_sintdigest_doc,
-    "mmh3_x64_128_sintdigest(key[, seed=0]) -> int\n"
+    "mmh3_x64_128_sintdigest(key, seed=0, /) -> int\n"
     "\n"
     "Return a hash for the buffer as a 128-bit signed integer.\n"
     "\n"
     "Calculated by the MurmurHash3_x64_128 algorithm.\n"
     "\n"
     "Args:\n"
-    "    key (Buffer | str): The input buffer to hash.\n"
+    "    key (Buffer): The input buffer to hash.\n"
     "    seed (int): The seed value. Must be an integer in the range [0, "
     "0xFFFFFFFF].\n"
     "\n"
@@ -531,10 +527,7 @@ mmh3_mmh3_x64_128_sintdigest(PyObject *self, PyObject *args, PyObject *keywds)
     uint32_t seed = 0;
     uint64_t result[2];
 
-    static char *kwlist[] = {(char *)"key", (char *)"seed", NULL};
-
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s*|I", kwlist, &target_buf,
-                                     &seed)) {
+    if (!PyArg_ParseTuple(args, "y*|I", &target_buf, &seed)) {
         return NULL;
     }
 
@@ -560,14 +553,14 @@ mmh3_mmh3_x64_128_sintdigest(PyObject *self, PyObject *args, PyObject *keywds)
 
 PyDoc_STRVAR(
     mmh3_mmh3_x64_128_uintdigest_doc,
-    "mmh3_x64_128_uintdigest(key[, seed=0]) -> int\n"
+    "mmh3_x64_128_uintdigest(key, seed=0, /) -> int\n"
     "\n"
     "Return a hash for the buffer as a 128-bit unsigned integer.\n"
     "\n"
     "Calculated by the MurmurHash3_x64_128 algorithm.\n"
     "\n"
     "Args:\n"
-    "    key (Buffer | str): The input buffer to hash.\n"
+    "    key (Buffer): The input buffer to hash.\n"
     "    seed (int): The seed value. Must be an integer in the range [0, "
     "0xFFFFFFFF].\n"
     "\n"
@@ -583,10 +576,7 @@ mmh3_mmh3_x64_128_uintdigest(PyObject *self, PyObject *args, PyObject *keywds)
     uint32_t seed = 0;
     uint64_t result[2];
 
-    static char *kwlist[] = {(char *)"key", (char *)"seed", NULL};
-
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s*|I", kwlist, &target_buf,
-                                     &seed)) {
+    if (!PyArg_ParseTuple(args, "y*|I", &target_buf, &seed)) {
         return NULL;
     }
 
@@ -612,14 +602,14 @@ mmh3_mmh3_x64_128_uintdigest(PyObject *self, PyObject *args, PyObject *keywds)
 
 PyDoc_STRVAR(
     mmh3_mmh3_x64_128_stupledigest_doc,
-    "mmh3_x64_128_stupledigest(key[, seed=0]) -> tuple[int, int]\n"
+    "mmh3_x64_128_stupledigest(key, seed=0, /) -> tuple[int, int]\n"
     "\n"
     "Return a hash for the buffer as a tuple of two 64-bit signed integers.\n"
     "\n"
     "Calculated by the MurmurHash3_x64_128 algorithm.\n"
     "\n"
     "Args:\n"
-    "    key (Buffer | str): The input buffer to hash.\n"
+    "    key (Buffer): The input buffer to hash.\n"
     "    seed (int): The seed value. Must be an integer in the range [0, "
     "0xFFFFFFFF].\n"
     "\n"
@@ -637,10 +627,7 @@ mmh3_mmh3_x64_128_stupledigest(PyObject *self, PyObject *args,
     uint32_t seed = 0;
     uint64_t result[2];
 
-    static char *kwlist[] = {(char *)"key", (char *)"seed", NULL};
-
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s*|I", kwlist, &target_buf,
-                                     &seed)) {
+    if (!PyArg_ParseTuple(args, "y*|I", &target_buf, &seed)) {
         return NULL;
     }
 
@@ -653,7 +640,7 @@ mmh3_mmh3_x64_128_stupledigest(PyObject *self, PyObject *args,
 
 PyDoc_STRVAR(
     mmh3_mmh3_x64_128_utupledigest_doc,
-    "mmh3_x64_128_utupledigest(key[, seed=0]) -> tuple[int, int]\n"
+    "mmh3_x64_128_utupledigest(key, seed=0, /) -> tuple[int, int]\n"
     "\n"
     "Return a hash for the buffer as a tuple of two 64-bit unsigned "
     "integers.\n"
@@ -661,7 +648,7 @@ PyDoc_STRVAR(
     "Calculated by the MurmurHash3_x64_128 algorithm.\n"
     "\n"
     "Args:\n"
-    "    key (Buffer | str): The input buffer to hash.\n"
+    "    key (Buffer): The input buffer to hash.\n"
     "    seed (int): The seed value. Must be an integer in the range [0, "
     "0xFFFFFFFF].\n"
     "\n"
@@ -679,10 +666,7 @@ mmh3_mmh3_x64_128_utupledigest(PyObject *self, PyObject *args,
     uint32_t seed = 0;
     uint64_t result[2];
 
-    static char *kwlist[] = {(char *)"key", (char *)"seed", NULL};
-
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s*|I", kwlist, &target_buf,
-                                     &seed)) {
+    if (!PyArg_ParseTuple(args, "y*|I", &target_buf, &seed)) {
         return NULL;
     }
 
@@ -695,14 +679,14 @@ mmh3_mmh3_x64_128_utupledigest(PyObject *self, PyObject *args,
 
 PyDoc_STRVAR(
     mmh3_mmh3_x86_128_digest_doc,
-    "mmh3_x86_128_digest(key[, seed=0]) -> bytes\n"
+    "mmh3_x86_128_digest(key, seed=0, /) -> bytes\n"
     "\n"
     "Return a 16-byte hash of the ``bytes`` type for the buffer.\n"
     "\n"
     "Calculated by the MurmurHash3_x86_128 algorithm.\n"
     "\n"
     "Args:\n"
-    "    key (Buffer | str): The input buffer to hash.\n"
+    "    key (Buffer): The input buffer to hash.\n"
     "    seed (int): The seed value. Must be an integer in the range [0, "
     "0xFFFFFFFF].\n"
     "\n"
@@ -719,10 +703,7 @@ mmh3_mmh3_x86_128_digest(PyObject *self, PyObject *args, PyObject *keywds)
     uint32_t seed = 0;
     uint64_t result[2];
 
-    static char *kwlist[] = {(char *)"key", (char *)"seed", NULL};
-
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s*|I", kwlist, &target_buf,
-                                     &seed)) {
+    if (!PyArg_ParseTuple(args, "y*|I", &target_buf, &seed)) {
         return NULL;
     }
 
@@ -739,14 +720,14 @@ mmh3_mmh3_x86_128_digest(PyObject *self, PyObject *args, PyObject *keywds)
 
 PyDoc_STRVAR(
     mmh3_mmh3_x86_128_sintdigest_doc,
-    "mmh3_x86_128_sintdigest(key[, seed=0]) -> int\n"
+    "mmh3_x86_128_sintdigest(key, seed=0, /) -> int\n"
     "\n"
     "Return a hash for the buffer as a 128-bit signed integer.\n"
     "\n"
     "Calculated by the MurmurHash3_x86_128 algorithm.\n"
     "\n"
     "Args:\n"
-    "    key (Buffer | str): The input buffer to hash.\n"
+    "    key (Buffer): The input buffer to hash.\n"
     "    seed (int): The seed value. Must be an integer in the range [0, "
     "0xFFFFFFFF].\n"
     "\n"
@@ -762,10 +743,7 @@ mmh3_mmh3_x86_128_sintdigest(PyObject *self, PyObject *args, PyObject *keywds)
     uint32_t seed = 0;
     uint64_t result[2];
 
-    static char *kwlist[] = {(char *)"key", (char *)"seed", NULL};
-
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s*|I", kwlist, &target_buf,
-                                     &seed)) {
+    if (!PyArg_ParseTuple(args, "y*|I", &target_buf, &seed)) {
         return NULL;
     }
 
@@ -791,14 +769,14 @@ mmh3_mmh3_x86_128_sintdigest(PyObject *self, PyObject *args, PyObject *keywds)
 
 PyDoc_STRVAR(
     mmh3_mmh3_x86_128_uintdigest_doc,
-    "mmh3_x86_128_uintdigest(key[, seed=0]) -> int\n"
+    "mmh3_x86_128_uintdigest(key, seed=0, /) -> int\n"
     "\n"
     "Return a hash for the buffer as a 128-bit unsigned integer.\n"
     "\n"
     "Calculated by the MurmurHash3_x86_128 algorithm.\n"
     "\n"
     "Args:\n"
-    "    key (Buffer | str): The input buffer to hash.\n"
+    "    key (Buffer): The input buffer to hash.\n"
     "    seed (int): The seed value. Must be an integer in the range [0, "
     "0xFFFFFFFF].\n"
     "\n"
@@ -814,10 +792,7 @@ mmh3_mmh3_x86_128_uintdigest(PyObject *self, PyObject *args, PyObject *keywds)
     uint32_t seed = 0;
     uint64_t result[2];
 
-    static char *kwlist[] = {(char *)"key", (char *)"seed", NULL};
-
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s*|I", kwlist, &target_buf,
-                                     &seed)) {
+    if (!PyArg_ParseTuple(args, "y*|I", &target_buf, &seed)) {
         return NULL;
     }
 
@@ -843,14 +818,14 @@ mmh3_mmh3_x86_128_uintdigest(PyObject *self, PyObject *args, PyObject *keywds)
 
 PyDoc_STRVAR(
     mmh3_mmh3_x86_128_stupledigest_doc,
-    "mmh3_x86_128_stupledigest(key[, seed=0]) -> tuple[int, int]\n"
+    "mmh3_x86_128_stupledigest(key, seed=0, /) -> tuple[int, int]\n"
     "\n"
     "Return a hash for the buffer as a tuple of two 64-bit signed integers.\n"
     "\n"
     "Calculated by the MurmurHash3_x86_128 algorithm.\n"
     "\n"
     "Args:\n"
-    "    key (Buffer | str): The input buffer to hash.\n"
+    "    key (Buffer): The input buffer to hash.\n"
     "    seed (int): The seed value. Must be an integer in the range [0, "
     "0xFFFFFFFF].\n"
     "\n"
@@ -868,10 +843,7 @@ mmh3_mmh3_x86_128_stupledigest(PyObject *self, PyObject *args,
     uint32_t seed = 0;
     uint64_t result[2];
 
-    static char *kwlist[] = {(char *)"key", (char *)"seed", NULL};
-
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s*|I", kwlist, &target_buf,
-                                     &seed)) {
+    if (!PyArg_ParseTuple(args, "y*|I", &target_buf, &seed)) {
         return NULL;
     }
 
@@ -884,7 +856,7 @@ mmh3_mmh3_x86_128_stupledigest(PyObject *self, PyObject *args,
 
 PyDoc_STRVAR(
     mmh3_mmh3_x86_128_utupledigest_doc,
-    "mmh3_x86_128_utupledigest(key[, seed=0]) -> tuple[int, int]\n"
+    "mmh3_x86_128_utupledigest(key, seed=0, /) -> tuple[int, int]\n"
     "\n"
     "Return a hash for the buffer as a tuple of two 64-bit unsigned "
     "integers.\n"
@@ -892,7 +864,7 @@ PyDoc_STRVAR(
     "Calculated by the MurmurHash3_x86_128 algorithm.\n"
     "\n"
     "Args:\n"
-    "    key (Buffer | str): The input buffer to hash.\n"
+    "    key (Buffer): The input buffer to hash.\n"
     "    seed (int): The seed value. Must be an integer in the range [0, "
     "0xFFFFFFFF].\n"
     "\n"
@@ -910,10 +882,7 @@ mmh3_mmh3_x86_128_utupledigest(PyObject *self, PyObject *args,
     uint32_t seed = 0;
     uint64_t result[2];
 
-    static char *kwlist[] = {(char *)"key", (char *)"seed", NULL};
-
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s*|I", kwlist, &target_buf,
-                                     &seed)) {
+    if (!PyArg_ParseTuple(args, "y*|I", &target_buf, &seed)) {
         return NULL;
     }
 
@@ -935,32 +904,32 @@ static PyMethodDef Mmh3Methods[] = {
      mmh3_hash128_doc},
     {"hash_bytes", (PyCFunction)mmh3_hash_bytes, METH_VARARGS | METH_KEYWORDS,
      mmh3_hash_bytes_doc},
-    {"mmh3_32_digest", (PyCFunction)mmh3_mmh3_32_digest,
-     METH_VARARGS | METH_KEYWORDS, mmh3_mmh3_32_digest_doc},
-    {"mmh3_32_sintdigest", (PyCFunction)mmh3_mmh3_32_sintdigest,
-     METH_VARARGS | METH_KEYWORDS, mmh3_mmh3_32_sintdigest_doc},
-    {"mmh3_32_uintdigest", (PyCFunction)mmh3_mmh3_32_uintdigest,
-     METH_VARARGS | METH_KEYWORDS, mmh3_mmh3_32_uintdigest_doc},
+    {"mmh3_32_digest", (PyCFunction)mmh3_mmh3_32_digest, METH_VARARGS,
+     mmh3_mmh3_32_digest_doc},
+    {"mmh3_32_sintdigest", (PyCFunction)mmh3_mmh3_32_sintdigest, METH_VARARGS,
+     mmh3_mmh3_32_sintdigest_doc},
+    {"mmh3_32_uintdigest", (PyCFunction)mmh3_mmh3_32_uintdigest, METH_VARARGS,
+     mmh3_mmh3_32_uintdigest_doc},
     {"mmh3_x64_128_digest", (PyCFunction)mmh3_mmh3_x64_128_digest,
-     METH_VARARGS | METH_KEYWORDS, mmh3_mmh3_x64_128_digest_doc},
+     METH_VARARGS, mmh3_mmh3_x64_128_digest_doc},
     {"mmh3_x64_128_sintdigest", (PyCFunction)mmh3_mmh3_x64_128_sintdigest,
-     METH_VARARGS | METH_KEYWORDS, mmh3_mmh3_x64_128_sintdigest_doc},
+     METH_VARARGS, mmh3_mmh3_x64_128_sintdigest_doc},
     {"mmh3_x64_128_uintdigest", (PyCFunction)mmh3_mmh3_x64_128_uintdigest,
-     METH_VARARGS | METH_KEYWORDS, mmh3_mmh3_x64_128_uintdigest_doc},
+     METH_VARARGS, mmh3_mmh3_x64_128_uintdigest_doc},
     {"mmh3_x64_128_stupledigest", (PyCFunction)mmh3_mmh3_x64_128_stupledigest,
-     METH_VARARGS | METH_KEYWORDS, mmh3_mmh3_x64_128_stupledigest_doc},
+     METH_VARARGS, mmh3_mmh3_x64_128_stupledigest_doc},
     {"mmh3_x64_128_utupledigest", (PyCFunction)mmh3_mmh3_x64_128_utupledigest,
-     METH_VARARGS | METH_KEYWORDS, mmh3_mmh3_x64_128_utupledigest_doc},
+     METH_VARARGS, mmh3_mmh3_x64_128_utupledigest_doc},
     {"mmh3_x86_128_digest", (PyCFunction)mmh3_mmh3_x86_128_digest,
-     METH_VARARGS | METH_KEYWORDS, mmh3_mmh3_x86_128_digest_doc},
+     METH_VARARGS, mmh3_mmh3_x86_128_digest_doc},
     {"mmh3_x86_128_sintdigest", (PyCFunction)mmh3_mmh3_x86_128_sintdigest,
-     METH_VARARGS | METH_KEYWORDS, mmh3_mmh3_x86_128_sintdigest_doc},
+     METH_VARARGS, mmh3_mmh3_x86_128_sintdigest_doc},
     {"mmh3_x86_128_uintdigest", (PyCFunction)mmh3_mmh3_x86_128_uintdigest,
-     METH_VARARGS | METH_KEYWORDS, mmh3_mmh3_x86_128_uintdigest_doc},
+     METH_VARARGS, mmh3_mmh3_x86_128_uintdigest_doc},
     {"mmh3_x86_128_stupledigest", (PyCFunction)mmh3_mmh3_x86_128_stupledigest,
-     METH_VARARGS | METH_KEYWORDS, mmh3_mmh3_x86_128_stupledigest_doc},
+     METH_VARARGS, mmh3_mmh3_x86_128_stupledigest_doc},
     {"mmh3_x86_128_utupledigest", (PyCFunction)mmh3_mmh3_x86_128_utupledigest,
-     METH_VARARGS | METH_KEYWORDS, mmh3_mmh3_x86_128_utupledigest_doc},
+     METH_VARARGS, mmh3_mmh3_x86_128_utupledigest_doc},
     {NULL, NULL, 0, NULL}};
 
 //-----------------------------------------------------------------------------

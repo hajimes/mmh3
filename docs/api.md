@@ -22,9 +22,8 @@ UTF-8 encoding before hashing.
 
 The following functions are used to hash types that implement the buffer
 protocol such as `bytes`, `bytearray`, `memoryview`, and `numpy` arrays.
-String inputs are also supported and are automatically converted to `bytes`
-using UTF-8 encoding before hashing.
 
+```{seealso}
 The buffer protocol,
 [originally implemented as a part of Python/C API](https://docs.python.org/3/c-api/buffer.html),
 was formally defined as a Python-level API in
@@ -37,6 +36,7 @@ type hint
 which is itself an alias for
 [typing_extensions.Buffer](https://typing-extensions.readthedocs.io/en/latest/#typing_extensions.Buffer),
 the backported type hint for `collections.abc.Buffer`.
+```
 
 ```{eval-rst}
 .. autofunction:: mmh3.hash_from_buffer
