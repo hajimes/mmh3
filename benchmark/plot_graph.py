@@ -124,8 +124,8 @@ if __name__ == "__main__":
     plt.savefig(os.path.join(args.output_dir, BANDWIDTH_SMALL_FILE_NAME))
 
     df_latency_all = df_latency * 1000
-    df_latency_all.index = df_latency_all.index / (1024 * 1024)
-    df_latency_all.plot(xlabel="Input size (MiB)", ylabel="Latency (ms)")
+    df_latency_all.index = df_latency_all.index / 1024
+    df_latency_all.plot(xlabel="Input size (KiB)", ylabel="Latency (ms)")
     plt.savefig(os.path.join(args.output_dir, LATENCY_FILE_NAME))
 
     df_latency_small = df_latency * 1000 * 1000 * 1000

@@ -153,8 +153,7 @@ Then, run `tox -e build_cfiles` again to update the `murmurhash3.*` files.
 To run benchmarks locally, try the following command:
 
 ```shell
-pip install ".[benchmark]"
-python benchmark/benchmark.py -o OUTPUT_FILE \
+tox -e benchmark -- -o OUTPUT_FILE \
             --test-hash HASH_NAME --test-buffer-size-max HASH_SIZE
 ```
 
@@ -165,9 +164,8 @@ in bytes.
 For example,
 
 ```shell
-pip install ".[benchmark]"
-mkdir results
-python benchmark/benchmark.py -o results/mmh3_128.json \
+mkdir -p _results
+tox -e benchmark -- -o _results/mmh3_128.json \
             --test-hash mmh3_128 --test-buffer-size-max 262144
 ```
 
@@ -182,8 +180,7 @@ After obtaining the benchmark results, you can plot graphs by `plot_graph.py`.
 The following is an example of how to run the script:
 
 ```shell
-pip install ".[benchmark,plot]"
-python benchmark/plot_graph.py --output-dir docs/_static RESULT_DIR/*.json
+tox -e plot -- --output-dir docs/_static RESULT_DIR/*.json
 ```
 
 where `RESULT_DIR` is the directory containing the benchmark results.
