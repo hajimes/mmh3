@@ -294,4 +294,3 @@ is useful for OSINT and cybersecurity activities.
 
 [unreleased]: https://github.com/hajimes/mmh3/compare/v4.1.0...HEAD
 [4.1.0]: https://github.com/hajimes/mmh3/compare/v4.0.1...v4.1.0
-[4.0.1]: https://github.com/hajimes/mmh3/compare/v4.0.0...v4.0.1
