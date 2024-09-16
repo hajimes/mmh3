@@ -435,15 +435,16 @@ PyDoc_STRVAR(
     ".. versionadded:: 5.0.0\n");
 
 static PyObject *
-mmh3_mmh3_32_sintdigest(PyObject *self, PyObject *args)
+mmh3_mmh3_32_sintdigest(PyObject *self, PyObject *const *args,
+                        Py_ssize_t nargs)
 {
     Py_buffer target_buf;
     uint32_t seed = 0;
     int32_t result[1];
 
-    if (!PyArg_ParseTuple(args, "y*|I", &target_buf, &seed)) {
-        return NULL;
-    }
+    MMH3_VALIDATE_ARGS_AND_SET_SEED(nargs, args, seed);
+
+    GET_BUFFER_VIEW_OR_ERROUT(args[0], &target_buf);
 
     murmurhash3_x86_32(target_buf.buf, target_buf.len, seed, result);
     PyBuffer_Release(&target_buf);
@@ -470,15 +471,16 @@ PyDoc_STRVAR(
     ".. versionadded:: 5.0.0\n");
 
 static PyObject *
-mmh3_mmh3_32_uintdigest(PyObject *self, PyObject *args)
+mmh3_mmh3_32_uintdigest(PyObject *self, PyObject *const *args,
+                        Py_ssize_t nargs)
 {
     Py_buffer target_buf;
     uint32_t seed = 0;
     uint32_t result[1];
 
-    if (!PyArg_ParseTuple(args, "y*|I", &target_buf, &seed)) {
-        return NULL;
-    }
+    MMH3_VALIDATE_ARGS_AND_SET_SEED(nargs, args, seed);
+
+    GET_BUFFER_VIEW_OR_ERROUT(args[0], &target_buf);
 
     murmurhash3_x86_32(target_buf.buf, target_buf.len, seed, result);
     PyBuffer_Release(&target_buf);
@@ -547,15 +549,16 @@ PyDoc_STRVAR(
     ".. versionadded:: 5.0.0\n");
 
 static PyObject *
-mmh3_mmh3_x64_128_sintdigest(PyObject *self, PyObject *args)
+mmh3_mmh3_x64_128_sintdigest(PyObject *self, PyObject *const *args,
+                             Py_ssize_t nargs)
 {
     Py_buffer target_buf;
     uint32_t seed = 0;
     uint64_t result[2];
 
-    if (!PyArg_ParseTuple(args, "y*|I", &target_buf, &seed)) {
-        return NULL;
-    }
+    MMH3_VALIDATE_ARGS_AND_SET_SEED(nargs, args, seed);
+
+    GET_BUFFER_VIEW_OR_ERROUT(args[0], &target_buf);
 
     murmurhash3_x64_128(target_buf.buf, target_buf.len, seed, result);
     PyBuffer_Release(&target_buf);
@@ -596,15 +599,16 @@ PyDoc_STRVAR(
     ".. versionadded:: 5.0.0\n");
 
 static PyObject *
-mmh3_mmh3_x64_128_uintdigest(PyObject *self, PyObject *args)
+mmh3_mmh3_x64_128_uintdigest(PyObject *self, PyObject *const *args,
+                             Py_ssize_t nargs)
 {
     Py_buffer target_buf;
     uint32_t seed = 0;
     uint64_t result[2];
 
-    if (!PyArg_ParseTuple(args, "y*|I", &target_buf, &seed)) {
-        return NULL;
-    }
+    MMH3_VALIDATE_ARGS_AND_SET_SEED(nargs, args, seed);
+
+    GET_BUFFER_VIEW_OR_ERROUT(args[0], &target_buf);
 
     murmurhash3_x64_128(target_buf.buf, target_buf.len, seed, result);
     PyBuffer_Release(&target_buf);
@@ -646,15 +650,16 @@ PyDoc_STRVAR(
     ".. versionadded:: 5.0.0\n");
 
 static PyObject *
-mmh3_mmh3_x64_128_stupledigest(PyObject *self, PyObject *args)
+mmh3_mmh3_x64_128_stupledigest(PyObject *self, PyObject *const *args,
+                               Py_ssize_t nargs)
 {
     Py_buffer target_buf;
     uint32_t seed = 0;
     uint64_t result[2];
 
-    if (!PyArg_ParseTuple(args, "y*|I", &target_buf, &seed)) {
-        return NULL;
-    }
+    MMH3_VALIDATE_ARGS_AND_SET_SEED(nargs, args, seed);
+
+    GET_BUFFER_VIEW_OR_ERROUT(args[0], &target_buf);
 
     murmurhash3_x64_128(target_buf.buf, target_buf.len, seed, result);
     PyBuffer_Release(&target_buf);
@@ -684,15 +689,16 @@ PyDoc_STRVAR(
     ".. versionadded:: 5.0.0\n");
 
 static PyObject *
-mmh3_mmh3_x64_128_utupledigest(PyObject *self, PyObject *args)
+mmh3_mmh3_x64_128_utupledigest(PyObject *self, PyObject *const *args,
+                               Py_ssize_t nargs)
 {
     Py_buffer target_buf;
     uint32_t seed = 0;
     uint64_t result[2];
 
-    if (!PyArg_ParseTuple(args, "y*|I", &target_buf, &seed)) {
-        return NULL;
-    }
+    MMH3_VALIDATE_ARGS_AND_SET_SEED(nargs, args, seed);
+
+    GET_BUFFER_VIEW_OR_ERROUT(args[0], &target_buf);
 
     murmurhash3_x64_128(target_buf.buf, target_buf.len, seed, result);
     PyBuffer_Release(&target_buf);
@@ -721,15 +727,16 @@ PyDoc_STRVAR(
     ".. versionadded:: 5.0.0\n");
 
 static PyObject *
-mmh3_mmh3_x86_128_digest(PyObject *self, PyObject *args)
+mmh3_mmh3_x86_128_digest(PyObject *self, PyObject *const *args,
+                         Py_ssize_t nargs)
 {
     Py_buffer target_buf;
     uint32_t seed = 0;
     uint64_t result[2];
 
-    if (!PyArg_ParseTuple(args, "y*|I", &target_buf, &seed)) {
-        return NULL;
-    }
+    MMH3_VALIDATE_ARGS_AND_SET_SEED(nargs, args, seed);
+
+    GET_BUFFER_VIEW_OR_ERROUT(args[0], &target_buf);
 
     murmurhash3_x86_128(target_buf.buf, target_buf.len, seed, result);
     PyBuffer_Release(&target_buf);
@@ -761,15 +768,16 @@ PyDoc_STRVAR(
     ".. versionadded:: 5.0.0\n");
 
 static PyObject *
-mmh3_mmh3_x86_128_sintdigest(PyObject *self, PyObject *args)
+mmh3_mmh3_x86_128_sintdigest(PyObject *self, PyObject *const *args,
+                             Py_ssize_t nargs)
 {
     Py_buffer target_buf;
     uint32_t seed = 0;
     uint64_t result[2];
 
-    if (!PyArg_ParseTuple(args, "y*|I", &target_buf, &seed)) {
-        return NULL;
-    }
+    MMH3_VALIDATE_ARGS_AND_SET_SEED(nargs, args, seed);
+
+    GET_BUFFER_VIEW_OR_ERROUT(args[0], &target_buf);
 
     murmurhash3_x86_128(target_buf.buf, target_buf.len, seed, result);
     PyBuffer_Release(&target_buf);
@@ -810,15 +818,16 @@ PyDoc_STRVAR(
     ".. versionadded:: 5.0.0\n");
 
 static PyObject *
-mmh3_mmh3_x86_128_uintdigest(PyObject *self, PyObject *args)
+mmh3_mmh3_x86_128_uintdigest(PyObject *self, PyObject *const *args,
+                             Py_ssize_t nargs)
 {
     Py_buffer target_buf;
     uint32_t seed = 0;
     uint64_t result[2];
 
-    if (!PyArg_ParseTuple(args, "y*|I", &target_buf, &seed)) {
-        return NULL;
-    }
+    MMH3_VALIDATE_ARGS_AND_SET_SEED(nargs, args, seed);
+
+    GET_BUFFER_VIEW_OR_ERROUT(args[0], &target_buf);
 
     murmurhash3_x86_128(target_buf.buf, target_buf.len, seed, result);
     PyBuffer_Release(&target_buf);
@@ -860,15 +869,16 @@ PyDoc_STRVAR(
     ".. versionadded:: 5.0.0\n");
 
 static PyObject *
-mmh3_mmh3_x86_128_stupledigest(PyObject *self, PyObject *args)
+mmh3_mmh3_x86_128_stupledigest(PyObject *self, PyObject *const *args,
+                               Py_ssize_t nargs)
 {
     Py_buffer target_buf;
     uint32_t seed = 0;
     uint64_t result[2];
 
-    if (!PyArg_ParseTuple(args, "y*|I", &target_buf, &seed)) {
-        return NULL;
-    }
+    MMH3_VALIDATE_ARGS_AND_SET_SEED(nargs, args, seed);
+
+    GET_BUFFER_VIEW_OR_ERROUT(args[0], &target_buf);
 
     murmurhash3_x86_128(target_buf.buf, target_buf.len, seed, result);
     PyBuffer_Release(&target_buf);
@@ -898,15 +908,16 @@ PyDoc_STRVAR(
     ".. versionadded:: 5.0.0\n");
 
 static PyObject *
-mmh3_mmh3_x86_128_utupledigest(PyObject *self, PyObject *args)
+mmh3_mmh3_x86_128_utupledigest(PyObject *self, PyObject *const *args,
+                               Py_ssize_t nargs)
 {
     Py_buffer target_buf;
     uint32_t seed = 0;
     uint64_t result[2];
 
-    if (!PyArg_ParseTuple(args, "y*|I", &target_buf, &seed)) {
-        return NULL;
-    }
+    MMH3_VALIDATE_ARGS_AND_SET_SEED(nargs, args, seed);
+
+    GET_BUFFER_VIEW_OR_ERROUT(args[0], &target_buf);
 
     murmurhash3_x86_128(target_buf.buf, target_buf.len, seed, result);
     PyBuffer_Release(&target_buf);
@@ -932,30 +943,30 @@ static PyMethodDef Mmh3Methods[] = {
      mmh3_hash_bytes_doc},
     {"mmh3_32_digest", (PyCFunction)mmh3_mmh3_32_digest, METH_FASTCALL,
      mmh3_mmh3_32_digest_doc},
-    {"mmh3_32_sintdigest", (PyCFunction)mmh3_mmh3_32_sintdigest, METH_VARARGS,
+    {"mmh3_32_sintdigest", (PyCFunction)mmh3_mmh3_32_sintdigest, METH_FASTCALL,
      mmh3_mmh3_32_sintdigest_doc},
-    {"mmh3_32_uintdigest", (PyCFunction)mmh3_mmh3_32_uintdigest, METH_VARARGS,
+    {"mmh3_32_uintdigest", (PyCFunction)mmh3_mmh3_32_uintdigest, METH_FASTCALL,
      mmh3_mmh3_32_uintdigest_doc},
     {"mmh3_x64_128_digest", (PyCFunction)mmh3_mmh3_x64_128_digest,
      METH_FASTCALL, mmh3_mmh3_x64_128_digest_doc},
     {"mmh3_x64_128_sintdigest", (PyCFunction)mmh3_mmh3_x64_128_sintdigest,
-     METH_VARARGS, mmh3_mmh3_x64_128_sintdigest_doc},
+     METH_FASTCALL, mmh3_mmh3_x64_128_sintdigest_doc},
     {"mmh3_x64_128_uintdigest", (PyCFunction)mmh3_mmh3_x64_128_uintdigest,
-     METH_VARARGS, mmh3_mmh3_x64_128_uintdigest_doc},
+     METH_FASTCALL, mmh3_mmh3_x64_128_uintdigest_doc},
     {"mmh3_x64_128_stupledigest", (PyCFunction)mmh3_mmh3_x64_128_stupledigest,
-     METH_VARARGS, mmh3_mmh3_x64_128_stupledigest_doc},
+     METH_FASTCALL, mmh3_mmh3_x64_128_stupledigest_doc},
     {"mmh3_x64_128_utupledigest", (PyCFunction)mmh3_mmh3_x64_128_utupledigest,
-     METH_VARARGS, mmh3_mmh3_x64_128_utupledigest_doc},
+     METH_FASTCALL, mmh3_mmh3_x64_128_utupledigest_doc},
     {"mmh3_x86_128_digest", (PyCFunction)mmh3_mmh3_x86_128_digest,
-     METH_VARARGS, mmh3_mmh3_x86_128_digest_doc},
+     METH_FASTCALL, mmh3_mmh3_x86_128_digest_doc},
     {"mmh3_x86_128_sintdigest", (PyCFunction)mmh3_mmh3_x86_128_sintdigest,
-     METH_VARARGS, mmh3_mmh3_x86_128_sintdigest_doc},
+     METH_FASTCALL, mmh3_mmh3_x86_128_sintdigest_doc},
     {"mmh3_x86_128_uintdigest", (PyCFunction)mmh3_mmh3_x86_128_uintdigest,
-     METH_VARARGS, mmh3_mmh3_x86_128_uintdigest_doc},
+     METH_FASTCALL, mmh3_mmh3_x86_128_uintdigest_doc},
     {"mmh3_x86_128_stupledigest", (PyCFunction)mmh3_mmh3_x86_128_stupledigest,
-     METH_VARARGS, mmh3_mmh3_x86_128_stupledigest_doc},
+     METH_FASTCALL, mmh3_mmh3_x86_128_stupledigest_doc},
     {"mmh3_x86_128_utupledigest", (PyCFunction)mmh3_mmh3_x86_128_utupledigest,
-     METH_VARARGS, mmh3_mmh3_x86_128_utupledigest_doc},
+     METH_FASTCALL, mmh3_mmh3_x86_128_utupledigest_doc},
     {NULL, NULL, 0, NULL}};
 
 //-----------------------------------------------------------------------------

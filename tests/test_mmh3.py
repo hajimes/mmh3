@@ -305,9 +305,7 @@ def test_mmh3_sintdigest() -> None:
     # https://stackoverflow.com/a/31929528
     assert mmh3.mmh3_32_sintdigest(b"", 0) == 0
     assert mmh3.mmh3_32_sintdigest(b"", 1) == 0x514E28B7
-    assert mmh3.mmh3_32_sintdigest(b"", u32_to_s32(0xFFFFFFFF)) == u32_to_s32(
-        0x81F16F39
-    )
+    assert mmh3.mmh3_32_sintdigest(b"", 0xFFFFFFFF) == u32_to_s32(0x81F16F39)
     assert mmh3.mmh3_32_sintdigest(b"\x21\x43\x65\x87", 0) == u32_to_s32(0xF55B516B)
     assert mmh3.mmh3_32_sintdigest(
         b"\x21\x43\x65\x87", u32_to_s32(0x5082EDEE)
@@ -321,43 +319,25 @@ def test_mmh3_sintdigest() -> None:
     assert mmh3.mmh3_32_sintdigest(b"\x00\x00", 0) == u32_to_s32(0x30F4C306)
     assert mmh3.mmh3_32_sintdigest(b"\x00", 0) == u32_to_s32(0x514E28B7)
 
-    assert mmh3.mmh3_32_sintdigest(b"aaaa", u32_to_s32(0x9747B28C)) == u32_to_s32(
-        0x5A97808A
-    )
-    assert mmh3.mmh3_32_sintdigest(b"aaa", u32_to_s32(0x9747B28C)) == u32_to_s32(
-        0x283E0130
-    )
-    assert mmh3.mmh3_32_sintdigest(b"aa", u32_to_s32(0x9747B28C)) == u32_to_s32(
-        0x5D211726
-    )
-    assert mmh3.mmh3_32_sintdigest(b"a", u32_to_s32(0x9747B28C)) == u32_to_s32(
-        0x7FA09EA6
-    )
+    assert mmh3.mmh3_32_sintdigest(b"aaaa", 0x9747B28C) == u32_to_s32(0x5A97808A)
+    assert mmh3.mmh3_32_sintdigest(b"aaa", 0x9747B28C) == u32_to_s32(0x283E0130)
+    assert mmh3.mmh3_32_sintdigest(b"aa", 0x9747B28C) == u32_to_s32(0x5D211726)
+    assert mmh3.mmh3_32_sintdigest(b"a", 0x9747B28C) == u32_to_s32(0x7FA09EA6)
 
-    assert mmh3.mmh3_32_sintdigest(b"abcd", u32_to_s32(0x9747B28C)) == u32_to_s32(
-        0xF0478627
-    )
-    assert mmh3.mmh3_32_sintdigest(b"abc", u32_to_s32(0x9747B28C)) == u32_to_s32(
-        0xC84A62DD
-    )
-    assert mmh3.mmh3_32_sintdigest(b"ab", u32_to_s32(0x9747B28C)) == u32_to_s32(
-        0x74875592
-    )
-    assert mmh3.mmh3_32_sintdigest(b"a", u32_to_s32(0x9747B28C)) == u32_to_s32(
-        0x7FA09EA6
+    assert mmh3.mmh3_32_sintdigest(b"abcd", 0x9747B28C) == u32_to_s32(0xF0478627)
+    assert mmh3.mmh3_32_sintdigest(b"abc", 0x9747B28C) == u32_to_s32(0xC84A62DD)
+    assert mmh3.mmh3_32_sintdigest(b"ab", 0x9747B28C) == u32_to_s32(0x74875592)
+    assert mmh3.mmh3_32_sintdigest(b"a", 0x9747B28C) == u32_to_s32(0x7FA09EA6)
+
+    assert mmh3.mmh3_32_sintdigest(b"Hello, world!", 0x9747B28C) == u32_to_s32(
+        0x24884CBA
     )
 
     assert mmh3.mmh3_32_sintdigest(
-        b"Hello, world!", u32_to_s32(0x9747B28C)
-    ) == u32_to_s32(0x24884CBA)
-
-    assert mmh3.mmh3_32_sintdigest(
-        "ππππππππ".encode("utf-8"), u32_to_s32(0x9747B28C)
+        "ππππππππ".encode("utf-8"), 0x9747B28C
     ) == u32_to_s32(0xD58063C1)
 
-    assert mmh3.mmh3_32_sintdigest(b"a" * 256, u32_to_s32(0x9747B28C)) == u32_to_s32(
-        0x37405BDC
-    )
+    assert mmh3.mmh3_32_sintdigest(b"a" * 256, 0x9747B28C) == u32_to_s32(0x37405BDC)
 
     assert mmh3.mmh3_32_sintdigest(b"abc", 0) == u32_to_s32(0xB3DD93FA)
     assert mmh3.mmh3_32_sintdigest(
@@ -365,7 +345,7 @@ def test_mmh3_sintdigest() -> None:
     ) == u32_to_s32(0xEE925B90)
 
     assert mmh3.mmh3_32_sintdigest(
-        b"The quick brown fox jumps over the lazy dog", u32_to_s32(0x9747B28C)
+        b"The quick brown fox jumps over the lazy dog", 0x9747B28C
     ) == u32_to_s32(0x2FA826CD)
 
 
