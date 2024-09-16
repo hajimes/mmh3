@@ -52,7 +52,7 @@ typedef unsigned __int64 uint64_t;
             return NULL;                                                    \
         }                                                                   \
         seed = (uint32_t)PyLong_AsUnsignedLong(args[1]);                    \
-        if (seed == (uint32_t) - 1 && PyErr_Occurred()) {                   \
+        if (seed == (unsigned long)-1 && PyErr_Occurred()) {                \
             return NULL;                                                    \
         }                                                                   \
     }
