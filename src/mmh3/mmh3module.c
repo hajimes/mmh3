@@ -51,7 +51,10 @@ typedef unsigned __int64 uint64_t;
                          Py_TYPE(args[1])->tp_name);                        \
             return NULL;                                                    \
         }                                                                   \
-        seed = (uint32_t)PyLong_AsLong(args[1]);                            \
+        seed = (uint32_t)PyLong_AsUnsignedLong(args[1]);                    \
+        if (seed == (uint32_t) - 1 && PyErr_Occurred()) {                   \
+            return NULL;                                                    \
+        }                                                                   \
     }
 
 //-----------------------------------------------------------------------------
