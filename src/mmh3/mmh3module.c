@@ -45,6 +45,59 @@ typedef unsigned __int64 uint64_t;
         return -1;                                                 \
     }
 
+// obj: PyObject*
+// target_str: const char *
+// len: Py_ssize_t
+#define MMH3_HASH_VALIDATE_AND_SET_BYTES(obj, target_str, len)          \
+    if (PyBytes_Check(obj)) {                                           \
+        target_str_len = PyBytes_Size(obj);                             \
+        target_str = PyBytes_AS_STRING(obj);                            \
+    }                                                                   \
+    else if (PyUnicode_Check(obj)) {                                    \
+        target_str_len = PyUnicode_GET_LENGTH(obj);                     \
+        target_str = PyUnicode_AsUTF8AndSize(obj, &target_str_len);     \
+    }                                                                   \
+    else {                                                              \
+        PyErr_Format(PyExc_TypeError,                                   \
+                     "argument 1 must be read-only bytes-like object, " \
+                     "not '%s'",                                        \
+                     Py_TYPE(obj)->tp_name);                            \
+        return NULL;                                                    \
+    }
+
+// obj: PyObject*
+// seed: unsigned long
+#define MMH3_HASH_VALIDATE_AND_SET_SEED(obj, seed)                      \
+    if (!PyLong_Check(obj)) {                                           \
+        PyErr_Format(PyExc_TypeError,                                   \
+                     "'%s' object cannot be interpreted as an integer", \
+                     Py_TYPE(obj)->tp_name);                            \
+        return NULL;                                                    \
+    }                                                                   \
+    seed = PyLong_AsUnsignedLong(obj);                                  \
+    if (seed == (unsigned long)-1 && PyErr_Occurred()) {                \
+        if (PyErr_ExceptionMatches(PyExc_OverflowError)) {              \
+            PyErr_SetString(PyExc_ValueError, "seed is out of range");  \
+            return NULL;                                                \
+        }                                                               \
+    }                                                                   \
+    if (seed > 0xFFFFFFFF) {                                            \
+        PyErr_SetString(PyExc_ValueError, "seed is out of range");      \
+        return NULL;                                                    \
+    }
+
+// nargs: Py_ssize_t
+// name: const char *
+// pos: int
+#define MMH3_HASH_VALIDATE_ARG_DUPLICATION(nargs, name, pos) \
+    if (nargs >= pos) {                                      \
+        PyErr_Format(PyExc_TypeError,                        \
+                     "argument for function given by name "  \
+                     "('%s') and position (%d)",             \
+                     name, pos);                             \
+        return NULL;                                         \
+    }
+
 #define MMH3_VALIDATE_ARGS_AND_SET_SEED(nargs, args, seed)                  \
     if (nargs < 1) {                                                        \
         PyErr_SetString(PyExc_TypeError,                                    \
@@ -105,16 +158,15 @@ PyDoc_STRVAR(
     "    ``bool`` to ``Any``.\n");
 
 static PyObject *
-mmh3_hash(PyObject *self, PyObject *args, PyObject *keywds)
+mmh3_hash(PyObject *self, PyObject *const *args, Py_ssize_t nargs,
+          PyObject *kwnames)
 {
     const char *target_str;
     Py_ssize_t target_str_len;
-    long long seed = 0;
+    unsigned long seed = 0;
     int32_t result[1];
     long long_result = 0;
     int is_signed = 1;
-
-    static char *kwlist[] = {"key", "seed", "signed", NULL};
 
 #ifndef _MSC_VER
 #if __LONG_WIDTH__ == 64 || defined(__APPLE__)
@@ -122,13 +174,56 @@ mmh3_hash(PyObject *self, PyObject *args, PyObject *keywds)
 #endif
 #endif
 
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|Lp", kwlist,
-                                     &target_str, &target_str_len, &seed,
-                                     &is_signed)) {
+    if ((nargs < 1) && kwnames == NULL) {
+        PyErr_SetString(PyExc_TypeError,
+                        "function missing required argument 'key' (pos 1)");
         return NULL;
     }
 
-    MMH3_VALIDATE_SEED_RETURN_NULL(seed);
+    if (nargs > 3) {
+        PyErr_Format(PyExc_TypeError,
+                     "function takes at most 3 arguments (%d given)",
+                     (int)nargs);
+        return NULL;
+    }
+
+    if (nargs >= 1) {
+        MMH3_HASH_VALIDATE_AND_SET_BYTES(args[0], target_str, target_str_len);
+    }
+
+    if (nargs >= 2) {
+        MMH3_HASH_VALIDATE_AND_SET_SEED(args[1], seed);
+    }
+
+    if (nargs >= 3) {
+        is_signed = PyObject_IsTrue(args[2]);
+    }
+
+    if (kwnames) {
+        for (Py_ssize_t i = 0; i < PyTuple_Size(kwnames); i++) {
+            const char *kwname = PyUnicode_AsUTF8(PyTuple_GetItem(kwnames, i));
+            if (strcmp(kwname, "key") == 0) {
+                MMH3_HASH_VALIDATE_ARG_DUPLICATION(nargs, "key", 1);
+                MMH3_HASH_VALIDATE_AND_SET_BYTES(args[nargs + i], target_str,
+                                                 target_str_len);
+            }
+            else if (strcmp(kwname, "seed") == 0) {
+                MMH3_HASH_VALIDATE_ARG_DUPLICATION(nargs, "seed", 2);
+                MMH3_HASH_VALIDATE_AND_SET_SEED(args[nargs + i], seed);
+            }
+            else if (strcmp(kwname, "signed") == 0) {
+                MMH3_HASH_VALIDATE_ARG_DUPLICATION(nargs, "signed", 3);
+                is_signed = PyObject_IsTrue(args[nargs + i]);
+            }
+            else {
+                PyErr_Format(
+                    PyExc_TypeError,
+                    "'%s' is an invalid keyword argument for this function",
+                    kwname);
+                return NULL;
+            }
+        }
+    }
 
     murmurhash3_x86_32(target_str, target_str_len, (uint32_t)seed, result);
 
@@ -986,7 +1081,7 @@ mmh3_mmh3_x86_128_utupledigest(PyObject *self, PyObject *const *args,
 // See
 // https://docs.python.org/3/extending/extending.html#keyword-parameters-for-extension-functions
 static PyMethodDef Mmh3Methods[] = {
-    {"hash", (PyCFunction)mmh3_hash, METH_VARARGS | METH_KEYWORDS,
+    {"hash", (PyCFunction)mmh3_hash, METH_FASTCALL | METH_KEYWORDS,
      mmh3_hash_doc},
     {"hash_from_buffer", (PyCFunction)mmh3_hash_from_buffer,
      METH_VARARGS | METH_KEYWORDS, mmh3_hash_from_buffer_doc},

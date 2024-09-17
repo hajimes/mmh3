@@ -18,6 +18,9 @@ def test_hash_raises_typeerror() -> None:
         mmh3.hash(b"hello, world", seed="42")
     with pytest.raises(TypeError):
         mmh3.hash([1, 2, 3], 42)
+    # pylint: disable=redundant-keyword-arg
+    with pytest.raises(TypeError):
+        mmh3.hash(b"hello, world", key=b"42")
 
 
 @no_type_check
