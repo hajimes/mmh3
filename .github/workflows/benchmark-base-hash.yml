@@ -2,10 +2,7 @@
 name: Benchmark Base Hash
 
 on:
-  push:
-    branches:
-      - master
-      - feature/**
+  workflow_dispatch:
 
 permissions: {}
 
