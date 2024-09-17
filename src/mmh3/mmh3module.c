@@ -51,10 +51,18 @@ typedef unsigned __int64 uint64_t;
                          Py_TYPE(args[1])->tp_name);                        \
             return NULL;                                                    \
         }                                                                   \
-        seed = (uint32_t)PyLong_AsUnsignedLong(args[1]);                    \
-        if (seed == (unsigned long)-1 && PyErr_Occurred()) {                \
+        const unsigned long seed_tmp = PyLong_AsUnsignedLong(args[1]);      \
+        if (seed_tmp == -1 && PyErr_Occurred()) {                           \
+            if (PyErr_ExceptionMatches(PyExc_OverflowError)) {              \
+                PyErr_SetString(PyExc_ValueError, "seed is out of range");  \
+                return NULL;                                                \
+            }                                                               \
+        }                                                                   \
+        if (seed_tmp > 0xFFFFFFFF) {                                        \
+            PyErr_SetString(PyExc_ValueError, "seed is out of range");      \
             return NULL;                                                    \
         }                                                                   \
+        seed = (uint32_t)seed_tmp;                                          \
     }
 
 //-----------------------------------------------------------------------------
