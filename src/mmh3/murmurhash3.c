@@ -32,9 +32,6 @@ murmurhash3_x86_32_round(uint32_t k)
     k *= MMH3_32_C1;
     k = ROTL32(k, 15);
     k *= MMH3_32_C2;
-#if defined(__GNUC__) && defined(__SSE4_1__)
-    __asm__("" : "+r"(k));
-#endif
     return k;
 }
 
