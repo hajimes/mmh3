@@ -10,11 +10,14 @@ This project has adhered to
 
 ### Added
 
-- Add `digest` functions that accept a non-immutable buffer as input
-  and process it without internal copying
-  ([#75](https://github.com/hajimes/mmh3/issues/75)).
-- Slightly improve the performance of the `hash_bytes` function.
 - Add support for Python 3.13.
+- Add `digest` functions that support the new buffer protocol
+  ([PEP 688](https://peps.python.org/pep-0688/)) as input
+  ([#75](https://github.com/hajimes/mmh3/pull/75)).
+  These functions are implemented with
+  [METH_FASTCALL](https://docs.python.org/3/c-api/structures.html#c.METH_FASTCALL),
+  offering improved performance over legacy functions.
+- Slightly improve the performance of the `hash_bytes()` function.
 - Add Read the Docs documentation
   ([#54](https://github.com/hajimes/mmh3/issues/54)).
 - (planned: Document benchmark results
@@ -24,16 +27,22 @@ This project has adhered to
 
 - Change the format of CHANGELOG.md to conform to the
   [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) standard
-  ([#63](https://github.com/hajimes/mmh3/issues/63)).
+  ([#63](https://github.com/hajimes/mmh3/pull/63)).
 - **Backward-incompatible**: Change the constructors of hasher classes to
-  accept a buffer as the first argument.
+  accept a buffer as the first argument
+  ([#83](https://github.com/hajimes/mmh3/pull/83)).
+
+### Deprecated
+
+- Deprecate the `hash_from_buffer()` function.
+  Use `mmh3_32_sintdigest()` or `mmh3_32_uintdigest()` as alternatives.
 
 ### Fixed
 
 - Fix a reference leak in the `hash_from_buffer()` function
-  ([#75](https://github.com/hajimes/mmh3/issues/75)).
-- Fix type hints ([#76](https://github.com/hajimes/mmh3/issues/76),
-  [#77](https://github.com/hajimes/mmh3/issues/77)).
+  ([#75](https://github.com/hajimes/mmh3/pull/75)).
+- Fix type hints ([#76](https://github.com/hajimes/mmh3/pull/76),
+  [#77](https://github.com/hajimes/mmh3/pull/77)).
 
 ## [4.1.0] - 2024-01-09
 
@@ -47,7 +56,7 @@ This project has adhered to
   ([#50](https://github.com/hajimes/mmh3/issues/50)).
 - Fix incorrect type hints ([#51](https://github.com/hajimes/mmh3/issues/51)).
 - Fix invalid results on s390x when the arg `x64arch` of `hash64` or
-  `hash_bytes` is set to `False`
+  `hash_bytes()` is set to `False`
   ([#52](https://github.com/hajimes/mmh3/issues/52)).
 
 ## [4.0.1] - 2023-07-14
@@ -97,8 +106,8 @@ This project has adhered to
   [wouter bolsterlee](https://github.com/wbolster) and
   [Dušan Nikolić](https://github.com/n-dusan)!
 - Add support for 32-bit architectures such as `i686` and `armv7l`. From now on,
-  `hash` and `hash_from_buffer` on these architectures will generate the same
-  hash values as those on other environments. Thanks
+  `hash()` and `hash_from_buffer()` on these architectures will generate the
+  same hash values as those on other environments. Thanks
   [Danil Shein](https://github.com/dshein-alt)!
 - In relation to the above, `manylinux2014_i686` wheels are now available.
 - Support for hashing huge data (>16GB). Thanks
@@ -134,13 +143,13 @@ This project has adhered to
 
 ### Fixed
 
-- Bugfix for `hash_bytes`. Thanks [doozr](https://github.com/doozr)!
+- Bugfix for `hash_bytes()`. Thanks [doozr](https://github.com/doozr)!
 
 ## [2.5] - 2017-10-28
 
 ### Added
 
-- Add `hash_from_buffer`. Thanks [Dimitri Vorona](https://github.com/alendit)!
+- Add `hash_from_buffer()`. Thanks [Dimitri Vorona](https://github.com/alendit)!
 - Add a keyword argument `signed`.
 
 ## [2.4] - 2017-05-27
@@ -175,7 +184,7 @@ Thanks!
 
 ### Added
 
-- Add `hash128`, which returns a 128-bit signed integer.
+- Add `hash128()`, which returns a 128-bit signed integer.
 
 ### Fixed
 
