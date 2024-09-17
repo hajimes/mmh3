@@ -141,7 +141,8 @@ complete changelog.
   ([#75](https://github.com/hajimes/mmh3/pull/75)).
   These functions are implemented with
   [METH_FASTCALL](https://docs.python.org/3/c-api/structures.html#c.METH_FASTCALL),
-  offering improved performance over legacy functions.
+  offering improved performance over legacy functions
+  ([#84](https://github.com/hajimes/mmh3/pull/84)).
 - Slightly improve the performance of the `hash_bytes()` function.
 - Add Read the Docs documentation
   ([#54](https://github.com/hajimes/mmh3/issues/54)).
@@ -152,11 +153,12 @@ complete changelog.
 
 - **Backward-incompatible**: The `seed` argument is now strictly validated to
   ensure it falls within the range [0, 0xFFFFFFFF]. A `ValueError` is raised
-  if the seed is out of range.
+  if the seed is out of range ([#84](https://github.com/hajimes/mmh3/pull/84)).
 - **Backward-incompatible**: Change the constructors of hasher classes to
   accept a buffer as the first argument
   ([#83](https://github.com/hajimes/mmh3/pull/83)).
-- The type of flag argumens has been changed from `bool` to `Any`.
+- The type of flag argumens has been changed from `bool` to `Any`
+  ([#84](https://github.com/hajimes/mmh3/pull/84)).
 - Change the format of CHANGELOG.md to conform to the
   [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) standard
   ([#63](https://github.com/hajimes/mmh3/pull/63)).
@@ -164,14 +166,16 @@ complete changelog.
 #### Deprecated
 
 - Deprecate the `hash_from_buffer()` function.
-  Use `mmh3_32_sintdigest()` or `mmh3_32_uintdigest()` as alternatives.
+  Use `mmh3_32_sintdigest()` or `mmh3_32_uintdigest()` as alternatives
+  ([#84](https://github.com/hajimes/mmh3/pull/84)).
 
 #### Fixed
 
 - Fix a reference leak in the `hash_from_buffer()` function
   ([#75](https://github.com/hajimes/mmh3/pull/75)).
 - Fix type hints ([#76](https://github.com/hajimes/mmh3/pull/76),
-  [#77](https://github.com/hajimes/mmh3/pull/77)).
+  [#77](https://github.com/hajimes/mmh3/pull/77),
+  [#84](https://github.com/hajimes/mmh3/pull/84)).
 
 ### [4.1.0] - 2024-01-09
 

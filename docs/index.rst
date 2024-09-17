@@ -9,6 +9,7 @@ mmh3 is a Python extension for `MurmurHash (MurmurHash3) <https://en.wikipedia.o
    Quickstart<quickstart>
    api
    Changelog<changelog>
+   CONTRIBUTORS
 
 .. toctree::
    :maxdepth: 2
