@@ -1,0 +1,91 @@
+---
+name: Benchmark Base Hash
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  benchmark:
+    permissions:
+      contents: read
+      packages: read
+    runs-on: ubuntu-22.04
+    env:
+      BENCHMARK_MAX_SIZE: 65536
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install .
+          pip install ".[benchmark]"
+      - name: Tune the system for benchmarking
+        run: |
+          echo "Running \"lscpu -a -e\"..."
+          lscpu -a -e
+
+          echo -n "Checking randomize_va_space: "
+          cat /proc/sys/kernel/randomize_va_space
+          echo "randomize_va_space should be 2, meaning ASLR is fully enabled."
+
+          systemctl status irqbalance
+          echo "Stopping irqbalance..."
+          sudo systemctl stop irqbalance
+
+          echo -n "Checking default_smp_affinity: "
+          cat /proc/irq/default_smp_affinity
+          echo 3 | sudo tee /proc/irq/default_smp_affinity > /dev/null
+          echo -n "Updated default_smp_affinity to: "
+          cat /proc/irq/default_smp_affinity
+
+          echo -n "Checking perf_event_max_sample_rate: "
+          cat /proc/sys/kernel/perf_event_max_sample_rate
+          echo 1 | sudo tee /proc/sys/kernel/perf_event_max_sample_rate > /dev/null
+          echo -n "Updated perf_event_max_sample_rate to: "
+          cat /proc/sys/kernel/perf_event_max_sample_rate
+      - name: Benchmark hash functions
+        run: |
+          mkdir var
+          taskset -c 2,3 python benchmark/benchmark.py \
+            -o var/mmh3_base_hash_500.json \
+            --test-hash mmh3_base_hash \
+            --test-buffer-size-max "$BENCHMARK_MAX_SIZE"
+          taskset -c 2,3 python benchmark/benchmark.py \
+            -o var/mmh3_32_500.json \
+            --test-hash mmh3_32 \
+            --test-buffer-size-max "$BENCHMARK_MAX_SIZE"
+          pip uninstall -y mmh3
+          pip install mmh3==4.1.0
+          taskset -c 2,3 python benchmark/benchmark.py \
+            -o var/mmh3_base_hash_410.json \
+            --test-hash mmh3_base_hash \
+            --test-buffer-size-max "$BENCHMARK_MAX_SIZE"
+      - name: Reset the system from benchmarking
+        run: |
+          echo -n "Checking perf_event_max_sample_rate: "
+          cat /proc/sys/kernel/perf_event_max_sample_rate
+          echo 100000 | sudo tee /proc/sys/kernel/perf_event_max_sample_rate > /dev/null
+          echo -n "Updated perf_event_max_sample_rate to: "
+          cat /proc/sys/kernel/perf_event_max_sample_rate
+
+          echo -n "Checking default_smp_affinity: "
+          cat /proc/irq/default_smp_affinity
+          echo f | sudo tee /proc/irq/default_smp_affinity > /dev/null
+          echo -n "Updated default_smp_affinity to: "
+          cat /proc/irq/default_smp_affinity
+
+          echo "Restarting irqbalance..."
+          sudo systemctl restart irqbalance
+          systemctl status irqbalance
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-results
+          path: var

@@ -15,13 +15,16 @@ since version 3.0.0.
 ### Added
 
 - Add support for Python 3.13.
+- Improve the performance of the `hash()` function with
+  [METH_FASTCALL](https://docs.python.org/3/c-api/structures.html#c.METH_FASTCALL),
+  reducing the overhead of function calls. For data sizes between 1–2 KB
+  (e.g., 48x48 favicons), performance is 10%–20% faster. For smaller data
+  (~500 bytes, like 16x16 favicons), performance increases by approximately 30%.
 - Add `digest` functions that support the new buffer protocol
   ([PEP 688](https://peps.python.org/pep-0688/)) as input
   ([#75](https://github.com/hajimes/mmh3/pull/75)).
-  These functions are implemented with
-  [METH_FASTCALL](https://docs.python.org/3/c-api/structures.html#c.METH_FASTCALL),
-  offering improved performance over legacy functions
-  ([#84](https://github.com/hajimes/mmh3/pull/84)).
+  These functions are implemented with `METH_FASTCALL` too, offering improved
+  performance ([#84](https://github.com/hajimes/mmh3/pull/84)).
 - Slightly improve the performance of the `hash_bytes()` function.
 - Add Read the Docs documentation
   ([#54](https://github.com/hajimes/mmh3/issues/54)).
