@@ -32,10 +32,16 @@ typedef unsigned __int64 uint64_t;
 #define MMH3_32_BLOCKSIZE 12
 #define MMH3_128_BLOCKSIZE 32
 
-#define MMH3_VALIDATE_SEED(seed)                                   \
+#define MMH3_VALIDATE_SEED_RETURN_NULL(seed)                       \
     if (seed < 0 || seed > 0xFFFFFFFF) {                           \
         PyErr_SetString(PyExc_ValueError, "seed is out of range"); \
         return NULL;                                               \
+    }
+
+#define MMH3_VALIDATE_SEED_RETURN_INT(seed)                        \
+    if (seed < 0 || seed > 0xFFFFFFFF) {                           \
+        PyErr_SetString(PyExc_ValueError, "seed is out of range"); \
+        return -1;                                                 \
     }
 
 #define MMH3_VALIDATE_ARGS_AND_SET_SEED(nargs, args, seed)                  \
@@ -121,7 +127,7 @@ mmh3_hash(PyObject *self, PyObject *args, PyObject *keywds)
         return NULL;
     }
 
-    MMH3_VALIDATE_SEED(seed);
+    MMH3_VALIDATE_SEED_RETURN_NULL(seed);
 
     murmurhash3_x86_32(target_str, target_str_len, (uint32_t)seed, result);
 
@@ -202,7 +208,7 @@ mmh3_hash_from_buffer(PyObject *self, PyObject *args, PyObject *keywds)
         return NULL;
     }
 
-    MMH3_VALIDATE_SEED(seed);
+    MMH3_VALIDATE_SEED_RETURN_NULL(seed);
 
     murmurhash3_x86_32(target_buf.buf, target_buf.len, (uint32_t)seed, result);
 
@@ -280,7 +286,7 @@ mmh3_hash64(PyObject *self, PyObject *args, PyObject *keywds)
         return NULL;
     }
 
-    MMH3_VALIDATE_SEED(seed);
+    MMH3_VALIDATE_SEED_RETURN_NULL(seed);
 
     if (x64arch == 1) {
         murmurhash3_x64_128(target_str, target_str_len, (uint32_t)seed,
@@ -337,7 +343,7 @@ mmh3_hash128(PyObject *self, PyObject *args, PyObject *keywds)
         return NULL;
     }
 
-    MMH3_VALIDATE_SEED(seed);
+    MMH3_VALIDATE_SEED_RETURN_NULL(seed);
 
     if (x64arch == 1) {
         murmurhash3_x64_128(target_str, target_str_len, seed, result);
@@ -402,7 +408,7 @@ mmh3_hash_bytes(PyObject *self, PyObject *args, PyObject *keywds)
         return NULL;
     }
 
-    MMH3_VALIDATE_SEED(seed);
+    MMH3_VALIDATE_SEED_RETURN_NULL(seed);
 
     if (x64arch == 1) {
         murmurhash3_x64_128(target_str, target_str_len, seed, result);
@@ -1106,7 +1112,7 @@ MMH3Hasher32_init(MMH3Hasher32 *self, PyObject *args, PyObject *kwds)
                                      &seed))
         return -1;
 
-    MMH3_VALIDATE_SEED(seed);
+    MMH3_VALIDATE_SEED_RETURN_INT(seed);
 
     self->h = (uint32_t)seed;
 
@@ -1431,7 +1437,7 @@ MMH3Hasher128x64_init(MMH3Hasher128x64 *self, PyObject *args, PyObject *kwds)
                                      &seed))
         return -1;
 
-    MMH3_VALIDATE_SEED(seed);
+    MMH3_VALIDATE_SEED_RETURN_INT(seed);
 
     self->h1 = (uint64_t)seed;
     self->h2 = self->h1;
@@ -1784,7 +1790,7 @@ MMH3Hasher128x86_init(MMH3Hasher128x86 *self, PyObject *args, PyObject *kwds)
                                      &seed))
         return -1;
 
-    MMH3_VALIDATE_SEED(seed);
+    MMH3_VALIDATE_SEED_RETURN_INT(seed);
     self->h1 = (uint32_t)seed;
     self->h2 = self->h1;
     self->h3 = self->h1;
