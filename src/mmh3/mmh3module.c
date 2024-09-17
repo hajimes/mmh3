@@ -32,6 +32,12 @@ typedef unsigned __int64 uint64_t;
 #define MMH3_32_BLOCKSIZE 12
 #define MMH3_128_BLOCKSIZE 32
 
+#define MMH3_VALIDATE_SEED(seed)                                   \
+    if (seed < 0 || seed > 0xFFFFFFFF) {                           \
+        PyErr_SetString(PyExc_ValueError, "seed is out of range"); \
+        return NULL;                                               \
+    }
+
 #define MMH3_VALIDATE_ARGS_AND_SET_SEED(nargs, args, seed)                  \
     if (nargs < 1) {                                                        \
         PyErr_SetString(PyExc_TypeError,                                    \
@@ -80,24 +86,28 @@ PyDoc_STRVAR(
     "    key (bytes | str): The input data to hash.\n"
     "    seed (int): The seed value. Must be an integer in the range [0, "
     "0xFFFFFFFF].\n"
-    "    signed (bool): If True, return a signed integer. Otherwise, return "
+    "    signed (Any): If True, return a signed integer. Otherwise, return "
     "an unsigned integer.\n"
     "\n"
     "Returns:\n"
-    "    int: The hash value as a 32-bit integer.\n");
+    "    int: The hash value as a 32-bit integer.\n"
+    "\n"
+    ".. versionchanged:: 5.0.0\n"
+    "    The ``seed`` argument is now strictly checked for valid range.\n"
+    "    The type of the ``signed`` argument has been changed from\n"
+    "    ``bool`` to ``Any``.\n");
 
 static PyObject *
 mmh3_hash(PyObject *self, PyObject *args, PyObject *keywds)
 {
     const char *target_str;
     Py_ssize_t target_str_len;
-    uint32_t seed = 0;
+    long long seed = 0;
     int32_t result[1];
     long long_result = 0;
-    unsigned char is_signed = 1;
+    int is_signed = 1;
 
-    static char *kwlist[] = {(char *)"key", (char *)"seed", (char *)"signed",
-                             NULL};
+    static char *kwlist[] = {"key", "seed", "signed", NULL};
 
 #ifndef _MSC_VER
 #if __LONG_WIDTH__ == 64 || defined(__APPLE__)
@@ -105,13 +115,15 @@ mmh3_hash(PyObject *self, PyObject *args, PyObject *keywds)
 #endif
 #endif
 
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|IB", kwlist,
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|Lp", kwlist,
                                      &target_str, &target_str_len, &seed,
                                      &is_signed)) {
         return NULL;
     }
 
-    murmurhash3_x86_32(target_str, target_str_len, seed, result);
+    MMH3_VALIDATE_SEED(seed);
+
+    murmurhash3_x86_32(target_str, target_str_len, (uint32_t)seed, result);
 
 #if defined(_MSC_VER)
     /* for Windows envs */
@@ -154,26 +166,30 @@ PyDoc_STRVAR(
     "        UTF-8 encoding before hashing.\n"
     "    seed (int): The seed value. Must be an integer in the range [0, "
     "0xFFFFFFFF].\n"
-    "    signed (bool): If True, return a signed integer. Otherwise, return "
+    "    signed (Any): If True, return a signed integer. Otherwise, return "
     "an unsigned integer.\n"
     "\n"
     "Returns:\n"
     "    int: The hash value as a 32-bit integer.\n"
     "\n"
     ".. deprecated:: 5.0.0\n"
-    "    Use ``mmh3_32_sintdigest()`` or ``mmh3_32_uintdigest()`` instead.\n");
+    "    Use ``mmh3_32_sintdigest()`` or ``mmh3_32_uintdigest()`` instead.\n"
+    "\n"
+    ".. versionchanged:: 5.0.0\n"
+    "    The ``seed`` argument is now strictly checked for valid range.\n"
+    "    The type of the ``signed`` argument has been changed from\n"
+    "    ``bool`` to ``Any``.\n");
 
 static PyObject *
 mmh3_hash_from_buffer(PyObject *self, PyObject *args, PyObject *keywds)
 {
     Py_buffer target_buf;
-    uint32_t seed = 0;
+    long long seed = 0;
     int32_t result[1];
     long long_result = 0;
-    unsigned char is_signed = 1;
+    int is_signed = 1;
 
-    static char *kwlist[] = {(char *)"key", (char *)"seed", (char *)"signed",
-                             NULL};
+    static char *kwlist[] = {"key", "seed", "signed", NULL};
 
 #ifndef _MSC_VER
 #if __LONG_WIDTH__ == 64 || defined(__APPLE__)
@@ -181,12 +197,14 @@ mmh3_hash_from_buffer(PyObject *self, PyObject *args, PyObject *keywds)
 #endif
 #endif
 
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s*|IB", kwlist,
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s*|Lp", kwlist,
                                      &target_buf, &seed, &is_signed)) {
         return NULL;
     }
 
-    murmurhash3_x86_32(target_buf.buf, target_buf.len, seed, result);
+    MMH3_VALIDATE_SEED(seed);
+
+    murmurhash3_x86_32(target_buf.buf, target_buf.len, (uint32_t)seed, result);
 
     PyBuffer_Release(&target_buf);
 
@@ -228,41 +246,49 @@ PyDoc_STRVAR(
     "    key (bytes | str): The input data to hash.\n"
     "    seed (int): The seed value. Must be an integer in the range [0, "
     "0xFFFFFFFF].\n"
-    "    x64arch (bool): If True, use an algorithm optimized for 64-bit "
+    "    x64arch (Any): If True, use an algorithm optimized for 64-bit "
     "architecture. Otherwise, use one optimized for 32-bit architecture.\n"
-    "    signed (bool): If True, return a signed integer. Otherwise, return "
+    "    signed (Any): If True, return a signed integer. Otherwise, return "
     "an unsigned integer.\n"
     "\n"
     "Returns:\n"
     "    tuple[int, int]: The hash value as a tuple of two 64-bit "
-    "integers.\n");
+    "integers.\n"
+    "\n"
+    ".. versionchanged:: 5.0.0\n"
+    "    The ``seed`` argument is now strictly checked for valid range.\n"
+    "    The type of the ``x64arch`` and ``signed`` arguments has been\n"
+    "    changed from ``bool`` to ``Any``.\n");
 
 static PyObject *
 mmh3_hash64(PyObject *self, PyObject *args, PyObject *keywds)
 {
     const char *target_str;
     Py_ssize_t target_str_len;
-    uint32_t seed = 0;
+    long long seed = 0;
     uint64_t result[2];
-    unsigned char x64arch = 1;
-    unsigned char is_signed = 1;
+    int x64arch = 1;
+    int is_signed = 1;
 
-    static char *kwlist[] = {(char *)"key", (char *)"seed", (char *)"x64arch",
-                             (char *)"signed", NULL};
+    static char *kwlist[] = {"key", "seed", "x64arch", "signed", NULL};
 
-    static char *valflag[] = {(char *)"KK", (char *)"LL"};
+    static char *valflag[] = {"KK", "LL"};
 
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|IBB", kwlist,
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|Lpp", kwlist,
                                      &target_str, &target_str_len, &seed,
                                      &x64arch, &is_signed)) {
         return NULL;
     }
 
+    MMH3_VALIDATE_SEED(seed);
+
     if (x64arch == 1) {
-        murmurhash3_x64_128(target_str, target_str_len, seed, result);
+        murmurhash3_x64_128(target_str, target_str_len, (uint32_t)seed,
+                            result);
     }
     else {
-        murmurhash3_x86_128(target_str, target_str_len, seed, result);
+        murmurhash3_x86_128(target_str, target_str_len, (uint32_t)seed,
+                            result);
     }
 
     PyObject *retval = Py_BuildValue(valflag[is_signed], result[0], result[1]);
@@ -280,32 +306,38 @@ PyDoc_STRVAR(
     "    key (bytes | str): The input data to hash.\n"
     "    seed (int): The seed value. Must be an integer in the range [0, "
     "0xFFFFFFFF].\n"
-    "    x64arch (bool): If True, use an algorithm optimized for 64-bit "
+    "    x64arch (Any): If True, use an algorithm optimized for 64-bit "
     "architecture. Otherwise, use one optimized for 32-bit architecture.\n"
-    "    signed (bool): If True, return a signed integer. Otherwise, return "
+    "    signed (Any): If True, return a signed integer. Otherwise, return "
     "an unsigned integer.\n"
     "\n"
     "Returns:\n"
-    "    int: The hash value as a 128-bit integer.\n");
+    "    int: The hash value as a 128-bit integer.\n"
+    "\n"
+    ".. versionchanged:: 5.0.0\n"
+    "    The ``seed`` argument is now strictly checked for valid range.\n"
+    "    The type of the ``x64arch`` and ``signed`` arguments has been\n"
+    "    changed from ``bool`` to ``Any``.\n");
 
 static PyObject *
 mmh3_hash128(PyObject *self, PyObject *args, PyObject *keywds)
 {
     const char *target_str;
     Py_ssize_t target_str_len;
-    uint32_t seed = 0;
+    long long seed = 0;
     uint64_t result[2];
-    unsigned char x64arch = 1;
-    unsigned char is_signed = 0;
+    int x64arch = 1;
+    int is_signed = 0;
 
-    static char *kwlist[] = {(char *)"key", (char *)"seed", (char *)"x64arch",
-                             (char *)"signed", NULL};
+    static char *kwlist[] = {"key", "seed", "x64arch", "signed", NULL};
 
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|IBB", kwlist,
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|Lpp", kwlist,
                                      &target_str, &target_str_len, &seed,
                                      &x64arch, &is_signed)) {
         return NULL;
     }
+
+    MMH3_VALIDATE_SEED(seed);
 
     if (x64arch == 1) {
         murmurhash3_x64_128(target_str, target_str_len, seed, result);
@@ -341,30 +373,36 @@ PyDoc_STRVAR(
     "    key (bytes | str): The input data to hash.\n"
     "    seed (int): The seed value. Must be an integer in the range [0, "
     "0xFFFFFFFF].\n"
-    "    x64arch (bool): If True, use an algorithm optimized for 64-bit "
+    "    x64arch (Any): If True, use an algorithm optimized for 64-bit "
     "architecture. Otherwise, use one optimized for 32-bit architecture.\n"
     "\n"
     "Returns:\n"
     "    bytes: The hash value as the ``bytes`` type with a length of 16 "
-    "bytes (128 bits).\n");
+    "bytes (128 bits).\n")
+    "\n"
+    ".. versionchanged:: 5.0.0\n"
+    "    The ``seed`` argument is now strictly checked for valid range.\n"
+    "    The type of the ``x64arch`` argument has been changed from\n"
+    "    ``bool`` to ``Any``.\n";
 
 static PyObject *
 mmh3_hash_bytes(PyObject *self, PyObject *args, PyObject *keywds)
 {
     const char *target_str;
     Py_ssize_t target_str_len;
-    uint32_t seed = 0;
+    long long seed = 0;
     uint64_t result[2];
-    unsigned char x64arch = 1;
+    int x64arch = 1;
 
-    static char *kwlist[] = {(char *)"key", (char *)"seed", (char *)"x64arch",
-                             NULL};
+    static char *kwlist[] = {"key", "seed", "x64arch", NULL};
 
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|IB", kwlist,
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|Lp", kwlist,
                                      &target_str, &target_str_len, &seed,
                                      &x64arch)) {
         return NULL;
     }
+
+    MMH3_VALIDATE_SEED(seed);
 
     if (x64arch == 1) {
         murmurhash3_x64_128(target_str, target_str_len, seed, result);
@@ -1061,11 +1099,16 @@ static int
 MMH3Hasher32_init(MMH3Hasher32 *self, PyObject *args, PyObject *kwds)
 {
     Py_buffer target_buf = {0};
+    long long seed = 0;
     static char *kwlist[] = {"data", "seed", NULL};
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|y*I", kwlist, &target_buf,
-                                     &self->h))
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|y*L", kwlist, &target_buf,
+                                     &seed))
         return -1;
+
+    MMH3_VALIDATE_SEED(seed);
+
+    self->h = (uint32_t)seed;
 
     if (target_buf.buf != NULL) {
         // target_buf will be released in update32_impl
@@ -1244,7 +1287,8 @@ PyDoc_STRVAR(
     "[0, 0xFFFFFFFF].\n"
     "\n"
     ".. versionchanged:: 5.0.0\n"
-    "    Added the optional ``data`` parameter as the first argument.\n");
+    "    Added the optional ``data`` parameter as the first argument.\n"
+    "    The ``seed`` argument is now strictly checked for valid range.\n");
 
 static PyTypeObject MMH3Hasher32Type = {
     PyVarObject_HEAD_INIT(NULL, 0).tp_name = "mmh3.mmh3_32",
@@ -1380,12 +1424,16 @@ static int
 MMH3Hasher128x64_init(MMH3Hasher128x64 *self, PyObject *args, PyObject *kwds)
 {
     Py_buffer target_buf = {0};
+    long long seed = 0;
     static char *kwlist[] = {"data", "seed", NULL};
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|y*K", kwlist, &target_buf,
-                                     &self->h1))
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|y*L", kwlist, &target_buf,
+                                     &seed))
         return -1;
 
+    MMH3_VALIDATE_SEED(seed);
+
+    self->h1 = (uint64_t)seed;
     self->h2 = self->h1;
 
     if (target_buf.buf != NULL) {
@@ -1605,7 +1653,8 @@ PyDoc_STRVAR(
     "[0, 0xFFFFFFFF].\n"
     "\n"
     ".. versionchanged:: 5.0.0\n"
-    "    Added the optional ``data`` parameter as the first argument.\n");
+    "    Added the optional ``data`` parameter as the first argument.\n"
+    "    The ``seed`` argument is now strictly checked for valid range.\n");
 
 static PyTypeObject MMH3Hasher128x64Type = {
     PyVarObject_HEAD_INIT(NULL, 0).tp_name = "mmh3.mmh3_x64_128",
@@ -1728,12 +1777,15 @@ static int
 MMH3Hasher128x86_init(MMH3Hasher128x86 *self, PyObject *args, PyObject *kwds)
 {
     Py_buffer target_buf = {0};
+    long long seed = 0;
     static char *kwlist[] = {"data", "seed", NULL};
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|y*I", kwlist, &target_buf,
-                                     &self->h1))
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|y*L", kwlist, &target_buf,
+                                     &seed))
         return -1;
 
+    MMH3_VALIDATE_SEED(seed);
+    self->h1 = (uint32_t)seed;
     self->h2 = self->h1;
     self->h3 = self->h1;
     self->h4 = self->h1;
@@ -1946,8 +1998,8 @@ PyDoc_STRVAR(
     "[0, 0xFFFFFFFF].\n"
     "\n"
     ".. versionchanged:: 5.0.0\n"
-    "    Added the optional ``data`` parameter as the first argument.\n");
-;
+    "    Added the optional ``data`` parameter as the first argument.\n"
+    "    The ``seed`` argument is now strictly checked for valid range.\n");
 
 static PyTypeObject MMH3Hasher128x86Type = {
     PyVarObject_HEAD_INIT(NULL, 0).tp_name = "mmh3.mmh3_x86_128",
