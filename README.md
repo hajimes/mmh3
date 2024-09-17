@@ -128,18 +128,21 @@ b'\x82_n\xdd \xac\xb6j\xef\x99\xb1e\xc4\n\xc9\xfd'
 
 ## Changelog
 
-See [Changelog](https://mmh3.readthedocs.io/en/latest/changelog_link.html) for the
+See [Changelog](https://mmh3.readthedocs.io/en/latest/changelog.html) for the
 complete changelog.
 
 ### [Unreleased]
 
 #### Added
 
-- Add `digest` functions that accept a non-immutable buffer as input
-  and process it without internal copying
-  ([#75](https://github.com/hajimes/mmh3/issues/75)).
-- Slightly improve the performance of the `hash_bytes` function.
 - Add support for Python 3.13.
+- Add `digest` functions that support the new buffer protocol
+  ([PEP 688](https://peps.python.org/pep-0688/)) as input
+  ([#75](https://github.com/hajimes/mmh3/pull/75)).
+  These functions are implemented with
+  [METH_FASTCALL](https://docs.python.org/3/c-api/structures.html#c.METH_FASTCALL),
+  offering improved performance over legacy functions.
+- Slightly improve the performance of the `hash_bytes()` function.
 - Add Read the Docs documentation
   ([#54](https://github.com/hajimes/mmh3/issues/54)).
 - (planned: Document benchmark results
@@ -147,18 +150,28 @@ complete changelog.
 
 #### Changed
 
+- **Backward-incompatible**: The `seed` argument is now strictly validated to
+  ensure it falls within the range [0, 0xFFFFFFFF]. A `ValueError` is raised
+  if the seed is out of range.
+- **Backward-incompatible**: Change the constructors of hasher classes to
+  accept a buffer as the first argument
+  ([#83](https://github.com/hajimes/mmh3/pull/83)).
+- The type of flag argumens has been changed from `bool` to `Any`.
 - Change the format of CHANGELOG.md to conform to the
   [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) standard
-  ([#63](https://github.com/hajimes/mmh3/issues/63)).
-- **Backward-incompatible**: Change the constructors of hasher classes to
-  accept a buffer as the first argument.
+  ([#63](https://github.com/hajimes/mmh3/pull/63)).
+
+#### Deprecated
+
+- Deprecate the `hash_from_buffer()` function.
+  Use `mmh3_32_sintdigest()` or `mmh3_32_uintdigest()` as alternatives.
 
 #### Fixed
 
 - Fix a reference leak in the `hash_from_buffer()` function
-  ([#75](https://github.com/hajimes/mmh3/issues/75)).
-- Fix type hints ([#76](https://github.com/hajimes/mmh3/issues/76),
-  [#77](https://github.com/hajimes/mmh3/issues/77)).
+  ([#75](https://github.com/hajimes/mmh3/pull/75)).
+- Fix type hints ([#76](https://github.com/hajimes/mmh3/pull/76),
+  [#77](https://github.com/hajimes/mmh3/pull/77)).
 
 ### [4.1.0] - 2024-01-09
 
@@ -172,7 +185,7 @@ complete changelog.
   ([#50](https://github.com/hajimes/mmh3/issues/50)).
 - Fix incorrect type hints ([#51](https://github.com/hajimes/mmh3/issues/51)).
 - Fix invalid results on s390x when the arg `x64arch` of `hash64` or
-  `hash_bytes` is set to `False`
+  `hash_bytes()` is set to `False`
   ([#52](https://github.com/hajimes/mmh3/issues/52)).
 
 ## License
@@ -200,29 +213,6 @@ see
 For compatibility with
 [murmur3 (Go)](https://pkg.go.dev/github.com/spaolacci/murmur3), see
 <https://github.com/hajimes/mmh3/issues/46>.
-
-### Unexpected results when given non 32-bit seeds
-
-In version 2.4, the type of a seed was changed from a signed 32-bit integer to
-an unsigned 32-bit integer. However, the resulting values for signed seeds
-remain unchanged from previous versions, as long as they are 32-bit.
-
-```pycon
->>> mmh3.hash("aaaa", -1756908916) # signed representation for 0x9747b28c
-1519878282
->>> mmh3.hash("aaaa", 2538058380) # unsigned representation for 0x9747b28c
-1519878282
-```
-
-Be careful so that these seeds do not exceed 32-bit. Unexpected results may
-happen with invalid values.
-
-```pycon
->>> mmh3.hash("foo", 2 ** 33)
--156908512
->>> mmh3.hash("foo", 2 ** 34)
--156908512
-```
 
 ## Contributing Guidelines
 
