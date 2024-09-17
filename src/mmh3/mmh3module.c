@@ -38,8 +38,9 @@ typedef unsigned __int64 uint64_t;
         return NULL;                                               \
     }
 
-#define MMH3_VALIDATE_SEED_RETURN_INT(seed)                        \
+#define MMH3_VALIDATE_SEED_RETURN_INT(seed, buf)                   \
     if (seed < 0 || seed > 0xFFFFFFFF) {                           \
+        PyBuffer_Release(&buf);                                    \
         PyErr_SetString(PyExc_ValueError, "seed is out of range"); \
         return -1;                                                 \
     }
@@ -1112,7 +1113,7 @@ MMH3Hasher32_init(MMH3Hasher32 *self, PyObject *args, PyObject *kwds)
                                      &seed))
         return -1;
 
-    MMH3_VALIDATE_SEED_RETURN_INT(seed);
+    MMH3_VALIDATE_SEED_RETURN_INT(seed, target_buf);
 
     self->h = (uint32_t)seed;
 
@@ -1437,7 +1438,7 @@ MMH3Hasher128x64_init(MMH3Hasher128x64 *self, PyObject *args, PyObject *kwds)
                                      &seed))
         return -1;
 
-    MMH3_VALIDATE_SEED_RETURN_INT(seed);
+    MMH3_VALIDATE_SEED_RETURN_INT(seed, target_buf);
 
     self->h1 = (uint64_t)seed;
     self->h2 = self->h1;
@@ -1790,7 +1791,7 @@ MMH3Hasher128x86_init(MMH3Hasher128x86 *self, PyObject *args, PyObject *kwds)
                                      &seed))
         return -1;
 
-    MMH3_VALIDATE_SEED_RETURN_INT(seed);
+    MMH3_VALIDATE_SEED_RETURN_INT(seed, target_buf);
     self->h1 = (uint32_t)seed;
     self->h2 = self->h1;
     self->h3 = self->h1;
