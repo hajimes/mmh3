@@ -23,32 +23,70 @@
 
 //-----------------------------------------------------------------------------
 
+#define MMH3_32_C1 0xcc9e2d51
+#define MMH3_32_C2 0x1b873593
+
+static FORCE_INLINE uint32_t
+murmurhash3_x86_32_round(uint32_t input)
+{
+    input *= MMH3_32_C1;
+    input = ROTL32(input, 15);
+    input *= MMH3_32_C2;
+#if defined(__GNUC__) && defined(__SSE4_1__)
+    __asm__("" : "+r"(k));
+#endif
+    return input;
+}
+
 void
 murmurhash3_x86_32(const void *key, Py_ssize_t len, uint32_t seed, void *out)
 {
     const uint8_t *data = (const uint8_t *)key;
     const Py_ssize_t nblocks = len / 4;
+    const Py_ssize_t nblocks2 = len / 16;
 
     uint32_t h1 = seed;
-
-    const uint32_t c1 = 0xcc9e2d51;
-    const uint32_t c2 = 0x1b873593;
 
     //----------
     // body
 
-    const uint32_t *blocks = (const uint32_t *)(data + nblocks * 4);
+    const uint32_t *blocks2 = (const uint32_t *)(data + nblocks2 * 16);
 
-    for (Py_ssize_t i = -nblocks; i; i++) {
-        uint32_t k1 = getblock32(blocks, i);
-
-        k1 *= c1;
-        k1 = ROTL32(k1, 15);
-        k1 *= c2;
+    for (Py_ssize_t i = -nblocks2 * 4; i; i += 4) {
+        uint32_t k1 = murmurhash3_x86_32_round(getblock32(blocks2, i));
+        uint32_t k2 = murmurhash3_x86_32_round(getblock32(blocks2, i + 1));
+        uint32_t k3 = murmurhash3_x86_32_round(getblock32(blocks2, i + 2));
+        uint32_t k4 = murmurhash3_x86_32_round(getblock32(blocks2, i + 3));
 
         h1 ^= k1;
         h1 = ROTL32(h1, 13);
         h1 = h1 * 5 + 0xe6546b64;
+
+        h1 ^= k2;
+        h1 = ROTL32(h1, 13);
+        h1 = h1 * 5 + 0xe6546b64;
+
+        h1 ^= k3;
+        h1 = ROTL32(h1, 13);
+        h1 = h1 * 5 + 0xe6546b64;
+
+        h1 ^= k4;
+        h1 = ROTL32(h1, 13);
+        h1 = h1 * 5 + 0xe6546b64;
+    }
+
+    const uint32_t *blocks = (const uint32_t *)(data + nblocks2 * 16);
+    int i = 0;
+    int count = len & 15;
+    while (count > 3) {
+        uint32_t k = murmurhash3_x86_32_round(getblock32(blocks, i));
+
+        h1 ^= k;
+        h1 = ROTL32(h1, 13);
+        h1 = h1 * 5 + 0xe6546b64;
+
+        count -= 4;
+        i++;
     }
 
     //----------
@@ -65,9 +103,9 @@ murmurhash3_x86_32(const void *key, Py_ssize_t len, uint32_t seed, void *out)
             k1 ^= tail[1] << 8;
         case 1:
             k1 ^= tail[0];
-            k1 *= c1;
+            k1 *= MMH3_32_C1;
             k1 = ROTL32(k1, 15);
-            k1 *= c2;
+            k1 *= MMH3_32_C2;
             h1 ^= k1;
     };
 
