@@ -150,12 +150,16 @@ complete changelog.
 
 #### Changed
 
-- Change the format of CHANGELOG.md to conform to the
-  [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) standard
-  ([#63](https://github.com/hajimes/mmh3/pull/63)).
+- **Backward-incompatible**: The `seed` argument is now strictly validated to
+  ensure it falls within the range [0, 0xFFFFFFFF]. A `ValueError` is raised
+  if the seed is out of range.
 - **Backward-incompatible**: Change the constructors of hasher classes to
   accept a buffer as the first argument
   ([#83](https://github.com/hajimes/mmh3/pull/83)).
+- The type of flag argumens has been changed from `bool` to `Any`.
+- Change the format of CHANGELOG.md to conform to the
+  [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) standard
+  ([#63](https://github.com/hajimes/mmh3/pull/63)).
 
 #### Deprecated
 
@@ -209,29 +213,6 @@ see
 For compatibility with
 [murmur3 (Go)](https://pkg.go.dev/github.com/spaolacci/murmur3), see
 <https://github.com/hajimes/mmh3/issues/46>.
-
-### Unexpected results when given non 32-bit seeds
-
-In version 2.4, the type of a seed was changed from a signed 32-bit integer to
-an unsigned 32-bit integer. However, the resulting values for signed seeds
-remain unchanged from previous versions, as long as they are 32-bit.
-
-```pycon
->>> mmh3.hash("aaaa", -1756908916) # signed representation for 0x9747b28c
-1519878282
->>> mmh3.hash("aaaa", 2538058380) # unsigned representation for 0x9747b28c
-1519878282
-```
-
-Be careful so that these seeds do not exceed 32-bit. Unexpected results may
-happen with invalid values.
-
-```pycon
->>> mmh3.hash("foo", 2 ** 33)
--156908512
->>> mmh3.hash("foo", 2 ** 34)
--156908512
-```
 
 ## Contributing Guidelines
 

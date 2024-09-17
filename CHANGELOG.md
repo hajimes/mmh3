@@ -25,12 +25,16 @@ This project has adhered to
 
 ### Changed
 
-- Change the format of CHANGELOG.md to conform to the
-  [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) standard
-  ([#63](https://github.com/hajimes/mmh3/pull/63)).
+- **Backward-incompatible**: The `seed` argument is now strictly validated to
+  ensure it falls within the range [0, 0xFFFFFFFF]. A `ValueError` is raised
+  if the seed is out of range.
 - **Backward-incompatible**: Change the constructors of hasher classes to
   accept a buffer as the first argument
   ([#83](https://github.com/hajimes/mmh3/pull/83)).
+- The type of flag argumens has been changed from `bool` to `Any`.
+- Change the format of CHANGELOG.md to conform to the
+  [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) standard
+  ([#63](https://github.com/hajimes/mmh3/pull/63)).
 
 ### Deprecated
 
