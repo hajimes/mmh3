@@ -8,6 +8,7 @@ permissions: {}
 
 jobs:
   publish:
+    if: github.ref_type == 'tag'
     permissions:
       contents: read
       packages: read
