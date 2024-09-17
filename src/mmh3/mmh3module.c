@@ -58,7 +58,7 @@ typedef unsigned __int64 uint64_t;
             return NULL;                                                    \
         }                                                                   \
         const unsigned long seed_tmp = PyLong_AsUnsignedLong(args[1]);      \
-        if (seed_tmp == -1 && PyErr_Occurred()) {                           \
+        if (seed_tmp == (unsigned long)-1 && PyErr_Occurred()) {            \
             if (PyErr_ExceptionMatches(PyExc_OverflowError)) {              \
                 PyErr_SetString(PyExc_ValueError, "seed is out of range");  \
                 return NULL;                                                \
