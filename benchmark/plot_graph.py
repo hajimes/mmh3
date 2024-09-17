@@ -46,6 +46,7 @@ def ordered_intersection(list1: list[T], list2: list[T]) -> list[T]:
 
 
 DIGEST_SIZES = {
+    "mmh3_base_hash": mmh3.mmh3_32().digest_size,
     "mmh3_32": mmh3.mmh3_32().digest_size,
     "mmh3_128": mmh3.mmh3_x64_128().digest_size,
     "xxh_32": xxhash.xxh32().digest_size,

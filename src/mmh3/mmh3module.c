@@ -155,7 +155,7 @@ PyDoc_STRVAR(
     ".. versionchanged:: 5.0.0\n"
     "    The ``seed`` argument is now strictly checked for valid range.\n"
     "    The type of the ``signed`` argument has been changed from\n"
-    "    ``bool`` to ``Any``.\n");
+    "    ``bool`` to ``Any``. Performance improvements have been made.\n");
 
 static PyObject *
 mmh3_hash(PyObject *self, PyObject *const *args, Py_ssize_t nargs,
