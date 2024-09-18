@@ -65,7 +65,7 @@ b'\x8c\xee\xc6z\xa9\xfeR\xe8o\x9a\x9b\x17u\xbe\xdc\xee'
 
 Various alternatives are available, offering different return types (e.g.,
 signed integers, tuples of unsigned integers) and optimized for different
-architectures. For a comprehensive list of functions, Refer to the
+architectures. For a comprehensive list of functions, refer to the
 [API Reference](https://mmh3.readthedocs.io/en/latest/api.html).
 
 ### `hashlib`-style hashers
