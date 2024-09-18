@@ -223,17 +223,36 @@ def add_cmdline_args(cmd: list, args) -> None:
     cmd.extend(("--test-buffer-size-max", str(args.test_buffer_size_max)))
 
 
-HASHES = OrderedDict()
-HASHES["mmh3_32"] = mmh3.hash
-HASHES["mmh3_128"] = mmh3.hash_bytes
-HASHES["xxh_32"] = xxhash.xxh32_digest
-HASHES["xxh_64"] = xxhash.xxh64_digest
-HASHES["xxh3_64"] = xxhash.xxh3_64_digest
-HASHES["xxh3_128"] = xxhash.xxh3_128_digest
-HASHES["pymmh3_32"] = pymmh3.hash
-HASHES["pymmh3_128"] = pymmh3.hash128
-HASHES["md5"] = lambda ba: hashlib.md5(ba).digest()
-HASHES["sha1"] = lambda ba: hashlib.sha1(ba).digest()
+# "if hasattr" is used to check for the existence of the function in the
+# module, to compare the performance of the current implementation with the
+# old one (version 4.1.0), which does not implement the new functions.
+# These conditions should be removed in the future.
+HASHES = {
+    "mmh3_base_hash": mmh3.hash,
+    "mmh3_32": (
+        mmh3.mmh3_32_digest if hasattr(mmh3, "mmh3_32_digest") else mmh3.hash_bytes
+    ),
+    "mmh3_128": (
+        mmh3.mmh3_x64_128_digest
+        if hasattr(mmh3, "mmh3_x64_128_digest")
+        else mmh3.hash128
+    ),
+    "xxh_32": xxhash.xxh32_digest,
+    "xxh_64": xxhash.xxh64_digest,
+    "xxh3_64": xxhash.xxh3_64_digest,
+    "xxh3_128": xxhash.xxh3_128_digest,
+    "md5": lambda ba: hashlib.md5(ba).digest(),
+    "sha1": lambda ba: hashlib.sha1(ba).digest(),
+    "pymmh3_32": pymmh3.hash,
+    "pymmh3_128": pymmh3.hash128,
+}
+
+BENCHMARKING_TYPES = {
+    "naive": perf_hash,
+    "random": perf_hash_random,
+    "latency": perf_hash_latency,
+}
+
 
 if __name__ == "__main__":
     runner = pyperf.Runner(add_cmdline_args=add_cmdline_args)
