@@ -48,7 +48,7 @@ jobs:
         if: runner.os == 'Linux'
         uses: docker/setup-qemu-action@v3
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.20.0
+        uses: pypa/cibuildwheel@v2.21.0
         with:
           output-dir: wheelhouse
         env:
@@ -59,7 +59,7 @@ jobs:
           CIBW_TEST_REQUIRES: "pytest"
           CIBW_TEST_COMMAND: "pytest {project}"
           CIBW_TEST_SKIP: "*-win_arm64 cp38-macosx_*:arm64"
-      - uses: actions/upload-artifact@v4.4.0
+      - uses: actions/upload-artifact@v4
         with:
           name: Wheel-${{ matrix.os }}-${{ matrix.build }}${{ matrix.archs }}
           path: ./wheelhouse/*.whl
@@ -76,9 +76,9 @@ jobs:
       - name: Build sdist
         run: |
           python -m pip install --upgrade pip
-          pip install setuptools
-          python setup.py build sdist
-      - uses: actions/upload-artifact@v4.4.0
+          pip install setuptools build
+          python -m build --sdist
+      - uses: actions/upload-artifact@v4
         with:
           path: dist/*.tar.gz
   publish:
@@ -92,7 +92,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Set up built items
-        uses: actions/download-artifact@v4.1.8
+        uses: actions/download-artifact@v4
         with:
           path: dist
           merge-multiple: true

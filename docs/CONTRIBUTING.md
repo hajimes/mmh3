@@ -1,25 +1,26 @@
 # Contributing
 
-Thank you for your interest in contributing to the `mmh3` project!
+Thank you for your interest in contributing to the `mmh3` project. We
+appreciate your support and look forward to your contributions.
 
-Read [README](https://github.com/hajimes/mmh3/blob/master/README.md) to get an
-overview of the `mmh3` project, and follow our
+Please read [README](https://github.com/hajimes/mmh3/blob/master/README.md) to
+get an overview of the `mmh3` project, and follow our
 [Code of Conduct](./CODE_OF_CONDUCT) (ACM Code of Ethics and Professional
 Conduct).
 
-## Issues
+## Submitting issues
 
-You can contribute to our project by simply submitting a bug report or a feature
-suggestion through the [issue tracker](https://github.com/hajimes/mmh3/issues).
+We welcome your contributions, whether it's submitting a bug report or
+suggesting a new feature through the
+[issue tracker](https://github.com/hajimes/mmh3/issues).
 
-Before submitting a new issue, it's a good idea to check
-[Known Issues section on README](https://github.com/hajimes/mmh3#known-issues).
+Before creating a new issue, please check the
+[Known Issues section in README](https://github.com/hajimes/mmh3#known-issues)
+to see if the problem has already been noted.
 
-## Maintaining and developing the project
+## Project structure
 
-### Project structure
-
-As of 4.1.0, the layout of the project is as follows:
+As of version 5.0.0-dev, the project layout is structured as follows:
 
 - `src/mmh3`
   - `mmh3module.c`: the main file that serves as the interface between Python
@@ -36,14 +37,62 @@ As of 4.1.0, the layout of the project is as follows:
   - `refresh.py`: file that generates `src/mmh3/murmurhash.c` and
     `src/mmh3/murmurhash.h` from the original MurmurHash3 C++ code. Edit this
     file to modify the contents of these files.
+- `benchmark`
+  - `benchmark.py`: script to run benchmarks.
+  - `plot_graph.py`: script to plot benchmark results.
+- `docs`: project documentation directory
+- `.github/workflows`: GitHub Actions workflows
 
-### Testing
+## Project setup
+
+Run:
+
+```shell
+git clone https://github.com/hajimes/mmh3.git
+```
+
+This project uses `tox` to automate testing and other tasks. You can install
+`tox` by running:
+
+```shell
+pipx install tox
+```
+
+In addition, `npx` (included with `npm` >= 5.2.0) is required within the `tox`
+environments to run linters.
+
+## Testing and linting
 
 Before submitting your changes, make sure to run the project's tests to ensure
-that everything is working as expected. At least you should run `pytest` and
-`mypy --strict tests` from the project root directory.
+everything is working as expected.
 
-#### (Optional) Testing on s390x
+To run all tests, use the following command:
+
+```shell
+tox
+```
+
+During development, you can run the tests for a specific environment by
+specifying the environment name. For example, to run tests for a specific
+version of Python (e.g., Python 3.12), use:
+
+```shell
+tox -e py312
+```
+
+For type checking, run:
+
+```shell
+tox -e type
+```
+
+To run linters with automated formatting, use:
+
+```shell
+tox -e lint
+```
+
+### (Optional) Testing on s390x
 
 When you have modified the code in a way which may cause endian issues, you may
 want to locally test on s390x, the only big-endian platform officially supported
@@ -53,7 +102,15 @@ by Python.
 by Simon Willison is a good introduction to Docker/QEMU settings for emulating
 s390x.
 
-### Pull request
+If the above does not work, you may also want to try the following:
+
+```shell
+docker run --rm --privileged tonistiigi/binfmt --install all
+docker buildx create --name mybuilder --use
+docker run -it multiarch/ubuntu-core:s390x-focal /bin/bash
+```
+
+## Pull request
 
 Once you've pushed your changes to your fork, you can
 [create a pull request (PR)](https://github.com/hajimes/mmh3/pulls) on the main
@@ -70,26 +127,77 @@ The `util` directory contains C files that were generated from the
 The idea of the subproject directory loosely follows the
 [`hashlib` implementation of CPython](https://github.com/python/cpython/tree/main/Modules/_hacl).
 
-### Updating mmh3 C code
+### Updating mmh3 core C code
 
-Try `git submodule update --init` to fetch Appleby's original SMHasher project
-as a git submodule. Then, run the `refresh.py` script to generate PEP
-7-compliant C code from the original project, instead of editing `murmurhash3.*`
-files manually.
+Run `tox -e build_cfiles`. This will fetch Appleby's original SMHasher project
+as a git submodule and then generate PEP 7-compliant C code from the original
+project.
 
-Add transformation code to the `refresh.py` script to perform
-further edits. Then, run `refresh.py` again to update the `murmurhash3.*` files.
-
-After file generation, use `clang-format` to format the generated code. Try
-`clang-format -i src/mmh3/*.{c,h}` from the project's top-level directory.
+To perform further edits, add transformation code to the `refresh.py` script,
+instead of editing `murmurhash3.*` files manually.
+Then, run `tox -e build_cfiles` again to update the `murmurhash3.*` files.
 
 ### Local files
 
-1. `./README.md`
-1. `./refresh.py`
-1. `./FILE_HEADER`
+1. `./util/README.md`
+1. `./util/refresh.py`
+1. `./util/FILE_HEADER`
 
 ### Generated files
 
-1. `../src/mmh3/murmurhash3.c`
-1. `../src/mmh3/murmurhash3.h`
+1. `./src/mmh3/murmurhash3.c`
+1. `./src/mmh3/murmurhash3.h`
+
+## Benchmarking
+
+To run benchmarks locally, try the following command:
+
+```shell
+tox -e benchmark -- -o OUTPUT_FILE \
+            --test-hash HASH_NAME --test-buffer-size-max HASH_SIZE
+```
+
+where `OUTPUT_FILE` is the output file name (json formatted), `HASH_NAME` is
+the name of the hash, and `HASH_SIZE` is the maximum buffer size to be tested
+in bytes.
+
+For example,
+
+```shell
+mkdir -p _results
+tox -e benchmark -- -o _results/mmh3_128.json \
+            --test-hash mmh3_128 --test-buffer-size-max 262144
+```
+
+As of version 4.2.0, the following hash function identifiers are available for
+benchmarking: `mmh3_32`, `mmh3_128`, `xxh_32`, `xxh_64`, `xxh3_64`, `xxh3_128`,
+`pymmh3_32`, `pymmh3_128`, `md5`, and `sha1`.
+
+The owner of the repository can run the benchmark on GitHub Actions by using
+the workflow defined in `.github/workflows/benchmark.yml`.
+
+After obtaining the benchmark results, you can plot graphs by `plot_graph.py`.
+The following is an example of how to run the script:
+
+```shell
+tox -e plot -- --output-dir docs/_static RESULT_DIR/*.json
+```
+
+where `RESULT_DIR` is the directory containing the benchmark results.
+The names of json files should be in the format of `HASH_IDENTIFER.json`, e.g.,
+`mmh3_128.json`.
+
+## Documentation
+
+Project documentation files are mainly written in the Markdown format and are
+located in the `docs`. The documentation is automatically built and
+[hosted on the Read the Docs](https://mmh3.readthedocs.io/en/latest/).
+
+To build the documentation locally, use the following command:
+
+```shell
+tox -e docs
+```
+
+To check the result of the built documentation, open
+`docs/_build/html/index.html` in your browser.

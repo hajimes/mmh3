@@ -1,10 +1,11 @@
 [build-system]
-requires = ["setuptools >= 61.0.0", "wheel"]
+# setuptools >= 74.1.0 required to build C extensions via pyproject.toml
+requires = ["setuptools >= 74.1.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "mmh3"
-version = "4.2.0-alpha.4"
+version = "5.0.0"
 description = "Python extension for MurmurHash (MurmurHash3), a set of fast and robust hash functions."
 readme = "README.md"
 license = {file = "LICENSE"}
@@ -30,8 +31,24 @@ classifiers = [
 
 [project.optional-dependencies]
 test = [
-  "mypy == 1.11.2",
-  "pytest == 8.3.2"
+  "pytest == 8.3.3",
+  "pytest-sugar == 1.0.0"
+]
+lint = [
+  "black == 24.8.0",
+  "clang-format == 18.1.8",
+  "isort == 5.13.2",
+  "pylint == 3.2.7"
+]
+type = [
+  "mypy == 1.11.2"
+]
+dev = [
+  "matplotlib == 3.7.3",
+  "pandas == 2.0.3",
+  "pymmh3 == 0.0.5",
+  "pyperf == 2.7.0",
+  "xxhash == 3.5.0"
 ]
 docs = [
   "myst-parser == 4.0.0",
@@ -54,17 +71,30 @@ Repository = "https://github.com/hajimes/mmh3"
 Changelog = "https://github.com/hajimes/mmh3/blob/master/CHANGELOG.md"
 "Bug Tracker" = "https://github.com/hajimes/mmh3/issues"
 
+[tool.setuptools]
+ext-modules = [
+  {name = "mmh3", sources=["./src/mmh3/mmh3module.c", "./src/mmh3/murmurhash3.c"]}
+]
+
 [tool.isort]
 profile = "black"
-src_paths = ["src/mmh3/__init__.pyi", "util", "tests"]
+src_paths = ["src/mmh3/__init__.pyi", "util", "tests", "benchmark", "docs"]
 
-[tool.pylint.main]
+[tool.pylint]
+ignore-paths = [
+  "^build",
+  "^venv",
+  "^.venv",
+  "^.tox",
+  "^src/mmh3/__init__.pyi"
+]
 # Use multiple processes to speed up Pylint.
 # The value 0 specifies the number of processors to be auto-detected.
 # This setting can be found in the template file of super-linter 7.0.0.
-jobs=0
-
-[tool.pylint."messages control"]
+jobs = 0
 # import-error: An error tricky to resolve, especially on super-linter.
 # wrong-import-order: Respect isort's import order.
-disable = ["import-error", "wrong-import-order"]
+disable = [
+  "import-error",
+  "wrong-import-order"
+]
