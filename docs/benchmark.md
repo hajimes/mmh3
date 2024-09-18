@@ -5,7 +5,7 @@
 ### Machine
 
 - Ubuntu 22.04 instance on GitHub Actions
-  - The bencharmking suits are implemented as GitHub Actions workflows.
+  - The benchmarking suits are implemented as GitHub Actions workflows.
   - [4 processors, 16 GB RAM, 14 GB storage (SSD)](https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories)
   - According to profiling with `pyperf`, each processor operates at a
     frequency between 2.4 and 3.3 GHz.
@@ -20,7 +20,7 @@
     for more details on the following settings:
     - Stop `irqbalance`.
     - Set `/proc/irq/default_smp_affinity` to `3` (CPU 0 and 1), where
-      the benrchmarking processes are pinned to CPU 2 and 3.
+      the benchmarking processes are pinned to CPU 2 and 3.
     - Set `/proc/sys/kernel/perf_event_max_sample_rate` to `1`.
     - `/proc/sys/kernel/randomize_va_space` = 2 (default)
 
@@ -72,7 +72,7 @@ The rresulting graphs are plotted using the `pandas` and `matplotlib` libraries.
 ### Comparison of Version Improvements
 
 JSON files containing the benchmark results are available at:
-[hajimes/mmh3-benchmarks/esults_basic-hash/2024-09-17_6bb9987](https://github.com/hajimes/mmh3-benchmarks/tree/main/results_basic-hash/2024-09-17_6bb9987)
+[hajimes/mmh3-benchmarks/results_basic-hash/2024-09-17_6bb9987](https://github.com/hajimes/mmh3-benchmarks/tree/main/results_basic-hash/2024-09-17_6bb9987)
 
 ```{figure} _static/latency_hash.png
 :alt: Latency for hash() in version 4.1.0 and 5.0.0.
@@ -127,7 +127,7 @@ generated per second by each function.
 :alt: Throughput for small data
 :align: center
 
-Figure 4: Output bandwidth for small data. Larger is better.
+Figure 4: Throughput for small data. Larger is better.
 ```
 
 ```{figure} _static/throughput.png
@@ -137,7 +137,7 @@ Figure 4: Output bandwidth for small data. Larger is better.
 Figure 5: Throughput for large data. Larger is better. The y-axis is logscale.
 ```
 
-## Conclusing Remarks
+## Concluding Remarks
 
 Version 5.0.0 of the `mmh3` library has improved the performance of the
 `hash()` function and other new functions by adopting
