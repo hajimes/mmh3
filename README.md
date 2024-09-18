@@ -56,7 +56,7 @@ buffer objects that implement the buffer protocol
 The function returns a `bytes` object of 16 bytes (128 bits). It is
 particularly suited for hashing large memory views, such as
 `bytearray`, `memoryview`, and `numpy.ndarray`, and performs faster than
-the 32-bit variants like `hash()` on 64-bit machines.
+the 32-bit variants like `hash()` on 64-bit machines (note that 64-bit version returns different results from 32-bit version, so it cannot be used for the purpose of calculating Shodan favicon hashes).
 
 ```pycon
 >>> mmh3.mmh3_x64_128_digest(numpy.random.rand(100))
@@ -65,7 +65,7 @@ b'\x8c\xee\xc6z\xa9\xfeR\xe8o\x9a\x9b\x17u\xbe\xdc\xee'
 
 Various alternatives are available, offering different return types (e.g.,
 signed integers, tuples of unsigned integers) and optimized for different
-architectures. For a comprehensive list of functions, Refer to the
+architectures. For a comprehensive list of functions, refer to the
 [API Reference](https://mmh3.readthedocs.io/en/latest/api.html).
 
 ### `hashlib`-style hashers
