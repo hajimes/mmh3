@@ -80,58 +80,19 @@ suitable when you hash a large memory-view such as `numpy.ndarray`.
 3812874078
 ```
 
-`hash64`, `hash128`, and `hash_bytes` have the third argument for architecture
-optimization (keyword arg: `x64arch`). Use True for x64 and False for x86
-(default: True):
-
-```pycon
->>> mmh3.hash64("foo", 42, True)
-(-840311307571801102, -6739155424061121879)
-```
-
 ### `hashlib`-style hashers
 
-`mmh3` implements hashers with interfaces similar to those in `hashlib` from
-the standard library: `mmh3_32()` for 32-bit hashing, `mmh3_x64_128()` for
-128-bit hashing optimized for x64 architectures, and `mmh3_x86_128()` for
-128-bit hashing optimized for x86 architectures.
-
-In addition to the standard `digest()` method, each hasher provides
-`sintdigest()`, which returns a signed integer, and `uintdigest()`, which
-returns an unsigned integer. The 128-bit hashers also include `stupledigest()`
-and `utupledigest()`, which return two 64 bit integers.
-
-Please note that as of version 4.1.0, the implementation is still experimental,
-and performance may be unsatisfactory (particularly `mmh3_x86_128()`).
-Additionally, `hexdigest()` is not supported; use `digest().hex()` instead.
-
-```pycon
->>> import mmh3
->>> hasher = mmh3.mmh3_x64_128(seed=42)
->>> hasher.update(b"foo")
->>> hasher.update(b"bar")
->>> hasher.update("foo") # str inputs are not allowed for hashers
-TypeError: Strings must be encoded before hashing
-Traceback (most recent call last):
-  File "<stdin>", line 1, in <module>
->>> hasher.digest()
-b'\x82_n\xdd \xac\xb6j\xef\x99\xb1e\xc4\n\xc9\xfd'
->>> hasher.sintdigest() # 128 bit signed int
--2943813934500665152301506963178627198
->>> hasher.uintdigest() # 128 bit unsigned int
-337338552986437798311073100468589584258
->>> hasher.stupledigest() # two 64 bit signed ints
-(7689522670935629698, -159584473158936081)
->>> hasher.utupledigest() # two 64 bit unsigned ints
-(7689522670935629698, 18287159600550615535)
-```
+`mmh3` implements hasher objects with interfaces similar to those
+in `hashlib` from the standard library, although they are still experimental. See
+[Hasher Classes](https://mmh3.readthedocs.io/en/latest/api.html#hasher-classes))
+for more information.
 
 ## Changelog
 
 See [Changelog](https://mmh3.readthedocs.io/en/latest/changelog.html) for the
 complete changelog.
 
-### [Unreleased]
+### [5.0.0] - 2024-09-18
 
 #### Added
 
@@ -149,8 +110,8 @@ complete changelog.
 - Slightly improve the performance of the `hash_bytes()` function.
 - Add Read the Docs documentation
   ([#54](https://github.com/hajimes/mmh3/issues/54)).
-- (planned: Document benchmark results
-  ([#53](https://github.com/hajimes/mmh3/issues/53))).
+- Document benchmark results
+  ([#53](https://github.com/hajimes/mmh3/issues/53)).
 
 #### Changed
 
@@ -289,5 +250,5 @@ is useful for OSINT and cybersecurity activities.
 - <https://github.com/ifduyue/python-xxhash>: Python bindings for xxHash (Yue
   Du)
 
-[unreleased]: https://github.com/hajimes/mmh3/compare/v4.1.0...HEAD
+[5.0.0]: https://github.com/hajimes/mmh3/compare/v4.1.0...v5.0.0
 [4.1.0]: https://github.com/hajimes/mmh3/compare/v4.0.1...v4.1.0

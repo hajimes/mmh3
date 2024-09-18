@@ -10,7 +10,7 @@ This project has adhered to
 [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html)
 since version 3.0.0.
 
-## [Unreleased]
+## [5.0.0] - 2024-09-18
 
 ### Added
 
@@ -258,7 +258,7 @@ only.
   [Softpedia collected mmh3 1.0 on April 27, 2011](https://web.archive.org/web/20110430172027/https://linux.softpedia.com/get/Programming/Libraries/mmh3-68314.shtml),
   it must have been uploaded to PyPI on or slightly before this date.
 
-[unreleased]: https://github.com/hajimes/mmh3/compare/v4.1.0...HEAD
+[5.0.0]: https://github.com/hajimes/mmh3/compare/v4.1.0...v5.0.0
 [4.1.0]: https://github.com/hajimes/mmh3/compare/v4.0.1...v4.1.0
 [4.0.1]: https://github.com/hajimes/mmh3/compare/v4.0.0...v4.0.1
 [4.0.0]: https://github.com/hajimes/mmh3/compare/v3.1.0...v4.0.0

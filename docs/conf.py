@@ -40,3 +40,5 @@ html_theme_options = {
 # https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html
 
 autodoc_member_order = "groupwise"
+
+myst_heading_anchors = 3

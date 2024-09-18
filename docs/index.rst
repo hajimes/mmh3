@@ -1,6 +1,9 @@
 mmh3 documentation
 ==================
-mmh3 is a Python extension for `MurmurHash (MurmurHash3) <https://en.wikipedia.org/wiki/MurmurHash>`_, a set of fast and robust non-cryptographic hash functions invented by Austin Appleby.
+mmh3 is a Python extension for
+`MurmurHash (MurmurHash3) <https://en.wikipedia.org/wiki/MurmurHash>`_,
+a set of fast and robust non-cryptographic hash functions invented by Austin
+Appleby.
 
 .. toctree::
    :maxdepth: 2
@@ -8,6 +11,7 @@ mmh3 is a Python extension for `MurmurHash (MurmurHash3) <https://en.wikipedia.o
 
    Quickstart<quickstart>
    api
+   benchmark
    Changelog<changelog>
    CONTRIBUTORS
 
