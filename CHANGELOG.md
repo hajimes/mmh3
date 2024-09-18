@@ -10,7 +10,7 @@ This project has adhered to
 [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html)
 since version 3.0.0.
 
-## [Unreleased]
+## [5.0.0] - 2024-09-18
 
 ### Added
 
@@ -19,17 +19,19 @@ since version 3.0.0.
   [METH_FASTCALL](https://docs.python.org/3/c-api/structures.html#c.METH_FASTCALL),
   reducing the overhead of function calls. For data sizes between 1–2 KB
   (e.g., 48x48 favicons), performance is 10%–20% faster. For smaller data
-  (~500 bytes, like 16x16 favicons), performance increases by approximately 30%.
+  (~500 bytes, like 16x16 favicons), performance increases by approximately 30%
+  ([#87](https://github.com/hajimes/mmh3/pull/87)).
 - Add `digest` functions that support the new buffer protocol
   ([PEP 688](https://peps.python.org/pep-0688/)) as input
   ([#75](https://github.com/hajimes/mmh3/pull/75)).
   These functions are implemented with `METH_FASTCALL` too, offering improved
   performance ([#84](https://github.com/hajimes/mmh3/pull/84)).
-- Slightly improve the performance of the `hash_bytes()` function.
+- Slightly improve the performance of the `hash_bytes()` function
+  ([#88](https://github.com/hajimes/mmh3/pull/88))
 - Add Read the Docs documentation
   ([#54](https://github.com/hajimes/mmh3/issues/54)).
-- (planned: Document benchmark results
-  ([#53](https://github.com/hajimes/mmh3/issues/53))).
+- Document benchmark results
+  ([#53](https://github.com/hajimes/mmh3/issues/53)).
 
 ### Changed
 
@@ -258,7 +260,7 @@ only.
   [Softpedia collected mmh3 1.0 on April 27, 2011](https://web.archive.org/web/20110430172027/https://linux.softpedia.com/get/Programming/Libraries/mmh3-68314.shtml),
   it must have been uploaded to PyPI on or slightly before this date.
 
-[unreleased]: https://github.com/hajimes/mmh3/compare/v4.1.0...HEAD
+[5.0.0]: https://github.com/hajimes/mmh3/compare/v4.1.0...v5.0.0
 [4.1.0]: https://github.com/hajimes/mmh3/compare/v4.0.1...v4.1.0
 [4.0.1]: https://github.com/hajimes/mmh3/compare/v4.0.0...v4.0.1
 [4.0.0]: https://github.com/hajimes/mmh3/compare/v3.1.0...v4.0.0

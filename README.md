@@ -40,98 +40,47 @@ pip install mmh3
 
 ```pycon
 >>> import mmh3
->>> mmh3.hash("foo") # returns a 32-bit signed int
+>>> mmh3.hash(b"foo") # returns a 32-bit signed int
 -156908512
->>> mmh3.hash("foo", 42) # uses 42 as the seed
+>>> mmh3.hash("foo") # accepts str (UTF-8 encoded)
+-156908512
+>>> mmh3.hash(b"foo", 42) # uses 42 as the seed
 -1322301282
->>> mmh3.hash("foo", signed=False) # returns a 32-bit unsigned int
+>>> mmh3.hash(b"foo", 0, False) # returns a 32-bit unsigned int
 4138058784
 ```
 
-Other functions:
+`mmh3.mmh3_x64_128_digest()`, introduced in version 5.0.0, efficienlty hashes
+buffer objects that implement the buffer protocol
+([PEP 688](https://peps.python.org/pep-0688/)) without internal memory copying.
+The function returns a `bytes` object of 16 bytes (128 bits). It is
+particularly suited for hashing large memory views, such as
+`bytearray`, `memoryview`, and `numpy.ndarray`, and performs faster than
+the 32-bit variants like `hash()` on 64-bit machines.
 
 ```pycon
->>> mmh3.hash64("foo") # two 64-bit signed ints using the 128-bit algorithm
-(-2129773440516405919, 9128664383759220103)
->>> mmh3.hash64("foo", signed=False) # two 64-bit unsigned ints
-(16316970633193145697, 9128664383759220103)
->>> mmh3.hash128("foo", 42) # 128-bit unsigned int
-215966891540331383248189432718888555506
->>> mmh3.hash128("foo", 42, signed=True) # 128-bit signed int
--124315475380607080215185174712879655950
->>> mmh3.hash_bytes("foo") # 128-bit value as bytes
-'aE\xf5\x01W\x86q\xe2\x87}\xba+\xe4\x87\xaf~'
->>> import numpy as np
->>> a = np.zeros(2 ** 32, dtype=np.int8)
->>> mmh3.hash_bytes(a)
-b'V\x8f}\xad\x8eNM\xa84\x07FU\x9c\xc4\xcc\x8e'
+>>> mmh3.mmh3_x64_128_digest(numpy.random.rand(100))
+b'\x8c\xee\xc6z\xa9\xfeR\xe8o\x9a\x9b\x17u\xbe\xdc\xee'
 ```
 
-Beware that `hash64` returns **two** values, because it uses the 128-bit version
-of MurmurHash3 as its backend.
-
-`hash_from_buffer` hashes byte-likes without memory copying. The method is
-suitable when you hash a large memory-view such as `numpy.ndarray`.
-
-```pycon
->>> mmh3.hash_from_buffer(numpy.random.rand(100))
--2137204694
->>> mmh3.hash_from_buffer(numpy.random.rand(100), signed=False)
-3812874078
-```
-
-`hash64`, `hash128`, and `hash_bytes` have the third argument for architecture
-optimization (keyword arg: `x64arch`). Use True for x64 and False for x86
-(default: True):
-
-```pycon
->>> mmh3.hash64("foo", 42, True)
-(-840311307571801102, -6739155424061121879)
-```
+Various alternatives are available, offering different return types (e.g.,
+signed integers, tuples of unsigned integers) and optimized for different
+architectures. For a comprehensive list of functions, Refer to the
+[API Reference](https://mmh3.readthedocs.io/en/latest/api.html).
 
 ### `hashlib`-style hashers
 
-`mmh3` implements hashers with interfaces similar to those in `hashlib` from
-the standard library: `mmh3_32()` for 32-bit hashing, `mmh3_x64_128()` for
-128-bit hashing optimized for x64 architectures, and `mmh3_x86_128()` for
-128-bit hashing optimized for x86 architectures.
-
-In addition to the standard `digest()` method, each hasher provides
-`sintdigest()`, which returns a signed integer, and `uintdigest()`, which
-returns an unsigned integer. The 128-bit hashers also include `stupledigest()`
-and `utupledigest()`, which return two 64 bit integers.
-
-Please note that as of version 4.1.0, the implementation is still experimental,
-and performance may be unsatisfactory (particularly `mmh3_x86_128()`).
-Additionally, `hexdigest()` is not supported; use `digest().hex()` instead.
-
-```pycon
->>> import mmh3
->>> hasher = mmh3.mmh3_x64_128(seed=42)
->>> hasher.update(b"foo")
->>> hasher.update(b"bar")
->>> hasher.update("foo") # str inputs are not allowed for hashers
-TypeError: Strings must be encoded before hashing
-Traceback (most recent call last):
-  File "<stdin>", line 1, in <module>
->>> hasher.digest()
-b'\x82_n\xdd \xac\xb6j\xef\x99\xb1e\xc4\n\xc9\xfd'
->>> hasher.sintdigest() # 128 bit signed int
--2943813934500665152301506963178627198
->>> hasher.uintdigest() # 128 bit unsigned int
-337338552986437798311073100468589584258
->>> hasher.stupledigest() # two 64 bit signed ints
-(7689522670935629698, -159584473158936081)
->>> hasher.utupledigest() # two 64 bit unsigned ints
-(7689522670935629698, 18287159600550615535)
-```
+`mmh3` implements hasher objects with interfaces similar to those in `hashlib`
+from the standard library, although they are still experimental. See
+[Hasher Classes](https://mmh3.readthedocs.io/en/latest/api.html#hasher-classes)
+in the API Reference for more information.
 
 ## Changelog
 
 See [Changelog](https://mmh3.readthedocs.io/en/latest/changelog.html) for the
 complete changelog.
 
-### [Unreleased]
+### [5.0.0] - 2024-09-18
 
 #### Added
 
@@ -140,17 +89,19 @@ complete changelog.
   [METH_FASTCALL](https://docs.python.org/3/c-api/structures.html#c.METH_FASTCALL),
   reducing the overhead of function calls. For data sizes between 1–2 KB
   (e.g., 48x48 favicons), performance is 10%–20% faster. For smaller data
-  (~500 bytes, like 16x16 favicons), performance increases by approximately 30%.
+  (~500 bytes, like 16x16 favicons), performance increases by approximately 30%
+  ([#87](https://github.com/hajimes/mmh3/pull/87)).
 - Add `digest` functions that support the new buffer protocol
   ([PEP 688](https://peps.python.org/pep-0688/)) as input
   ([#75](https://github.com/hajimes/mmh3/pull/75)).
   These functions are implemented with `METH_FASTCALL` too, offering improved
   performance ([#84](https://github.com/hajimes/mmh3/pull/84)).
-- Slightly improve the performance of the `hash_bytes()` function.
+- Slightly improve the performance of the `hash_bytes()` function
+  ([#88](https://github.com/hajimes/mmh3/pull/88))
 - Add Read the Docs documentation
   ([#54](https://github.com/hajimes/mmh3/issues/54)).
-- (planned: Document benchmark results
-  ([#53](https://github.com/hajimes/mmh3/issues/53))).
+- Document benchmark results
+  ([#53](https://github.com/hajimes/mmh3/issues/53)).
 
 #### Changed
 
@@ -289,5 +240,5 @@ is useful for OSINT and cybersecurity activities.
 - <https://github.com/ifduyue/python-xxhash>: Python bindings for xxHash (Yue
   Du)
 
-[unreleased]: https://github.com/hajimes/mmh3/compare/v4.1.0...HEAD
+[5.0.0]: https://github.com/hajimes/mmh3/compare/v4.1.0...v5.0.0
 [4.1.0]: https://github.com/hajimes/mmh3/compare/v4.0.1...v4.1.0
