@@ -59,8 +59,8 @@ DIGEST_SIZES = {
     "pymmh3_128": mmh3.mmh3_x64_128().digest_size,
 }
 
-BANDWIDTH_FILE_NAME = "bandwidth.png"
-BANDWIDTH_SMALL_FILE_NAME = "bandwidth_small.png"
+THROUGHPUT_FILE_NAME = "throughput.png"
+THROUGHPUT_SMALL_FILE_NAME = "throughput_small.png"
 LATENCY_FILE_NAME = "latency.png"
 LATENCY_SMALL_FILE_NAME = "latency_small.png"
 
@@ -71,7 +71,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     result_latency: dict[str, list[float]] = {}
-    result_bandwidth: dict[str, list[float]] = {}
+    result_throughput: dict[str, list[float]] = {}
     index: list[int] = []
 
     for file_name in args.filenames:
@@ -79,7 +79,7 @@ if __name__ == "__main__":
         base_name = os.path.basename(file_name)
         hash_name = os.path.splitext(base_name)[0]
 
-        result_bandwidth[hash_name] = []
+        result_throughput[hash_name] = []
         result_latency[hash_name] = []
         index = []
 
@@ -89,19 +89,19 @@ if __name__ == "__main__":
             index.append(data_size)
             latency_seconds = bench.median()
 
-            result_bandwidth[hash_name].append(
+            result_throughput[hash_name].append(
                 DIGEST_SIZES[hash_name] / latency_seconds
             )
             result_latency[hash_name].append(latency_seconds)
 
-    result_bandwidth = pad_with_nan(result_bandwidth)
+    result_throughput = pad_with_nan(result_throughput)
     result_latency = pad_with_nan(result_latency)
 
     ordered_hash_names = ordered_intersection(
-        list(DIGEST_SIZES.keys()), list(result_bandwidth.keys())
+        list(DIGEST_SIZES.keys()), list(result_throughput.keys())
     )
-    df_bandwidth = pd.DataFrame(result_bandwidth, index=index)
-    df_bandwidth = df_bandwidth[ordered_hash_names]
+    df_throughput = pd.DataFrame(result_throughput, index=index)
+    df_throughput = df_throughput[ordered_hash_names]
     df_latency = pd.DataFrame(result_latency, index=index)
     df_latency = df_latency[ordered_hash_names]
 
@@ -109,20 +109,18 @@ if __name__ == "__main__":
 
     plt.figure()
 
-    df_bandwidth_all = df_bandwidth / 1024
-    df_bandwidth_all.index = df_bandwidth_all.index / 1024
-    df_bandwidth_all.plot(
-        xlabel="Input size (KiB)", ylabel="Output bandwidth (KiB/s)", logy=True
+    df_throughput_all = df_throughput / 1024
+    df_throughput_all.index = df_throughput_all.index / 1024
+    df_throughput_all.plot(
+        xlabel="Input size (KiB)", ylabel="Throughput (KiB/s)", logy=True
     )
-    plt.savefig(os.path.join(args.output_dir, BANDWIDTH_FILE_NAME))
+    plt.savefig(os.path.join(args.output_dir, THROUGHPUT_FILE_NAME))
 
-    df_bandwidth_small = df_bandwidth / 1024 / 1024
-    df_bandwidth_small = df_bandwidth_small.drop(columns=["md5", "sha1"])
-    df_bandwidth_small = df_bandwidth_small[df_bandwidth_small.index <= 2048]
-    df_bandwidth_small.plot(
-        xlabel="Input size (bytes)", ylabel="Output bandwidth (MiB/s)"
-    )
-    plt.savefig(os.path.join(args.output_dir, BANDWIDTH_SMALL_FILE_NAME))
+    df_throughput_small = df_throughput / 1024 / 1024
+    df_throughput_small = df_throughput_small.drop(columns=["md5", "sha1"])
+    df_throughput_small = df_throughput_small[df_throughput_small.index <= 2048]
+    df_throughput_small.plot(xlabel="Input size (bytes)", ylabel="Throughput (MiB/s)")
+    plt.savefig(os.path.join(args.output_dir, THROUGHPUT_SMALL_FILE_NAME))
 
     df_latency_all = df_latency * 1000
     df_latency_all.index = df_latency_all.index / 1024
@@ -135,8 +133,8 @@ if __name__ == "__main__":
     df_latency_small.plot(xlabel="Input size (bytes)", ylabel="Latency (ns)")
     plt.savefig(os.path.join(args.output_dir, LATENCY_SMALL_FILE_NAME))
 
-    df_bandwidth = pd.DataFrame(
-        result_bandwidth, index=df_latency.index / (1024 * 1024)
+    df_throughput = pd.DataFrame(
+        result_throughput, index=df_latency.index / (1024 * 1024)
     )
 
     plt.close("all")
