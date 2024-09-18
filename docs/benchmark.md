@@ -6,7 +6,7 @@
 
 - Ubuntu 22.04 instance on GitHub Actions
   - The bencharmking suits are implemented as GitHub Actions workflows.
-  - [4 Processors, 16 GB RAM, 14 GB storage (SSD)](https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories)
+  - [4 processors, 16 GB RAM, 14 GB storage (SSD)](https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories)
   - According to profiling with `pyperf`, each processor operates at a
     frequency between 2.4 and 3.3 GHz.
 - Tuning by the folloiwing settings:
