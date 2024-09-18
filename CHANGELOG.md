@@ -19,17 +19,19 @@ since version 3.0.0.
   [METH_FASTCALL](https://docs.python.org/3/c-api/structures.html#c.METH_FASTCALL),
   reducing the overhead of function calls. For data sizes between 1–2 KB
   (e.g., 48x48 favicons), performance is 10%–20% faster. For smaller data
-  (~500 bytes, like 16x16 favicons), performance increases by approximately 30%.
+  (~500 bytes, like 16x16 favicons), performance increases by approximately 30%
+  ([#87](https://github.com/hajimes/mmh3/pull/87)).
 - Add `digest` functions that support the new buffer protocol
   ([PEP 688](https://peps.python.org/pep-0688/)) as input
   ([#75](https://github.com/hajimes/mmh3/pull/75)).
   These functions are implemented with `METH_FASTCALL` too, offering improved
   performance ([#84](https://github.com/hajimes/mmh3/pull/84)).
-- Slightly improve the performance of the `hash_bytes()` function.
+- Slightly improve the performance of the `hash_bytes()` function
+  ([#88](https://github.com/hajimes/mmh3/pull/88))
 - Add Read the Docs documentation
   ([#54](https://github.com/hajimes/mmh3/issues/54)).
-- (planned: Document benchmark results
-  ([#53](https://github.com/hajimes/mmh3/issues/53))).
+- Document benchmark results
+  ([#53](https://github.com/hajimes/mmh3/issues/53)).
 
 ### Changed
 

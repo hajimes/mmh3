@@ -40,52 +40,40 @@ pip install mmh3
 
 ```pycon
 >>> import mmh3
->>> mmh3.hash("foo") # returns a 32-bit signed int
+>>> mmh3.hash(b"foo") # returns a 32-bit signed int
 -156908512
->>> mmh3.hash("foo", 42) # uses 42 as the seed
+>>> mmh3.hash("foo") # accepts str (UTF-8 encoded)
+-156908512
+>>> mmh3.hash(b"foo", 42) # uses 42 as the seed
 -1322301282
->>> mmh3.hash("foo", signed=False) # returns a 32-bit unsigned int
+>>> mmh3.hash(b"foo", 0, False) # returns a 32-bit unsigned int
 4138058784
 ```
 
-Other functions:
+`mmh3.mmh3_x64_128_digest()`, introduced in version 5.0.0, efficienlty hashes
+buffer objects that implement the buffer protocol
+([PEP 688](https://peps.python.org/pep-0688/)) without internal memory copying.
+The function returns a `bytes` object of 16 bytes (128 bits). It is
+particularly suited for hashing large memory views, such as
+`bytearray`, `memoryview`, and `numpy.ndarray`, and performs faster than
+the 32-bit variants like `hash()` on 64-bit machines.
 
 ```pycon
->>> mmh3.hash64("foo") # two 64-bit signed ints using the 128-bit algorithm
-(-2129773440516405919, 9128664383759220103)
->>> mmh3.hash64("foo", signed=False) # two 64-bit unsigned ints
-(16316970633193145697, 9128664383759220103)
->>> mmh3.hash128("foo", 42) # 128-bit unsigned int
-215966891540331383248189432718888555506
->>> mmh3.hash128("foo", 42, signed=True) # 128-bit signed int
--124315475380607080215185174712879655950
->>> mmh3.hash_bytes("foo") # 128-bit value as bytes
-'aE\xf5\x01W\x86q\xe2\x87}\xba+\xe4\x87\xaf~'
->>> import numpy as np
->>> a = np.zeros(2 ** 32, dtype=np.int8)
->>> mmh3.hash_bytes(a)
-b'V\x8f}\xad\x8eNM\xa84\x07FU\x9c\xc4\xcc\x8e'
+>>> mmh3.mmh3_x64_128_digest(numpy.random.rand(100))
+b'\x8c\xee\xc6z\xa9\xfeR\xe8o\x9a\x9b\x17u\xbe\xdc\xee'
 ```
 
-Beware that `hash64` returns **two** values, because it uses the 128-bit version
-of MurmurHash3 as its backend.
-
-`hash_from_buffer` hashes byte-likes without memory copying. The method is
-suitable when you hash a large memory-view such as `numpy.ndarray`.
-
-```pycon
->>> mmh3.hash_from_buffer(numpy.random.rand(100))
--2137204694
->>> mmh3.hash_from_buffer(numpy.random.rand(100), signed=False)
-3812874078
-```
+Various alternatives are available, offering different return types (e.g.,
+signed integers, tuples of unsigned integers) and optimized for different
+architectures. For a comprehensive list of functions, Refer to the
+[API Reference](https://mmh3.readthedocs.io/en/latest/api.html).
 
 ### `hashlib`-style hashers
 
-`mmh3` implements hasher objects with interfaces similar to those
-in `hashlib` from the standard library, although they are still experimental. See
-[Hasher Classes](https://mmh3.readthedocs.io/en/latest/api.html#hasher-classes))
-for more information.
+`mmh3` implements hasher objects with interfaces similar to those in `hashlib`
+from the standard library, although they are still experimental. See
+[Hasher Classes](https://mmh3.readthedocs.io/en/latest/api.html#hasher-classes)
+in the API Reference for more information.
 
 ## Changelog
 
@@ -101,13 +89,15 @@ complete changelog.
   [METH_FASTCALL](https://docs.python.org/3/c-api/structures.html#c.METH_FASTCALL),
   reducing the overhead of function calls. For data sizes between 1–2 KB
   (e.g., 48x48 favicons), performance is 10%–20% faster. For smaller data
-  (~500 bytes, like 16x16 favicons), performance increases by approximately 30%.
+  (~500 bytes, like 16x16 favicons), performance increases by approximately 30%
+  ([#87](https://github.com/hajimes/mmh3/pull/87)).
 - Add `digest` functions that support the new buffer protocol
   ([PEP 688](https://peps.python.org/pep-0688/)) as input
   ([#75](https://github.com/hajimes/mmh3/pull/75)).
   These functions are implemented with `METH_FASTCALL` too, offering improved
   performance ([#84](https://github.com/hajimes/mmh3/pull/84)).
-- Slightly improve the performance of the `hash_bytes()` function.
+- Slightly improve the performance of the `hash_bytes()` function
+  ([#88](https://github.com/hajimes/mmh3/pull/88))
 - Add Read the Docs documentation
   ([#54](https://github.com/hajimes/mmh3/issues/54)).
 - Document benchmark results
