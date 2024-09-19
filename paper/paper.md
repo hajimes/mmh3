@@ -130,13 +130,13 @@ Yan Collet [@collet_xxhash_2012].
 
 # Benchmarks
 
-![Output bandwidth \label{bandwidth}](../docs/_static/bandwidth.png)
+![Throughput \label{throughput}](../docs/_static/throughput.png)
 
-Figure \ref{bandwidth} shows the output bandwidth of...
+Figure \ref{throughput} shows the output bandwidth of...
 
-Figure \autoref{bandwidth} shows the output bandwidth of...
+Figure \autoref{throughput} shows the output bandwidth of...
 
-![Output bandwidth for small inputs](../docs/_static/bandwidth_small.png)
+![Latency for small inputs](../docs/_static/latency_small.png)
 
 # Acknowledgements
 
