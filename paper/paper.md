@@ -140,7 +140,7 @@ conducted microbenchmarking experiments, aiming to balance between accuracy,
 reproducibility, and reliability. Our methodology follows established
 practices from microbenchmarking literature, including works by @Peters2002,
 @Stinner2016, @gorelick_high_2020, @RodriguezGuerra2021, @Bernhardt2023,
-and @@collet_xxhash_comparison_2024.
+and @collet_xxhash_comparison_2024.
 
 \autoref{latency} shows latency, while \autoref{throughput} presents
 throughput, measured as the size of hash output generated per second.
