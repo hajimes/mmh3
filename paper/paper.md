@@ -63,9 +63,11 @@ According to PePy, as of September 1, 2024, the total downloads of
 this library exceeded 130 millions.
 
 Libraries and organizations that directly use `mmh3` include
-Apache Iceberg (an open table format for analytic datasets),
-PyMilvus (a Python SDK for Milvus, an open-source vector database),
 Shodan (the world’s first IoT search engine),
+Azure SDK for Python (the official open-source Azure libraries for Python by
+Microsoft), Apache Iceberg (open table format for analytic datasets),
+Feast (feature store for machine learning),
+PyMilvus (Python SDK for Milvus, an open-source vector database),
 and pocsuite3 (open-source remote vulnerability testing framework).
 
 # Statement of need
