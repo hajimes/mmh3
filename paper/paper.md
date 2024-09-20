@@ -93,7 +93,7 @@ element is a member of a certain set (with false positive matches), and
 _MinHash_ [@Broder1997a], an algorithm that quickly estimates the similarity of
 two sets.
 
-`mmh3` has appears in various scholarly papers on various topics,
+`mmh3` appears in scholarly papers on various topics,
 including Indian language NLP suites [@kakwani_indicnlpsuite_2020],
 a secure system based on probabilistic structures [@adja_blockchain-based_2021],
 as well as secure ciphertext deduplication in cloud storage [@Tang2024].
@@ -102,11 +102,13 @@ It has also appeared in technical books and computer science texts
 
 ## Internet of Things
 
-`mmh3` is applicable to the IoT field. Shodan uses `mmh3` as its fingerprint
-for a favicon (i.e., an icon associated with a web page
-or website)[@shodan_its_2021]. @shodan_we_2020 explained they adopted `mmh3`
-because it was space efficient and has scalable performance.
-ZoomEye, another popular IoT search engine, follows Shodan’s convention.
+`mmh3` is applicable to the IoT field. According to @shodan_its_2021,
+Shodan [@Matherly2017] uses `mmh3` as its fingerprint for a favicon (i.e., an
+icon associated with a web page or website). @Matherly2024 explained
+the adoption of `mmh3` due to its speed and compact hash size,
+noting that cryptographic guarantees provided by `md5` and other hashes were
+not necessary for their use case. ZoomEye, another popular IoT search engine,
+follows Shodan’s convention.
 
 As a result, `mmh3` is considered a useful tool for cybersecurity.
 For example, @kopriva_hunting_2021 reported a method of discovering possible
@@ -135,7 +137,8 @@ To compare the efficiency of Python-C hash function libraries, we carefully
 conducted microbenchmarking experiments, aiming to balance between accuracy,
 reproducibility, and reliability. Our methodology follows established
 practices from microbenchmarking literature, including works by @Peters2002,
-@Stinner2016, @gorelick_high_2020, @RodriguezGuerra2021, and @Bernhardt2023.
+@Stinner2016, @gorelick_high_2020, @RodriguezGuerra2021, @Bernhardt2023,
+and @@collet_xxhash_comparison_2024.
 
 \autoref{latency} shows latency, while \autoref{throughput} presents
 throughput, measured as the size of hash output generated per second.
