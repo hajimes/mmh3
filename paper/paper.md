@@ -158,9 +158,9 @@ For further details, refer to the documentation of the project:
 In addition, the benchmarking results are publicly available as JSON files in
 the repository: <https://github.com/hajimes/mmh3-benchmarks>.
 
-![Latency for small inputs \label{latency}. Lower is better.](../docs/_static/latency_small.png)
+![\label{latency}Latency for small inputs. Lower is better.](../docs/_static/latency_small.png)
 
-![Throughput for small inputs \label{throughput}. Higher is better.](../docs/_static/throughput_small.png)
+![\label{throughput}Throughput for small inputs. Higher is better.](../docs/_static/throughput_small.png)
 
 # Acknowledgements
 
