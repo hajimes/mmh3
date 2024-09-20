@@ -13,9 +13,9 @@ authors:
     orcid: 0000-0001-8542-1768
     affiliation: 1
 affiliations:
-  - name: National Institute of Informatics, Tokyo, Japan
+  - name: National Institute of Informatics, Japan
     index: 1
-date: 3 Sep 2024
+date: 20 Sep 2024
 bibliography: paper.bib
 ---
 
