@@ -24,7 +24,7 @@ bibliography: paper.bib
 # Summary
 
 This decade has witnessed the rapid evolution of artificial intelligence (AI),
-notably in the field of natural language processsing (NLP), as represented by
+notably in the field of natural language processing (NLP), as represented by
 the popularity of OpenAI’s ChatGPT. Another important advancement in computer
 science and engineering is found in the field of the Internet of Things (IoT),
 a crucial component of ubiquitous computing, as represented by the development
@@ -55,11 +55,11 @@ and win_arm64), and macOS (Intel Mac and Apple Silicon). From version 4.0.0,
 `mmh3` has been published under the MIT License, an OSI-approved permissive
 open-source license.
 
-As of Sep 1, 2024, `mmh3` was being downloaded more than 4 million times
+As of September 1, 2024, `mmh3` was being downloaded more than 4 million times
 per month, and it ranks as the 973th most downloaded PyPI package
 (of around 566,000 projects), showing that only 0.17% of the remaining packages
 in the PyPI ecosystem are more popular [@hugo_van_kemenade_2024_13624792].
-According to PePy, as of Sep 1, 2024, the total downloads of
+According to PePy, as of September 1, 2024, the total downloads of
 this library exceeded 130 millions.
 
 Libraries and organizations that directly use `mmh3` include
@@ -93,9 +93,10 @@ element is a member of a certain set (with false positive matches), and
 _MinHash_ [@Broder1997a], an algorithm that quickly estimates the similarity of
 two sets.
 
-`mmh3` has appears in various scholarly papers, including a study of Indian
-language NLP suites [@kakwani_indicnlpsuite_2020] and another about a secure
-system based on probabilistic structures [@adja_blockchain-based_2021].
+`mmh3` has appears in various scholarly papers on various topics,
+including Indian language NLP suites [@kakwani_indicnlpsuite_2020],
+a secure system based on probabilistic structures [@adja_blockchain-based_2021],
+as well as secure ciphertext deduplication in cloud storage [@Tang2024].
 It has also appeared in technical books and computer science texts
 [@gorelick_high_2020; @kumar_probabilistic_2021; @medjedovic_algorithms_2022].
 
@@ -124,26 +125,45 @@ a Java-based web framework.
 
 `PYMMH` [@kihlander_pymmh3_2013] is a pure Python implementation of the
 MurmurHash3 algorithm. Among various other Python bindings for
-non-cryptographic hashes, `xxhash` by Yue Du [@du_xxhash_2014] is another
+non-cryptographic hashes, `python-xxhash` by Yue Du [@du_xxhash_2014] is another
 popular hash library, featuring xxHash developed by
 Yan Collet [@collet_xxhash_2012].
 
 # Benchmarks
 
-![Throughput \label{throughput}](../docs/_static/throughput.png)
+Benchmarking was carefully conducted to aim the balance between accuracy,
+reproducibility, and reliability, following articles on microbenchmarking
+including @Peters2002, @Stinner2016, @gorelick_high_2020,
+@RodriguezGuerra2021, and @Bernhardt2023.
 
-Figure \ref{throughput} shows the output bandwidth of...
+\autoref{latency} shows the latency and \autoref{throughput} shows
+throughput, measured as the size of hash output generated per second.
+While the `xxh3` family in `python-xxhash` excels for large inputs,
+the implementation of `mmh3` is more performant for smaller inputs.
+as the latest version 5.0.0 leverages `METH_FASTCALL`, a new calling method
+introduced in Python 3.7, to reduce the overhead of function calls.
 
-Figure \autoref{throughput} shows the output bandwidth of...
+For details, refer to the documentation of our project:
+<https://mmh3.readthedocs.io/en/latest/benchmark.html>.
+The benchmarking results are also publicly available as JSON files in the
+repository: <https://github.com/hajimes/mmh3-benchmarks>.
 
-![Latency for small inputs](../docs/_static/latency_small.png)
+![Latency for small inputs \label{latency}. Lower is better.](../docs/_static/latency_small.png)
+
+![Throughput for small inputs \label{throughput}. Higher is better.](../docs/_static/throughput_small.png)
 
 # Acknowledgements
 
-The author expresses his deep gratitude to Professor Akiko Aizawa for her
-helpful comments on this paper. He also appreciates the contributions of
-individuals to the development and maintenance of `mmh3`. Special thanks go to
-Dr. Micha Gorelick, who made the first pull request to the project and later
-introduced the library in her technical book [@gorelick_high_2020].
+The author extends sincere gratitude to Akiko Aizawa for her helpful comments
+on this paper. Appreciation is also given to all those involved in the
+development and maintenance of `mmh3`. Special thanks go to Micha Gorelick,
+who made the first pull request to the project and later introduced the
+library in her technical book [@gorelick_high_2020].
 
 # References
+
+The author extends sincere gratitude to xxxxx for her
+helpful comments on this paper. Appreciation is also given to
+all who involved in the development and maintenance of DDD. Special thanks go to
+yyyy, who made the first pull request to the project and later
+introduced the library in her technical book, zzzzz.
