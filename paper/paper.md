@@ -13,7 +13,7 @@ authors:
     orcid: 0000-0001-8542-1768
     affiliation: 1
 affiliations:
-  - name: National Institute of Informatics
+  - name: National Institute of Informatics, Tokyo, Japan
     index: 1
 date: 3 Sep 2024
 bibliography: paper.bib
@@ -127,26 +127,31 @@ a Java-based web framework.
 MurmurHash3 algorithm. Among various other Python bindings for
 non-cryptographic hashes, `python-xxhash` by Yue Du [@du_xxhash_2014] is another
 popular hash library, featuring xxHash developed by
-Yan Collet [@collet_xxhash_2012].
+Yan Collet [@collet_xxhash_2014].
 
 # Benchmarks
 
-Benchmarking was carefully conducted to aim the balance between accuracy,
-reproducibility, and reliability, following articles on microbenchmarking
-including @Peters2002, @Stinner2016, @gorelick_high_2020,
-@RodriguezGuerra2021, and @Bernhardt2023.
+To compare the efficiency of Python-C hash function libraries, we carefully
+conducted microbenchmarking experiments, aiming to balance between accuracy,
+reproducibility, and reliability. Our methodology follows established
+practices from microbenchmarking literature, including works by @Peters2002,
+@Stinner2016, @gorelick_high_2020, @RodriguezGuerra2021, and @Bernhardt2023.
 
-\autoref{latency} shows the latency and \autoref{throughput} shows
+\autoref{latency} shows latency, while \autoref{throughput} presents
 throughput, measured as the size of hash output generated per second.
-While the `xxh3` family in `python-xxhash` excels for large inputs,
-the implementation of `mmh3` is more performant for smaller inputs.
-as the latest version 5.0.0 leverages `METH_FASTCALL`, a new calling method
-introduced in Python 3.7, to reduce the overhead of function calls.
+Although the `xxh3` family in `python-xxhash` demonstrates superior performance
+for large inputs, the `mmh3` implementation excels with smaller inputs.
+This advantage is largely due to the latest version 5.0.0,
+which leverages `METH_FASTCALL`, a new calling method
+introduced in Python 3.7 that reduces the overhead of function calls.
+As a result, our library is particularly well-suited for use cases involving
+repeated hashing of small keys—one of the common scenarios for
+non-cryptographic hash functions.
 
-For details, refer to the documentation of our project:
+For further details, refer to the documentation of the project:
 <https://mmh3.readthedocs.io/en/latest/benchmark.html>.
-The benchmarking results are also publicly available as JSON files in the
-repository: <https://github.com/hajimes/mmh3-benchmarks>.
+In addition, the benchmarking results are publicly available as JSON files in
+the repository: <https://github.com/hajimes/mmh3-benchmarks>.
 
 ![Latency for small inputs \label{latency}. Lower is better.](../docs/_static/latency_small.png)
 
@@ -161,9 +166,3 @@ who made the first pull request to the project and later introduced the
 library in her technical book [@gorelick_high_2020].
 
 # References
-
-The author extends sincere gratitude to xxxxx for her
-helpful comments on this paper. Appreciation is also given to
-all who involved in the development and maintenance of DDD. Special thanks go to
-yyyy, who made the first pull request to the project and later
-introduced the library in her technical book, zzzzz.
