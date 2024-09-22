@@ -75,11 +75,8 @@ ext-modules = [
   {name = "mmh3", sources = ["./src/mmh3/mmh3module.c", "./src/mmh3/murmurhash3.c"]}
 ]
 
-[tool.setuptools.packages.find]
-where = ["src/mmh3"]
-
 [tool.setuptools.package-data]
-mmh3 = ["murmurhash3.h", "hashlib.h"]
+mmh3 = ["*.h"]
 
 [tool.pylint]
 ignore-paths = [
