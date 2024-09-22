@@ -49,6 +49,8 @@ bug reports, feature suggestions, and other contributions:
   [#25](https://github.com/hajimes/mmh3/issues/25).
 - [Jacques Dark](https://github.com/jqdark),
   [#12](https://github.com/hajimes/mmh3/issues/12).
+- [Matej Spiller Muys](https://github.com/matejsp),
+  [#90](https://github.com/hajimes/mmh3/issues/90).
 - [Niklas Semmler](https://github.com/niklassemmler),
   [#7](https://github.com/hajimes/mmh3/issues/7).
 - [Ryan](https://github.com/ryanfwy),

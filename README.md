@@ -6,8 +6,8 @@
 [![PyPi Version](https://img.shields.io/pypi/v/mmh3.svg?style=flat-square&logo=pypi&logoColor=white)](https://pypi.org/project/mmh3/)
 [![Python Versions](https://img.shields.io/pypi/pyversions/mmh3.svg)](https://pypi.org/project/mmh3/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/license/mit/)
-[![Total Downloads](https://static.pepy.tech/badge/mmh3)](https://pepy.tech/project/mmh3?versions=*&versions=4.*&versions=3.*&versions=2.*)
-[![Recent Downloads](https://static.pepy.tech/badge/mmh3/month)](https://pepy.tech/project/mmh3?versions=*&versions=4.*&versions=3.*&versions=2.*)
+[![Total Downloads](https://static.pepy.tech/badge/mmh3)](https://www.pepy.tech/projects/mmh3?versions=*&versions=5.*&versions=4.*&versions=3.*&versions=2.*)
+[![Recent Downloads](https://static.pepy.tech/badge/mmh3/month)](https://www.pepy.tech/projects/mmh3?versions=*&versions=5.*&versions=4.*&versions=3.*&versions=2.*)
 
 `mmh3` is a Python extension for
 [MurmurHash (MurmurHash3)](https://en.wikipedia.org/wiki/MurmurHash), a set of
@@ -79,6 +79,13 @@ in the API Reference for more information.
 
 See [Changelog](https://mmh3.readthedocs.io/en/latest/changelog.html) for the
 complete changelog.
+
+### [5.0.1] - 2024-09-22
+
+#### Fixed
+
+- Fix the issue that the package cannot be built from the source distribution
+  ([#90](https://github.com/hajimes/mmh3/issues/90)).
 
 ### [5.0.0] - 2024-09-18
 
@@ -159,8 +166,9 @@ By default, `mmh3` returns **signed** values for the 32-bit and 64-bit versions
 and **unsigned** values for `hash128` due to historical reasons. To get the
 desired result, use the `signed` keyword argument.
 
-Starting from version 4.0.0, `mmh3` returns the same values on big-endian
-platforms as it does on little-endian ones, whereas the original C++ library is
+Starting from version 4.0.0, **`mmh3` is endian-neutral**, meaning that its
+hash functions return the same values on big-endian platforms as they do on
+little-endian ones. In contrast, the original C++ library by Appleby is
 endian-sensitive. If you need results that comply with the original library on
 big-endian systems, please use version 3.\*.
 
@@ -240,5 +248,6 @@ is useful for OSINT and cybersecurity activities.
 - <https://github.com/ifduyue/python-xxhash>: Python bindings for xxHash (Yue
   Du)
 
+[5.0.1]: https://github.com/hajimes/mmh3/compare/v5.0.0...v5.0.1
 [5.0.0]: https://github.com/hajimes/mmh3/compare/v4.1.0...v5.0.0
 [4.1.0]: https://github.com/hajimes/mmh3/compare/v4.0.1...v4.1.0

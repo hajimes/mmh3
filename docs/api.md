@@ -25,6 +25,13 @@ functions particularly useful:
   a `bytes` object, similar to the `hashlib` module in the Python Standard
   Library. It performs faster than the 32-bit variant on 64-bit machines.
 
+Note that **`mmh3` is endian-neutral**, while the original C++ library is
+endian-sensitive (see also
+[Known Issues](https://github.com/hajimes/mmh3#known-issues)).
+This feature of `mmh3` is essential when portability across different
+architectures is required, such as when calculating hash footprints for web
+services.
+
 ## Basic Hash Functions
 
 The following functions are used to hash immutable types, specifically
