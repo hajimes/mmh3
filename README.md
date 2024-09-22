@@ -166,8 +166,9 @@ By default, `mmh3` returns **signed** values for the 32-bit and 64-bit versions
 and **unsigned** values for `hash128` due to historical reasons. To get the
 desired result, use the `signed` keyword argument.
 
-Starting from version 4.0.0, `mmh3` returns the same values on big-endian
-platforms as it does on little-endian ones, whereas the original C++ library is
+Starting from version 4.0.0, **`mmh3` is endian-neutral**, meaning that its
+hash functions return the same values on big-endian platforms as they do on
+little-endian ones. In contrast, the original C++ library by Appleby is
 endian-sensitive. If you need results that comply with the original library on
 big-endian systems, please use version 3.\*.
 
