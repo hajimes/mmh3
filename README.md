@@ -80,6 +80,13 @@ in the API Reference for more information.
 See [Changelog](https://mmh3.readthedocs.io/en/latest/changelog.html) for the
 complete changelog.
 
+### [5.0.1] - 2024-09-22
+
+#### Fixed
+
+- Fix the issue that the package cannot be built from the source distribution
+  ([#90](https://github.com/hajimes/mmh3/issues/90)).
+
 ### [5.0.0] - 2024-09-18
 
 #### Added
@@ -240,5 +247,6 @@ is useful for OSINT and cybersecurity activities.
 - <https://github.com/ifduyue/python-xxhash>: Python bindings for xxHash (Yue
   Du)
 
+[5.0.1]: https://github.com/hajimes/mmh3/compare/v5.0.0...v5.0.1
 [5.0.0]: https://github.com/hajimes/mmh3/compare/v4.1.0...v5.0.0
 [4.1.0]: https://github.com/hajimes/mmh3/compare/v4.0.1...v4.1.0
