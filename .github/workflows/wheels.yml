@@ -81,6 +81,8 @@ jobs:
       - name: Test building from the source distribution
         shell: bash
         run: |
+          pip install ".[test,type]"
+          pip uninstall -y mmh3
           python -m pip install dist/*.tar.gz
           python -m pytest
           mypy --strict tests
