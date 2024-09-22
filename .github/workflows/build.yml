@@ -48,4 +48,3 @@ jobs:
           python -m build --sdist
           python -m pip install dist/*.tar.gz
           python -m pytest
-  

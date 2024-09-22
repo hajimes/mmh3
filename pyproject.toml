@@ -65,20 +65,14 @@ Repository = "https://github.com/hajimes/mmh3"
 Changelog = "https://github.com/hajimes/mmh3/blob/master/CHANGELOG.md"
 "Bug Tracker" = "https://github.com/hajimes/mmh3/issues"
 
-[tool.setuptools]
-ext-modules = [
-  {name = "mmh3", sources=["./src/mmh3/mmh3module.c", "./src/mmh3/murmurhash3.c"]}
-]
-
-[tool.setuptools.package-data]
-mmh3 = [
-  "./src/mmh3/murmurhash3.h",
-  "./src/mmh3/hashlib.h"
-]
-
 [tool.isort]
 profile = "black"
 src_paths = ["src/mmh3/__init__.pyi", "util", "tests", "benchmark", "docs"]
+
+[tool.setuptools]
+ext-modules = [
+  {name = "mmh3", sources = ["./src/mmh3/mmh3module.c", "./src/mmh3/murmurhash3.c"], include-dirs = ["./src/mmh3"]}
+]
 
 [tool.pylint]
 ignore-paths = [
