@@ -70,8 +70,9 @@ profile = "black"
 src_paths = ["src/mmh3/__init__.pyi", "util", "tests", "benchmark", "docs"]
 
 [tool.setuptools]
+include-package-data = true
 ext-modules = [
-  {name = "mmh3", sources = ["./src/mmh3/mmh3module.c", "./src/mmh3/murmurhash3.c"], include-dirs = ["./src/mmh3"]}
+  {name = "mmh3", sources = ["./src/mmh3/mmh3module.c", "./src/mmh3/murmurhash3.c"]}
 ]
 
 [tool.pylint]
