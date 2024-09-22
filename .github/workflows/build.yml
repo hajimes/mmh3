@@ -44,19 +44,11 @@ jobs:
         run: python -m pytest
       - name: Test type hints with mypy
         run: mypy --strict tests
-      - name: Test building from the source distribution (Linux/macOS)
-        if: runner.os != "Windows"
+      - name: Test building from the source distribution
+        shell: bash
         run: |
           pip uninstall -y mmh3
           python -m build --sdist
           python -m pip install dist/*.tar.gz
-          python -m pytest
-          mypy --strict tests
-      - name: Test building from the source distribution (Windows)
-        if: runner.os == "Windows"
-        run: |
-          pip uninstall -y mmh3
-          python -m build --sdist
-          for %i in (dist\*.tar.gz) do python -m pip install %i
           python -m pytest
           mypy --strict tests
