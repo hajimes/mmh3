@@ -38,7 +38,7 @@ lint = [
   "black == 24.8.0",
   "clang-format == 18.1.8",
   "isort == 5.13.2",
-  "pylint == 3.2.7"
+  "pylint == 3.3.0"
 ]
 type = [
   "mypy == 1.11.2"
