@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mmh3"
-version = "5.0.0"
+version = "5.0.2-dev.1"
 description = "Python extension for MurmurHash (MurmurHash3), a set of fast and robust hash functions."
 readme = "README.md"
 license = {file = "LICENSE"}
@@ -36,9 +36,9 @@ test = [
 ]
 lint = [
   "black == 24.8.0",
-  "clang-format == 18.1.8",
+  "clang-format == 19.1.0",
   "isort == 5.13.2",
-  "pylint == 3.2.7"
+  "pylint == 3.3.1"
 ]
 type = [
   "mypy == 1.11.2"
@@ -62,7 +62,7 @@ benchmark = [
 ]
 plot = [
   "matplotlib == 3.9.2",
-  "pandas == 2.2.2"
+  "pandas == 2.2.3"
 ]
 
 [project.urls]
@@ -71,14 +71,18 @@ Repository = "https://github.com/hajimes/mmh3"
 Changelog = "https://github.com/hajimes/mmh3/blob/master/CHANGELOG.md"
 "Bug Tracker" = "https://github.com/hajimes/mmh3/issues"
 
-[tool.setuptools]
-ext-modules = [
-  {name = "mmh3", sources=["./src/mmh3/mmh3module.c", "./src/mmh3/murmurhash3.c"]}
-]
-
 [tool.isort]
 profile = "black"
 src_paths = ["src/mmh3/__init__.pyi", "util", "tests", "benchmark", "docs"]
+
+[tool.setuptools]
+include-package-data = true
+ext-modules = [
+  {name = "mmh3", sources = ["./src/mmh3/mmh3module.c", "./src/mmh3/murmurhash3.c"]}
+]
+
+[tool.setuptools.package-data]
+mmh3 = ["*.h"]
 
 [tool.pylint]
 ignore-paths = [

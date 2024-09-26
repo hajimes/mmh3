@@ -36,10 +36,19 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
+          pip install setuptools build
           pip install .
           pip install ".[test,type]"
       - name: Test with pytest
         run: python -m pytest
       - name: Test type hints with mypy
         run: mypy --strict tests
+      - name: Test building from the source distribution
+        shell: bash
+        run: |
+          pip uninstall -y mmh3
+          python -m build --sdist
+          python -m pip install dist/*.tar.gz
+          python -m pytest
+          mypy --strict tests

@@ -48,7 +48,7 @@ jobs:
         if: runner.os == 'Linux'
         uses: docker/setup-qemu-action@v3
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.21.0
+        uses: pypa/cibuildwheel@v2.21.1
         with:
           output-dir: wheelhouse
         env:
@@ -78,6 +78,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install setuptools build
           python -m build --sdist
+      - name: Test building from the source distribution
+        shell: bash
+        run: |
+          pip install ".[test,type]"
+          pip uninstall -y mmh3
+          python -m pip install dist/*.tar.gz
+          python -m pytest
+          mypy --strict tests
       - uses: actions/upload-artifact@v4
         with:
           path: dist/*.tar.gz
