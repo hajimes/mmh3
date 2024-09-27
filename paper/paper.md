@@ -163,16 +163,16 @@ the repository: <https://github.com/hajimes/mmh3-benchmarks>.
 : \label{bandwidth}Comparison of benchmarking results by our project and
 by the developers of original xxHash.
 
-| Hash Name | Our Benchmark Results    | xxHash Reference |
-| --------- | ------------------------ | ---------------- |
-| xxh3_128  | 24.1 GB/s (22.4 GiB/s)   | 29.6 GB/s        |
-| xxh3_64   | 24.0 GB/s (22.4 GiB/s)   | 31.5 GB/s        |
-| xxh_64    | 9.53 GB/s (8.88 GiB/s)   | 19.4 GB/s        |
-| mmh3_128  | 7.41 GB/s (6.90 GiB/s)   | N/A              |
-| xxh_32    | 6.61 GB/s (6.16 GiB/s)   | 9.7 GB/s         |
-| mmh3_32   | 3.07 GB/s (2.86 GiB/s)   | 3.9 GB/s         |
-| sha1      | 1.75 GB/s (1.63 GiB/s)   | 0.8 GB/s         |
-| md5       | 0.699 GB/s (0.651 GiB/s) | 0.6 GB/s         |
+| Hash Name   |   Width |   Bandwidth (GiB/s) |   Width-Weighted Score |   Collet2020 (GiB/s) |
+|:------------|--------:|--------------------:|-----------------------:|---------------------:|
+| xxh3_128    |     128 |           22.4179   |              2869.5    |                 29.6 |
+| xxh3_64     |      64 |           22.4066   |              1434.02   |                 31.5 |
+| xxh_64      |      64 |            8.9003   |               569.619  |                  9.1 |
+| mmh3_128    |     128 |            6.91316  |               884.884  |                nan   |
+| xxh_32      |      32 |            6.15314  |               196.9    |                  9.7 |
+| mmh3_32     |      32 |            2.8625   |                91.6    |                  3.9 |
+| sha1        |     160 |            1.63483  |               261.572  |                  0.8 |
+| md5         |     128 |            0.651398 |                83.3789 |                  0.6 |
 
 (CPU: 2.4-3.3 GHz) (CPU: 3.6-4.9 GHz)
 
