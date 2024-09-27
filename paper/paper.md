@@ -160,23 +160,24 @@ For further details, refer to the documentation of the project:
 In addition, the benchmarking results are publicly available as JSON files in
 the repository: <https://github.com/hajimes/mmh3-benchmarks>.
 
-: \label{bandwidth}Comparison of benchmarking results by our project and
-by the developers of original xxHash.
+: \label{bandwidth}Benchmarking results for Python extensions.
+Collet2020 refers to the results for original C implementations benchmarked
+by the creator of xxHash.
 
-| Hash Name   |   Width |   Bandwidth (GiB/s) |   Width-Weighted Score |   Collet2020 (GiB/s) |
-|:------------|--------:|--------------------:|-----------------------:|---------------------:|
-| xxh3_128    |     128 |           22.4179   |              2869.5    |                 29.6 |
-| xxh3_64     |      64 |           22.4066   |              1434.02   |                 31.5 |
-| xxh_64      |      64 |            8.9003   |               569.619  |                  9.1 |
-| mmh3_128    |     128 |            6.91316  |               884.884  |                nan   |
-| xxh_32      |      32 |            6.15314  |               196.9    |                  9.7 |
-| mmh3_32     |      32 |            2.8625   |                91.6    |                  3.9 |
-| sha1        |     160 |            1.63483  |               261.572  |                  0.8 |
-| md5         |     128 |            0.651398 |                83.3789 |                  0.6 |
+| Hash Name   |   Width | Bandwidth   |   Width-Weighted Score | Collet2020   |
+|:------------|--------:|:------------|-----------------------:|:-------------|
+| xxh3_128    |     128 | 22.42 GiB/s |              2869.5    | 29.60 GiB/s  |
+| xxh3_64     |      64 | 22.41 GiB/s |              1434.02   | 31.50 GiB/s  |
+| xxh_64      |      64 | 8.90 GiB/s  |               569.619  | 9.10 GiB/s   |
+| mmh3_128    |     128 | 6.91 GiB/s  |               884.884  | nan GiB/s    |
+| xxh_32      |      32 | 6.15 GiB/s  |               196.9    | 9.70 GiB/s   |
+| mmh3_32     |      32 | 2.86 GiB/s  |                91.6    | 3.90 GiB/s   |
+| sha1        |     160 | 1.63 GiB/s  |               261.572  | 0.80 GiB/s   |
+| md5         |     128 | 0.65 GiB/s  |                83.3789 | 0.60 GiB/s   |
 
 (CPU: 2.4-3.3 GHz) (CPU: 3.6-4.9 GHz)
 
-![\label{latency}Latency for small inputs. Lower is better.](../docs/_static/latency_small.png)
+![\label{latency}Latency for small-to-middle inputs. Lower is better.](../docs/_static/latency_small.png)
 
 ![\label{throughput}Throughput for small inputs. Higher is better.](../docs/_static/throughput_small.png)
 
