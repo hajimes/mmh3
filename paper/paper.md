@@ -15,7 +15,7 @@ authors:
 affiliations:
   - name: National Institute of Informatics, Japan
     index: 1
-date: 20 Sep 2024
+date: 28 Sep 2024
 bibliography: paper.bib
 ---
 
@@ -161,19 +161,22 @@ In addition, the benchmarking results are publicly available as JSON files in
 the repository: <https://github.com/hajimes/mmh3-benchmarks>.
 
 : \label{bandwidth}Benchmarking results for Python extensions.
-Collet2020 refers to the results for original C implementations benchmarked
+Bandwidth is measured as the .
+Small data velocity refers to the inverse of the mean of latency
+(in microseconds) for inputs between \[1, 256\] bytes.
+Collet (2020) refers to the results for original C implementations benchmarked
 by the creator of xxHash.
 
-| Hash Name   |   Width | Bandwidth   |   Width-Weighted Score | Collet2020   |
-|:------------|--------:|:------------|-----------------------:|:-------------|
-| xxh3_128    |     128 | 22.42 GiB/s |              2869.5    | 29.60 GiB/s  |
-| xxh3_64     |      64 | 22.41 GiB/s |              1434.02   | 31.50 GiB/s  |
-| xxh_64      |      64 | 8.90 GiB/s  |               569.619  | 9.10 GiB/s   |
-| mmh3_128    |     128 | 6.91 GiB/s  |               884.884  | nan GiB/s    |
-| xxh_32      |      32 | 6.15 GiB/s  |               196.9    | 9.70 GiB/s   |
-| mmh3_32     |      32 | 2.86 GiB/s  |                91.6    | 3.90 GiB/s   |
-| sha1        |     160 | 1.63 GiB/s  |               261.572  | 0.80 GiB/s   |
-| md5         |     128 | 0.65 GiB/s  |                83.3789 | 0.60 GiB/s   |
+| Hash         | Width | Bandwidth       | Small Data Velocity |  ✕ Width | cf. Collet (2020) |
+| :----------- | ----: | :-------------- | ------------------: | -------: | :---------------- |
+| xxh3_128     |   128 | **22.42 GiB/s** |                8.96 |     1147 | 29.6 GiB/s        |
+| xxh3_64      |    64 | 22.41 GiB/s     |                 9.5 |      608 | 31.5 GiB/s        |
+| xxh_64       |    64 | 8.90 GiB/s      |                 9.3 |      595 | 9.1 GiB/s         |
+| **mmh3_128** |   128 | 6.91 GiB/s      |           **19.04** | **2437** | N/A               |
+| xxh_32       |    32 | 6.15 GiB/s      |                8.91 |      285 | 9.7 GiB/s         |
+| mmh3_32      |    32 | 2.86 GiB/s      |               18.41 |      589 | 3.9 GiB/s         |
+| sha1         |   160 | 1.63 GiB/s      |                 2.4 |      383 | 0.8 GiB/s         |
+| md5          |   128 | 0.65 GiB/s      |                1.95 |      249 | 0.6 GiB/s         |
 
 (CPU: 2.4-3.3 GHz) (CPU: 3.6-4.9 GHz)
 
