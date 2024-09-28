@@ -19,34 +19,31 @@ date: 28 Sep 2024
 bibliography: paper.bib
 ---
 
-<!-- markdownlint-disable MD025 -->
+<!-- markdownlint-disable single-h1 -->
 
 # Summary
 
-This decade has witnessed the rapid evolution of artificial intelligence (AI),
-notably in the field of natural language processing (NLP), as represented by
-the popularity of OpenAI’s ChatGPT. Another important advancement in computer
-science and engineering is found in the field of the Internet of Things (IoT),
-a crucial component of ubiquitous computing, as represented by the development
-of Shodan, the world's first IoT search engine.
+In recent years, artificial intelligence (AI) has rapidly evolved, particularly
+in natural language processing (NLP) with services like OpenAI's ChatGPT.
+Likewise, the Internet of Things (IoT) continues to grow as a key area of
+ubiquitous computing, exemplified by Shodan, the first IoT search engine.
 
 Underlying these advancements are high-performance algorithms and data
-structures that use non-cryptographic hash functions. This type of hash
-functions is generally characterized by four properties; they are fast, their
-resulting bits are statistically well-distributed, they have an avalanche
-effect, meaning a one-bit difference in a key changes at least half of the
-resulting bits, and they are collision resistant. Because cryptographic
-strength is not required in these use cases, they can leverage the efficiency
-of non-cryptographic hash functions.
+structures relying on non-cryptographic hash functions, which are
+characteristically fast, produce statistically well-distributed bits, exhibit
+an avalanche effect (where a one-bit change in the input alters at least half
+of the output), and are collision resistant. Because cryptographic strength is
+unnecessary in these cases, they benefit from the efficiency of
+non-cryptographic hashes.
 
 MurmurHash3 and its test suite, SMHasher, was developed
 by @appleby_murmurhash3_2011 and is one of the earliest and most continuously
 popular hash functions specifically designed to implement the characteristics
 mentioned above.
 
-`mmh3` was launched in 2011 as a Python wrapper for MurmurHash3 and has been
-maintained ever since. Its API is very simple to use for Python programmers,
-as it offers both simple one-shot hash functions and hasher classes that allow
+`mmh3` was launched in 2011 as a Python extension for MurmurHash3 and has been
+maintained ever since. Its API is simple to use for Python programmers,
+as it offers both one-shot hash functions and hasher classes that allow
 incremental updating, whose methods are compliant to `hashlib`, a part of the
 Python Standard Library. The library provides Python wheels (i.e., pre-built
 binary packages) for immediate use on various platforms, including Linux
@@ -62,10 +59,9 @@ in the PyPI ecosystem are more popular [@hugo_van_kemenade_2024_13624792].
 According to PePy, as of September 1, 2024, the total downloads of
 this library exceeded 130 millions.
 
-Libraries and organizations that directly use `mmh3` include
-Shodan (the world’s first IoT search engine),
-Azure SDK for Python (the official open-source Azure libraries for Python by
-Microsoft), Apache Iceberg (open table format for analytic datasets),
+Libraries and organizations that use `mmh3` include
+Shodan, Microsoft Azure SDK for Python,
+Apache Iceberg (open table format for analytic datasets),
 Feast (feature store for machine learning),
 PyMilvus (Python SDK for Milvus, an open-source vector database),
 and pocsuite3 (open-source remote vulnerability testing framework).
@@ -112,77 +108,65 @@ noting that cryptographic guarantees provided by `md5` and other hashes were
 not necessary for their use case. ZoomEye, another popular IoT search engine,
 follows Shodan’s convention.
 
-As a result, `mmh3` is considered a useful tool for cybersecurity.
-For example, @kopriva_hunting_2021 reported a method of discovering possible
-phishing websites by searching websites with Shodan,
-whose favicon’s `mmh3` hash value was the same as that of
-a genuine and trustable one.
-
-Another use case of `mmh3` in this area includes open-source intelligence
-(OSINT) activities, such as measuring the global popularity of web frameworks
+For cybersecurity, @kopriva_hunting_2021 reported a method of discovering
+possible phishing websites by searching websites with Shodan, whose favicon’s
+`mmh3` hash value was the same as that of a genuine one. Another use case of
+`mmh3` in this area includes open-source intelligence (OSINT) activities,
+such as measuring the popularity of web frameworks
 and servers, as some users do not change their default favicon settings
-specified by applications. @faraday_security_understanding_2022 described
-a method of using `mmh3` and Shodan to approximate the popularity of `Spring`,
-a Java-based web framework.
+specified by applications [@faraday_security_understanding_2022].
 
 # Related software
 
 `PYMMH` [@kihlander_pymmh3_2013] is a pure Python implementation of the
-MurmurHash3 algorithm. Among various other Python bindings for
+MurmurHash3 algorithms. Among various other Python bindings for
 non-cryptographic hashes, `python-xxhash` by Yue Du [@du_xxhash_2014] is another
 popular hash library, featuring xxHash developed by
 Yan Collet [@collet_xxhash_2014].
 
 # Benchmarks
 
-To compare the efficiency of Python-C hash function libraries, we carefully
-conducted microbenchmarking experiments, aiming to balance between accuracy,
-reproducibility, and reliability. Our methodology follows established
-practices from microbenchmarking literature, including works by @Peters2002,
-@Stinner2016, @gorelick_high_2020, @RodriguezGuerra2021, @Bernhardt2023,
-and @collet_xxhash_comparison_2024.
+We conducted microbenchmarking experiments to compare the efficiency of
+Python-C hash libraries, balancing accuracy, reproducibility, and
+reliability. Our methodology follows practices from microbenchmarking
+literature, including works by @Peters2002, @Stinner2016,
+@collet_xxhash_comparison_2020, @gorelick_high_2020, @RodriguezGuerra2021,
+and @Bernhardt2023.
 
-\autoref{bandwidth} summarizes the results of our benchmarking experiments.
+\autoref{bandwidth} and \autoref{latency} summarize the benchmarking results.
+While the `xxh3` family in `python-xxhash 3.5.0` shows superior
+performance for large inputs, the `mmh3 5.0.0` implementation excels with
+smaller inputs (common scenarios for non-cryptographic hashes), due to its use
+of `METH_FASTCALL`, an overhead-reducing interface introduced in Python 3.7.
 
-\autoref{latency} shows latency, while \autoref{throughput} presents
-throughput, measured as the size of hash output generated per second.
-Although the `xxh3` family in `python-xxhash` demonstrates superior performance
-for large inputs, the `mmh3` implementation excels with smaller inputs.
-This advantage is largely due to the latest version 5.0.0,
-which leverages `METH_FASTCALL`, a new calling method
-introduced in Python 3.7 that reduces the overhead of function calls.
-As a result, our library is particularly well-suited for use cases involving
-repeated hashing of small keys—one of the common scenarios for
-non-cryptographic hash functions.
-
-For further details, refer to the documentation of the project:
+For details, see the documentation of the project:
 <https://mmh3.readthedocs.io/en/latest/benchmark.html>.
-In addition, the benchmarking results are publicly available as JSON files in
+Additionally, the benchmarking results are publicly available as JSON files in
 the repository: <https://github.com/hajimes/mmh3-benchmarks>.
 
-: \label{bandwidth}Benchmarking results for Python extensions.
-Bandwidth is measured as the .
-Small data velocity refers to the inverse of the mean of latency
-(in microseconds) for inputs between \[1, 256\] bytes.
-Collet (2020) refers to the results for original C implementations benchmarked
-by the creator of xxHash.
+: \label{bandwidth}Benchmarking results for Python extensions. Small data
+velocity is defined as the inverse of the mean latency (in microseconds) for
+inputs in the range of \[1, 256\] bytes. Collet (2020) refers to the results
+of original C implementations experimented by the author of xxHash, using a CPU
+clocked at 3.6-4.9 GHz (ours: 2.4-3.3 GHz).
 
-| Hash         | Width | Bandwidth       | Small Data Velocity |  ✕ Width | cf. Collet (2020) |
+<!-- markdownlint-capture -->
+<!-- markdownlint-disable line-length -->
+
+| Hash         | Width | Bandwidth       | Small Data Velocity |  x Width | cf. Collet (2020) |
 | :----------- | ----: | :-------------- | ------------------: | -------: | :---------------- |
 | xxh3_128     |   128 | **22.42 GiB/s** |                8.96 |     1147 | 29.6 GiB/s        |
 | xxh3_64      |    64 | 22.41 GiB/s     |                 9.5 |      608 | 31.5 GiB/s        |
 | xxh_64       |    64 | 8.90 GiB/s      |                 9.3 |      595 | 9.1 GiB/s         |
 | **mmh3_128** |   128 | 6.91 GiB/s      |           **19.04** | **2437** | N/A               |
 | xxh_32       |    32 | 6.15 GiB/s      |                8.91 |      285 | 9.7 GiB/s         |
-| mmh3_32      |    32 | 2.86 GiB/s      |               18.41 |      589 | 3.9 GiB/s         |
+| **mmh3_32**  |    32 | 2.86 GiB/s      |               18.41 |      589 | 3.9 GiB/s         |
 | sha1         |   160 | 1.63 GiB/s      |                 2.4 |      383 | 0.8 GiB/s         |
 | md5          |   128 | 0.65 GiB/s      |                1.95 |      249 | 0.6 GiB/s         |
 
-(CPU: 2.4-3.3 GHz) (CPU: 3.6-4.9 GHz)
+<!-- markdownlint-restore -->
 
-![\label{latency}Latency for small-to-middle inputs. Lower is better.](../docs/_static/latency_small.png)
-
-![\label{throughput}Throughput for small inputs. Higher is better.](../docs/_static/throughput_small.png)
+![\label{latency}Latency for small to medium-sized inputs. Lower is better.](../docs/_static/latency_small.png)
 
 # Acknowledgements
 
