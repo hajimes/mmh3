@@ -149,9 +149,9 @@ the repository: <https://github.com/hajimes/mmh3-benchmarks>.
 
 : \label{bandwidth}Benchmarking results for Python extensions. Small data
 velocity is defined as the inverse of the mean latency (in microseconds) for
-inputs in the range of \[1, 256\] bytes. Collet (2020) refers to the results
+inputs in the range of 1–256 bytes. Collet (2020) refers to the results
 of original C implementations experimented by the author of xxHash, using a CPU
-clocked at 3.6-4.9 GHz (ours: 2.4-3.3 GHz).
+clocked at 3.6–4.9 GHz (ours: 2.4–3.3 GHz).
 
 | Hash         | Width | Bandwidth       | Small Data Velocity |  x Width | cf. Collet (2020) |
 | :----------- | ----: | :-------------- | ------------------: | -------: | :---------------- |
