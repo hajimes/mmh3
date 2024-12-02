@@ -31,14 +31,14 @@ classifiers = [
 
 [project.optional-dependencies]
 test = [
-  "pytest == 8.3.3",
+  "pytest == 8.3.4",
   "pytest-sugar == 1.0.0"
 ]
 lint = [
   "black == 24.10.0",
-  "clang-format == 19.1.2",
+  "clang-format == 19.1.4",
   "isort == 5.13.2",
-  "pylint == 3.3.1"
+  "pylint == 3.3.2"
 ]
 type = [
   "mypy == 1.13.0"
@@ -51,11 +51,11 @@ docs = [
 ]
 benchmark = [
   "pymmh3 == 0.0.5",
-  "pyperf == 2.8.0",
+  "pyperf == 2.8.1",
   "xxhash == 3.5.0"
 ]
 plot = [
-  "matplotlib == 3.9.2",
+  "matplotlib == 3.9.3",
   "pandas == 2.2.3"
 ]
 
