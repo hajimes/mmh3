@@ -15,7 +15,7 @@ authors:
 affiliations:
   - name: National Institute of Informatics, Japan
     index: 1
-date: 28 Sep 2024
+date: 15 Dec 2024
 bibliography: paper.bib
 ---
 
@@ -153,16 +153,16 @@ inputs in the range of 1–256 bytes. Collet (2020) refers to the results
 of original C implementations experimented by the author of xxHash, using a CPU
 clocked at 3.6–4.9 GHz (ours: 2.4–3.3 GHz).
 
-| Hash         | Width | Bandwidth       | Small Data Velocity |  x Width | cf. Collet (2020) |
-| :----------- | ----: | :-------------- | ------------------: | -------: | :---------------- |
-| xxh3_128     |   128 | **22.42 GiB/s** |                8.96 |     1147 | 29.6 GiB/s        |
-| xxh3_64      |    64 | 22.41 GiB/s     |                 9.5 |      608 | 31.5 GiB/s        |
-| xxh_64       |    64 | 8.90 GiB/s      |                 9.3 |      595 | 9.1 GiB/s         |
-| **mmh3_128** |   128 | 6.91 GiB/s      |           **19.04** | **2437** | N/A               |
-| xxh_32       |    32 | 6.15 GiB/s      |                8.91 |      285 | 9.7 GiB/s         |
-| **mmh3_32**  |    32 | 2.86 GiB/s      |               18.41 |      589 | 3.9 GiB/s         |
-| sha1         |   160 | 1.63 GiB/s      |                 2.4 |      383 | 0.8 GiB/s         |
-| md5          |   128 | 0.65 GiB/s      |                1.95 |      249 | 0.6 GiB/s         |
+| Hash         | Width (bits) | Bandwidth (GiB/s)| Small Data Velocity | cf. Collet (2020)GiB/s) |
+| :----------- | ----: | :-------------- | ------------------: | :---------------- |
+| xxh3_128     |   128 | **22.42**  |                8.96 | 29.6         |
+| xxh3_64      |    64 | 22.41      |                 9.5 | 31.5         |
+| xxh_64       |    64 | 8.90       |                 9.3 | 9.1          |
+| **mmh3_128** |   128 | 6.91       |           **19.04** | N/A          |
+| xxh_32       |    32 | 6.15       |                8.91 | 9.7          |
+| **mmh3_32**  |    32 | 2.86       |               18.41 | 3.9          |
+| sha1         |   160 | 1.63       |                 2.4 | 0.8          |
+| md5          |   128 | 0.65       |                1.95 | 0.6          |
 
 <!-- markdownlint-restore -->
 
