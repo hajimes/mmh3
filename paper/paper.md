@@ -76,9 +76,9 @@ under main systems, in which non-cryptographic hash functions play key roles
 in a number of algorithms and data structures.
 
 A notable technique is _feature hashing_ [@Weinberger2009; @Shi2009]. In its
-simplest usage, when given a string-indexed data vector, it simply converts the
+simplest usage, when given a string-indexed data vector, it converts the
 vector into an integer-indexed data vector in which each index is the hash
-result of the original string index; collision values are simply summed.
+result of the original string index; collision values are summed.
 Despite its simple and intuitive usage, a machine-learning process with feature
 hashing is statistically guaranteed to be nearly as accurate as its original
 process. Feature hashing has been shown to be useful for various situations,
