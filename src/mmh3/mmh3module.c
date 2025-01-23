@@ -387,7 +387,7 @@ mmh3_hash64(PyObject *self, PyObject *const *args, Py_ssize_t nargs,
 
     if (nargs > 4) {
         PyErr_Format(PyExc_TypeError,
-                     "function takes at most 3 arguments (%d given)",
+                     "function takes at most 4 arguments (%d given)",
                      (int)nargs);
         return NULL;
     }
@@ -498,7 +498,7 @@ mmh3_hash128(PyObject *self, PyObject *const *args, Py_ssize_t nargs,
 
     if (nargs > 4) {
         PyErr_Format(PyExc_TypeError,
-                     "function takes at most 3 arguments (%d given)",
+                     "function takes at most 4 arguments (%d given)",
                      (int)nargs);
         return NULL;
     }
