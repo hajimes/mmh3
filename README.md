@@ -1,6 +1,6 @@
 # mmh3
 
-[![Documentation Status](https://readthedocs.org/projects/mmh3/badge/?version=latest)](https://mmh3.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/mmh3/badge/?version=stable)](https://mmh3.readthedocs.io/en/latest/?badge=stable)
 [![GitHub Super-Linter](https://github.com/hajimes/mmh3/actions/workflows/superlinter.yml/badge.svg?branch=master)](https://github.com/hajimes/mmh3/actions?query=workflow%3ASuper-Linter+branch%3Amaster)
 [![Build](https://github.com/hajimes/mmh3/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/hajimes/mmh3/actions/workflows/build.yml?branch=master)
 [![PyPi Version](https://img.shields.io/pypi/v/mmh3.svg?style=flat-square&logo=pypi&logoColor=white)](https://pypi.org/project/mmh3/)
@@ -84,8 +84,8 @@ complete changelog.
 
 #### Added
 
-- Improve the performance of the `hash64()` and `hash128()` functions by using
-  METH_FASTCALL, reducing the overhead of function calls.
+- Improve the performance of `hash64()`, `hash128()`, and `hash_bytes()`
+  by using METH_FASTCALL, reducing the overhead of function calls.
 
 ### [5.0.1] - 2024-09-22
 
