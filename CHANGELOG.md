@@ -14,7 +14,7 @@ since version 3.0.0.
 
 ### Added
 
-- Improve the performance of `hash64()`, `hash128()`, and `hash_bytes()`
+- Improve the performance of `hash128()`, `hash64()`, and `hash_bytes()`
   by using METH_FASTCALL, reducing the overhead of function calls.
 
 ## [5.0.1] - 2024-09-22
