@@ -1,6 +1,3 @@
-# to use list, tuple, dict ... in Python 3.7 and 3.8
-from __future__ import annotations
-
 import sys
 from typing import Any, Union, final
 
