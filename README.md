@@ -240,5 +240,6 @@ is useful for OSINT and cybersecurity activities.
 - <https://github.com/ifduyue/python-xxhash>: Python bindings for xxHash (Yue
   Du)
 
+[Unreleased]: https://github.com/hajimes/mmh3/compare/v5.0.1...HEAD
 [5.0.1]: https://github.com/hajimes/mmh3/compare/v5.0.0...v5.0.1
 [5.0.0]: https://github.com/hajimes/mmh3/compare/v4.1.0...v5.0.0
