@@ -40,7 +40,7 @@ UTF-8 encoding before hashing.
 
 Although `hash128()`, `hash64()`, and `mmh3.hash_bytes()` are provided for
 compatibility with previous versions and are not marked for deprecation,
-the [buffer-accepting hashe functions](#buffer-accepting-hash-functions)
+the [buffer-accepting hash functions](#buffer-accepting-hash-functions)
 introduced in version 5.0.0 are recommended for new code.
 
 ```{eval-rst}

@@ -358,13 +358,17 @@ PyDoc_STRVAR(
     "    tuple[int, int]: The hash value as a tuple of two 64-bit "
     "integers.\n"
     "\n"
+    ".. versionchanged:: 5.1.0\n"
+    "    Performance improvements.\n"
+    "\n"
     ".. versionchanged:: 5.0.0\n"
     "    The ``seed`` argument is now strictly checked for valid range.\n"
     "    The type of the ``x64arch`` and ``signed`` arguments has been\n"
     "    changed from ``bool`` to ``Any``.\n");
 
 static PyObject *
-mmh3_hash64(PyObject *self, PyObject *args, PyObject *keywds)
+mmh3_hash64(PyObject *self, PyObject *const *args, Py_ssize_t nargs,
+            PyObject *kwnames)
 {
     const char *target_str;
     Py_ssize_t target_str_len;
@@ -373,17 +377,66 @@ mmh3_hash64(PyObject *self, PyObject *args, PyObject *keywds)
     int x64arch = 1;
     int is_signed = 1;
 
-    static char *kwlist[] = {"key", "seed", "x64arch", "signed", NULL};
-
     static char *valflag[] = {"KK", "LL"};
 
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|Lpp", kwlist,
-                                     &target_str, &target_str_len, &seed,
-                                     &x64arch, &is_signed)) {
+    if ((nargs < 1) && kwnames == NULL) {
+        PyErr_SetString(PyExc_TypeError,
+                        "function missing required argument 'key' (pos 1)");
         return NULL;
     }
 
-    MMH3_VALIDATE_SEED_RETURN_NULL(seed);
+    if (nargs > 4) {
+        PyErr_Format(PyExc_TypeError,
+                     "function takes at most 4 arguments (%d given)",
+                     (int)nargs);
+        return NULL;
+    }
+
+    if (nargs >= 1) {
+        MMH3_HASH_VALIDATE_AND_SET_BYTES(args[0], target_str, target_str_len);
+    }
+
+    if (nargs >= 2) {
+        MMH3_HASH_VALIDATE_AND_SET_SEED(args[1], seed);
+    }
+
+    if (nargs >= 3) {
+        x64arch = PyObject_IsTrue(args[2]);
+    }
+
+    if (nargs >= 4) {
+        is_signed = PyObject_IsTrue(args[2]);
+    }
+
+    if (kwnames) {
+        for (Py_ssize_t i = 0; i < PyTuple_Size(kwnames); i++) {
+            const char *kwname = PyUnicode_AsUTF8(PyTuple_GetItem(kwnames, i));
+            if (strcmp(kwname, "key") == 0) {
+                MMH3_HASH_VALIDATE_ARG_DUPLICATION(nargs, "key", 1);
+                MMH3_HASH_VALIDATE_AND_SET_BYTES(args[nargs + i], target_str,
+                                                 target_str_len);
+            }
+            else if (strcmp(kwname, "seed") == 0) {
+                MMH3_HASH_VALIDATE_ARG_DUPLICATION(nargs, "seed", 2);
+                MMH3_HASH_VALIDATE_AND_SET_SEED(args[nargs + i], seed);
+            }
+            else if (strcmp(kwname, "x64arch") == 0) {
+                MMH3_HASH_VALIDATE_ARG_DUPLICATION(nargs, "x64arch", 3);
+                x64arch = PyObject_IsTrue(args[nargs + i]);
+            }
+            else if (strcmp(kwname, "signed") == 0) {
+                MMH3_HASH_VALIDATE_ARG_DUPLICATION(nargs, "signed", 4);
+                is_signed = PyObject_IsTrue(args[nargs + i]);
+            }
+            else {
+                PyErr_Format(
+                    PyExc_TypeError,
+                    "'%s' is an invalid keyword argument for this function",
+                    kwname);
+                return NULL;
+            }
+        }
+    }
 
     if (x64arch == 1) {
         murmurhash3_x64_128(target_str, target_str_len, (uint32_t)seed,
@@ -418,13 +471,17 @@ PyDoc_STRVAR(
     "Returns:\n"
     "    int: The hash value as a 128-bit integer.\n"
     "\n"
+    ".. versionchanged:: 5.1.0\n"
+    "    Performance improvements.\n"
+    "\n"
     ".. versionchanged:: 5.0.0\n"
     "    The ``seed`` argument is now strictly checked for valid range.\n"
     "    The type of the ``x64arch`` and ``signed`` arguments has been\n"
     "    changed from ``bool`` to ``Any``.\n");
 
 static PyObject *
-mmh3_hash128(PyObject *self, PyObject *args, PyObject *keywds)
+mmh3_hash128(PyObject *self, PyObject *const *args, Py_ssize_t nargs,
+             PyObject *kwnames)
 {
     const char *target_str;
     Py_ssize_t target_str_len;
@@ -433,15 +490,64 @@ mmh3_hash128(PyObject *self, PyObject *args, PyObject *keywds)
     int x64arch = 1;
     int is_signed = 0;
 
-    static char *kwlist[] = {"key", "seed", "x64arch", "signed", NULL};
-
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|Lpp", kwlist,
-                                     &target_str, &target_str_len, &seed,
-                                     &x64arch, &is_signed)) {
+    if ((nargs < 1) && kwnames == NULL) {
+        PyErr_SetString(PyExc_TypeError,
+                        "function missing required argument 'key' (pos 1)");
         return NULL;
     }
 
-    MMH3_VALIDATE_SEED_RETURN_NULL(seed);
+    if (nargs > 4) {
+        PyErr_Format(PyExc_TypeError,
+                     "function takes at most 4 arguments (%d given)",
+                     (int)nargs);
+        return NULL;
+    }
+
+    if (nargs >= 1) {
+        MMH3_HASH_VALIDATE_AND_SET_BYTES(args[0], target_str, target_str_len);
+    }
+
+    if (nargs >= 2) {
+        MMH3_HASH_VALIDATE_AND_SET_SEED(args[1], seed);
+    }
+
+    if (nargs >= 3) {
+        x64arch = PyObject_IsTrue(args[2]);
+    }
+
+    if (nargs >= 4) {
+        is_signed = PyObject_IsTrue(args[2]);
+    }
+
+    if (kwnames) {
+        for (Py_ssize_t i = 0; i < PyTuple_Size(kwnames); i++) {
+            const char *kwname = PyUnicode_AsUTF8(PyTuple_GetItem(kwnames, i));
+            if (strcmp(kwname, "key") == 0) {
+                MMH3_HASH_VALIDATE_ARG_DUPLICATION(nargs, "key", 1);
+                MMH3_HASH_VALIDATE_AND_SET_BYTES(args[nargs + i], target_str,
+                                                 target_str_len);
+            }
+            else if (strcmp(kwname, "seed") == 0) {
+                MMH3_HASH_VALIDATE_ARG_DUPLICATION(nargs, "seed", 2);
+                MMH3_HASH_VALIDATE_AND_SET_SEED(args[nargs + i], seed);
+            }
+            else if (strcmp(kwname, "x64arch") == 0) {
+                MMH3_HASH_VALIDATE_ARG_DUPLICATION(nargs, "x64arch", 3);
+                x64arch = PyObject_IsTrue(args[nargs + i]);
+            }
+            else if (strcmp(kwname, "signed") == 0) {
+                MMH3_HASH_VALIDATE_ARG_DUPLICATION(nargs, "signed", 4);
+                is_signed = PyObject_IsTrue(args[nargs + i]);
+            }
+            else {
+                PyErr_Format(
+                    PyExc_TypeError,
+                    "'%s' is an invalid keyword argument for this function",
+                    kwname);
+                return NULL;
+            }
+        }
+    }
 
     if (x64arch == 1) {
         murmurhash3_x64_128(target_str, target_str_len, seed, result);
@@ -484,13 +590,17 @@ PyDoc_STRVAR(
     "    bytes: The hash value as the ``bytes`` type with a length of 16\n"
     "    bytes (128 bits).\n")
     "\n"
+    ".. versionchanged:: 5.1.0\n"
+    "    Performance improvements.\n"
+    "\n"
     ".. versionchanged:: 5.0.0\n"
     "    The ``seed`` argument is now strictly checked for valid range.\n"
     "    The type of the ``x64arch`` argument has been changed from\n"
     "    ``bool`` to ``Any``.\n";
 
 static PyObject *
-mmh3_hash_bytes(PyObject *self, PyObject *args, PyObject *keywds)
+mmh3_hash_bytes(PyObject *self, PyObject *const *args, Py_ssize_t nargs,
+                PyObject *kwnames)
 {
     const char *target_str;
     Py_ssize_t target_str_len;
@@ -498,15 +608,56 @@ mmh3_hash_bytes(PyObject *self, PyObject *args, PyObject *keywds)
     uint64_t result[2];
     int x64arch = 1;
 
-    static char *kwlist[] = {"key", "seed", "x64arch", NULL};
-
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "s#|Lp", kwlist,
-                                     &target_str, &target_str_len, &seed,
-                                     &x64arch)) {
+    if ((nargs < 1) && kwnames == NULL) {
+        PyErr_SetString(PyExc_TypeError,
+                        "function missing required argument 'key' (pos 1)");
         return NULL;
     }
 
-    MMH3_VALIDATE_SEED_RETURN_NULL(seed);
+    if (nargs > 3) {
+        PyErr_Format(PyExc_TypeError,
+                     "function takes at most 3 arguments (%d given)",
+                     (int)nargs);
+        return NULL;
+    }
+
+    if (nargs >= 1) {
+        MMH3_HASH_VALIDATE_AND_SET_BYTES(args[0], target_str, target_str_len);
+    }
+
+    if (nargs >= 2) {
+        MMH3_HASH_VALIDATE_AND_SET_SEED(args[1], seed);
+    }
+
+    if (nargs >= 3) {
+        x64arch = PyObject_IsTrue(args[2]);
+    }
+
+    if (kwnames) {
+        for (Py_ssize_t i = 0; i < PyTuple_Size(kwnames); i++) {
+            const char *kwname = PyUnicode_AsUTF8(PyTuple_GetItem(kwnames, i));
+            if (strcmp(kwname, "key") == 0) {
+                MMH3_HASH_VALIDATE_ARG_DUPLICATION(nargs, "key", 1);
+                MMH3_HASH_VALIDATE_AND_SET_BYTES(args[nargs + i], target_str,
+                                                 target_str_len);
+            }
+            else if (strcmp(kwname, "seed") == 0) {
+                MMH3_HASH_VALIDATE_ARG_DUPLICATION(nargs, "seed", 2);
+                MMH3_HASH_VALIDATE_AND_SET_SEED(args[nargs + i], seed);
+            }
+            else if (strcmp(kwname, "x64arch") == 0) {
+                MMH3_HASH_VALIDATE_ARG_DUPLICATION(nargs, "x64arch", 3);
+                x64arch = PyObject_IsTrue(args[nargs + i]);
+            }
+            else {
+                PyErr_Format(
+                    PyExc_TypeError,
+                    "'%s' is an invalid keyword argument for this function",
+                    kwname);
+                return NULL;
+            }
+        }
+    }
 
     if (x64arch == 1) {
         murmurhash3_x64_128(target_str, target_str_len, seed, result);
@@ -1085,11 +1236,11 @@ static PyMethodDef Mmh3Methods[] = {
      mmh3_hash_doc},
     {"hash_from_buffer", (PyCFunction)mmh3_hash_from_buffer,
      METH_VARARGS | METH_KEYWORDS, mmh3_hash_from_buffer_doc},
-    {"hash64", (PyCFunction)mmh3_hash64, METH_VARARGS | METH_KEYWORDS,
+    {"hash64", (PyCFunction)mmh3_hash64, METH_FASTCALL | METH_KEYWORDS,
      mmh3_hash64_doc},
-    {"hash128", (PyCFunction)mmh3_hash128, METH_VARARGS | METH_KEYWORDS,
+    {"hash128", (PyCFunction)mmh3_hash128, METH_FASTCALL | METH_KEYWORDS,
      mmh3_hash128_doc},
-    {"hash_bytes", (PyCFunction)mmh3_hash_bytes, METH_VARARGS | METH_KEYWORDS,
+    {"hash_bytes", (PyCFunction)mmh3_hash_bytes, METH_FASTCALL | METH_KEYWORDS,
      mmh3_hash_bytes_doc},
     {"mmh3_32_digest", (PyCFunction)mmh3_mmh3_32_digest, METH_FASTCALL,
      mmh3_mmh3_32_digest_doc},

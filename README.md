@@ -1,6 +1,6 @@
 # mmh3
 
-[![Documentation Status](https://readthedocs.org/projects/mmh3/badge/?version=latest)](https://mmh3.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/mmh3/badge/?version=stable)](https://mmh3.readthedocs.io/en/latest/?badge=stable)
 [![GitHub Super-Linter](https://github.com/hajimes/mmh3/actions/workflows/superlinter.yml/badge.svg?branch=master)](https://github.com/hajimes/mmh3/actions?query=workflow%3ASuper-Linter+branch%3Amaster)
 [![Build](https://github.com/hajimes/mmh3/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/hajimes/mmh3/actions/workflows/build.yml?branch=master)
 [![PyPi Version](https://img.shields.io/pypi/v/mmh3.svg?style=flat-square&logo=pypi&logoColor=white)](https://pypi.org/project/mmh3/)
@@ -80,6 +80,13 @@ in the API Reference for more information.
 See [Changelog](https://mmh3.readthedocs.io/en/latest/changelog.html) for the
 complete changelog.
 
+### [Unreleased]
+
+#### Added
+
+- Improve the performance of `hash128()`, `hash64()`, and `hash_bytes()`
+  by using METH_FASTCALL, reducing the overhead of function calls.
+
 ### [5.0.1] - 2024-09-22
 
 #### Fixed
@@ -137,21 +144,6 @@ complete changelog.
 - Fix type hints ([#76](https://github.com/hajimes/mmh3/pull/76),
   [#77](https://github.com/hajimes/mmh3/pull/77),
   [#84](https://github.com/hajimes/mmh3/pull/84)).
-
-### [4.1.0] - 2024-01-09
-
-#### Added
-
-- Add support for Python 3.12.
-
-#### Fixed
-
-- Fix issues with Bazel by changing the directory structure of the project
-  ([#50](https://github.com/hajimes/mmh3/issues/50)).
-- Fix incorrect type hints ([#51](https://github.com/hajimes/mmh3/issues/51)).
-- Fix invalid results on s390x when the arg `x64arch` of `hash64` or
-  `hash_bytes()` is set to `False`
-  ([#52](https://github.com/hajimes/mmh3/issues/52)).
 
 ## License
 
@@ -248,6 +240,6 @@ is useful for OSINT and cybersecurity activities.
 - <https://github.com/ifduyue/python-xxhash>: Python bindings for xxHash (Yue
   Du)
 
+[Unreleased]: https://github.com/hajimes/mmh3/compare/v5.0.1...HEAD
 [5.0.1]: https://github.com/hajimes/mmh3/compare/v5.0.0...v5.0.1
 [5.0.0]: https://github.com/hajimes/mmh3/compare/v4.1.0...v5.0.0
-[4.1.0]: https://github.com/hajimes/mmh3/compare/v4.0.1...v4.1.0
