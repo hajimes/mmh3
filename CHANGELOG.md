@@ -10,6 +10,13 @@ This project has adhered to
 [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html)
 since version 3.0.0.
 
+## [Unreleased]
+
+### Added
+
+- Improve the performance of the `hash64()` and `hash128` functions by using
+  METH_FASTCALL.
+
 ## [5.0.1] - 2024-09-22
 
 ### Fixed
