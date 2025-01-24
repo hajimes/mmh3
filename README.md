@@ -88,7 +88,7 @@ complete changelog.
 - Improve the performance of `hash128()`, `hash64()`, and `hash_bytes()`
   by using METH_FASTCALL, reducing the overhead of function calls
   ([#116](https://github.com/hajimes/mmh3/pull/116)).
-- Add DOI for the software paper
+- Add the software paper for this library
   ([doi:10.21105/joss.06124](https://doi.org/10.21105/joss.06124)), following
   its publication in the
   [_Journal of Open Source Software_](https://joss.theoj.org) (JOSS).
