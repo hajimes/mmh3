@@ -1,6 +1,7 @@
 # pylint: disable=missing-function-docstring
 """A script to generate Murmurhash3 C files from the original C++ source."""
 
+# For forward references
 from __future__ import annotations
 
 import os
@@ -656,9 +657,11 @@ if __name__ == "__main__":
     new_header_path = os.path.join(dir_path, "../src/mmh3", NEW_HEADER_NAME)
     file_header_path = os.path.join(dir_path, FILE_HEADER_NAME)
 
-    with open(original_source_path, "r", encoding="utf-8") as source_file, open(
-        original_header_path, "r", encoding="utf-8"
-    ) as header_file, open(file_header_path, "r", encoding="utf-8") as file_header_file:
+    with (
+        open(original_source_path, "r", encoding="utf-8") as source_file,
+        open(original_header_path, "r", encoding="utf-8") as header_file,
+        open(file_header_path, "r", encoding="utf-8") as file_header_file,
+    ):
         source = MMH3Source(source_file.read())
         header = MMH3Header(header_file.read())
         file_header = file_header_file.read()

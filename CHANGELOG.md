@@ -15,7 +15,12 @@ since version 3.0.0.
 ### Added
 
 - Improve the performance of `hash128()`, `hash64()`, and `hash_bytes()`
-  by using METH_FASTCALL, reducing the overhead of function calls.
+  by using METH_FASTCALL, reducing the overhead of function calls
+  ([#116](https://github.com/hajimes/mmh3/pull/116)).
+
+### Removed
+
+- Drop support for Python 3.8, as it has reached the end of life on 2024-10-07.
 
 ## [5.0.1] - 2024-09-22
 
