@@ -20,7 +20,7 @@ to see if the problem has already been noted.
 
 ## Project structure
 
-As of version 5.0.0-dev, the project layout is structured as follows:
+As of version 5.1.0, the project layout is structured as follows:
 
 - `src/mmh3`
   - `mmh3module.c`: the main file that serves as the interface between Python
@@ -41,6 +41,7 @@ As of version 5.0.0-dev, the project layout is structured as follows:
   - `benchmark.py`: script to run benchmarks.
   - `plot_graph.py`: script to plot benchmark results.
 - `docs`: project documentation directory
+- `paper`: directory containing the academic paper for this project
 - `.github/workflows`: GitHub Actions workflows
 
 ## Project setup
@@ -74,10 +75,10 @@ tox
 
 During development, you can run the tests for a specific environment by
 specifying the environment name. For example, to run tests for a specific
-version of Python (e.g., Python 3.12), use:
+version of Python (e.g., Python 3.13), use:
 
 ```shell
-tox -e py312
+tox -e py313
 ```
 
 For type checking, run:
@@ -169,7 +170,7 @@ tox -e benchmark -- -o _results/mmh3_128.json \
             --test-hash mmh3_128 --test-buffer-size-max 262144
 ```
 
-As of version 4.2.0, the following hash function identifiers are available for
+As of version 5.1.0, the following hash function identifiers are available for
 benchmarking: `mmh3_32`, `mmh3_128`, `xxh_32`, `xxh_64`, `xxh3_64`, `xxh3_128`,
 `pymmh3_32`, `pymmh3_128`, `md5`, and `sha1`.
 

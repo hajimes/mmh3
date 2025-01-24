@@ -8,6 +8,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/license/mit/)
 [![Total Downloads](https://static.pepy.tech/badge/mmh3)](https://pepy.tech/projects/mmh3?versions=*%2C5.*%2C4.*%2C3.*%2C2.*)
 [![Recent Downloads](https://static.pepy.tech/badge/mmh3/month)](https://pepy.tech/projects/mmh3?versions=*%2C5.*%2C4.*%2C3.*%2C2.*)
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.06124/status.svg)](https://doi.org/10.21105/joss.06124)
 
 `mmh3` is a Python extension for
 [MurmurHash (MurmurHash3)](https://en.wikipedia.org/wiki/MurmurHash), a set of
@@ -87,6 +88,10 @@ complete changelog.
 - Improve the performance of `hash128()`, `hash64()`, and `hash_bytes()`
   by using METH_FASTCALL, reducing the overhead of function calls
   ([#116](https://github.com/hajimes/mmh3/pull/116)).
+- Add the software paper for this library
+  ([doi:10.21105/joss.06124](https://doi.org/10.21105/joss.06124)), following
+  its publication in the
+  [_Journal of Open Source Software_](https://joss.theoj.org) (JOSS).
 
 #### Removed
 
@@ -231,6 +236,33 @@ is useful for OSINT and cybersecurity activities.
 - Debjeet. August 2, 2022.
   _[How To Find Assets Using Favicon Hashes](https://payatu.com/blog/favicon-hash/)_.
   Payatu.
+
+## How to Cite This Library
+
+If you use this library in your research, please cite the following paper
+published in the _Journal of Open Source Software_ (JOSS):
+
+Hajime Senuma. 2025.
+[mmh3: A Python extension for MurmurHash3](https://doi.org/10.21105/joss.06124).
+_Journal of Open Source Software_, 10(105):6124.
+
+In BibTeX format:
+
+```tex
+@article{senumaMmh3PythonExtension2025,
+  title = {{mmh3}: A {Python} extension for {MurmurHash3}},
+  author = {Senuma, Hajime},
+  year = {2025},
+  month = jan,
+  journal = {Journal of Open Source Software},
+  volume = {10},
+  number = {105},
+  pages = {6124},
+  issn = {2475-9066},
+  doi = {10.21105/joss.06124},
+  copyright = {http://creativecommons.org/licenses/by/4.0/}
+}
+```
 
 ## Related Libraries
 

@@ -42,6 +42,13 @@ lint = [
 type = [
   "mypy == 1.14.1"
 ]
+dev = [
+  "matplotlib == 3.7.3",
+  "pandas == 2.0.3",
+  "pymmh3 == 0.0.5",
+  "pyperf == 2.7.0",
+  "xxhash == 3.5.0"
+]
 docs = [
   "myst-parser == 4.0.0",
   "shibuya == 2024.12.21",
