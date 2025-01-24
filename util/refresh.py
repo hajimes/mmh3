@@ -1,6 +1,9 @@
 # pylint: disable=missing-function-docstring
 """A script to generate Murmurhash3 C files from the original C++ source."""
 
+# For forward references
+from __future__ import annotations
+
 import os
 import re
 import textwrap
