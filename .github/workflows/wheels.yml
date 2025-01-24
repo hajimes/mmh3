@@ -52,13 +52,12 @@ jobs:
         with:
           output-dir: wheelhouse
         env:
-          CIBW_BUILD: "{cp38,cp39,cp310,cp311,cp312,cp313}-${{ matrix.build }}*"
-          CIBW_SKIP: cp38-win_arm64
+          CIBW_BUILD: "{cp39,cp310,cp311,cp312,cp313}-${{ matrix.build }}*"
           CIBW_ARCHS: ${{ matrix.archs }}
           CIBW_BUILD_FRONTEND: "build"
           CIBW_TEST_REQUIRES: "pytest"
           CIBW_TEST_COMMAND: "pytest {project}"
-          CIBW_TEST_SKIP: "*-win_arm64 cp38-macosx_*:arm64"
+          CIBW_TEST_SKIP: "*-win_arm64"
       - uses: actions/upload-artifact@v4
         with:
           name: Wheel-${{ matrix.os }}-${{ matrix.build }}${{ matrix.archs }}

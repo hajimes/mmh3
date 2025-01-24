@@ -1,13 +1,13 @@
 # mmh3
 
-[![Documentation Status](https://readthedocs.org/projects/mmh3/badge/?version=latest)](https://mmh3.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/mmh3/badge/?version=stable)](https://mmh3.readthedocs.io/en/stable/)
 [![GitHub Super-Linter](https://github.com/hajimes/mmh3/actions/workflows/superlinter.yml/badge.svg?branch=master)](https://github.com/hajimes/mmh3/actions?query=workflow%3ASuper-Linter+branch%3Amaster)
 [![Build](https://github.com/hajimes/mmh3/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/hajimes/mmh3/actions/workflows/build.yml?branch=master)
 [![PyPi Version](https://img.shields.io/pypi/v/mmh3.svg?style=flat-square&logo=pypi&logoColor=white)](https://pypi.org/project/mmh3/)
 [![Python Versions](https://img.shields.io/pypi/pyversions/mmh3.svg)](https://pypi.org/project/mmh3/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/license/mit/)
-[![Total Downloads](https://static.pepy.tech/badge/mmh3)](https://www.pepy.tech/projects/mmh3?versions=*&versions=5.*&versions=4.*&versions=3.*&versions=2.*)
-[![Recent Downloads](https://static.pepy.tech/badge/mmh3/month)](https://www.pepy.tech/projects/mmh3?versions=*&versions=5.*&versions=4.*&versions=3.*&versions=2.*)
+[![Total Downloads](https://static.pepy.tech/badge/mmh3)](https://pepy.tech/projects/mmh3?versions=*%2C5.*%2C4.*%2C3.*%2C2.*)
+[![Recent Downloads](https://static.pepy.tech/badge/mmh3/month)](https://pepy.tech/projects/mmh3?versions=*%2C5.*%2C4.*%2C3.*%2C2.*)
 
 `mmh3` is a Python extension for
 [MurmurHash (MurmurHash3)](https://en.wikipedia.org/wiki/MurmurHash), a set of
@@ -80,6 +80,18 @@ in the API Reference for more information.
 See [Changelog](https://mmh3.readthedocs.io/en/latest/changelog.html) for the
 complete changelog.
 
+### [Unreleased]
+
+#### Added
+
+- Improve the performance of `hash128()`, `hash64()`, and `hash_bytes()`
+  by using METH_FASTCALL, reducing the overhead of function calls
+  ([#116](https://github.com/hajimes/mmh3/pull/116)).
+
+#### Removed
+
+- Drop support for Python 3.8, as it has reached the end of life on 2024-10-07.
+
 ### [5.0.1] - 2024-09-22
 
 #### Fixed
@@ -137,21 +149,6 @@ complete changelog.
 - Fix type hints ([#76](https://github.com/hajimes/mmh3/pull/76),
   [#77](https://github.com/hajimes/mmh3/pull/77),
   [#84](https://github.com/hajimes/mmh3/pull/84)).
-
-### [4.1.0] - 2024-01-09
-
-#### Added
-
-- Add support for Python 3.12.
-
-#### Fixed
-
-- Fix issues with Bazel by changing the directory structure of the project
-  ([#50](https://github.com/hajimes/mmh3/issues/50)).
-- Fix incorrect type hints ([#51](https://github.com/hajimes/mmh3/issues/51)).
-- Fix invalid results on s390x when the arg `x64arch` of `hash64` or
-  `hash_bytes()` is set to `False`
-  ([#52](https://github.com/hajimes/mmh3/issues/52)).
 
 ## License
 
@@ -248,6 +245,6 @@ is useful for OSINT and cybersecurity activities.
 - <https://github.com/ifduyue/python-xxhash>: Python bindings for xxHash (Yue
   Du)
 
+[Unreleased]: https://github.com/hajimes/mmh3/compare/v5.0.1...HEAD
 [5.0.1]: https://github.com/hajimes/mmh3/compare/v5.0.0...v5.0.1
 [5.0.0]: https://github.com/hajimes/mmh3/compare/v4.1.0...v5.0.0
-[4.1.0]: https://github.com/hajimes/mmh3/compare/v4.0.1...v4.1.0
