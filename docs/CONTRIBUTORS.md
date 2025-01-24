@@ -65,3 +65,15 @@ bug reports, feature suggestions, and other contributions:
   [#9](https://github.com/hajimes/mmh3/issues/9).
 - [@yzssbo](https://github.com/yzssbo),
   [#25](https://github.com/hajimes/mmh3/issues/25).
+
+## Paper Editors and Reviewers
+
+We extend our heartfelt thanks to the following editors and reviewers of the
+[_Journal of Open Source Software_](https://joss.theoj.org) (JOSS), whose
+feedback greatly enhanced this project.
+
+- [Daniel S. Katz](https://github.com/danielskatz) (Managing Editor-in-Chief)
+- [Vince Knight](https://github.com/drvinceknight) (Editor)
+- [Marek Šuppa](https://github.com/mrshu) (Reviewer)
+- [Jules Pénuchot](https://github.com/JPenuchot) (Reviewer)
+- [Gaëtan Cassiers](https://github.com/cassiersg) (Reviewer)
