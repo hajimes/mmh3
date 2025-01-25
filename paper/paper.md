@@ -140,7 +140,7 @@ smaller inputs (common scenarios for non-cryptographic hashes), due to its use
 of `METH_FASTCALL`, an overhead-reducing interface introduced in Python 3.7.
 
 For details, see the documentation of the project:
-<https://mmh3.readthedocs.io/en/latest/benchmark.html>.
+<https://mmh3.readthedocs.io/en/stable/benchmark.html>.
 Additionally, the benchmarking results are publicly available as JSON files in
 the repository: <https://github.com/hajimes/mmh3-benchmarks>.
 

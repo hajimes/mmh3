@@ -11,7 +11,7 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = "mmh3"
-project_copyright = "2011-2024, Hajime Senuma"
+project_copyright = "2011-2025, Hajime Senuma"
 author = "Hajime Senuma"
 
 # -- General configuration ---------------------------------------------------

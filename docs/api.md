@@ -41,7 +41,7 @@ UTF-8 encoding before hashing.
 Although `hash128()`, `hash64()`, and `mmh3.hash_bytes()` are provided for
 compatibility with previous versions and are not marked for deprecation,
 the [buffer-accepting hash functions](#buffer-accepting-hash-functions)
-introduced in version 5.0.0 are recommended for new code.
+introduced in version 5.1.0 are recommended for new code.
 
 ```{eval-rst}
 .. autofunction:: mmh3.hash
@@ -66,7 +66,7 @@ in Python 3.12. For earlier Python versions, `mmh3` uses a type alias for the
 type hint
 [\_typeshed.ReadableBuffer](https://github.com/python/typeshed/blob/d326c9bd424ad60c2b63c2ca1c5c1006c61c3562/stdlib/_typeshed/__init__.pyi#L281),
 which is itself an alias for
-[typing_extensions.Buffer](https://typing-extensions.readthedocs.io/en/latest/#typing_extensions.Buffer),
+[typing_extensions.Buffer](https://typing-extensions.readthedocs.io/en/stable/#typing_extensions.Buffer),
 the backported type hint for `collections.abc.Buffer`.
 ```
 

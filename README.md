@@ -27,7 +27,7 @@ which are utilized by [Shodan](https://www.shodan.io), the world's first IoT
 search engine.
 
 This page provides a quick start guide. For more comprehensive information,
-please refer to the [documentation](https://mmh3.readthedocs.io/en/latest/).
+please refer to the [documentation](https://mmh3.readthedocs.io/en/stable/).
 
 ## Installation
 
@@ -67,35 +67,39 @@ b'\x8c\xee\xc6z\xa9\xfeR\xe8o\x9a\x9b\x17u\xbe\xdc\xee'
 Various alternatives are available, offering different return types (e.g.,
 signed integers, tuples of unsigned integers) and optimized for different
 architectures. For a comprehensive list of functions, refer to the
-[API Reference](https://mmh3.readthedocs.io/en/latest/api.html).
+[API Reference](https://mmh3.readthedocs.io/en/stable/api.html).
 
 ### `hashlib`-style hashers
 
 `mmh3` implements hasher objects with interfaces similar to those in `hashlib`
 from the standard library, although they are still experimental. See
-[Hasher Classes](https://mmh3.readthedocs.io/en/latest/api.html#hasher-classes)
+[Hasher Classes](https://mmh3.readthedocs.io/en/stable/api.html#hasher-classes)
 in the API Reference for more information.
 
 ## Changelog
 
-See [Changelog](https://mmh3.readthedocs.io/en/latest/changelog.html) for the
-complete changelog.
+See [Changelog](https://mmh3.readthedocs.io/en/latest/changelog.html)
+(latest version) for the complete changelog.
 
-### [Unreleased]
+### [5.1.0] - 2025-01-25
 
 #### Added
 
-- Improve the performance of `hash128()`, `hash64()`, and `hash_bytes()`
-  by using METH_FASTCALL, reducing the overhead of function calls
+- Improve the performance of `hash128()`, `hash64()`, and `hash_bytes()` by
+  using
+  [METH_FASTCALL](https://docs.python.org/3/c-api/structures.html#c.METH_FASTCALL),
+  reducing the overhead of function calls
   ([#116](https://github.com/hajimes/mmh3/pull/116)).
 - Add the software paper for this library
   ([doi:10.21105/joss.06124](https://doi.org/10.21105/joss.06124)), following
   its publication in the
-  [_Journal of Open Source Software_](https://joss.theoj.org) (JOSS).
+  [_Journal of Open Source Software_](https://joss.theoj.org)
+  ([#118](https://github.com/hajimes/mmh3/pull/118)).
 
 #### Removed
 
-- Drop support for Python 3.8, as it has reached the end of life on 2024-10-07.
+- Drop support for Python 3.8, as it has reached the end of life on 2024-10-07
+  ([#117](https://github.com/hajimes/mmh3/pull/117)).
 
 ### [5.0.1] - 2024-09-22
 
@@ -207,7 +211,7 @@ precompute the unsigned value for simplicity.
 
 ## Contributing Guidelines
 
-See [Contributing](https://mmh3.readthedocs.io/en/latest/CONTRIBUTING.html).
+See [Contributing](https://mmh3.readthedocs.io/en/stable/CONTRIBUTING.html).
 
 ## Authors
 
@@ -262,8 +266,9 @@ is useful for OSINT and cybersecurity activities.
 
 ## How to Cite This Library
 
-If you use this library in your research, please cite the following paper
-published in the _Journal of Open Source Software_ (JOSS):
+If you use this library in your research, it would be much appreciated it if
+you would cite the following paper published in the
+[_Journal of Open Source Software_](https://joss.theoj.org):
 
 Hajime Senuma. 2025.
 [mmh3: A Python extension for MurmurHash3](https://doi.org/10.21105/joss.06124).
@@ -300,6 +305,6 @@ In BibTeX format:
 - <https://github.com/ifduyue/python-xxhash>: Python bindings for xxHash (Yue
   Du)
 
-[Unreleased]: https://github.com/hajimes/mmh3/compare/v5.0.1...HEAD
+[5.1.0]: https://github.com/hajimes/mmh3/compare/v5.0.1...v5.1.0
 [5.0.1]: https://github.com/hajimes/mmh3/compare/v5.0.0...v5.0.1
 [5.0.0]: https://github.com/hajimes/mmh3/compare/v4.1.0...v5.0.0
