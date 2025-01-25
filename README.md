@@ -188,17 +188,20 @@ From the version 5.0.0, `mmh3` functions accept only **unsigned** 32-bit integer
 seeds to enable faster type-checking and conversion. However, this change may
 cause issues if you need to calculate hash values using negative seeds within
 the range of the signed 32-bit integers. For instance,
-[Telegram for macOS](https://github.com/overtake/TelegramSwift) uses
+[Telegram-iOS](https://github.com/TelegramMessenger/Telegram-iOS) uses
 `-137723950` as a hard-coded seed. To handle such cases, you can convert a
 signed 32-bit integer to its unsigned equivalent by applying a bitwise AND
 operation with `0xffffffff`. Here's an example:
 
-```python
-d = -42
-mmh3.hash('foo', d & 0xffffffff).
+```pycon
+>>> mmh3.hash(b"quux", 4294967295)
+258499980
+>>> d = -1
+>>> mmh3.hash(b"quux", d & 0xffffffff)
+258499980
 ```
 
-Alternatively, if the seed is hard-coded (as in the Telegram case), you can
+Alternatively, if the seed is hard-coded (as in the Telegram-iOS case), you can
 precompute the unsigned value for simplicity.
 
 ## Contributing Guidelines
