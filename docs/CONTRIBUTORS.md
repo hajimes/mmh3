@@ -70,7 +70,7 @@ bug reports, feature suggestions, and other contributions:
 
 We extend our heartfelt thanks to the following editors and reviewers of the
 [_Journal of Open Source Software_](https://joss.theoj.org) (JOSS), whose
-feedback greatly enhanced this project.
+feedback greatly enhanced this project:
 
 - [Daniel S. Katz](https://github.com/danielskatz) (Managing Editor-in-Chief)
 - [Vince Knight](https://github.com/drvinceknight) (Editor)
