@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mmh3"
-version = "5.1.0-dev.1"
+version = "5.1.0-rc"
 description = "Python extension for MurmurHash (MurmurHash3), a set of fast and robust hash functions."
 readme = "README.md"
 license = {file = "LICENSE"}
@@ -41,13 +41,6 @@ lint = [
 ]
 type = [
   "mypy == 1.14.1"
-]
-dev = [
-  "matplotlib == 3.7.3",
-  "pandas == 2.0.3",
-  "pymmh3 == 0.0.5",
-  "pyperf == 2.7.0",
-  "xxhash == 3.5.0"
 ]
 docs = [
   "myst-parser == 4.0.0",

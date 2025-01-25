@@ -1,8 +1,7 @@
 # pylint: disable=R0801
 """An ad-hoc script to generate a markdown table of benchmarking results.
 
-This file should be incoporated into the main plot module before merging into
-the main branch.
+This file should be incorporated into the main plot module in the future.
 """
 
 import argparse
