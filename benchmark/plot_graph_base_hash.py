@@ -1,7 +1,7 @@
 # pylint: disable=R0801
 """An ad-hoc script to plot the graph of the benchmark results for mmh3.hash.
 
-This file should be incoporated into the main plot module in the future.
+This file should be incorporated into the main plot module in the future.
 """
 
 import argparse

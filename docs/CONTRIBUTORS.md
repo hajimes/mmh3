@@ -1,8 +1,7 @@
 # Contributors
 
 This page acknowledges contributors to the project. For details on the
-project's history and changes, please refer to the
-[Changelog](./changelog.md)
+project's history and changes, please refer to the [Changelog](./changelog.md)
 page. If you're interested in contributing, be sure to review the
 [Contributing](./CONTRIBUTING.md) guide.
 

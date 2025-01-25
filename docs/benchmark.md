@@ -67,7 +67,7 @@
 
 ## Results
 
-The rresulting graphs are plotted using the `pandas` and `matplotlib` libraries.
+The resulting graphs are plotted using the `pandas` and `matplotlib` libraries.
 
 ### Comparison of Version Improvements
 
