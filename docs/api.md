@@ -66,7 +66,7 @@ in Python 3.12. For earlier Python versions, `mmh3` uses a type alias for the
 type hint
 [\_typeshed.ReadableBuffer](https://github.com/python/typeshed/blob/d326c9bd424ad60c2b63c2ca1c5c1006c61c3562/stdlib/_typeshed/__init__.pyi#L281),
 which is itself an alias for
-[typing_extensions.Buffer](https://typing-extensions.readthedocs.io/en/latest/#typing_extensions.Buffer),
+[typing_extensions.Buffer](https://typing-extensions.readthedocs.io/en/stable/#typing_extensions.Buffer),
 the backported type hint for `collections.abc.Buffer`.
 ```
 

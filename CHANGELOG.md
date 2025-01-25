@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented here. For a list of
 contributors, see the
-[Contributors](https://mmh3.readthedocs.io/en/latest/CONTRIBUTORS.html) page.
+[Contributors](https://mmh3.readthedocs.io/en/stable/CONTRIBUTORS.html) page.
 
 The format is based on
 [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/).

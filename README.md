@@ -27,7 +27,7 @@ which are utilized by [Shodan](https://www.shodan.io), the world's first IoT
 search engine.
 
 This page provides a quick start guide. For more comprehensive information,
-please refer to the [documentation](https://mmh3.readthedocs.io/en/latest/).
+please refer to the [documentation](https://mmh3.readthedocs.io/en/stable/).
 
 ## Installation
 
@@ -67,19 +67,19 @@ b'\x8c\xee\xc6z\xa9\xfeR\xe8o\x9a\x9b\x17u\xbe\xdc\xee'
 Various alternatives are available, offering different return types (e.g.,
 signed integers, tuples of unsigned integers) and optimized for different
 architectures. For a comprehensive list of functions, refer to the
-[API Reference](https://mmh3.readthedocs.io/en/latest/api.html).
+[API Reference](https://mmh3.readthedocs.io/en/stable/api.html).
 
 ### `hashlib`-style hashers
 
 `mmh3` implements hasher objects with interfaces similar to those in `hashlib`
 from the standard library, although they are still experimental. See
-[Hasher Classes](https://mmh3.readthedocs.io/en/latest/api.html#hasher-classes)
+[Hasher Classes](https://mmh3.readthedocs.io/en/stable/api.html#hasher-classes)
 in the API Reference for more information.
 
 ## Changelog
 
-See [Changelog](https://mmh3.readthedocs.io/en/latest/changelog.html) for the
-complete changelog.
+See [Changelog](https://mmh3.readthedocs.io/en/latest/changelog.html)
+(latest version) for the complete changelog.
 
 ### [5.1.0] - 2025-01-25
 
@@ -211,7 +211,7 @@ precompute the unsigned value for simplicity.
 
 ## Contributing Guidelines
 
-See [Contributing](https://mmh3.readthedocs.io/en/latest/CONTRIBUTING.html).
+See [Contributing](https://mmh3.readthedocs.io/en/stable/CONTRIBUTING.html).
 
 ## Authors
 
