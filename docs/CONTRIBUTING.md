@@ -15,7 +15,7 @@ suggesting a new feature through the
 [issue tracker](https://github.com/hajimes/mmh3/issues).
 
 Before creating a new issue, please check the
-[Known Issues section in README](https://github.com/hajimes/mmh3#known-issues)
+[Frequently Asked Questions section in README](https://github.com/hajimes/mmh3#frequently-asked-questions)
 to see if the problem has already been noted.
 
 ## Project structure
