@@ -27,7 +27,7 @@ functions particularly useful:
 
 Note that **`mmh3` is endian-neutral**, while the original C++ library is
 endian-sensitive (see also
-[Known Issues](https://github.com/hajimes/mmh3#known-issues)).
+[Frequently Asked Questions](https://github.com/hajimes/mmh3#frequently-asked-questions)).
 This feature of `mmh3` is essential when portability across different
 architectures is required, such as when calculating hash footprints for web
 services.

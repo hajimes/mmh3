@@ -266,8 +266,8 @@ is useful for OSINT and cybersecurity activities.
 
 ## How to Cite This Library
 
-If you use this library in your research, it would be much appreciated it if
-you would cite the following paper published in the
+If you use this library in your research, it would be appreciated if you could
+cite the following paper published in the
 [_Journal of Open Source Software_](https://joss.theoj.org):
 
 Hajime Senuma. 2025.
