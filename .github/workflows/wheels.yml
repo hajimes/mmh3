@@ -21,7 +21,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-22.04]
+        os: [ubuntu-24.04]
         archs: [x86_64, i686, aarch64, ppc64le, s390x]
         build: [manylinux, musllinux]
         include:
@@ -31,11 +31,11 @@ jobs:
             archs: x86
           - os: windows-2022
             archs: ARM64
-          - os: macOS-13
+          - os: macos-13
             archs: x86_64
-          - os: macOS-14
+          - os: macos-14
             archs: arm64
-          - os: macOS-14
+          - os: macos-14
             archs: universal2
     steps:
       - name: Checkout
@@ -43,12 +43,12 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.13"
       - name: Set up QEMU
         if: runner.os == 'Linux'
         uses: docker/setup-qemu-action@v3
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.22.0
+        uses: pypa/cibuildwheel@v3.1.1
         with:
           output-dir: wheelhouse
         env:
@@ -64,14 +64,14 @@ jobs:
           path: ./wheelhouse/*.whl
   build_sdist:
     name: Build a source distribution
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.13"
       - name: Build sdist
         run: |
           python -m pip install --upgrade pip
@@ -91,13 +91,13 @@ jobs:
   publish:
     if: ${{ inputs.pypi-repository == 'pypi' || inputs.pypi-repository == 'testpypi'}}
     name: "Upload to PyPI/Test PyPI"
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs: [build_wheels, build_sdist]
     steps:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.13"
       - name: Set up built items
         uses: actions/download-artifact@v4
         with:
