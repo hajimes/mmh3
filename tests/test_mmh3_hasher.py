@@ -13,25 +13,25 @@ def test_mmh3_32_digest() -> None:
     # https://stackoverflow.com/a/31929528
     hasher = mmh3.mmh3_32(seed=0x9747B28C)
     hasher.update(b"Hello, world!")
-    assert hasher.digest() == b"\xBA\x4C\x88\x24"
+    assert hasher.digest() == b"\xba\x4c\x88\x24"
 
     hasher = mmh3.mmh3_32(seed=0x9747B28C)
     hasher.update(b"Hello,")
     hasher.update(b" world!")
-    assert hasher.digest() == b"\xBA\x4C\x88\x24"
+    assert hasher.digest() == b"\xba\x4c\x88\x24"
 
     hasher = mmh3.mmh3_32(b"", 0x9747B28C)
     hasher.update(b"Hello,")
     hasher.update(b" world!")
-    assert hasher.digest() == b"\xBA\x4C\x88\x24"
+    assert hasher.digest() == b"\xba\x4c\x88\x24"
 
     hasher = mmh3.mmh3_32(b"Hello,", 0x9747B28C)
     hasher.update(b" world!")
-    assert hasher.digest() == b"\xBA\x4C\x88\x24"
+    assert hasher.digest() == b"\xba\x4c\x88\x24"
 
     hasher = mmh3.mmh3_32(b"Hello,", seed=0x9747B28C)
     hasher.update(b" world!")
-    assert hasher.digest() == b"\xBA\x4C\x88\x24"
+    assert hasher.digest() == b"\xba\x4c\x88\x24"
 
 
 def test_mmh3_32_sintdigest() -> None:
