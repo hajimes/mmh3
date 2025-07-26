@@ -50,7 +50,7 @@
   derived from the Fibonacci sequence.
 - For each input size, the test generates a set of 10 `bytes` instances, where
   each instance's size is pseudo-randomly selected from the range
-  [ceil(input * 0.9), floor(input * 1.1)].
+  `[ceil(input * 0.9), floor(input * 1.1)]`.
   - This randomization is crucial as it increases the difficulty of branch
     predictions, creating a more realistic scenario. For further details, see
     [xxHash: Performance comparison](https://github.com/Cyan4973/xxHash/wiki/Performance-comparison#throughput-on-small-data-of-random-length-1-n).
