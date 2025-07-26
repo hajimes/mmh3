@@ -1,4 +1,4 @@
-""" Helper functions for tests. """
+"""Helper functions for tests."""
 
 
 # see also https://stackoverflow.com/a/1375939
