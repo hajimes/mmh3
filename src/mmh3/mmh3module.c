@@ -263,7 +263,7 @@ PyDoc_STRVAR(
     "memory-views such as numpy arrays.\n"
     "\n"
     "Args:\n"
-    "    key (Buffer | str): The bufer to hash. String inputs are also\n"
+    "    key (Buffer | str): The buffer to hash. String inputs are also\n"
     "        supported and are automatically converted to `bytes` using\n"
     "        UTF-8 encoding before hashing.\n"
     "    seed (int): The seed value. Must be an integer in the range\n"
