@@ -37,6 +37,12 @@ jobs:
             archs: arm64
           - os: macos-14
             archs: universal2
+          - os: macos-13
+            archs: x86_64_iphonesimulator
+          - os: macos-14
+            archs: arm64_iphonesimulator
+          - os: macos-14
+            archs: arm64_iphoneos
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -52,7 +58,7 @@ jobs:
         with:
           output-dir: wheelhouse
         env:
-          CIBW_BUILD: "{cp39,cp310,cp311,cp312,cp313,cp314}-${{ matrix.build }}* cp313-{arm64_iphoneos,arm64_iphonesimulator,x86_64_iphonesimulator}"
+          CIBW_BUILD: "{cp39,cp310,cp311,cp312,cp313}-${{ matrix.build }}*"
           CIBW_ARCHS: ${{ matrix.archs }}
           CIBW_BUILD_FRONTEND: "build"
           CIBW_TEST_REQUIRES: "pytest"
