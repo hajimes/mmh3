@@ -46,15 +46,12 @@ jobs:
           - os: macos-14
             platform: ios
             archs: arm64_iphoneos
-            test-command: python -m pytest ./tests
           - os: macos-14
             platform: ios
             archs: arm64_iphonesimulator
-            test-command: python -m pytest ./tests
           - os: macos-13
             platform: ios
             archs: x86_64_iphonesimulator
-            test-command: python -m pytest ./tests
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -75,7 +72,9 @@ jobs:
           CIBW_ARCHS: ${{ matrix.archs }}
           CIBW_BUILD_FRONTEND: "build"
           CIBW_TEST_REQUIRES: "pytest"
-          CIBW_TEST_COMMAND: ${{matrix.test-command || 'pytest {project}'}}
+          CIBW_TEST_SOURCES_IOS: "./tests"
+          CIBW_TEST_COMMAND: "pytest {project}"
+          CIBW_TEST_COMMAND_IOS: "python -m pytest ./tests"
           CIBW_TEST_SKIP: "*-win_arm64"
       - uses: actions/upload-artifact@v4
         with:
