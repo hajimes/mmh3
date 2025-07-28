@@ -62,8 +62,15 @@ jobs:
         with:
           python-version: "3.13"
       - name: Set up QEMU
-        if: runner.os == 'Linux'
+        if: runner.os == 'Linux' && matrix.platform != 'android'
         uses: docker/setup-qemu-action@v3
+      # https://github.blog/changelog/2024-04-02-github-actions-hardware-accelerated-android-virtualization-now-available/
+      - name: Set up KVM for Android emulation
+        if: runner.os == 'Linux' && matrix.platform == 'android'
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
       - name: Build wheels
         uses: pypa/cibuildwheel@v3.1.1
         with:
