@@ -17,7 +17,7 @@ permissions: {}
 
 jobs:
   build_wheels:
-    name: Build wheel for ${{ matrix.archs }} ${{ matrix.build }} (runs on ${{ matrix.os }})
+    name: Build wheel for ${{ matrix.platform }} ${{ matrix.archs }} ${{ matrix.build }} (runs on ${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -42,7 +42,7 @@ jobs:
             archs: arm64_v8a
           - os: ubuntu-24.04
             platform: android
-            archs: arm64_x86_64
+            archs: x86_64
           - os: macos-14
             platform: ios
             archs: arm64_iphoneos
