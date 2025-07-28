@@ -78,8 +78,17 @@ in the API Reference for more information.
 
 ## Changelog
 
-See [Changelog](https://mmh3.readthedocs.io/en/latest/changelog.html)
-(latest version) for the complete changelog.
+See [Changelog (latest version)](https://mmh3.readthedocs.io/en/latest/changelog.html)
+for the complete changelog.
+
+### [Unreleased]
+
+#### Added
+
+- Add support for Python 3.14.
+- Add support for Android (Python 3.13 only) and iOS (Python 3.13 and 3.14) wheels,
+  enabled by the major version update of
+  [cibuildwheel](https://github.com/pypa/cibuildwheel).
 
 ### [5.1.0] - 2025-01-25
 
@@ -107,57 +116,6 @@ See [Changelog](https://mmh3.readthedocs.io/en/latest/changelog.html)
 
 - Fix the issue that the package cannot be built from the source distribution
   ([#90](https://github.com/hajimes/mmh3/issues/90)).
-
-### [5.0.0] - 2024-09-18
-
-#### Added
-
-- Add support for Python 3.13.
-- Improve the performance of the `hash()` function with
-  [METH_FASTCALL](https://docs.python.org/3/c-api/structures.html#c.METH_FASTCALL),
-  reducing the overhead of function calls. For data sizes between 1–2 KB
-  (e.g., 48x48 favicons), performance is 10%–20% faster. For smaller data
-  (~500 bytes, like 16x16 favicons), performance increases by approximately 30%
-  ([#87](https://github.com/hajimes/mmh3/pull/87)).
-- Add `digest` functions that support the new buffer protocol
-  ([PEP 688](https://peps.python.org/pep-0688/)) as input
-  ([#75](https://github.com/hajimes/mmh3/pull/75)).
-  These functions are implemented with `METH_FASTCALL` too, offering improved
-  performance ([#84](https://github.com/hajimes/mmh3/pull/84)).
-- Slightly improve the performance of the `hash_bytes()` function
-  ([#88](https://github.com/hajimes/mmh3/pull/88))
-- Add Read the Docs documentation
-  ([#54](https://github.com/hajimes/mmh3/issues/54)).
-- Document benchmark results
-  ([#53](https://github.com/hajimes/mmh3/issues/53)).
-
-#### Changed
-
-- **Backward-incompatible**: The `seed` argument is now strictly validated to
-  ensure it falls within the range [0, 0xFFFFFFFF]. A `ValueError` is raised
-  if the seed is out of range ([#84](https://github.com/hajimes/mmh3/pull/84)).
-- **Backward-incompatible**: Change the constructors of hasher classes to
-  accept a buffer as the first argument
-  ([#83](https://github.com/hajimes/mmh3/pull/83)).
-- The type of flag argumens has been changed from `bool` to `Any`
-  ([#84](https://github.com/hajimes/mmh3/pull/84)).
-- Change the format of CHANGELOG.md to conform to the
-  [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) standard
-  ([#63](https://github.com/hajimes/mmh3/pull/63)).
-
-#### Deprecated
-
-- Deprecate the `hash_from_buffer()` function.
-  Use `mmh3_32_sintdigest()` or `mmh3_32_uintdigest()` as alternatives
-  ([#84](https://github.com/hajimes/mmh3/pull/84)).
-
-#### Fixed
-
-- Fix a reference leak in the `hash_from_buffer()` function
-  ([#75](https://github.com/hajimes/mmh3/pull/75)).
-- Fix type hints ([#76](https://github.com/hajimes/mmh3/pull/76),
-  [#77](https://github.com/hajimes/mmh3/pull/77),
-  [#84](https://github.com/hajimes/mmh3/pull/84)).
 
 ## License
 
@@ -305,6 +263,6 @@ In BibTeX format:
 - <https://github.com/ifduyue/python-xxhash>: Python bindings for xxHash (Yue
   Du)
 
+[unreleased]: https://github.com/hajimes/mmh3/compare/v5.1.0...HEAD
 [5.1.0]: https://github.com/hajimes/mmh3/compare/v5.0.1...v5.1.0
 [5.0.1]: https://github.com/hajimes/mmh3/compare/v5.0.0...v5.0.1
-[5.0.0]: https://github.com/hajimes/mmh3/compare/v4.1.0...v5.0.0

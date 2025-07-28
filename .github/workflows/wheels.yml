@@ -17,7 +17,7 @@ permissions: {}
 
 jobs:
   build_wheels:
-    name: Build wheels on ${{ matrix.os }}_${{ matrix.archs }}
+    name: Build wheel for ${{ matrix.platform }} ${{ matrix.archs }} ${{ matrix.build }} (runs on ${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -37,6 +37,23 @@ jobs:
             archs: arm64
           - os: macos-14
             archs: universal2
+          - os: ubuntu-24.04
+            platform: android
+            archs: x86_64
+            build: android
+          - os: macos-14
+            platform: android
+            archs: arm64_v8a
+            build: android
+          - os: macos-14
+            platform: ios
+            archs: arm64_iphoneos
+          - os: macos-14
+            platform: ios
+            archs: arm64_iphonesimulator
+          - os: macos-13
+            platform: ios
+            archs: x86_64_iphonesimulator
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -45,22 +62,34 @@ jobs:
         with:
           python-version: "3.13"
       - name: Set up QEMU
-        if: runner.os == 'Linux'
+        if: runner.os == 'Linux' && matrix.platform != 'android'
         uses: docker/setup-qemu-action@v3
+      # https://github.blog/changelog/2024-04-02-github-actions-hardware-accelerated-android-virtualization-now-available/
+      - name: Set up KVM for Android emulation
+        if: runner.os == 'Linux' && matrix.platform == 'android'
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
       - name: Build wheels
         uses: pypa/cibuildwheel@v3.1.1
         with:
           output-dir: wheelhouse
         env:
           CIBW_BUILD: "{cp39,cp310,cp311,cp312,cp313,cp314}-${{ matrix.build }}*"
+          CIBW_PLATFORM: ${{ matrix.platform || 'auto' }}
           CIBW_ARCHS: ${{ matrix.archs }}
           CIBW_BUILD_FRONTEND: "build"
           CIBW_TEST_REQUIRES: "pytest"
+          CIBW_TEST_SOURCES_ANDROID: "./tests"
+          CIBW_TEST_SOURCES_IOS: "./tests"
           CIBW_TEST_COMMAND: "pytest {project}"
-          CIBW_TEST_SKIP: "*-win_arm64"
+          CIBW_TEST_COMMAND_ANDROID: "python -m pytest ./tests"
+          CIBW_TEST_COMMAND_IOS: "python -m pytest ./tests"
+          CIBW_TEST_SKIP: "*-win_arm64 *-android_arm64_v8a"
       - uses: actions/upload-artifact@v4
         with:
-          name: Wheel-${{ matrix.os }}-${{ matrix.build }}${{ matrix.archs }}
+          name: Wheel-${{ matrix.os }}-${{ matrix.platform }}-${{ matrix.build }}${{ matrix.archs }}
           path: ./wheelhouse/*.whl
   build_sdist:
     name: Build a source distribution
