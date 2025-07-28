@@ -78,7 +78,8 @@ in the API Reference for more information.
 
 ## Changelog
 
-See [Changelog (latest version)](https://mmh3.readthedocs.io/en/latest/changelog.html) for the complete changelog.
+See [Changelog (latest version)](https://mmh3.readthedocs.io/en/latest/changelog.html)
+for the complete changelog.
 
 ### [Unreleased]
 
