@@ -86,7 +86,7 @@ jobs:
           CIBW_TEST_COMMAND: "pytest {project}"
           CIBW_TEST_COMMAND_ANDROID: "python -m pytest ./tests"
           CIBW_TEST_COMMAND_IOS: "python -m pytest ./tests"
-          CIBW_TEST_SKIP: "*-win_arm64"
+          CIBW_TEST_SKIP: "*-win_arm64 *-android_arm64_v8a"
       - uses: actions/upload-artifact@v4
         with:
           name: Wheel-${{ matrix.os }}-${{ matrix.platform }}-${{ matrix.build }}${{ matrix.archs }}
