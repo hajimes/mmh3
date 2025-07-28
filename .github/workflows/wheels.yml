@@ -37,6 +37,12 @@ jobs:
             archs: arm64
           - os: macos-14
             archs: universal2
+          - os: ubuntu-24.04
+            platform: android
+            archs: arm64_v8a
+          - os: ubuntu-24.04
+            platform: android
+            archs: arm64_x86_64
           - os: macos-14
             platform: ios
             archs: arm64_iphoneos
@@ -66,8 +72,10 @@ jobs:
           CIBW_ARCHS: ${{ matrix.archs }}
           CIBW_BUILD_FRONTEND: "build"
           CIBW_TEST_REQUIRES: "pytest"
+          CIBW_TEST_SOURCES_ANDROID: "./tests"
           CIBW_TEST_SOURCES_IOS: "./tests"
           CIBW_TEST_COMMAND: "pytest {project}"
+          CIBW_TEST_ANDROID_IOS: "python -m pytest ./tests"
           CIBW_TEST_COMMAND_IOS: "python -m pytest ./tests"
           CIBW_TEST_SKIP: "*-win_arm64"
       - uses: actions/upload-artifact@v4
