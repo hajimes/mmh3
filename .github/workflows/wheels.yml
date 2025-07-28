@@ -17,34 +17,41 @@ permissions: {}
 
 jobs:
   build_wheels:
-    name: Build wheels on ${{ matrix.os }}_${{ matrix.archs }}
+    name: Build wheel for ${{ matrix.platform }}-${{ matrix.archs }} (runs on ${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-24.04]
+        platform: linux
         archs: [x86_64, i686, aarch64, ppc64le, s390x]
         build: [manylinux, musllinux]
         include:
           - os: windows-2022
+            platform: windows
             archs: AMD64
           - os: windows-2022
+            platform: windows
             archs: x86
           - os: windows-2022
+            platform: windows
             archs: ARM64
           - os: macos-13
+            platform: macos
             archs: x86_64
           - os: macos-14
+            platform: macos
             archs: arm64
           - os: macos-14
+            platform: macos
             archs: universal2
-          - platform: ios
-            os: macos-14
+          - os: macos-14
+            platform: ios
             archs: arm64_iphoneos
-          - platform: ios
-            os: macos-14
+          - os: macos-14
+            platform: ios
             archs: arm64_iphonesimulator
-          - platform: ios
-            os: macos-13
+          - os: macos-13
+            platform: ios
             archs: x86_64_iphonesimulator
     steps:
       - name: Checkout
@@ -62,6 +69,7 @@ jobs:
           output-dir: wheelhouse
         env:
           CIBW_BUILD: "{cp39,cp310,cp311,cp312,cp313}-${{ matrix.build }}*"
+          CIBW_PLATFORM: ${{ matrix.platform }}
           CIBW_ARCHS: ${{ matrix.archs }}
           CIBW_BUILD_FRONTEND: "build"
           CIBW_TEST_REQUIRES: "pytest"
@@ -69,7 +77,7 @@ jobs:
           CIBW_TEST_SKIP: "*-win_arm64"
       - uses: actions/upload-artifact@v4
         with:
-          name: Wheel-${{ matrix.os }}-${{ matrix.build }}${{ matrix.archs }}
+          name: Wheel-${{ matrix.os }}-${{ matrix.platform }}-${{ matrix.build }}${{ matrix.archs }}
           path: ./wheelhouse/*.whl
   build_sdist:
     name: Build a source distribution
