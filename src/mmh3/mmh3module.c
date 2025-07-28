@@ -2274,6 +2274,7 @@ static PyTypeObject MMH3Hasher128x86Type = {
 
 //-----------------------------------------------------------------------------
 // Module
+
 static struct PyModuleDef mmh3module = {
     PyModuleDef_HEAD_INIT,
     "mmh3",
@@ -2313,6 +2314,10 @@ PyInit_mmh3(void)
 
     if (module == NULL)
         return NULL;
+
+#ifdef Py_GIL_DISABLED
+    PyUnstable_Module_SetGIL(module, Py_MOD_GIL_NOT_USED);
+#endif
 
     Py_INCREF(&MMH3Hasher32Type);
     if (PyModule_AddObject(module, "mmh3_32", (PyObject *)&MMH3Hasher32Type) <
