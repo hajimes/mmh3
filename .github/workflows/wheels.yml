@@ -17,7 +17,7 @@ permissions: {}
 
 jobs:
   build_wheels:
-    name: Build wheel for ${{ matrix.archs }} (runs on ${{ matrix.os }})
+    name: Build wheel for ${{ matrix.archs }} ${{ matrix.build }} (runs on ${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -26,22 +26,16 @@ jobs:
         build: [manylinux, musllinux]
         include:
           - os: windows-2022
-            platform: windows
             archs: AMD64
           - os: windows-2022
-            platform: windows
             archs: x86
           - os: windows-2022
-            platform: windows
             archs: ARM64
           - os: macos-13
-            platform: macos
             archs: x86_64
           - os: macos-14
-            platform: macos
             archs: arm64
           - os: macos-14
-            platform: macos
             archs: universal2
           - os: macos-14
             platform: ios
@@ -67,7 +61,7 @@ jobs:
         with:
           output-dir: wheelhouse
         env:
-          CIBW_BUILD: "{cp39,cp310,cp311,cp312,cp313}-${{ matrix.build }}*"
+          CIBW_BUILD: "{cp39,cp310,cp311,cp312,cp313,cp314}-${{ matrix.build }}*"
           CIBW_PLATFORM: ${{ matrix.platform || 'auto' }}
           CIBW_ARCHS: ${{ matrix.archs }}
           CIBW_BUILD_FRONTEND: "build"
