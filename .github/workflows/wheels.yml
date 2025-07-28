@@ -38,7 +38,7 @@ jobs:
           - os: macos-14
             archs: universal2
           - platform: ios
-            sos: macos-14
+            os: macos-14
             archs: arm64_iphoneos
           - platform: ios
             os: macos-14
