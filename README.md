@@ -78,12 +78,11 @@ in the API Reference for more information.
 
 ## Changelog
 
-See [Changelog](https://mmh3.readthedocs.io/en/latest/changelog.html)
-(latest version) for the complete changelog.
+See [Changelog (latest version)](https://mmh3.readthedocs.io/en/latest/changelog.html) for the complete changelog.
 
-## [Unreleased]
+### [Unreleased]
 
-### Added
+#### Added
 
 - Add support for Python 3.14.
 - Add support for Android (Python 3.13 only) and iOS (Python 3.13 and 3.14) wheels,
