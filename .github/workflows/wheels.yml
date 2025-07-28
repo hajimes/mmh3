@@ -39,11 +39,11 @@ jobs:
             archs: universal2
           - os: ubuntu-24.04
             platform: android
-            archs: arm64_v8a
-            build: android
-          - os: ubuntu-24.04
-            platform: android
             archs: x86_64
+            build: android
+          - os: macos-14
+            platform: android
+            archs: arm64_v8a
             build: android
           - os: macos-14
             platform: ios
