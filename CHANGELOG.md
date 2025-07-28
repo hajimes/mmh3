@@ -10,6 +10,15 @@ This project has adhered to
 [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html)
 since version 3.0.0.
 
+## [Unreleased]
+
+### Added
+
+- Add support for Python 3.14.
+- Add support for Android (Python 3.13 only) and iOS (Python 3.13 and 3.14) wheels,
+  enabled by the major version update of
+  [cibuildwheel](https://github.com/pypa/cibuildwheel).
+
 ## [5.1.0] - 2025-01-25
 
 ### Added
@@ -287,6 +296,7 @@ only.
   [Softpedia collected mmh3 1.0 on April 27, 2011](https://web.archive.org/web/20110430172027/https://linux.softpedia.com/get/Programming/Libraries/mmh3-68314.shtml),
   it must have been uploaded to PyPI on or slightly before this date.
 
+[unreleased]: https://github.com/hajimes/mmh3/compare/v5.1.0...HEAD
 [5.1.0]: https://github.com/hajimes/mmh3/compare/v5.0.1...v5.1.0
 [5.0.1]: https://github.com/hajimes/mmh3/compare/v5.0.0...v5.0.1
 [5.0.0]: https://github.com/hajimes/mmh3/compare/v4.1.0...v5.0.0
