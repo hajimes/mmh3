@@ -25,7 +25,8 @@ jobs:
     strategy:
       matrix:
         os: [macos-14, windows-2022, ubuntu-24.04]
-        python-version: [3.9, "3.10", "3.11", "3.12", "3.13", "3.14-dev", "3.14t-dev"]
+        python-version:
+          [3.9, "3.10", "3.11", "3.12", "3.13", "3.14-dev", "3.14t-dev"]
 
     runs-on: ${{ matrix.os }}
     steps:
