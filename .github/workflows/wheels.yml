@@ -37,14 +37,14 @@ jobs:
             archs: arm64
           - os: macos-14
             archs: universal2
-          - os: macos-14
-            platform: ios
+          - platform: ios
+            sos: macos-14
             archs: arm64_iphoneos
-          - os: macos-14
-            platform: ios
+          - platform: ios
+            os: macos-14
             archs: arm64_iphonesimulator
-          - os: macos-13
-            platform: ios
+          - platform: ios
+            os: macos-13
             archs: x86_64_iphonesimulator
     steps:
       - name: Checkout
