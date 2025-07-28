@@ -46,15 +46,15 @@ jobs:
           - os: macos-14
             platform: ios
             archs: arm64_iphoneos
-            test-command: python -m pytest
+            test-command: python -m pytest ./tests
           - os: macos-14
             platform: ios
             archs: arm64_iphonesimulator
-            test-command: python -m pytest
+            test-command: python -m pytest ./tests
           - os: macos-13
             platform: ios
             archs: x86_64_iphonesimulator
-            test-command: python -m pytest
+            test-command: python -m pytest ./tests
     steps:
       - name: Checkout
         uses: actions/checkout@v4
