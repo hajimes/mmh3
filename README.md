@@ -81,16 +81,18 @@ in the API Reference for more information.
 See [Changelog (latest version)](https://mmh3.readthedocs.io/en/latest/changelog.html)
 for the complete changelog.
 
-### [Unreleased]
+### [5.2.0] - 2025-07-29
 
 #### Added
 
 - Add support for Python 3.14, including 3.14t (no-GIL) wheels. However, thread
   safety for the no-GIL variant is not fully tested yet. Please report any
-  issues you encounter.
+  issues you encounter ([#134](https://github.com/hajimes/mmh3/pull/134),
+  [#136](https://github.com/hajimes/mmh3/pull/136)).
 - Add support for Android (Python 3.13 only) and iOS (Python 3.13 and 3.14) wheels,
   enabled by the major version update of
-  [cibuildwheel](https://github.com/pypa/cibuildwheel).
+  [cibuildwheel](https://github.com/pypa/cibuildwheel)
+  ([#135](https://github.com/hajimes/mmh3/pull/135)).
 
 ### [5.1.0] - 2025-01-25
 
@@ -265,6 +267,6 @@ In BibTeX format:
 - <https://github.com/ifduyue/python-xxhash>: Python bindings for xxHash (Yue
   Du)
 
-[unreleased]: https://github.com/hajimes/mmh3/compare/v5.1.0...HEAD
+[5.2.0]: https://github.com/hajimes/mmh3/compare/v5.1.0...v5.2.0
 [5.1.0]: https://github.com/hajimes/mmh3/compare/v5.0.1...v5.1.0
 [5.0.1]: https://github.com/hajimes/mmh3/compare/v5.0.0...v5.0.1
