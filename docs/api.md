@@ -32,6 +32,10 @@ This feature of `mmh3` is essential when portability across different
 architectures is required, such as when calculating hash footprints for web
 services.
 
+Support for no-GIL mode (officially introduced in Python 3.14) was added in
+version 5.2.0. However, thread safety under the no-GIL variant has not been
+fully tested. Please report any issues you encounter.
+
 ## Basic Hash Functions
 
 The following functions are used to hash immutable types, specifically

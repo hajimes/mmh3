@@ -76,7 +76,7 @@ jobs:
         with:
           output-dir: wheelhouse
         env:
-          CIBW_BUILD: "{cp39,cp310,cp311,cp312,cp313,cp314}-${{ matrix.build }}*"
+          CIBW_BUILD: "{cp39,cp310,cp311,cp312,cp313,cp314,cp314t}-${{ matrix.build }}*"
           CIBW_PLATFORM: ${{ matrix.platform || 'auto' }}
           CIBW_ARCHS: ${{ matrix.archs }}
           CIBW_BUILD_FRONTEND: "build"
