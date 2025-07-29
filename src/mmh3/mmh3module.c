@@ -1373,7 +1373,7 @@ MMH3Hasher32_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 }
 
 /* It is impossible to add docstring for __init__ in Python C extension.
-  Therefore, the contsructor docstring should be described in the class
+  Therefore, the constructor docstring should be described in the class
   docstring. See also https://stackoverflow.com/q/11913492 */
 static int
 MMH3Hasher32_init(MMH3Hasher32 *self, PyObject *args, PyObject *kwds)
