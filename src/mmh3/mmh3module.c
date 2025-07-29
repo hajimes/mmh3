@@ -132,6 +132,22 @@ typedef unsigned __int64 uint64_t;
     }
 
 //-----------------------------------------------------------------------------
+// Helpers for mutex manipulations for hashers
+
+#ifdef Py_GIL_DISABLED
+#define MMH3_HASHER_LOCK(obj) PyMutex_Lock(&(obj->mutex))
+#define MMH3_HASHER_UNLOCK(obj) PyMutex_Unlock(&(obj->mutex))
+#define MMH3_HASHER_INIT_MUTEX(obj) \
+    PyMutex t = {0};                \
+    obj->mutex = t;
+
+#else
+#define MMH3_HASHER_LOCK(obj) (void)0
+#define MMH3_HASHER_UNLOCK(obj) (void)0
+#define MMH3_HASHER_INIT_MUTEX(obj) (void)0
+#endif
+
+//-----------------------------------------------------------------------------
 // One shot functions
 
 PyDoc_STRVAR(
@@ -1283,6 +1299,9 @@ typedef struct {
     uint64_t buffer;
     uint8_t shift;
     Py_ssize_t length;
+#ifdef Py_GIL_DISABLED
+    PyMutex mutex;
+#endif
 } MMH3Hasher32;
 
 static PyTypeObject MMH3Hasher32Type;
@@ -1291,10 +1310,13 @@ static FORCE_INLINE void
 update32_impl(MMH3Hasher32 *self, Py_buffer *buf)
 {
     Py_ssize_t i = 0;
-    uint32_t h1 = self->h;
+    uint32_t h1 = 0;
     uint32_t k1 = 0;
     const uint32_t c1 = 0xe6546b64;
     const uint64_t mask = 0xffffffffUL;
+
+    MMH3_HASHER_LOCK(self);
+    h1 = self->h;
 
     for (; i + 4 <= buf->len; i += 4) {
         k1 = getblock32(buf->buf, i / 4);
@@ -1320,9 +1342,11 @@ update32_impl(MMH3Hasher32 *self, Py_buffer *buf)
         }
     }
 
-    PyBuffer_Release(buf);
-
     self->h = h1;
+
+    MMH3_HASHER_UNLOCK(self);
+
+    PyBuffer_Release(buf);
 
     return;
 }
@@ -1343,6 +1367,7 @@ MMH3Hasher32_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
         self->buffer = 0;
         self->shift = 0;
         self->length = 0;
+        MMH3_HASHER_INIT_MUTEX(self);
     }
     return (PyObject *)self;
 }
@@ -1415,7 +1440,10 @@ PyDoc_STRVAR(MMH3Hasher_digest_doc,
 static PyObject *
 MMH3Hasher32_digest(MMH3Hasher32 *self, PyObject *Py_UNUSED(ignored))
 {
+    MMH3_HASHER_LOCK(self);
     uint32_t h = digest32_impl(self->h, self->buffer, self->length);
+    MMH3_HASHER_UNLOCK(self);
+
     char out[MMH3_32_DIGESTSIZE];
 
 #if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
@@ -1438,7 +1466,9 @@ PyDoc_STRVAR(MMH3Hasher_sintdigest_doc,
 static PyObject *
 MMH3Hasher32_sintdigest(MMH3Hasher32 *self, PyObject *Py_UNUSED(ignored))
 {
+    MMH3_HASHER_LOCK(self);
     uint32_t h = digest32_impl(self->h, self->buffer, self->length);
+    MMH3_HASHER_UNLOCK(self);
 
     // Note that simple casting ("(int32_t) h") is an undefined behavior
     int32_t result = *(int32_t *)&h;
@@ -1457,7 +1487,10 @@ PyDoc_STRVAR(MMH3Hasher_uintdigest_doc,
 static PyObject *
 MMH3Hasher32_uintdigest(MMH3Hasher32 *self, PyObject *Py_UNUSED(ignored))
 {
+    MMH3_HASHER_LOCK(self);
     uint32_t h = digest32_impl(self->h, self->buffer, self->length);
+    MMH3_HASHER_UNLOCK(self);
+
     return PyLong_FromUnsignedLong(h);
 }
 
@@ -1478,10 +1511,13 @@ MMH3Hasher32_copy(MMH3Hasher32 *self, PyObject *Py_UNUSED(ignored))
         return NULL;
     }
 
+    MMH3_HASHER_LOCK(self);
     p->h = self->h;
     p->buffer = self->buffer;
     p->shift = self->shift;
     p->length = self->length;
+    MMH3_HASHER_INIT_MUTEX(p);
+    MMH3_HASHER_UNLOCK(self);
 
     return (PyObject *)p;
 }
@@ -1569,6 +1605,9 @@ typedef struct {
     uint64_t buffer2;
     uint8_t shift;
     Py_ssize_t length;
+#ifdef Py_GIL_DISABLED
+    PyMutex mutex;
+#endif
 } MMH3Hasher128x64;
 
 static PyTypeObject MMH3Hasher128x64Type;
@@ -1577,10 +1616,14 @@ static FORCE_INLINE void
 update_x64_128_impl(MMH3Hasher128x64 *self, Py_buffer *buf)
 {
     Py_ssize_t i = 0;
-    uint64_t h1 = self->h1;
-    uint64_t h2 = self->h2;
+    uint64_t h1 = 0;
+    uint64_t h2 = 0;
     uint64_t k1 = 0;
     uint64_t k2 = 0;
+
+    MMH3_HASHER_LOCK(self);
+    h1 = self->h1;
+    h2 = self->h2;
 
     for (; i + 16 <= buf->len; i += 16) {
         k1 = getblock64(buf->buf, (i / 16) * 2);
@@ -1649,10 +1692,11 @@ update_x64_128_impl(MMH3Hasher128x64 *self, Py_buffer *buf)
         }
     }
 
-    PyBuffer_Release(buf);
-
     self->h1 = h1;
     self->h2 = h2;
+    MMH3_HASHER_UNLOCK(self);
+
+    PyBuffer_Release(buf);
 }
 
 static void
@@ -1673,6 +1717,7 @@ MMH3Hasher128x64_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
         self->buffer2 = 0;
         self->shift = 0;
         self->length = 0;
+        MMH3_HASHER_INIT_MUTEX(self);
     }
     return (PyObject *)self;
 }
@@ -1718,8 +1763,10 @@ static PyObject *
 MMH3Hasher128x64_digest(MMH3Hasher128x64 *self, PyObject *Py_UNUSED(ignored))
 {
     const char out[MMH3_128_DIGESTSIZE];
+    MMH3_HASHER_LOCK(self);
     digest_x64_128_impl(self->h1, self->h2, self->buffer1, self->buffer2,
                         self->length, out);
+    MMH3_HASHER_UNLOCK(self);
     return PyBytes_FromStringAndSize(out, MMH3_128_DIGESTSIZE);
 }
 
@@ -1728,8 +1775,10 @@ MMH3Hasher128x64_sintdigest(MMH3Hasher128x64 *self,
                             PyObject *Py_UNUSED(ignored))
 {
     const char out[MMH3_128_DIGESTSIZE];
+    MMH3_HASHER_LOCK(self);
     digest_x64_128_impl(self->h1, self->h2, self->buffer1, self->buffer2,
                         self->length, out);
+    MMH3_HASHER_UNLOCK(self);
     const int little_endian = 1;
     const int is_signed = 1;
 
@@ -1750,8 +1799,10 @@ MMH3Hasher128x64_uintdigest(MMH3Hasher128x64 *self,
                             PyObject *Py_UNUSED(ignored))
 {
     const char out[MMH3_128_DIGESTSIZE];
+    MMH3_HASHER_LOCK(self);
     digest_x64_128_impl(self->h1, self->h2, self->buffer1, self->buffer2,
                         self->length, out);
+    MMH3_HASHER_UNLOCK(self);
     const int little_endian = 1;
     const int is_signed = 0;
 
@@ -1781,8 +1832,10 @@ MMH3Hasher128x64_stupledigest(MMH3Hasher128x64 *self,
                               PyObject *Py_UNUSED(ignored))
 {
     const char out[MMH3_128_DIGESTSIZE];
+    MMH3_HASHER_LOCK(self);
     digest_x64_128_impl(self->h1, self->h2, self->buffer1, self->buffer2,
                         self->length, out);
+    MMH3_HASHER_UNLOCK(self);
 
     const char *valflag = "LL";
     uint64_t result1 = ((uint64_t *)out)[0];
@@ -1811,8 +1864,10 @@ MMH3Hasher128x64_utupledigest(MMH3Hasher128x64 *self,
                               PyObject *Py_UNUSED(ignored))
 {
     const char out[MMH3_128_DIGESTSIZE];
+    MMH3_HASHER_LOCK(self);
     digest_x64_128_impl(self->h1, self->h2, self->buffer1, self->buffer2,
                         self->length, out);
+    MMH3_HASHER_UNLOCK(self);
 
     const char *valflag = "KK";
     uint64_t result1 = ((uint64_t *)out)[0];
@@ -1843,12 +1898,15 @@ MMH3Hasher128x64_copy(MMH3Hasher128x64 *self, PyObject *Py_UNUSED(ignored))
         return NULL;
     }
 
+    MMH3_HASHER_LOCK(self);
     p->h1 = self->h1;
     p->h2 = self->h2;
     p->buffer1 = self->buffer1;
     p->buffer2 = self->buffer2;
     p->shift = self->shift;
     p->length = self->length;
+    MMH3_HASHER_INIT_MUTEX(p);
+    MMH3_HASHER_UNLOCK(self);
 
     return (PyObject *)p;
 }
@@ -1940,6 +1998,9 @@ typedef struct {
     uint32_t buffer4;
     uint8_t shift;
     Py_ssize_t length;
+#ifdef Py_GIL_DISABLED
+    PyMutex mutex;
+#endif
 } MMH3Hasher128x86;
 
 static PyTypeObject MMH3Hasher128x86Type;
@@ -1948,11 +2009,17 @@ static FORCE_INLINE void
 update_x86_128_impl(MMH3Hasher128x86 *self, Py_buffer *buf)
 {
     Py_ssize_t i = 0;
-    uint32_t h1 = self->h1;
-    uint32_t h2 = self->h2;
-    uint32_t h3 = self->h3;
-    uint32_t h4 = self->h4;
+    uint32_t h1 = 0;
+    uint32_t h2 = 0;
+    uint32_t h3 = 0;
+    uint32_t h4 = 0;
     uint32_t k1 = 0;
+
+    MMH3_HASHER_LOCK(self);
+    h1 = self->h1;
+    h2 = self->h2;
+    h3 = self->h3;
+    h4 = self->h4;
 
     for (; i < buf->len; i++) {
         k1 = ((uint8_t *)buf->buf)[i];
@@ -1997,12 +2064,13 @@ update_x86_128_impl(MMH3Hasher128x86 *self, Py_buffer *buf)
         }
     }
 
-    PyBuffer_Release(buf);
-
     self->h1 = h1;
     self->h2 = h2;
     self->h3 = h3;
     self->h4 = h4;
+    MMH3_HASHER_UNLOCK(self);
+
+    PyBuffer_Release(buf);
 }
 
 static void
@@ -2027,6 +2095,7 @@ MMH3Hasher128x86_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
         self->buffer4 = 0;
         self->shift = 0;
         self->length = 0;
+        MMH3_HASHER_INIT_MUTEX(self);
     }
     return (PyObject *)self;
 }
@@ -2073,9 +2142,11 @@ static PyObject *
 MMH3Hasher128x86_digest(MMH3Hasher128x86 *self, PyObject *Py_UNUSED(ignored))
 {
     char out[MMH3_128_DIGESTSIZE];
+    MMH3_HASHER_LOCK(self);
     digest_x86_128_impl(self->h1, self->h2, self->h3, self->h4, self->buffer1,
                         self->buffer2, self->buffer3, self->buffer4,
                         self->length, out);
+    MMH3_HASHER_UNLOCK(self);
     return PyBytes_FromStringAndSize(out, MMH3_128_DIGESTSIZE);
 }
 
@@ -2084,9 +2155,11 @@ MMH3Hasher128x86_sintdigest(MMH3Hasher128x86 *self,
                             PyObject *Py_UNUSED(ignored))
 {
     const char out[MMH3_128_DIGESTSIZE];
+    MMH3_HASHER_LOCK(self);
     digest_x86_128_impl(self->h1, self->h2, self->h3, self->h4, self->buffer1,
                         self->buffer2, self->buffer3, self->buffer4,
                         self->length, out);
+    MMH3_HASHER_UNLOCK(self);
     const int little_endian = 1;
     const int is_signed = 1;
 
@@ -2107,9 +2180,11 @@ MMH3Hasher128x86_uintdigest(MMH3Hasher128x86 *self,
                             PyObject *Py_UNUSED(ignored))
 {
     const char out[MMH3_128_DIGESTSIZE];
+    MMH3_HASHER_LOCK(self);
     digest_x86_128_impl(self->h1, self->h2, self->h3, self->h4, self->buffer1,
                         self->buffer2, self->buffer3, self->buffer4,
                         self->length, out);
+    MMH3_HASHER_UNLOCK(self);
     const int little_endian = 1;
     const int is_signed = 0;
 
@@ -2130,9 +2205,11 @@ MMH3Hasher128x86_stupledigest(MMH3Hasher128x86 *self,
                               PyObject *Py_UNUSED(ignored))
 {
     const char out[MMH3_128_DIGESTSIZE];
+    MMH3_HASHER_LOCK(self);
     digest_x86_128_impl(self->h1, self->h2, self->h3, self->h4, self->buffer1,
                         self->buffer2, self->buffer3, self->buffer4,
                         self->length, out);
+    MMH3_HASHER_UNLOCK(self);
 
     const char *valflag = "LL";
     uint64_t result1 = ((uint64_t *)out)[0];
@@ -2151,9 +2228,11 @@ MMH3Hasher128x86_utupledigest(MMH3Hasher128x86 *self,
                               PyObject *Py_UNUSED(ignored))
 {
     const char out[MMH3_128_DIGESTSIZE];
+    MMH3_HASHER_LOCK(self);
     digest_x86_128_impl(self->h1, self->h2, self->h3, self->h4, self->buffer1,
                         self->buffer2, self->buffer3, self->buffer4,
                         self->length, out);
+    MMH3_HASHER_UNLOCK(self);
 
     const char *valflag = "KK";
     uint64_t result1 = ((uint64_t *)out)[0];
@@ -2184,6 +2263,7 @@ MMH3Hasher128x86_copy(MMH3Hasher128x86 *self, PyObject *Py_UNUSED(ignored))
         return NULL;
     }
 
+    MMH3_HASHER_LOCK(self);
     p->h1 = self->h1;
     p->h2 = self->h2;
     p->h3 = self->h3;
@@ -2194,6 +2274,8 @@ MMH3Hasher128x86_copy(MMH3Hasher128x86 *self, PyObject *Py_UNUSED(ignored))
     p->buffer4 = self->buffer4;
     p->shift = self->shift;
     p->length = self->length;
+    MMH3_HASHER_INIT_MUTEX(p);
+    MMH3_HASHER_UNLOCK(self);
 
     return (PyObject *)p;
 }
