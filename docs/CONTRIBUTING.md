@@ -52,11 +52,12 @@ Run:
 git clone https://github.com/hajimes/mmh3.git
 ```
 
-This project uses `tox` to automate testing and other tasks. You can install
-`tox` by running:
+This project uses `tox-uv` to automate testing and other tasks. You can install
+`tox-uv` by running:
 
 ```shell
-pipx install tox
+pipx install uv
+uv tool install tox --with tox-uv
 ```
 
 In addition, `npx` (included with `npm` >= 5.2.0) is required within the `tox`

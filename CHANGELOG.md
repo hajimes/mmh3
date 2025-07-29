@@ -14,7 +14,9 @@ since version 3.0.0.
 
 ### Added
 
-- Add support for Python 3.14.
+- Add support for Python 3.14, including 3.14t (no-GIL) wheels. However, thread
+  safety for the no-GIL variant is not fully tested yet. Please report any
+  issues you encounter.
 - Add support for Android (Python 3.13 only) and iOS (Python 3.13 and 3.14) wheels,
   enabled by the major version update of
   [cibuildwheel](https://github.com/pypa/cibuildwheel).
