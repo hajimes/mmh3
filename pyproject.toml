@@ -42,7 +42,7 @@ lint = [
   "pylint == 3.3.7"
 ]
 type = [
-  "mypy == 1.17.0"
+  "mypy == 1.17.1"
 ]
 docs = [
   "myst-parser == 4.0.1",
