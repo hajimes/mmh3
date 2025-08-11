@@ -39,10 +39,10 @@ lint = [
   "black == 25.1.0",
   "clang-format == 20.1.8",
   "isort == 6.0.1",
-  "pylint == 3.3.7"
+  "pylint == 3.3.8"
 ]
 type = [
-  "mypy == 1.17.0"
+  "mypy == 1.17.1"
 ]
 docs = [
   "myst-parser == 4.0.1",
