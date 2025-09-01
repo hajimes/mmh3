@@ -33,20 +33,20 @@ classifiers = [
 [project.optional-dependencies]
 test = [
   "pytest == 8.4.1",
-  "pytest-sugar == 1.0.0"
+  "pytest-sugar == 1.1.1"
 ]
 lint = [
   "black == 25.1.0",
-  "clang-format == 20.1.8",
+  "clang-format == 21.1.0",
   "isort == 6.0.1",
-  "pylint == 3.3.7"
+  "pylint == 3.3.8"
 ]
 type = [
-  "mypy == 1.17.0"
+  "mypy == 1.17.1"
 ]
 docs = [
   "myst-parser == 4.0.1",
-  "shibuya == 2025.7.24",
+  "shibuya == 2025.8.16",
   "sphinx == 8.2.3",
   "sphinx-copybutton == 0.5.2"
 ]
@@ -57,7 +57,7 @@ benchmark = [
 ]
 plot = [
   "matplotlib == 3.10.3",
-  "pandas == 2.3.1"
+  "pandas == 2.3.2"
 ]
 
 [project.urls]
