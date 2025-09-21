@@ -57,13 +57,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.13"
       - name: Set up QEMU
         if: runner.os == 'Linux' && matrix.platform != 'android'
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392 # v3.6.0
       # https://github.blog/changelog/2024-04-02-github-actions-hardware-accelerated-android-virtualization-now-available/
       - name: Set up KVM for Android emulation
         if: runner.os == 'Linux' && matrix.platform == 'android'
@@ -72,7 +74,7 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
       - name: Build wheels
-        uses: pypa/cibuildwheel@v3.1.1
+        uses: pypa/cibuildwheel@vc923d83ad9c1bc00211c5041d0c3f73294ff88f6 # v3.1.4
         with:
           output-dir: wheelhouse
         env:
