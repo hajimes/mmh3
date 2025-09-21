@@ -14,6 +14,5 @@ jobs:
     uses: ./.github/workflows/wheels.yml
     with:
       pypi-repository: "testpypi"
-    secrets:
-      pypi-username: ${{ secrets.TEST_PYPI_USERNAME }}
-      pypi-password: ${{ secrets.TEST_PYPI_PASSWORD }}
+      pypi-url: "https://test.pypi.org/p/mmh3"
+      pypi-endpoint: https://test.pypi.org/legacy/

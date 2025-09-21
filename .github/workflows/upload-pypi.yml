@@ -15,6 +15,5 @@ jobs:
     uses: ./.github/workflows/wheels.yml
     with:
       pypi-repository: "pypi"
-    secrets:
-      pypi-username: ${{ secrets.PYPI_USERNAME }}
-      pypi-password: ${{ secrets.PYPI_PASSWORD }}
+      pypi-url: https://pypi.org/p/mmh3
+      pypi-endpoint: https://upload.pypi.org/legacy/

@@ -99,6 +99,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -124,23 +126,18 @@ jobs:
     name: "Upload to PyPI/Test PyPI"
     runs-on: ubuntu-24.04
     needs: [build_wheels, build_sdist]
+    environment:
+      name: ${{ inputs.pypi-repository }}
+      url:: ${{ inputs.pypi-url }}
+    permissions:
+      id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
     steps:
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.13"
       - name: Set up built items
         uses: actions/download-artifact@v4
         with:
           path: dist
           merge-multiple: true
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install setuptools wheel twine
-      - name: "Publish"
-        env:
-          TWINE_USERNAME: ${{ secrets.pypi-username }}
-          TWINE_PASSWORD: ${{ secrets.pypi-password }}
-        run: |
-          twine upload --repository ${{ inputs.pypi-repository }} dist/*
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@ed0c53931b1dc9bd32cbe73a98c7f6766f8a527e # v1.13.0
+        with:
+          repository-url: ${{ inputs.pypi-endpoint }}
