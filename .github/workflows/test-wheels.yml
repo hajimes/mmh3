@@ -4,7 +4,8 @@ name: Build and Test Wheels
 on:
   workflow_dispatch:
 
-permissions: {}
+permissions:
+  id-token: write
 
 jobs:
   publish:
