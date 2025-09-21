@@ -7,11 +7,12 @@ on:
       pypi-repository:
         required: false
         type: string
-    secrets:
-      pypi-username:
+      pypi-url:
         required: false
-      pypi-password:
+        type: string
+      pypi-endpoint:
         required: false
+        type: string
 
 permissions: {}
 
@@ -130,7 +131,7 @@ jobs:
       name: ${{ inputs.pypi-repository }}
       url: ${{ inputs.pypi-url }}
     permissions:
-      id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
+      id-token: write # IMPORTANT: this permission is mandatory for trusted publishing
     steps:
       - name: Set up built items
         uses: actions/download-artifact@v4
