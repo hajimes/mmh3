@@ -128,7 +128,7 @@ jobs:
     needs: [build_wheels, build_sdist]
     environment:
       name: ${{ inputs.pypi-repository }}
-      url:: ${{ inputs.pypi-url }}
+      url: ${{ inputs.pypi-url }}
     permissions:
       id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
     steps:

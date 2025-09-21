@@ -15,5 +15,5 @@ jobs:
     uses: ./.github/workflows/wheels.yml
     with:
       pypi-repository: "pypi"
-      pypi-url: https://pypi.org/p/mmh3
-      pypi-endpoint: https://upload.pypi.org/legacy/
+      pypi-url: "https://pypi.org/p/mmh3"
+      pypi-endpoint: "https://upload.pypi.org/legacy/"

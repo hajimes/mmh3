@@ -15,4 +15,4 @@ jobs:
     with:
       pypi-repository: "testpypi"
       pypi-url: "https://test.pypi.org/p/mmh3"
-      pypi-endpoint: https://test.pypi.org/legacy/
+      pypi-endpoint: "https://test.pypi.org/legacy/"
