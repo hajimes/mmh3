@@ -8,19 +8,6 @@ on:
     branches:
       - master
   workflow_dispatch:
-    inputs:
-      pypi-repository:
-        description: 'PyPI repository to upload to (pypi or testpypi)'
-        required: false
-        default: 'testpypi'
-      pypi-url:
-        description: 'PyPI URL (https://pypi.org/p/mmh3 or https://test.pypi.org/p/mmh3)'
-        required: false
-        default: 'https://test.pypi.org/p/mmh3'
-      pypi-endpoint:
-        description: 'PyPI endpoint (https://upload.pypi.org/legacy/ or https://test.pypi.org/legacy/)'
-        required: false
-        default: 'https://test.pypi.org/legacy/'
 
 permissions: {}
 
