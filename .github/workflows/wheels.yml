@@ -4,7 +4,7 @@ name: Wheel-Builder
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - "v*.*.*"
     branches:
       - master
   workflow_dispatch:
@@ -118,7 +118,7 @@ jobs:
         with:
           path: dist/*.tar.gz
   publish-to-pypi:
-    name:: "Publish artifacts to PyPI"
+    name: "Publish artifacts to PyPI"
     if: startsWith(github.ref, 'refs/tags/')
     needs: [build_wheels, build_sdist]
     runs-on: ubuntu-24.04
@@ -136,7 +136,7 @@ jobs:
       - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@ed0c53931b1dc9bd32cbe73a98c7f6766f8a527e # v1.13.0
   publish-to-testpypi:
-    name:: "Publish artifacts to TestPyPI"
+    name: "Publish artifacts to TestPyPI"
     if: startsWith(github.ref, 'refs/heads/master')
     needs: [build_wheels, build_sdist]
     runs-on: ubuntu-24.04
