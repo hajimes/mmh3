@@ -2,17 +2,25 @@
 name: Wheel-Builder
 
 on:
-  workflow_call:
+  push:
+    tags:
+      - 'v*.*.*'
+    branches:
+      - master
+  workflow_dispatch:
     inputs:
       pypi-repository:
+        description: 'PyPI repository to upload to (pypi or testpypi)'
         required: false
-        type: string
+        default: 'testpypi'
       pypi-url:
+        description: 'PyPI URL (https://pypi.org/p/mmh3 or https://test.pypi.org/p/mmh3)'
         required: false
-        type: string
+        default: 'https://test.pypi.org/p/mmh3'
       pypi-endpoint:
+        description: 'PyPI endpoint (https://upload.pypi.org/legacy/ or https://test.pypi.org/legacy/)'
         required: false
-        type: string
+        default: 'https://test.pypi.org/legacy/'
 
 permissions: {}
 
@@ -122,14 +130,14 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           path: dist/*.tar.gz
-  publish:
-    if: ${{ inputs.pypi-repository == 'pypi' || inputs.pypi-repository == 'testpypi'}}
-    name: "Upload to PyPI/Test PyPI"
-    runs-on: ubuntu-24.04
+  publish-to-pypi:
+    name:: "Publish artifacts to PyPI"
+    if: startsWith(github.ref, 'refs/tags/')
     needs: [build_wheels, build_sdist]
+    runs-on: ubuntu-24.04
     environment:
-      name: ${{ inputs.pypi-repository }}
-      url: ${{ inputs.pypi-url }}
+      name: pypi
+      url: https://pypi.org/p/mmh3
     permissions:
       id-token: write # IMPORTANT: this permission is mandatory for trusted publishing
     steps:
@@ -140,5 +148,23 @@ jobs:
           merge-multiple: true
       - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@ed0c53931b1dc9bd32cbe73a98c7f6766f8a527e # v1.13.0
+  publish-to-testpypi:
+    name:: "Publish artifacts to TestPyPI"
+    if: startsWith(github.ref, 'refs/heads/master')
+    needs: [build_wheels, build_sdist]
+    runs-on: ubuntu-24.04
+    environment:
+      name: testpypi
+      url: https://test.pypi.org/p/mmh3
+    permissions:
+      id-token: write # IMPORTANT: this permission is mandatory for trusted publishing
+    steps:
+      - name: Set up built items
+        uses: actions/download-artifact@v5
         with:
-          repository-url: ${{ inputs.pypi-endpoint }}
+          path: dist
+          merge-multiple: true
+      - name: Publish package distributions to TestPyPI
+        uses: pypa/gh-action-pypi-publish@ed0c53931b1dc9bd32cbe73a98c7f6766f8a527e # v1.13.0
+        with:
+          repository-url: https://test.pypi.org/legacy/
