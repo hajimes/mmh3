@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mmh3"
-version = "5.2.0"
+version = "5.2.1-alpha.1"
 description = "Python extension for MurmurHash (MurmurHash3), a set of fast and robust hash functions."
 readme = "README.md"
 license = {file = "LICENSE"}
@@ -32,21 +32,21 @@ classifiers = [
 
 [project.optional-dependencies]
 test = [
-  "pytest == 8.4.1",
-  "pytest-sugar == 1.0.0"
+  "pytest == 8.4.2",
+  "pytest-sugar == 1.1.1"
 ]
 lint = [
-  "black == 25.1.0",
-  "clang-format == 20.1.8",
+  "black == 25.9.0",
+  "clang-format == 21.1.1",
   "isort == 6.0.1",
-  "pylint == 3.3.7"
+  "pylint == 3.3.8"
 ]
 type = [
-  "mypy == 1.17.0"
+  "mypy == 1.18.2"
 ]
 docs = [
   "myst-parser == 4.0.1",
-  "shibuya == 2025.7.24",
+  "shibuya == 2025.8.16",
   "sphinx == 8.2.3",
   "sphinx-copybutton == 0.5.2"
 ]
@@ -57,7 +57,7 @@ benchmark = [
 ]
 plot = [
   "matplotlib == 3.10.3",
-  "pandas == 2.3.1"
+  "pandas == 2.3.2"
 ]
 
 [project.urls]
