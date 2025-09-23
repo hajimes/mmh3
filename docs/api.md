@@ -33,7 +33,9 @@ architectures is required, such as when calculating hash footprints for web
 services.
 
 ```{caution}
-[Buffer-accepting hash functions](#buffer-accepting-hash-functions) (except the deprecated `hash_from_buffer`) accept positional-arguments only. Using keyword arguments will raise a `TypeError`.
+[Buffer-accepting hash functions](#buffer-accepting-hash-functions) (except the
+deprecated `hash_from_buffer`) accept positional-arguments only. Using keyword
+arguments will raise a `TypeError`.
 ```
 
 ```{note}
