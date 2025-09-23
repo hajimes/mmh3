@@ -32,9 +32,25 @@ This feature of `mmh3` is essential when portability across different
 architectures is required, such as when calculating hash footprints for web
 services.
 
+```{caution}
+[Buffer-accepting hash functions](#buffer-accepting-hash-functions) (except the
+deprecated `hash_from_buffer`) accept positional-arguments only. Using keyword
+arguments will raise a `TypeError`.
+```
+
+```{note}
 Support for no-GIL mode (officially introduced in Python 3.14) was added in
-version 5.2.0. However, thread safety under the no-GIL variant has not been
-fully tested. Please report any issues you encounter.
+version 5.2.0.
+- Basic hash functions are inherently thread-safe by design.
+- Buffer-accepting hash functions are thread-safe,
+  **provided the input buffer is thread-safe**.
+- Hasher classes are thread-safe,
+  again **assuming the input buffer is thread-safe**.
+
+However, thread safety under the no-GIL variant has not yet been
+fully tested as of 5.2.0. If you encounter any issues, please report them via
+the [issue tracker](https://github.com/hajimes/mmh3/issues).
+```
 
 ## Basic Hash Functions
 
