@@ -37,7 +37,7 @@ test = [
 ]
 lint = [
   "black == 25.9.0",
-  "clang-format == 21.1.1",
+  "clang-format == 21.1.2",
   "isort == 6.0.1",
   "pylint == 3.3.8"
 ]
@@ -46,7 +46,7 @@ type = [
 ]
 docs = [
   "myst-parser == 4.0.1",
-  "shibuya == 2025.8.16",
+  "shibuya == 2025.9.25",
   "sphinx == 8.2.3",
   "sphinx-copybutton == 0.5.2"
 ]
