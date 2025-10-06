@@ -37,27 +37,27 @@ test = [
 ]
 lint = [
   "black == 25.9.0",
-  "clang-format == 21.1.1",
-  "isort == 6.0.1",
-  "pylint == 3.3.8"
+  "clang-format == 21.1.2",
+  "isort == 6.1.0",
+  "pylint == 3.3.9"
 ]
 type = [
   "mypy == 1.18.2"
 ]
 docs = [
   "myst-parser == 4.0.1",
-  "shibuya == 2025.8.16",
+  "shibuya == 2025.9.25",
   "sphinx == 8.2.3",
   "sphinx-copybutton == 0.5.2"
 ]
 benchmark = [
   "pymmh3 == 0.0.5",
   "pyperf == 2.9.0",
-  "xxhash == 3.5.0"
+  "xxhash == 3.6.0"
 ]
 plot = [
   "matplotlib == 3.10.3",
-  "pandas == 2.3.2"
+  "pandas == 2.3.3"
 ]
 
 [project.urls]
