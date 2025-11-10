@@ -61,7 +61,7 @@ jobs:
           python-version: "3.13"
       - name: Set up QEMU
         if: runner.os == 'Linux' && matrix.platform != 'android'
-        uses: docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392 # v3.6.0
+        uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
       # https://github.blog/changelog/2024-04-02-github-actions-hardware-accelerated-android-virtualization-now-available/
       - name: Set up KVM for Android emulation
         if: runner.os == 'Linux' && matrix.platform == 'android'
@@ -70,7 +70,7 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
       - name: Build wheels
-        uses: pypa/cibuildwheel@c923d83ad9c1bc00211c5041d0c3f73294ff88f6 # v3.1.4
+        uses: pypa/cibuildwheel@9c00cb4f6b517705a3794b22395aedc36257242c # v3.2.1
         with:
           output-dir: wheelhouse
         env:
@@ -85,7 +85,7 @@ jobs:
           CIBW_TEST_COMMAND_ANDROID: "python -m pytest ./tests"
           CIBW_TEST_COMMAND_IOS: "python -m pytest ./tests"
           CIBW_TEST_SKIP: "*-win_arm64 *-android_arm64_v8a"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: Wheel-${{ matrix.os }}-${{ matrix.platform }}-${{ matrix.build }}${{ matrix.archs }}
           path: ./wheelhouse/*.whl
@@ -114,7 +114,7 @@ jobs:
           python -m pip install dist/*.tar.gz
           python -m pytest
           mypy --strict tests
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           path: dist/*.tar.gz
   publish-to-pypi:
@@ -129,7 +129,7 @@ jobs:
       id-token: write # IMPORTANT: this permission is mandatory for trusted publishing
     steps:
       - name: Set up built items
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           path: dist
           merge-multiple: true
@@ -147,7 +147,7 @@ jobs:
       id-token: write # IMPORTANT: this permission is mandatory for trusted publishing
     steps:
       - name: Set up built items
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           path: dist
           merge-multiple: true
