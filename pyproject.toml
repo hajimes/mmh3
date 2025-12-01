@@ -36,28 +36,28 @@ test = [
   "pytest-sugar == 1.1.1"
 ]
 lint = [
-  "black == 25.9.0",
-  "clang-format == 21.1.1",
-  "isort == 6.0.1",
-  "pylint == 3.3.8"
+  "black == 25.11.0",
+  "clang-format == 21.1.6",
+  "isort == 6.1.0",
+  "pylint == 3.3.9"
 ]
 type = [
-  "mypy == 1.18.2"
+  "mypy == 1.19.0"
 ]
 docs = [
   "myst-parser == 4.0.1",
-  "shibuya == 2025.8.16",
+  "shibuya == 2025.10.21",
   "sphinx == 8.2.3",
   "sphinx-copybutton == 0.5.2"
 ]
 benchmark = [
   "pymmh3 == 0.0.5",
   "pyperf == 2.9.0",
-  "xxhash == 3.5.0"
+  "xxhash == 3.6.0"
 ]
 plot = [
   "matplotlib == 3.10.3",
-  "pandas == 2.3.2"
+  "pandas == 2.3.3"
 ]
 
 [project.urls]
