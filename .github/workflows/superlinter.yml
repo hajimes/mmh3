@@ -45,10 +45,14 @@ jobs:
           LINTER_RULES_PATH: /
           PYTHON_ISORT_CONFIG_FILE: pyproject.toml
           PYTHON_PYLINT_CONFIG_FILE: pyproject.toml
+          # Temporarily suppressed but should be re-enabled after migration to Ruff
+          FIX_PYTHON_RUFF_FORMAT: false
           # Suppressed because it conflicts with clang-format in some cases
           VALIDATE_CPP: false
           # Suppressed because copy/paste is sometimes required at low level
           VALIDATE_JSCPD: false
+          # Suppressed for migration to Ruff
+          VALIDATE_PYTHON_FLAKE8: false
           # Suppressed because it even accuses book titles
           VALIDATE_NATURAL_LANGUAGE: false
           # Suppressed because it does not honor the ignore-paths option
