@@ -52,11 +52,11 @@ jobs:
             archs: x86_64_iphonesimulator
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: "3.13"
       - name: Set up QEMU
@@ -85,7 +85,7 @@ jobs:
           CIBW_TEST_COMMAND_ANDROID: "python -m pytest ./tests"
           CIBW_TEST_COMMAND_IOS: "python -m pytest ./tests"
           CIBW_TEST_SKIP: "*-win_arm64 *-android_arm64_v8a"
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: Wheel-${{ matrix.os }}-${{ matrix.platform }}-${{ matrix.build }}${{ matrix.archs }}
           path: ./wheelhouse/*.whl
@@ -94,11 +94,11 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: "3.13"
       - name: Build sdist
@@ -114,7 +114,7 @@ jobs:
           python -m pip install dist/*.tar.gz
           python -m pytest
           mypy --strict tests
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           path: dist/*.tar.gz
   publish-to-pypi:
@@ -129,7 +129,7 @@ jobs:
       id-token: write # IMPORTANT: this permission is mandatory for trusted publishing
     steps:
       - name: Set up built items
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8.0.0
         with:
           path: dist
           merge-multiple: true
@@ -147,7 +147,7 @@ jobs:
       id-token: write # IMPORTANT: this permission is mandatory for trusted publishing
     steps:
       - name: Set up built items
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8.0.0
         with:
           path: dist
           merge-multiple: true
