@@ -10,6 +10,8 @@ updates:
       dependencies:
         patterns:
           - "*"
+    cooldown:
+      default-days: 7
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
@@ -20,3 +22,5 @@ updates:
       dependencies:
         patterns:
           - "*"
+    cooldown:
+      default-days: 7
