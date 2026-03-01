@@ -67,9 +67,12 @@ Changelog = "https://github.com/hajimes/mmh3/blob/master/CHANGELOG.md"
 "Bug Tracker" = "https://github.com/hajimes/mmh3/issues"
 
 [tool.codespell]
-skip = "*/paper.bib,./build"
-# Collet is a surname, and fo is used in several test strings'
-ignore-words-list = "Collet,fo"
+# As of 2026-03-02, skip has an issue on super-linter
+# https://github.com/super-linter/super-linter/issues/7466
+#skip = "*/paper.bib,./build"
+# Collet is a surname, Commun is an abbr for a journal name,
+# fo is used in several test strings, and Ines is also a surname.
+ignore-words-list = "Collet,Commun,fo,Ines"
 
 [tool.isort]
 profile = "black"
