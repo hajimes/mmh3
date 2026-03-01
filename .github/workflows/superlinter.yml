@@ -45,8 +45,6 @@ jobs:
           LINTER_RULES_PATH: /
           PYTHON_ISORT_CONFIG_FILE: pyproject.toml
           PYTHON_PYLINT_CONFIG_FILE: pyproject.toml
-          # Temporarily suppressed but should be re-enabled after migration to Ruff
-          FIX_PYTHON_RUFF_FORMAT: false
           # Suppressed because it conflicts with clang-format in some cases
           VALIDATE_CPP: false
           # Suppressed because copy/paste is sometimes required at low level
@@ -57,6 +55,8 @@ jobs:
           VALIDATE_NATURAL_LANGUAGE: false
           # Suppressed because it does not honor the ignore-paths option
           VALIDATE_PYTHON_PYLINT: false
+          # Temporarily suppressed but should be re-enabled after migration to Ruff
+          VALIDATE_PYTHON_RUFF_FORMAT: false
       # super-linter 7 does not honor the ignore-paths option of pylint
       # so we run pylint separately
       - name: Set up Python
