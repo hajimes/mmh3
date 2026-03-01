@@ -10,6 +10,12 @@ This project has adhered to
 [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html)
 since version 3.0.0.
 
+## [Unreleased]
+
+### Removed
+
+- Drop support for Python 3.9, as it has reached the end of life on 2025-10-31.
+
 ## [5.2.0] - 2025-07-29
 
 ### Added
@@ -300,6 +306,7 @@ only.
   [Softpedia collected mmh3 1.0 on April 27, 2011](https://web.archive.org/web/20110430172027/https://linux.softpedia.com/get/Programming/Libraries/mmh3-68314.shtml),
   it must have been uploaded to PyPI on or slightly before this date.
 
+[Unreleased]: https://github.com/hajimes/mmh3/compare/v5.1.0...HEAD
 [5.2.0]: https://github.com/hajimes/mmh3/compare/v5.1.0...v5.2.0
 [5.1.0]: https://github.com/hajimes/mmh3/compare/v5.0.1...v5.1.0
 [5.0.1]: https://github.com/hajimes/mmh3/compare/v5.0.0...v5.0.1

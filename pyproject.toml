@@ -5,12 +5,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mmh3"
-version = "5.2.1-alpha.2"
+version = "5.2.1-alpha.3"
 description = "Python extension for MurmurHash (MurmurHash3), a set of fast and robust hash functions."
 readme = "README.md"
 license = {file = "LICENSE"}
 keywords = ["utility", "hash", "MurmurHash"]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 authors = [
   {name = "Hajime Senuma", email="hajime.senuma@gmail.com"}
 ]
@@ -19,7 +19,6 @@ classifiers = [
   "Intended Audience :: Developers",
   "License :: OSI Approved :: MIT License",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
@@ -32,32 +31,32 @@ classifiers = [
 
 [project.optional-dependencies]
 test = [
-  "pytest == 8.4.2",
+  "pytest == 9.0.2",
   "pytest-sugar == 1.1.1"
 ]
 lint = [
-  "black == 25.9.0",
-  "clang-format == 21.1.1",
-  "isort == 6.0.1",
-  "pylint == 3.3.8"
+  "black == 26.1.0",
+  "clang-format == 22.1.0",
+  "isort == 8.0.1",
+  "pylint == 4.0.5"
 ]
 type = [
-  "mypy == 1.18.2"
+  "mypy == 1.19.1"
 ]
 docs = [
-  "myst-parser == 4.0.1",
-  "shibuya == 2025.8.16",
+  "myst-parser == 5.0.0",
+  "shibuya == 2026.1.9",
   "sphinx == 8.2.3",
   "sphinx-copybutton == 0.5.2"
 ]
 benchmark = [
   "pymmh3 == 0.0.5",
   "pyperf == 2.9.0",
-  "xxhash == 3.5.0"
+  "xxhash == 3.6.0"
 ]
 plot = [
-  "matplotlib == 3.10.3",
-  "pandas == 2.3.2"
+  "matplotlib == 3.10.8",
+  "pandas == 3.0.1"
 ]
 
 [project.urls]

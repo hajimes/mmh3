@@ -16,7 +16,7 @@ jobs:
       BENCHMARK_MAX_SIZE: 262144
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           persist-credentials: false
       - name: Set up Python
@@ -82,7 +82,7 @@ jobs:
           sudo systemctl restart irqbalance
           systemctl status irqbalance
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: benchmark-results
           path: var
