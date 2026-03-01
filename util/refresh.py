@@ -167,7 +167,7 @@ def introduce_py_ssize_t(subcode: str) -> str:
     """Use Py_ssize_t instead of int as the index type.
 
     Py_ssize_t is the type used by Python to represent the size of objects.
-    It is required to handle 64-bit data in Python extentions.
+    It is required to handle 64-bit data in Python extensions.
 
     See https://docs.python.org/3/c-api/intro.html#c.Py_ssize_t
     and
@@ -282,7 +282,7 @@ def transform_x86_128_return(subcode: str) -> str:
 
 
 def expand_win_stdint_typedefs(subcode: str) -> str:
-    """Delineate int type defitions for the older versions of the VS compiler.
+    """Delineate int type definitions for the older versions of the VS compiler.
 
     Args:
         subcode (str): The code to be transformed.

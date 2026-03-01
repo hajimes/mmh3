@@ -37,6 +37,7 @@ test = [
 lint = [
   "black == 26.1.0",
   "clang-format == 22.1.0",
+  "codespell == 2.4.1",
   "isort == 8.0.1",
   "pylint == 4.0.5"
 ]
@@ -64,6 +65,11 @@ Homepage = "https://pypi.org/project/mmh3/"
 Repository = "https://github.com/hajimes/mmh3"
 Changelog = "https://github.com/hajimes/mmh3/blob/master/CHANGELOG.md"
 "Bug Tracker" = "https://github.com/hajimes/mmh3/issues"
+
+[tool.codespell]
+skip = "./paper,./build"
+# Collet is a surname, and fo is used in several test strings'
+ignore-words-list = "Collet,fo"
 
 [tool.isort]
 profile = "black"

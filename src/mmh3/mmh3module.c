@@ -2328,7 +2328,7 @@ static PyGetSetDef MMH3Hasher128x86_getsetters[] = {
     {"block_size", (getter)MMH3Hasher128x86_get_block_size, NULL,
      "int: Number of bytes of the internal block of this algorithm", NULL},
     {"name", (getter)MMH3Hasher128x86_get_name, NULL,
-     "str: Te hash algorithm being used by this object", NULL},
+     "str: The hash algorithm being used by this object", NULL},
     {NULL} /* Sentinel */
 };
 
