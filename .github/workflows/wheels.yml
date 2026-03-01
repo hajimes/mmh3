@@ -27,27 +27,27 @@ jobs:
             archs: x86
           - os: windows-2022
             archs: ARM64
-          - os: macos-13
+          - os: macos-15-intel
             archs: x86_64
-          - os: macos-14
+          - os: macos-15
             archs: arm64
-          - os: macos-14
+          - os: macos-15
             archs: universal2
           - os: ubuntu-24.04
             platform: android
             archs: x86_64
             build: android
-          - os: macos-14
+          - os: macos-15
             platform: android
             archs: arm64_v8a
             build: android
-          - os: macos-14
+          - os: macos-15
             platform: ios
             archs: arm64_iphoneos
-          - os: macos-14
+          - os: macos-15
             platform: ios
             archs: arm64_iphonesimulator
-          - os: macos-13
+          - os: macos-15-intel
             platform: ios
             archs: x86_64_iphonesimulator
     steps:
