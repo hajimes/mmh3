@@ -27,41 +27,41 @@ jobs:
             archs: x86
           - os: windows-2022
             archs: ARM64
-          - os: macos-13
+          - os: macos-15-intel
             archs: x86_64
-          - os: macos-14
+          - os: macos-15
             archs: arm64
-          - os: macos-14
+          - os: macos-15
             archs: universal2
           - os: ubuntu-24.04
             platform: android
             archs: x86_64
             build: android
-          - os: macos-14
+          - os: macos-15
             platform: android
             archs: arm64_v8a
             build: android
-          - os: macos-14
+          - os: macos-15
             platform: ios
             archs: arm64_iphoneos
-          - os: macos-14
+          - os: macos-15
             platform: ios
             archs: arm64_iphonesimulator
-          - os: macos-13
+          - os: macos-15-intel
             platform: ios
             archs: x86_64_iphonesimulator
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: "3.13"
       - name: Set up QEMU
         if: runner.os == 'Linux' && matrix.platform != 'android'
-        uses: docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392 # v3.6.0
+        uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
       # https://github.blog/changelog/2024-04-02-github-actions-hardware-accelerated-android-virtualization-now-available/
       - name: Set up KVM for Android emulation
         if: runner.os == 'Linux' && matrix.platform == 'android'
@@ -70,11 +70,11 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
       - name: Build wheels
-        uses: pypa/cibuildwheel@c923d83ad9c1bc00211c5041d0c3f73294ff88f6 # v3.1.4
+        uses: pypa/cibuildwheel@298ed2fb2c105540f5ed055e8a6ad78d82dd3a7e # v3.3.1
         with:
           output-dir: wheelhouse
         env:
-          CIBW_BUILD: "{cp39,cp310,cp311,cp312,cp313,cp314,cp314t}-${{ matrix.build }}*"
+          CIBW_BUILD: "{cp310,cp311,cp312,cp313,cp314,cp314t}-${{ matrix.build }}*"
           CIBW_PLATFORM: ${{ matrix.platform || 'auto' }}
           CIBW_ARCHS: ${{ matrix.archs }}
           CIBW_BUILD_FRONTEND: "build"
@@ -85,7 +85,7 @@ jobs:
           CIBW_TEST_COMMAND_ANDROID: "python -m pytest ./tests"
           CIBW_TEST_COMMAND_IOS: "python -m pytest ./tests"
           CIBW_TEST_SKIP: "*-win_arm64 *-android_arm64_v8a"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: Wheel-${{ matrix.os }}-${{ matrix.platform }}-${{ matrix.build }}${{ matrix.archs }}
           path: ./wheelhouse/*.whl
@@ -94,11 +94,11 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: "3.13"
       - name: Build sdist
@@ -114,7 +114,7 @@ jobs:
           python -m pip install dist/*.tar.gz
           python -m pytest
           mypy --strict tests
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           path: dist/*.tar.gz
   publish-to-pypi:
@@ -129,7 +129,7 @@ jobs:
       id-token: write # IMPORTANT: this permission is mandatory for trusted publishing
     steps:
       - name: Set up built items
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8.0.0
         with:
           path: dist
           merge-multiple: true
@@ -147,7 +147,7 @@ jobs:
       id-token: write # IMPORTANT: this permission is mandatory for trusted publishing
     steps:
       - name: Set up built items
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8.0.0
         with:
           path: dist
           merge-multiple: true

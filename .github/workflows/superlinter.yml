@@ -30,7 +30,7 @@ jobs:
     steps:
       # Checks out a copy of your repository on the ubuntu-latest machine
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
           # super-linter needs the full git history to get the
@@ -39,7 +39,7 @@ jobs:
 
       # Runs the Super-Linter action
       - name: Run Super-Linter
-        uses: super-linter/super-linter@ffde3b2b33b745cb612d787f669ef9442b1339a6 # v8.1.0
+        uses: super-linter/super-linter@61abc07d755095a68f4987d1c2c3d1d64408f1f9 # v8.5.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LINTER_RULES_PATH: /
@@ -49,14 +49,18 @@ jobs:
           VALIDATE_CPP: false
           # Suppressed because copy/paste is sometimes required at low level
           VALIDATE_JSCPD: false
+          # Suppressed for migration to Ruff
+          VALIDATE_PYTHON_FLAKE8: false
           # Suppressed because it even accuses book titles
           VALIDATE_NATURAL_LANGUAGE: false
           # Suppressed because it does not honor the ignore-paths option
           VALIDATE_PYTHON_PYLINT: false
+          # Temporarily suppressed but should be re-enabled after migration to Ruff
+          VALIDATE_PYTHON_RUFF_FORMAT: false
       # super-linter 7 does not honor the ignore-paths option of pylint
       # so we run pylint separately
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: "3.13"
       - name: Run pylint

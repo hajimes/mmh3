@@ -132,15 +132,13 @@ def append_python_directives(subcode: str) -> str:
     """
     subcode += "\n\n"
 
-    subcode += textwrap.dedent(
-        """\
+    subcode += textwrap.dedent("""\
         // To handle 64-bit data; see https://docs.python.org/3/c-api/arg.html
         #ifndef PY_SSIZE_T_CLEAN
         #define PY_SSIZE_T_CLEAN
         #endif
         #include <Python.h>
-        """
-    )
+        """)
 
     return subcode
 
@@ -156,13 +154,11 @@ def append_byteswap_header(subcode: str) -> str:
     """
     subcode += "\n"
 
-    subcode += textwrap.dedent(
-        """\
+    subcode += textwrap.dedent("""\
         #if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
         #include <byteswap.h>
         #endif
-        """
-    )
+        """)
 
     return subcode
 
@@ -171,7 +167,7 @@ def introduce_py_ssize_t(subcode: str) -> str:
     """Use Py_ssize_t instead of int as the index type.
 
     Py_ssize_t is the type used by Python to represent the size of objects.
-    It is required to handle 64-bit data in Python extentions.
+    It is required to handle 64-bit data in Python extensions.
 
     See https://docs.python.org/3/c-api/intro.html#c.Py_ssize_t
     and
@@ -214,15 +210,13 @@ def transform_getblocks(subcode: str) -> str:
     for tr in transformations:
         subcode = subcode.replace(tr[0], tr[1])
 
-    BYTE_SWAP_IF_BIG_ENDIAN = textwrap.dedent(
-        """\
+    BYTE_SWAP_IF_BIG_ENDIAN = textwrap.dedent("""\
         #if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
             return bswap_\\1(p[i]);
         #else
             return p[i];
         #endif
-        """
-    )
+        """)
 
     subcode = re.sub(
         r"getblock(.*?)(\s\(.*?\{\n).*?\}",
@@ -266,8 +260,7 @@ def transform_x86_128_return(subcode: str) -> str:
     """
     # pylint: disable=invalid-name
 
-    BYTE_SWAP_IF_BIG_ENDIAN = textwrap.dedent(
-        """\
+    BYTE_SWAP_IF_BIG_ENDIAN = textwrap.dedent("""\
         #if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
                 ((uint32_t *)out)[0] = h2;
                 ((uint32_t *)out)[1] = h1;
@@ -276,8 +269,7 @@ def transform_x86_128_return(subcode: str) -> str:
         #else
             \\1
         #endif
-        """
-    )
+        """)
 
     subcode = re.sub(
         r"(\(\(uint32_t\*\)out\)\[0\] = h1;[\s\S]*\(\(uint32_t\*\)out\)\[3\] = h4;)",
@@ -290,7 +282,7 @@ def transform_x86_128_return(subcode: str) -> str:
 
 
 def expand_win_stdint_typedefs(subcode: str) -> str:
-    """Delineate int type defitions for the older versions of the VS compiler.
+    """Delineate int type definitions for the older versions of the VS compiler.
 
     Args:
         subcode (str): The code to be transformed.
@@ -300,16 +292,14 @@ def expand_win_stdint_typedefs(subcode: str) -> str:
     """
     # pylint: disable=invalid-name
 
-    MSC_STDINT_TYPEDEFS = textwrap.dedent(
-        """\
+    MSC_STDINT_TYPEDEFS = textwrap.dedent("""\
         typedef signed __int8 int8_t;
         typedef signed __int32 int32_t;
         typedef signed __int64 int64_t;
         typedef unsigned __int8 uint8_t;
         typedef unsigned __int32 uint32_t;
         typedef unsigned __int64 uint64_t;
-        """
-    )
+        """)
 
     return re.sub(
         r"typedef unsigned char(.*)uint64_t;",
@@ -335,18 +325,15 @@ def append_mur_macros(subcode: str) -> str:
     """
     subcode += "\n\n"
 
-    subcode += textwrap.dedent(
-        """\
+    subcode += textwrap.dedent("""\
         //-----------------------------------------------------------------------------
         // Building blocks for multiply and rotate (MUR) operations.
         // Names are taken from Google Guava's implementation
-        """
-    )
+        """)
 
     subcode += "\n"
 
-    subcode += textwrap.dedent(
-        """\
+    subcode += textwrap.dedent("""\
         static FORCE_INLINE uint32_t
         mixK1(uint32_t k1)
         {
@@ -359,11 +346,9 @@ def append_mur_macros(subcode: str) -> str:
 
             return k1;
         }
-        """
-    )
+        """)
 
-    subcode += textwrap.dedent(
-        """\
+    subcode += textwrap.dedent("""\
         static FORCE_INLINE uint32_t
         mixH1(uint32_t h1, const uint32_t h2, const uint8_t shift, const uint32_t c1)
         {
@@ -373,11 +358,9 @@ def append_mur_macros(subcode: str) -> str:
 
             return h1;
         }
-        """
-    )
+        """)
 
-    subcode += textwrap.dedent(
-        """\
+    subcode += textwrap.dedent("""\
         static FORCE_INLINE uint64_t
         mixK_x64_128(uint64_t k1, const uint8_t shift,
                     const uint64_t c1, const uint64_t c2)
@@ -388,11 +371,9 @@ def append_mur_macros(subcode: str) -> str:
 
             return k1;
         }
-        """
-    )
+        """)
 
-    subcode += textwrap.dedent(
-        """\
+    subcode += textwrap.dedent("""\
         static FORCE_INLINE uint64_t
         mixK1_x64_128(uint64_t k1)
         {
@@ -405,11 +386,9 @@ def append_mur_macros(subcode: str) -> str:
 
             return k1;
         }
-        """
-    )
+        """)
 
-    subcode += textwrap.dedent(
-        """\
+    subcode += textwrap.dedent("""\
         static FORCE_INLINE uint64_t
         mixK2_x64_128(uint64_t k2)
         {
@@ -422,11 +401,9 @@ def append_mur_macros(subcode: str) -> str:
 
             return k2;
         }
-        """
-    )
+        """)
 
-    subcode += textwrap.dedent(
-        """\
+    subcode += textwrap.dedent("""\
         static FORCE_INLINE uint64_t
         mixH_x64_128(uint64_t h1, uint64_t h2, const uint8_t shift, const uint32_t c)
         {
@@ -436,11 +413,9 @@ def append_mur_macros(subcode: str) -> str:
 
             return h1;
         }
-        """
-    )
+        """)
 
-    subcode += textwrap.dedent(
-        """\
+    subcode += textwrap.dedent("""\
         static FORCE_INLINE uint64_t
         mixK_x86_128(uint32_t k, const uint8_t shift, const uint32_t c1,
                     const uint32_t c2)
@@ -451,8 +426,7 @@ def append_mur_macros(subcode: str) -> str:
 
             return k;
         }
-        """
-    )
+        """)
 
     return subcode
 
@@ -468,15 +442,13 @@ def generate_hasher_digest_x86_128_pre(subcode: str) -> str:
     """
     hasher_digests = "\n\n"
 
-    hasher_digests += textwrap.dedent(
-        """\
+    hasher_digests += textwrap.dedent("""\
         static FORCE_INLINE void
         digest_x86_128_impl(uint32_t h1, uint32_t h2, uint32_t h3, uint32_t h4,
             const uint32_t k1, const uint32_t k2, const uint32_t k3,
             const uint32_t k4, const Py_ssize_t len, const char *out)
         {
-        """
-    )
+        """)
 
     hasher_digests += subcode + "\n"
 
@@ -494,18 +466,15 @@ def generate_hasher_digest_x86_128_main(subcode: str) -> str:
     """
     hasher_digests = ""
 
-    hasher_digests += textwrap.dedent(
-        """\
+    hasher_digests += textwrap.dedent("""\
         h1 ^= mixK_x86_128(k1, 15, c1, c2);
         h2 ^= mixK_x86_128(k2, 16, c2, c3);
         h3 ^= mixK_x86_128(k3, 17, c3, c4);
         h4 ^= mixK_x86_128(k4, 18, c4, c1);
-        """
-    )
+        """)
 
     hasher_digests += subcode + "\n"
-    hasher_digests += textwrap.dedent(
-        """\
+    hasher_digests += textwrap.dedent("""\
         #if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
             ((uint32_t *)out)[0] = bswap_32(h1);
             ((uint32_t *)out)[1] = bswap_32(h2);
@@ -517,8 +486,7 @@ def generate_hasher_digest_x86_128_main(subcode: str) -> str:
             ((uint32_t *)out)[2] = h3;
             ((uint32_t *)out)[3] = h4;
         #endif
-        """
-    )
+        """)
     hasher_digests += "\n}"
 
     return hasher_digests
@@ -535,32 +503,25 @@ def generate_hasher_digest_x64_128(subcode: str) -> str:
     """
     hasher_digests = "\n\n"
 
-    hasher_digests += textwrap.dedent(
-        """\
+    hasher_digests += textwrap.dedent("""\
         //-----------------------------------------------------------------------------
         // Finalization function
-        """
-    )
+        """)
 
     hasher_digests += "\n"
 
-    hasher_digests += textwrap.dedent(
-        """\
+    hasher_digests += textwrap.dedent("""\
         static FORCE_INLINE void
         digest_x64_128_impl(uint64_t h1, uint64_t h2, const uint64_t k1,
             const uint64_t k2, const Py_ssize_t len, const char *out)
         {
-        """
-    )
-    hasher_digests += textwrap.dedent(
-        """\
+        """)
+    hasher_digests += textwrap.dedent("""\
         h1 ^= mixK1_x64_128(k1);
         h2 ^= mixK2_x64_128(k2);
-        """
-    )
+        """)
     hasher_digests += subcode + "\n"
-    hasher_digests += textwrap.dedent(
-        """\
+    hasher_digests += textwrap.dedent("""\
         #if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
             ((uint64_t *)out)[0] = bswap_64(h1);
             ((uint64_t *)out)[1] = bswap_64(h2);
@@ -568,8 +529,7 @@ def generate_hasher_digest_x64_128(subcode: str) -> str:
             ((uint64_t *)out)[0] = h1;
             ((uint64_t *)out)[1] = h2;
         #endif
-        """
-    )
+        """)
     hasher_digests += "\n}"
 
     return hasher_digests
@@ -593,8 +553,7 @@ def fix_non_win_force_inline(subcode: str) -> str:
         "#define	FORCE_INLINE inline __attribute__((always_inline))"
     )
 
-    NON_WIN_FORCE_INLINE_REVISED = textwrap.dedent(
-        """\
+    NON_WIN_FORCE_INLINE_REVISED = textwrap.dedent("""\
         #if ((__GNUC__ > 4) || (__GNUC__ == 4 && GNUC_MINOR >= 4))
         /* gcc version >= 4.4 4.1 = RHEL 5, 4.4 = RHEL 6. Don't inline for RHEL 5 gcc
         * which is 4.1*/
@@ -602,8 +561,7 @@ def fix_non_win_force_inline(subcode: str) -> str:
         #else
         #define FORCE_INLINE
         #endif
-        """
-    )
+        """)
 
     return subcode.replace(NON_WIN_FORCE_INLINE_ORIGINAL, NON_WIN_FORCE_INLINE_REVISED)
 
