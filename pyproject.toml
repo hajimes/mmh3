@@ -52,7 +52,7 @@ docs = [
 ]
 benchmark = [
   "pymmh3 == 0.0.5",
-  "pyperf == 2.9.0",
+  "pyperf == 2.10.0",
   "xxhash == 3.6.0"
 ]
 plot = [
