@@ -61,7 +61,7 @@ jobs:
           TIMESTAMP=$(date -u +%Y%m%d%H%M)
           VERSION=$(python3 -c "import re; print(re.search(r'version\s*=\s*\"(.+?)\"', open('pyproject.toml').read()).group(1))")
           BASE_VERSION="${VERSION%%-*}"
-          sed -i "s/version = \".*\"/version = \"${BASE_VERSION}.dev${TIMESTAMP}\"/" pyproject.toml
+          sed -i.bak "s/version = \".*\"/version = \"${BASE_VERSION}.dev${TIMESTAMP}\"/" pyproject.toml && rm -f pyproject.toml.bak
       - name: Set up Python
         uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
@@ -110,7 +110,7 @@ jobs:
           TIMESTAMP=$(date -u +%Y%m%d%H%M)
           VERSION=$(python3 -c "import re; print(re.search(r'version\s*=\s*\"(.+?)\"', open('pyproject.toml').read()).group(1))")
           BASE_VERSION="${VERSION%%-*}"
-          sed -i "s/version = \".*\"/version = \"${BASE_VERSION}.dev${TIMESTAMP}\"/" pyproject.toml
+          sed -i "" "s/version = \".*\"/version = \"${BASE_VERSION}.dev${TIMESTAMP}\"/" pyproject.toml
       - name: Set up Python
         uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
