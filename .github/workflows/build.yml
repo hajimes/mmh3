@@ -5,9 +5,7 @@ name: Build
 
 on: # yamllint disable-line rule:truthy
   push:
-    branches:
-      - master
-      - feature/**
+    branches: "**"
   pull_request:
     types:
       - opened
