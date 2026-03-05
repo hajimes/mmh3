@@ -46,6 +46,7 @@ jobs:
           GITHUB_ACTIONS_CONFIG_FILE: .github/actionlint.yml
           PYTHON_PYLINT_CONFIG_FILE: pyproject.toml
           PYTHON_RUFF_CONFIG_FILE: pyproject.toml
+          PYTHON_RUFF_FORMAT_CONFIG_FILE: pyproject.toml
           # Suppressed because it conflicts with clang-format in some cases
           VALIDATE_CPP: false
           # Suppressed because copy/paste is sometimes required at low level
