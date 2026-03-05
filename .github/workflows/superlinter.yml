@@ -44,20 +44,20 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LINTER_RULES_PATH: /
           GITHUB_ACTIONS_CONFIG_FILE: .github/actionlint.yml
-          PYTHON_ISORT_CONFIG_FILE: pyproject.toml
           PYTHON_PYLINT_CONFIG_FILE: pyproject.toml
+          PYTHON_RUFF_CONFIG_FILE: pyproject.toml
           # Suppressed because it conflicts with clang-format in some cases
           VALIDATE_CPP: false
           # Suppressed because copy/paste is sometimes required at low level
           VALIDATE_JSCPD: false
-          # Suppressed for migration to Ruff
+          # Suppressed in favor of Ruff
+          VALIDATE_PYTHON_BLACK: false
           VALIDATE_PYTHON_FLAKE8: false
+          VALIDATE_PYTHON_ISORT: false
           # Suppressed because it even accuses book titles
           VALIDATE_NATURAL_LANGUAGE: false
           # Suppressed because it does not honor the ignore-paths option
           VALIDATE_PYTHON_PYLINT: false
-          # Temporarily suppressed but should be re-enabled after migration to Ruff
-          VALIDATE_PYTHON_RUFF_FORMAT: false
       # super-linter 7 does not honor the ignore-paths option of pylint
       # so we run pylint separately
       - name: Set up Python

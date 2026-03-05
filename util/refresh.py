@@ -616,9 +616,9 @@ if __name__ == "__main__":
     file_header_path = os.path.join(dir_path, FILE_HEADER_NAME)
 
     with (
-        open(original_source_path, "r", encoding="utf-8") as source_file,
-        open(original_header_path, "r", encoding="utf-8") as header_file,
-        open(file_header_path, "r", encoding="utf-8") as file_header_file,
+        open(original_source_path, encoding="utf-8") as source_file,
+        open(original_header_path, encoding="utf-8") as header_file,
+        open(file_header_path, encoding="utf-8") as file_header_file,
     ):
         source = MMH3Source(source_file.read())
         header = MMH3Header(header_file.read())
