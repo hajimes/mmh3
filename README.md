@@ -196,8 +196,8 @@ use `mmh3` (and other hash algorithms in general) for high-performance computing
 - Chapter 11: _Using Less Ram_ in Micha Gorelick and Ian Ozsvald. 2014. _High
   Performance Python: Practical Performant Programming for Humans_. O'Reilly
   Media. [ISBN: 978-1-4493-6159-4](https://www.amazon.com/dp/1449361595).
-  - 2nd edition of the above (2020).
-    [ISBN: 978-1492055020](https://www.amazon.com/dp/1492055026).
+  - 3rd edition of the above (2025).
+    [ISBN: 978-1098165963](https://www.amazon.com/dp/1098165969/).
 - Max Burstein. February 2, 2013.
   _[Creating a Simple Bloom Filter](http://www.maxburstein.com/blog/creating-a-simple-bloom-filter/)_.
 - Duke University. April 14, 2016.
