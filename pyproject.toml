@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mmh3"
-version = "5.2.1-dev.0"
+version = "5.2.1"
 description = "Python extension for MurmurHash (MurmurHash3), a set of fast and robust hash functions."
 readme = "README.md"
 license = {file = "LICENSE"}
@@ -62,6 +62,7 @@ plot = [
 
 [project.urls]
 Homepage = "https://pypi.org/project/mmh3/"
+Documentation = "https://mmh3.readthedocs.io/"
 Repository = "https://github.com/hajimes/mmh3"
 Changelog = "https://github.com/hajimes/mmh3/blob/master/CHANGELOG.md"
 "Bug Tracker" = "https://github.com/hajimes/mmh3/issues"
