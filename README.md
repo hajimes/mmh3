@@ -81,6 +81,16 @@ in the API Reference for more information.
 See [Changelog (latest version)](https://mmh3.readthedocs.io/en/latest/changelog.html)
 for the complete changelog.
 
+### [5.2.1] - 2026-03-06
+
+#### Added
+
+- Add support for the Android wheel for Python 3.14.
+
+#### Removed
+
+- Drop support for Python 3.9, as it has reached the end of life on 2025-10-31.
+
 ### [5.2.0] - 2025-07-29
 
 #### Added
@@ -113,13 +123,6 @@ for the complete changelog.
 
 - Drop support for Python 3.8, as it has reached the end of life on 2024-10-07
   ([#117](https://github.com/hajimes/mmh3/pull/117)).
-
-### [5.0.1] - 2024-09-22
-
-#### Fixed
-
-- Fix the issue that the package cannot be built from the source distribution
-  ([#90](https://github.com/hajimes/mmh3/issues/90)).
 
 ## License
 
@@ -193,8 +196,8 @@ use `mmh3` (and other hash algorithms in general) for high-performance computing
 - Chapter 11: _Using Less Ram_ in Micha Gorelick and Ian Ozsvald. 2014. _High
   Performance Python: Practical Performant Programming for Humans_. O'Reilly
   Media. [ISBN: 978-1-4493-6159-4](https://www.amazon.com/dp/1449361595).
-  - 2nd edition of the above (2020).
-    [ISBN: 978-1492055020](https://www.amazon.com/dp/1492055026).
+  - 3rd edition of the above (2025).
+    [ISBN: 978-1098165963](https://www.amazon.com/dp/1098165969/).
 - Max Burstein. February 2, 2013.
   _[Creating a Simple Bloom Filter](http://www.maxburstein.com/blog/creating-a-simple-bloom-filter/)_.
 - Duke University. April 14, 2016.
@@ -267,6 +270,6 @@ In BibTeX format:
 - <https://github.com/ifduyue/python-xxhash>: Python bindings for xxHash (Yue
   Du)
 
+[5.2.1]: https://github.com/hajimes/mmh3/compare/v5.2.0...v5.2.1
 [5.2.0]: https://github.com/hajimes/mmh3/compare/v5.1.0...v5.2.0
 [5.1.0]: https://github.com/hajimes/mmh3/compare/v5.0.1...v5.1.0
-[5.0.1]: https://github.com/hajimes/mmh3/compare/v5.0.0...v5.0.1
