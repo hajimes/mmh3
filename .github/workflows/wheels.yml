@@ -19,33 +19,33 @@ jobs:
         archs: [x86_64, i686, aarch64, ppc64le, s390x]
         build: [manylinux, musllinux]
         include:
-          - os: windows-2022
+          - os: windows-2025
             archs: AMD64
-          - os: windows-2022
+          - os: windows-2025
             archs: x86
-          - os: windows-2022
+          - os: windows-2025
             archs: ARM64
-          - os: macos-15-intel
+          - os: macos-26-intel
             archs: x86_64
-          - os: macos-15
+          - os: macos-26
             archs: arm64
-          - os: macos-15
+          - os: macos-26
             archs: universal2
           - os: ubuntu-24.04
             platform: android
             archs: x86_64
             build: android
-          - os: macos-15
+          - os: macos-26
             platform: android
             archs: arm64_v8a
             build: android
-          - os: macos-15
+          - os: macos-26
             platform: ios
             archs: arm64_iphoneos
-          - os: macos-15
+          - os: macos-26
             platform: ios
             archs: arm64_iphonesimulator
-          - os: macos-15-intel
+          - os: macos-26-intel
             platform: ios
             archs: x86_64_iphonesimulator
     steps:
