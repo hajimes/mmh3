@@ -2,5 +2,5 @@
 paths:
   .github/workflows/**/*.{yml,yaml}:
     ignore:
-      - 'label "macos-26" is unknown.*\[runner-label\]'
-      - 'label "macos-26-intel" is unknown.*\[runner-label\]'
+      - 'label "macos-26" is unknown.+'
+      - 'label "macos-26-intel" is unknown.+'
