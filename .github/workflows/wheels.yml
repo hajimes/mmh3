@@ -53,22 +53,29 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
-      - name: Set dev version for TestPyPI
-        if: github.event_name == 'workflow_dispatch'
-        run: |
-          python3 -c "
-          import re, datetime
-          timestamp = datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%d%H%M')
-          text = open('pyproject.toml').read()
-          version = re.search(r'version\s*=\s*\"(.+?)\"', text).group(1)
-          base_version = version.split('-')[0]
-          new_text = re.sub(r'version = \".*?\"', f'version = \"{base_version}.dev{timestamp}\"', text)
-          open('pyproject.toml', 'w').write(new_text)
-          "
       - name: Set up Python
         uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: "3.14"
+      - name: Set dev version for TestPyPI
+        if: github.event_name == 'workflow_dispatch'
+        shell: python
+        run: |
+          import re, datetime
+          timestamp = datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%d%H%M")
+          text = open("pyproject.toml", encoding="utf-8").read()
+          m = re.search(r'version\s*=\s*"(.+?)"', text)
+          if not m:
+            raise RuntimeError("version field not found in pyproject.toml")
+          version = m.group(1)
+          base_version = version.split("-")[0]
+          new_text = re.sub(
+            r'version\s*=\s*".*?"',
+            f'version = "{base_version}.dev{timestamp}"',
+            text,
+            count=1
+          )
+          open("pyproject.toml", "w", encoding="utf-8").write(new_text)
       - name: Set up QEMU
         if: runner.os == 'Linux' && matrix.platform != 'android'
         uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
