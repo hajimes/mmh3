@@ -43,6 +43,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LINTER_RULES_PATH: /
+          GITHUB_ACTIONS_CONFIG_FILE: .github/actionlint.yml
           PYTHON_ISORT_CONFIG_FILE: pyproject.toml
           PYTHON_PYLINT_CONFIG_FILE: pyproject.toml
           # Suppressed because it conflicts with clang-format in some cases
