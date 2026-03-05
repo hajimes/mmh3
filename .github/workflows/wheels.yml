@@ -56,10 +56,15 @@ jobs:
       - name: Set dev version for TestPyPI
         if: github.event_name == 'workflow_dispatch'
         run: |
-          TIMESTAMP=$(date -u +%Y%m%d%H%M)
-          VERSION=$(python3 -c "import re; print(re.search(r'version\s*=\s*\"(.+?)\"', open('pyproject.toml').read()).group(1))")
-          BASE_VERSION="${VERSION%%-*}"
-          sed -i.bak "s/version = \".*\"/version = \"${BASE_VERSION}.dev${TIMESTAMP}\"/" pyproject.toml && rm -f pyproject.toml.bak
+          python3 -c "
+          import re, datetime
+          timestamp = datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%d%H%M')
+          text = open('pyproject.toml').read()
+          version = re.search(r'version\s*=\s*\"(.+?)\"', text).group(1)
+          base_version = version.split('-')[0]
+          new_text = re.sub(r'version = \".*?\"', f'version = \"{base_version}.dev{timestamp}\"', text)
+          open('pyproject.toml', 'w').write(new_text)
+          "
       - name: Set up Python
         uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
