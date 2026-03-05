@@ -35,6 +35,7 @@ test = [
   "pytest-sugar == 1.1.1"
 ]
 lint = [
+  "actionlint-py == 1.7.11.24",
   "black == 26.1.0",
   "clang-format == 22.1.0",
   "codespell == 2.4.1",

@@ -5,8 +5,6 @@ on:
   push:
     tags:
       - "v*.*.*"
-    branches:
-      - master
   workflow_dispatch:
 
 permissions: {}
@@ -21,33 +19,33 @@ jobs:
         archs: [x86_64, i686, aarch64, ppc64le, s390x]
         build: [manylinux, musllinux]
         include:
-          - os: windows-2022
+          - os: windows-2025
             archs: AMD64
-          - os: windows-2022
+          - os: windows-2025
             archs: x86
-          - os: windows-2022
+          - os: windows-2025
             archs: ARM64
-          - os: macos-15-intel
+          - os: macos-26-intel
             archs: x86_64
-          - os: macos-15
+          - os: macos-26
             archs: arm64
-          - os: macos-15
+          - os: macos-26
             archs: universal2
           - os: ubuntu-24.04
             platform: android
             archs: x86_64
             build: android
-          - os: macos-15
+          - os: macos-26
             platform: android
             archs: arm64_v8a
             build: android
-          - os: macos-15
+          - os: macos-26
             platform: ios
             archs: arm64_iphoneos
-          - os: macos-15
+          - os: macos-26
             platform: ios
             archs: arm64_iphonesimulator
-          - os: macos-15-intel
+          - os: macos-26-intel
             platform: ios
             archs: x86_64_iphonesimulator
     steps:
@@ -58,14 +56,19 @@ jobs:
       - name: Set dev version for TestPyPI
         if: github.event_name == 'workflow_dispatch'
         run: |
-          TIMESTAMP=$(date -u +%Y%m%d%H%M)
-          VERSION=$(python3 -c "import re; print(re.search(r'version\s*=\s*\"(.+?)\"', open('pyproject.toml').read()).group(1))")
-          BASE_VERSION="${VERSION%%-*}"
-          sed -i.bak "s/version = \".*\"/version = \"${BASE_VERSION}.dev${TIMESTAMP}\"/" pyproject.toml && rm -f pyproject.toml.bak
+          python3 -c "
+          import re, datetime
+          timestamp = datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%d%H%M')
+          text = open('pyproject.toml').read()
+          version = re.search(r'version\s*=\s*\"(.+?)\"', text).group(1)
+          base_version = version.split('-')[0]
+          new_text = re.sub(r'version = \".*?\"', f'version = \"{base_version}.dev{timestamp}\"', text)
+          open('pyproject.toml', 'w').write(new_text)
+          "
       - name: Set up Python
         uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
-          python-version: "3.13"
+          python-version: "3.14"
       - name: Set up QEMU
         if: runner.os == 'Linux' && matrix.platform != 'android'
         uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
@@ -114,7 +117,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
-          python-version: "3.13"
+          python-version: "3.14"
       - name: Build sdist
         run: |
           python -m pip install --upgrade pip

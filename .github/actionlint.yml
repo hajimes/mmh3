@@ -1,0 +1,6 @@
+# As of March 5, 2026, actionlint via super-linter 8.5.0 does not support macOS 26, so we ignore the runner-label warning for now.
+paths:
+  .github/workflows/**/*.{yml,yaml}:
+    ignore:
+      - 'label "macos-26" is unknown.+'
+      - 'label "macos-26-intel" is unknown.+'

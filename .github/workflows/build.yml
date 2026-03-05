@@ -5,9 +5,7 @@ name: Build
 
 on: # yamllint disable-line rule:truthy
   push:
-    branches:
-      - master
-      - feature/**
+    branches: "**"
   pull_request:
     types:
       - opened
@@ -24,9 +22,8 @@ jobs:
 
     strategy:
       matrix:
-        os: [macos-14, windows-2022, ubuntu-24.04]
-        python-version:
-          ["3.10", "3.11", "3.12", "3.13", "3.14-dev", "3.14t-dev"]
+        os: [macos-26, windows-2025, ubuntu-24.04]
+        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14", "3.14t"]
 
     runs-on: ${{ matrix.os }}
     steps:

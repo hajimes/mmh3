@@ -43,6 +43,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LINTER_RULES_PATH: /
+          GITHUB_ACTIONS_CONFIG_FILE: .github/actionlint.yml
           PYTHON_ISORT_CONFIG_FILE: pyproject.toml
           PYTHON_PYLINT_CONFIG_FILE: pyproject.toml
           # Suppressed because it conflicts with clang-format in some cases
@@ -62,7 +63,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
-          python-version: "3.13"
+          python-version: "3.14"
       - name: Run pylint
         run: |
           pip install pylint
