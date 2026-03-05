@@ -8,10 +8,11 @@ import time
 from collections.abc import Callable
 from typing import Final
 
-import mmh3
 import pymmh3
 import pyperf
 import xxhash
+
+import mmh3
 
 K1: Final[int] = 0b1001111000110111011110011011000110000101111010111100101010000111
 K2: Final[int] = 0b1100001010110010101011100011110100100111110101001110101101001111

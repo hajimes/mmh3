@@ -36,11 +36,10 @@ test = [
 ]
 lint = [
   "actionlint-py == 1.7.11.24",
-  "black == 26.1.0",
   "clang-format == 22.1.0",
   "codespell == 2.4.1",
-  "isort == 8.0.1",
-  "pylint == 4.0.5"
+  "pylint == 4.0.5",
+  "ruff == 0.15.4"
 ]
 type = [
   "mypy == 1.19.1"
@@ -70,14 +69,19 @@ Changelog = "https://github.com/hajimes/mmh3/blob/master/CHANGELOG.md"
 [tool.codespell]
 # As of 2026-03-02, skip has an issue on super-linter
 # https://github.com/super-linter/super-linter/issues/7466
-#skip = "*/paper.bib,./build"
+skip = "*/paper.bib,./build"
 # Collet is a surname, Commun is an abbr for a journal name,
 # fo is used in several test strings, and Ines is also a surname.
 ignore-words-list = "Collet,Commun,fo,Ines"
 
-[tool.isort]
-profile = "black"
-src_paths = ["src/mmh3/__init__.pyi", "util", "tests", "benchmark", "docs"]
+[tool.ruff]
+src = ["src/mmh3/__init__.pyi", "util", "tests", "benchmark", "docs"]
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "UP", "B", "SIM", "C4", "ISC", "NPY"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["mmh3"]
 
 [tool.setuptools]
 include-package-data = true
@@ -101,7 +105,7 @@ ignore-paths = [
 # This setting can be found in the template file of super-linter 7.0.0.
 jobs = 0
 # import-error: An error tricky to resolve, especially on super-linter.
-# wrong-import-order: Respect isort's import order.
+# wrong-import-order: Respect Ruff's import order.
 disable = [
   "import-error",
   "wrong-import-order"

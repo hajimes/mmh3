@@ -2,7 +2,6 @@
 import sys
 
 import mmh3
-
 from helper import u32_to_s32
 
 
@@ -37,7 +36,7 @@ def test_hash() -> None:
 
     assert mmh3.hash("Hello, world!", 0x9747B28C) == u32_to_s32(0x24884CBA)
 
-    assert mmh3.hash("ππππππππ".encode("utf-8"), 0x9747B28C) == u32_to_s32(0xD58063C1)
+    assert mmh3.hash("ππππππππ".encode(), 0x9747B28C) == u32_to_s32(0xD58063C1)
 
     assert mmh3.hash("a" * 256, 0x9747B28C) == u32_to_s32(0x37405BDC)
 
@@ -82,7 +81,7 @@ def test_hash_unsigned() -> None:
 
     assert mmh3.hash("Hello, world!", 0x9747B28C, signed=False) == 0x24884CBA
 
-    assert mmh3.hash("ππππππππ".encode("utf-8"), 0x9747B28C, signed=False) == 0xD58063C1
+    assert mmh3.hash("ππππππππ".encode(), 0x9747B28C, signed=False) == 0xD58063C1
 
     assert mmh3.hash("a" * 256, 0x9747B28C, signed=False) == 0x37405BDC
 
@@ -140,7 +139,7 @@ def test_hash2() -> None:
 
     assert mmh3.hash("Hello, world!", 0x9747B28C) == u32_to_s32(0x24884CBA)
 
-    assert mmh3.hash("ππππππππ".encode("utf-8"), 0x9747B28C) == u32_to_s32(0xD58063C1)
+    assert mmh3.hash("ππππππππ".encode(), 0x9747B28C) == u32_to_s32(0xD58063C1)
 
     assert mmh3.hash("a" * 256, 0x9747B28C) == u32_to_s32(0x37405BDC)
 
@@ -155,7 +154,7 @@ def test_hash2() -> None:
 
 
 def test_hash_from_buffer() -> None:
-    mview = memoryview("foo".encode("utf8"))
+    mview = memoryview(b"foo")
     assert mmh3.hash_from_buffer(mview) == -156908512
     assert mmh3.hash_from_buffer(mview, signed=False) == 4138058784
 
@@ -267,7 +266,7 @@ def test_mmh3_32_digest() -> None:
         4, "little"
     )
 
-    assert mmh3.mmh3_32_digest("ππππππππ".encode("utf-8"), 0x9747B28C) == (
+    assert mmh3.mmh3_32_digest("ππππππππ".encode(), 0x9747B28C) == (
         0xD58063C1
     ).to_bytes(4, "little")
 
@@ -329,9 +328,9 @@ def test_mmh3_sintdigest() -> None:
         0x24884CBA
     )
 
-    assert mmh3.mmh3_32_sintdigest(
-        "ππππππππ".encode("utf-8"), 0x9747B28C
-    ) == u32_to_s32(0xD58063C1)
+    assert mmh3.mmh3_32_sintdigest("ππππππππ".encode(), 0x9747B28C) == u32_to_s32(
+        0xD58063C1
+    )
 
     assert mmh3.mmh3_32_sintdigest(b"a" * 256, 0x9747B28C) == u32_to_s32(0x37405BDC)
 
@@ -379,7 +378,7 @@ def test_mmh3_uintdigest() -> None:
 
     assert mmh3.mmh3_32_uintdigest(b"Hello, world!", 0x9747B28C) == 0x24884CBA
 
-    assert mmh3.mmh3_32_uintdigest("ππππππππ".encode("utf-8"), 0x9747B28C) == 0xD58063C1
+    assert mmh3.mmh3_32_uintdigest("ππππππππ".encode(), 0x9747B28C) == 0xD58063C1
 
     assert mmh3.mmh3_32_uintdigest(b"a" * 256, 0x9747B28C) == 0x37405BDC
 

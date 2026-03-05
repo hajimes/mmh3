@@ -2,8 +2,9 @@
 # pylint: disable=no-value-for-parameter, too-many-function-args
 from typing import no_type_check
 
-import mmh3
 import pytest
+
+import mmh3
 
 
 @no_type_check

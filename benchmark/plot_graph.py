@@ -6,10 +6,11 @@ import os
 from typing import TypeVar
 
 import matplotlib.pyplot as plt
-import mmh3
 import pandas as pd
 import pyperf
 import xxhash
+
+import mmh3
 
 T = TypeVar("T")
 
