@@ -37,9 +37,9 @@ test = [
 lint = [
   "actionlint-py == 1.7.11.24",
   "clang-format == 22.1.0",
-  "codespell == 2.4.1",
+  "codespell == 2.4.2",
   "pylint == 4.0.5",
-  "ruff == 0.15.4"
+  "ruff == 0.15.5"
 ]
 type = [
   "mypy == 1.19.1"
