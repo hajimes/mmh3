@@ -25,6 +25,8 @@ jobs:
             archs: x86
           - os: windows-2025
             archs: ARM64
+          - os: windows-11-arm
+            archs: ARM64
           - os: macos-26-intel
             archs: x86_64
           - os: macos-26
@@ -101,7 +103,7 @@ jobs:
           CIBW_TEST_COMMAND: "pytest {project}"
           CIBW_TEST_COMMAND_ANDROID: "python -m pytest ./tests"
           CIBW_TEST_COMMAND_IOS: "python -m pytest ./tests"
-          CIBW_TEST_SKIP: "*-win_arm64 *-android_arm64_v8a"
+          CIBW_TEST_SKIP: "*-android_arm64_v8a"
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: Wheel-${{ matrix.os }}-${{ matrix.platform }}-${{ matrix.build }}${{ matrix.archs }}
