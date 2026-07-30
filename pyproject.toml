@@ -31,32 +31,32 @@ classifiers = [
 
 [project.optional-dependencies]
 test = [
-  "pytest == 9.0.2",
+  "pytest == 9.1.1",
   "pytest-sugar == 1.1.1"
 ]
 lint = [
-  "actionlint-py == 1.7.11.24",
-  "clang-format == 22.1.0",
-  "codespell == 2.4.1",
-  "pylint == 4.0.5",
-  "ruff == 0.15.4"
+  "actionlint-py == 1.7.12.24",
+  "clang-format == 22.1.8",
+  "codespell == 2.4.3",
+  "pylint == 4.0.6",
+  "ruff == 0.15.22"
 ]
 type = [
-  "mypy == 1.19.1"
+  "mypy == 2.3.0"
 ]
 docs = [
   "myst-parser == 5.0.0",
-  "shibuya == 2026.1.9",
+  "shibuya == 2026.7.12",
   "sphinx == 8.2.3",
   "sphinx-copybutton == 0.5.2"
 ]
 benchmark = [
   "pymmh3 == 0.0.5",
   "pyperf == 2.10.0",
-  "xxhash == 3.6.0"
+  "xxhash == 3.8.1"
 ]
 plot = [
-  "matplotlib == 3.10.8",
+  "matplotlib == 3.10.9",
   "pandas == 3.0.1"
 ]
 
