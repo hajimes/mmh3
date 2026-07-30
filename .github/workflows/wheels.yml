@@ -25,6 +25,8 @@ jobs:
             archs: x86
           - os: windows-2025
             archs: ARM64
+          - os: windows-11-arm
+            archs: ARM64
           - os: macos-26-intel
             archs: x86_64
           - os: macos-26
