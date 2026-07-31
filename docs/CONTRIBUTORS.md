@@ -28,6 +28,8 @@ We gratefully acknowledge the contributions of the following individuals:
   [#37](https://github.com/hajimes/mmh3/pull/37).
 - [Matthew Honnibal](https://github.com/honnibal),
   [#22](https://github.com/hajimes/mmh3/pull/22).
+- [MUGUNDAN](https://github.com/MugundanMCW),
+  [#175](https://github.com/hajimes/mmh3/pull/175).
 - [wouter bolsterlee](https://github.com/wbolster),
   [#35](https://github.com/hajimes/mmh3/pull/35).
 
