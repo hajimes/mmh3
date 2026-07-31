@@ -256,6 +256,6 @@ In BibTeX format:
 - <https://github.com/ifduyue/python-xxhash>: Python bindings for xxHash (Yue
   Du)
 
+[5.2.2]: https://github.com/hajimes/mmh3/compare/v5.2.1...v5.2.2
 [5.2.1]: https://github.com/hajimes/mmh3/compare/v5.2.0...v5.2.1
 [5.2.0]: https://github.com/hajimes/mmh3/compare/v5.1.0...v5.2.0
-[5.1.0]: https://github.com/hajimes/mmh3/compare/v5.0.1...v5.1.0
