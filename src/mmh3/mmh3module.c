@@ -1765,7 +1765,7 @@ MMH3Hasher128x64_update(MMH3Hasher128x64 *self, PyObject *obj)
 static PyObject *
 MMH3Hasher128x64_digest(MMH3Hasher128x64 *self, PyObject *Py_UNUSED(ignored))
 {
-    const char out[MMH3_128_DIGESTSIZE];
+    char out[MMH3_128_DIGESTSIZE];
     MMH3_HASHER_LOCK(self);
     digest_x64_128_impl(self->h1, self->h2, self->buffer1, self->buffer2,
                         self->length, out);
@@ -1777,7 +1777,7 @@ static PyObject *
 MMH3Hasher128x64_sintdigest(MMH3Hasher128x64 *self,
                             PyObject *Py_UNUSED(ignored))
 {
-    const char out[MMH3_128_DIGESTSIZE];
+    char out[MMH3_128_DIGESTSIZE];
     MMH3_HASHER_LOCK(self);
     digest_x64_128_impl(self->h1, self->h2, self->buffer1, self->buffer2,
                         self->length, out);
@@ -1801,7 +1801,7 @@ static PyObject *
 MMH3Hasher128x64_uintdigest(MMH3Hasher128x64 *self,
                             PyObject *Py_UNUSED(ignored))
 {
-    const char out[MMH3_128_DIGESTSIZE];
+    char out[MMH3_128_DIGESTSIZE];
     MMH3_HASHER_LOCK(self);
     digest_x64_128_impl(self->h1, self->h2, self->buffer1, self->buffer2,
                         self->length, out);
@@ -1834,7 +1834,7 @@ static PyObject *
 MMH3Hasher128x64_stupledigest(MMH3Hasher128x64 *self,
                               PyObject *Py_UNUSED(ignored))
 {
-    const char out[MMH3_128_DIGESTSIZE];
+    char out[MMH3_128_DIGESTSIZE];
     MMH3_HASHER_LOCK(self);
     digest_x64_128_impl(self->h1, self->h2, self->buffer1, self->buffer2,
                         self->length, out);
@@ -1866,7 +1866,7 @@ static PyObject *
 MMH3Hasher128x64_utupledigest(MMH3Hasher128x64 *self,
                               PyObject *Py_UNUSED(ignored))
 {
-    const char out[MMH3_128_DIGESTSIZE];
+    char out[MMH3_128_DIGESTSIZE];
     MMH3_HASHER_LOCK(self);
     digest_x64_128_impl(self->h1, self->h2, self->buffer1, self->buffer2,
                         self->length, out);
@@ -2160,7 +2160,7 @@ static PyObject *
 MMH3Hasher128x86_sintdigest(MMH3Hasher128x86 *self,
                             PyObject *Py_UNUSED(ignored))
 {
-    const char out[MMH3_128_DIGESTSIZE];
+    char out[MMH3_128_DIGESTSIZE];
     MMH3_HASHER_LOCK(self);
     digest_x86_128_impl(self->h1, self->h2, self->h3, self->h4, self->buffer1,
                         self->buffer2, self->buffer3, self->buffer4,
@@ -2185,7 +2185,7 @@ static PyObject *
 MMH3Hasher128x86_uintdigest(MMH3Hasher128x86 *self,
                             PyObject *Py_UNUSED(ignored))
 {
-    const char out[MMH3_128_DIGESTSIZE];
+    char out[MMH3_128_DIGESTSIZE];
     MMH3_HASHER_LOCK(self);
     digest_x86_128_impl(self->h1, self->h2, self->h3, self->h4, self->buffer1,
                         self->buffer2, self->buffer3, self->buffer4,
@@ -2210,7 +2210,7 @@ static PyObject *
 MMH3Hasher128x86_stupledigest(MMH3Hasher128x86 *self,
                               PyObject *Py_UNUSED(ignored))
 {
-    const char out[MMH3_128_DIGESTSIZE];
+    char out[MMH3_128_DIGESTSIZE];
     MMH3_HASHER_LOCK(self);
     digest_x86_128_impl(self->h1, self->h2, self->h3, self->h4, self->buffer1,
                         self->buffer2, self->buffer3, self->buffer4,
@@ -2233,7 +2233,7 @@ static PyObject *
 MMH3Hasher128x86_utupledigest(MMH3Hasher128x86 *self,
                               PyObject *Py_UNUSED(ignored))
 {
-    const char out[MMH3_128_DIGESTSIZE];
+    char out[MMH3_128_DIGESTSIZE];
     MMH3_HASHER_LOCK(self);
     digest_x86_128_impl(self->h1, self->h2, self->h3, self->h4, self->buffer1,
                         self->buffer2, self->buffer3, self->buffer4,
