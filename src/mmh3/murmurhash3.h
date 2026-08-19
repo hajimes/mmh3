@@ -233,7 +233,7 @@ fmix64(uint64_t k)
 
 static FORCE_INLINE void
 digest_x64_128_impl(uint64_t h1, uint64_t h2, const uint64_t k1,
-                    const uint64_t k2, const Py_ssize_t len, const char *out)
+                    const uint64_t k2, const Py_ssize_t len, char *out)
 {
     h1 ^= mixK1_x64_128(k1);
     h2 ^= mixK2_x64_128(k2);
@@ -261,7 +261,7 @@ digest_x64_128_impl(uint64_t h1, uint64_t h2, const uint64_t k1,
 static FORCE_INLINE void
 digest_x86_128_impl(uint32_t h1, uint32_t h2, uint32_t h3, uint32_t h4,
                     const uint32_t k1, const uint32_t k2, const uint32_t k3,
-                    const uint32_t k4, const Py_ssize_t len, const char *out)
+                    const uint32_t k4, const Py_ssize_t len, char *out)
 {
     const uint32_t c1 = 0x239b961b;
     const uint32_t c2 = 0xab0e9789;
