@@ -38,11 +38,11 @@ lint = [
   "actionlint-py == 1.7.12.24",
   "clang-format == 22.1.8",
   "codespell == 2.4.3",
-  "pylint == 4.0.6",
-  "ruff == 0.15.22"
+  "pylint == 4.0.7",
+  "ruff == 0.16.3"
 ]
 type = [
-  "mypy == 2.3.0"
+  "mypy == 2.3.1"
 ]
 docs = [
   "myst-parser == 5.0.0",
@@ -53,7 +53,7 @@ docs = [
 benchmark = [
   "pymmh3 == 0.0.5",
   "pyperf == 2.10.0",
-  "xxhash == 3.8.1"
+  "xxhash == 4.0.1"
 ]
 plot = [
   "matplotlib == 3.10.9",
