@@ -11,6 +11,8 @@ We gratefully acknowledge the contributions of the following individuals:
 
 - [Alexander Maznev](https://github.com/pik),
   [#6](https://github.com/hajimes/mmh3/pull/6).
+- [Anton Karpov](https://github.com/karpovantonme),
+  [#188](https://github.com/hajimes/mmh3/pull/188).
 - [@arieleizenberg](https://github.com/arieleizenberg),
   [#34](https://github.com/hajimes/mmh3/pull/34).
 - [Micha Gorelick](https://github.com/mynameisfiber),
@@ -28,6 +30,8 @@ We gratefully acknowledge the contributions of the following individuals:
   [#37](https://github.com/hajimes/mmh3/pull/37).
 - [Matthew Honnibal](https://github.com/honnibal),
   [#22](https://github.com/hajimes/mmh3/pull/22).
+- [MUGUNDAN](https://github.com/MugundanMCW),
+  [#175](https://github.com/hajimes/mmh3/pull/175).
 - [wouter bolsterlee](https://github.com/wbolster),
   [#35](https://github.com/hajimes/mmh3/pull/35).
 

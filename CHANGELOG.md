@@ -5,16 +5,21 @@ contributors, see the
 [Contributors](https://mmh3.readthedocs.io/en/stable/CONTRIBUTORS.html) page.
 
 The format is based on
-[Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/).
+[Keep a Changelog 2.0.0](https://keepachangelog.com/en/2.0.0/).
 This project has adhered to
 [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html)
 since version 3.0.0.
 
-## [Unreleased]
+## [5.3.0] - 2026-08-26
 
 ### Added
 
-- Add support for Python 3.15.
+- Add support for Python 3.15 ([#192](https://github.com/hajimes/mmh3/pull/192)).
+
+### Fixed
+
+- Fix undefined behavior when writing to const-qualified 128-bit digest buffers
+  ([#188](https://github.com/hajimes/mmh3/pull/188)).
 
 ## [5.2.1] - 2026-03-06
 
@@ -316,7 +321,7 @@ only.
   [Softpedia collected mmh3 1.0 on April 27, 2011](https://web.archive.org/web/20110430172027/https://linux.softpedia.com/get/Programming/Libraries/mmh3-68314.shtml),
   it must have been uploaded to PyPI on or slightly before this date.
 
-[Unreleased]: https://github.com/hajimes/mmh3/compare/v5.2.1...HEAD
+[5.3.0]: https://github.com/hajimes/mmh3/compare/v5.2.1...v5.3.0
 [5.2.1]: https://github.com/hajimes/mmh3/compare/v5.2.0...v5.2.1
 [5.2.0]: https://github.com/hajimes/mmh3/compare/v5.1.0...v5.2.0
 [5.1.0]: https://github.com/hajimes/mmh3/compare/v5.0.1...v5.1.0
