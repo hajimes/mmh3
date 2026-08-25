@@ -41,13 +41,13 @@ pip install mmh3
 
 ```pycon
 >>> import mmh3
->>> mmh3.hash(b"foo") # returns a 32-bit signed int
+>>> mmh3.hash(b"foo")  # returns a 32-bit signed int
 -156908512
->>> mmh3.hash("foo") # accepts str (UTF-8 encoded)
+>>> mmh3.hash("foo")  # accepts str (UTF-8 encoded)
 -156908512
->>> mmh3.hash(b"foo", 42) # uses 42 as the seed
+>>> mmh3.hash(b"foo", 42)  # uses 42 as the seed
 -1322301282
->>> mmh3.hash(b"foo", 0, False) # returns a 32-bit unsigned int
+>>> mmh3.hash(b"foo", 0, False)  # returns a 32-bit unsigned int
 4138058784
 ```
 
@@ -85,7 +85,7 @@ for the complete changelog.
 
 #### Added
 
-- Add support for Python 3.15, including 3.15t (no-GIL) wheels.
+- Add support for Python 3.15.
 
 ### [5.2.1] - 2026-03-06
 
@@ -153,7 +153,7 @@ example:
 >>> mmh3.hash(b"quux", 4294967295)
 258499980
 >>> d = -1
->>> mmh3.hash(b"quux", d & 0xffffffff)
+>>> mmh3.hash(b"quux", d & 0xFFFFFFFF)
 258499980
 ```
 

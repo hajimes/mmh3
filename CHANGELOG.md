@@ -14,7 +14,7 @@ since version 3.0.0.
 
 ### Added
 
-- Add support for Python 3.15, including 3.15t (no-GIL) wheels.
+- Add support for Python 3.15.
 
 ## [5.2.1] - 2026-03-06
 
@@ -287,9 +287,9 @@ Beware that due to this revision, **the result of 32-bit version of 2.1 is NOT
 the same as that of 2.0**. E.g.,:
 
 ```pycon
->>> mmh3.hash("foo") # in mmh3 2.0
+>>> mmh3.hash("foo")  # in mmh3 2.0
 -292180858
->>> mmh3.hash("foo") # in mmh3 2.1
+>>> mmh3.hash("foo")  # in mmh3 2.1
 -156908512
 ```
 
