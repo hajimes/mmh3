@@ -5,7 +5,7 @@ contributors, see the
 [Contributors](https://mmh3.readthedocs.io/en/stable/CONTRIBUTORS.html) page.
 
 The format is based on
-[Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/).
+[Keep a Changelog 2.0.0](https://keepachangelog.com/en/2.0.0/).
 This project has adhered to
 [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html)
 since version 3.0.0.
