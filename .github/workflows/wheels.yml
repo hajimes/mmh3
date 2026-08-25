@@ -31,7 +31,7 @@ jobs:
             archs: arm64
           - os: macos-26
             archs: universal2
-          - os: ubuntu-26.04
+          - os: ubuntu-24.04
             platform: android
             archs: x86_64
             build: android
