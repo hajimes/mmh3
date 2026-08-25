@@ -10,6 +10,12 @@ This project has adhered to
 [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html)
 since version 3.0.0.
 
+## [Unreleased]
+
+### Added
+
+- Add support for Python 3.15, including 3.15t (no-GIL) wheels.
+
 ## [5.2.1] - 2026-03-06
 
 ### Added
@@ -310,6 +316,7 @@ only.
   [Softpedia collected mmh3 1.0 on April 27, 2011](https://web.archive.org/web/20110430172027/https://linux.softpedia.com/get/Programming/Libraries/mmh3-68314.shtml),
   it must have been uploaded to PyPI on or slightly before this date.
 
+[Unreleased]: https://github.com/hajimes/mmh3/compare/v5.2.1...HEAD
 [5.2.1]: https://github.com/hajimes/mmh3/compare/v5.2.0...v5.2.1
 [5.2.0]: https://github.com/hajimes/mmh3/compare/v5.1.0...v5.2.0
 [5.1.0]: https://github.com/hajimes/mmh3/compare/v5.0.1...v5.1.0

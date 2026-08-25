@@ -81,6 +81,12 @@ in the API Reference for more information.
 See [Changelog (latest version)](https://mmh3.readthedocs.io/en/latest/changelog.html)
 for the complete changelog.
 
+### [Unreleased]
+
+#### Added
+
+- Add support for Python 3.15, including 3.15t (no-GIL) wheels.
+
 ### [5.2.1] - 2026-03-06
 
 #### Added
@@ -103,26 +109,6 @@ for the complete changelog.
   enabled by the major version update of
   [cibuildwheel](https://github.com/pypa/cibuildwheel)
   ([#135](https://github.com/hajimes/mmh3/pull/135)).
-
-### [5.1.0] - 2025-01-25
-
-#### Added
-
-- Improve the performance of `hash128()`, `hash64()`, and `hash_bytes()` by
-  using
-  [METH_FASTCALL](https://docs.python.org/3/c-api/structures.html#c.METH_FASTCALL),
-  reducing the overhead of function calls
-  ([#116](https://github.com/hajimes/mmh3/pull/116)).
-- Add the software paper for this library
-  ([doi:10.21105/joss.06124](https://doi.org/10.21105/joss.06124)), following
-  its publication in the
-  [_Journal of Open Source Software_](https://joss.theoj.org)
-  ([#118](https://github.com/hajimes/mmh3/pull/118)).
-
-#### Removed
-
-- Drop support for Python 3.8, as it has reached the end of life on 2024-10-07
-  ([#117](https://github.com/hajimes/mmh3/pull/117)).
 
 ## License
 
@@ -270,6 +256,6 @@ In BibTeX format:
 - <https://github.com/ifduyue/python-xxhash>: Python bindings for xxHash (Yue
   Du)
 
+[Unreleased]: https://github.com/hajimes/mmh3/compare/v5.2.1...HEAD
 [5.2.1]: https://github.com/hajimes/mmh3/compare/v5.2.0...v5.2.1
 [5.2.0]: https://github.com/hajimes/mmh3/compare/v5.1.0...v5.2.0
-[5.1.0]: https://github.com/hajimes/mmh3/compare/v5.0.1...v5.1.0
