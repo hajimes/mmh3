@@ -125,17 +125,17 @@ Additionally, `hexdigest()` is not supported; use `digest().hex()` instead.
 
 ```pycon
 >>> import mmh3
->>> hasher = mmh3.mmh3_x64_128(b"foo", 42) # seed=42
+>>> hasher = mmh3.mmh3_x64_128(b"foo", 42)  # seed=42
 >>> hasher.update(b"bar")
 >>> hasher.digest()
 b'\x82_n\xdd \xac\xb6j\xef\x99\xb1e\xc4\n\xc9\xfd'
->>> hasher.sintdigest() # 128 bit signed int
+>>> hasher.sintdigest()  # 128 bit signed int
 -2943813934500665152301506963178627198
->>> hasher.uintdigest() # 128 bit unsigned int
+>>> hasher.uintdigest()  # 128 bit unsigned int
 337338552986437798311073100468589584258
->>> hasher.stupledigest() # two 64 bit signed ints
+>>> hasher.stupledigest()  # two 64 bit signed ints
 (7689522670935629698, -159584473158936081)
->>> hasher.utupledigest() # two 64 bit unsigned ints
+>>> hasher.utupledigest()  # two 64 bit unsigned ints
 (7689522670935629698, 18287159600550615535)
 ```
 
