@@ -81,7 +81,7 @@ in the API Reference for more information.
 See [Changelog (latest version)](https://mmh3.readthedocs.io/en/latest/changelog.html)
 for the complete changelog.
 
-### [5.2.2] - 2026-08-26
+### [5.3.0] - 2026-08-26
 
 #### Added
 
@@ -261,6 +261,6 @@ In BibTeX format:
 - <https://github.com/ifduyue/python-xxhash>: Python bindings for xxHash (Yue
   Du)
 
-[5.2.2]: https://github.com/hajimes/mmh3/compare/v5.2.1...v5.2.2
+[5.3.0]: https://github.com/hajimes/mmh3/compare/v5.2.1...v5.3.0
 [5.2.1]: https://github.com/hajimes/mmh3/compare/v5.2.0...v5.2.1
 [5.2.0]: https://github.com/hajimes/mmh3/compare/v5.1.0...v5.2.0
