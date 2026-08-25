@@ -85,8 +85,7 @@ for the complete changelog.
 
 #### Added
 
-- Add support for Python 3.15 ([#175](https://github.com/hajimes/mmh3/pull/175),
-  [#192](https://github.com/hajimes/mmh3/pull/192)).
+- Add support for Python 3.15 ([#192](https://github.com/hajimes/mmh3/pull/192)).
 
 #### Fixed
 

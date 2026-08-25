@@ -14,7 +14,7 @@ since version 3.0.0.
 
 ### Added
 
-- Add support for Python 3.15.
+- Add support for Python 3.15 ([#192](https://github.com/hajimes/mmh3/pull/192)).
 
 ### Fixed
 
