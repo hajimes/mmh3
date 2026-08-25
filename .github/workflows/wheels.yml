@@ -15,7 +15,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-26.04]
+        os: [ubuntu-24.04]
         archs: [x86_64, i686, aarch64, ppc64le, s390x]
         build: [manylinux, musllinux]
         include:
