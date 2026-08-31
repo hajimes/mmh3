@@ -40,7 +40,7 @@ lint = [
   "clang-format == 22.1.8",
   "codespell == 2.4.3",
   "pylint == 4.0.7",
-  "ruff == 0.16.3"
+  "ruff == 0.16.4"
 ]
 type = [
   "mypy == 2.3.1"
