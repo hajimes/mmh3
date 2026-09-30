@@ -81,6 +81,13 @@ in the API Reference for more information.
 See [Changelog (latest version)](https://mmh3.readthedocs.io/en/latest/changelog.html)
 for the complete changelog.
 
+### [5.3.1] - 2026-10-01
+
+#### Added
+
+- Add Linux riscv64 wheels (manylinux and musllinux)
+  ([#199](https://github.com/hajimes/mmh3/pull/199)).
+
 ### [5.3.0] - 2026-08-26
 
 #### Added
@@ -101,19 +108,6 @@ for the complete changelog.
 #### Removed
 
 - Drop support for Python 3.9, as it has reached the end of life on 2025-10-31.
-
-### [5.2.0] - 2025-07-29
-
-#### Added
-
-- Add support for Python 3.14, including 3.14t (no-GIL) wheels. However, thread
-  safety for the no-GIL variant is not fully tested yet. Please report any
-  issues you encounter ([#134](https://github.com/hajimes/mmh3/pull/134),
-  [#136](https://github.com/hajimes/mmh3/pull/136)).
-- Add support for Android (Python 3.13 only) and iOS (Python 3.13 and 3.14) wheels,
-  enabled by the major version update of
-  [cibuildwheel](https://github.com/pypa/cibuildwheel)
-  ([#135](https://github.com/hajimes/mmh3/pull/135)).
 
 ## License
 
@@ -261,6 +255,6 @@ In BibTeX format:
 - <https://github.com/ifduyue/python-xxhash>: Python bindings for xxHash (Yue
   Du)
 
+[5.3.1]: https://github.com/hajimes/mmh3/compare/v5.3.0...v5.3.1
 [5.3.0]: https://github.com/hajimes/mmh3/compare/v5.2.1...v5.3.0
 [5.2.1]: https://github.com/hajimes/mmh3/compare/v5.2.0...v5.2.1
-[5.2.0]: https://github.com/hajimes/mmh3/compare/v5.1.0...v5.2.0
