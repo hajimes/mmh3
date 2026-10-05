@@ -36,11 +36,11 @@ test = [
   "pytest-sugar == 1.1.1"
 ]
 lint = [
-  "actionlint-py == 1.7.12.24",
-  "clang-format == 23.1.0",
+  "actionlint-py == 1.7.12.25",
+  "clang-format == 23.1.1",
   "codespell == 2.4.3",
-  "pylint == 4.0.8",
-  "ruff == 0.16.5"
+  "pylint == 4.0.9",
+  "ruff == 0.16.9"
 ]
 type = [
   "mypy == 2.3.1"
