@@ -56,6 +56,9 @@ typedef unsigned __int64 uint64_t;
     else if (PyUnicode_Check(obj)) {                                    \
         target_str_len = PyUnicode_GET_LENGTH(obj);                     \
         target_str = PyUnicode_AsUTF8AndSize(obj, &target_str_len);     \
+        if (target_str == NULL) {                                       \
+            return NULL;                                                \
+        }                                                               \
     }                                                                   \
     else {                                                              \
         PyErr_Format(PyExc_TypeError,                                   \
@@ -96,6 +99,23 @@ typedef unsigned __int64 uint64_t;
                      "('%s') and position (%d)",             \
                      name, pos);                             \
         return NULL;                                         \
+    }
+
+// obj: PyObject*
+// flag: int
+#define MMH3_HASH_VALIDATE_AND_SET_BOOL(obj, flag) \
+    flag = PyObject_IsTrue(obj);                   \
+    if (flag < 0) {                                \
+        return NULL;                               \
+    }
+
+// target_str: const char *, initialized to NULL and set only when key is given
+#define MMH3_HASH_VALIDATE_KEY_GIVEN(target_str)              \
+    if (target_str == NULL) {                                 \
+        PyErr_SetString(PyExc_TypeError,                      \
+                        "function missing required argument " \
+                        "'key' (pos 1)");                     \
+        return NULL;                                          \
     }
 
 #define MMH3_VALIDATE_ARGS_AND_SET_SEED(nargs, args, seed)                  \
@@ -177,8 +197,8 @@ static PyObject *
 mmh3_hash(PyObject *self, PyObject *const *args, Py_ssize_t nargs,
           PyObject *kwnames)
 {
-    const char *target_str;
-    Py_ssize_t target_str_len;
+    const char *target_str = NULL;
+    Py_ssize_t target_str_len = 0;
     unsigned long seed = 0;
     int32_t result[1];
     long long_result = 0;
@@ -212,12 +232,15 @@ mmh3_hash(PyObject *self, PyObject *const *args, Py_ssize_t nargs,
     }
 
     if (nargs >= 3) {
-        is_signed = PyObject_IsTrue(args[2]);
+        MMH3_HASH_VALIDATE_AND_SET_BOOL(args[2], is_signed);
     }
 
     if (kwnames) {
         for (Py_ssize_t i = 0; i < PyTuple_Size(kwnames); i++) {
             const char *kwname = PyUnicode_AsUTF8(PyTuple_GetItem(kwnames, i));
+            if (kwname == NULL) {
+                return NULL;
+            }
             if (strcmp(kwname, "key") == 0) {
                 MMH3_HASH_VALIDATE_ARG_DUPLICATION(nargs, "key", 1);
                 MMH3_HASH_VALIDATE_AND_SET_BYTES(args[nargs + i], target_str,
@@ -229,7 +252,7 @@ mmh3_hash(PyObject *self, PyObject *const *args, Py_ssize_t nargs,
             }
             else if (strcmp(kwname, "signed") == 0) {
                 MMH3_HASH_VALIDATE_ARG_DUPLICATION(nargs, "signed", 3);
-                is_signed = PyObject_IsTrue(args[nargs + i]);
+                MMH3_HASH_VALIDATE_AND_SET_BOOL(args[nargs + i], is_signed);
             }
             else {
                 PyErr_Format(
@@ -240,6 +263,8 @@ mmh3_hash(PyObject *self, PyObject *const *args, Py_ssize_t nargs,
             }
         }
     }
+
+    MMH3_HASH_VALIDATE_KEY_GIVEN(target_str);
 
     murmurhash3_x86_32(target_str, target_str_len, (uint32_t)seed, result);
 
@@ -386,8 +411,8 @@ static PyObject *
 mmh3_hash64(PyObject *self, PyObject *const *args, Py_ssize_t nargs,
             PyObject *kwnames)
 {
-    const char *target_str;
-    Py_ssize_t target_str_len;
+    const char *target_str = NULL;
+    Py_ssize_t target_str_len = 0;
     long long seed = 0;
     uint64_t result[2];
     int x64arch = 1;
@@ -417,16 +442,19 @@ mmh3_hash64(PyObject *self, PyObject *const *args, Py_ssize_t nargs,
     }
 
     if (nargs >= 3) {
-        x64arch = PyObject_IsTrue(args[2]);
+        MMH3_HASH_VALIDATE_AND_SET_BOOL(args[2], x64arch);
     }
 
     if (nargs >= 4) {
-        is_signed = PyObject_IsTrue(args[2]);
+        MMH3_HASH_VALIDATE_AND_SET_BOOL(args[3], is_signed);
     }
 
     if (kwnames) {
         for (Py_ssize_t i = 0; i < PyTuple_Size(kwnames); i++) {
             const char *kwname = PyUnicode_AsUTF8(PyTuple_GetItem(kwnames, i));
+            if (kwname == NULL) {
+                return NULL;
+            }
             if (strcmp(kwname, "key") == 0) {
                 MMH3_HASH_VALIDATE_ARG_DUPLICATION(nargs, "key", 1);
                 MMH3_HASH_VALIDATE_AND_SET_BYTES(args[nargs + i], target_str,
@@ -438,11 +466,11 @@ mmh3_hash64(PyObject *self, PyObject *const *args, Py_ssize_t nargs,
             }
             else if (strcmp(kwname, "x64arch") == 0) {
                 MMH3_HASH_VALIDATE_ARG_DUPLICATION(nargs, "x64arch", 3);
-                x64arch = PyObject_IsTrue(args[nargs + i]);
+                MMH3_HASH_VALIDATE_AND_SET_BOOL(args[nargs + i], x64arch);
             }
             else if (strcmp(kwname, "signed") == 0) {
                 MMH3_HASH_VALIDATE_ARG_DUPLICATION(nargs, "signed", 4);
-                is_signed = PyObject_IsTrue(args[nargs + i]);
+                MMH3_HASH_VALIDATE_AND_SET_BOOL(args[nargs + i], is_signed);
             }
             else {
                 PyErr_Format(
@@ -453,6 +481,8 @@ mmh3_hash64(PyObject *self, PyObject *const *args, Py_ssize_t nargs,
             }
         }
     }
+
+    MMH3_HASH_VALIDATE_KEY_GIVEN(target_str);
 
     if (x64arch == 1) {
         murmurhash3_x64_128(target_str, target_str_len, (uint32_t)seed,
@@ -499,8 +529,8 @@ static PyObject *
 mmh3_hash128(PyObject *self, PyObject *const *args, Py_ssize_t nargs,
              PyObject *kwnames)
 {
-    const char *target_str;
-    Py_ssize_t target_str_len;
+    const char *target_str = NULL;
+    Py_ssize_t target_str_len = 0;
     long long seed = 0;
     uint64_t result[2];
     int x64arch = 1;
@@ -528,16 +558,19 @@ mmh3_hash128(PyObject *self, PyObject *const *args, Py_ssize_t nargs,
     }
 
     if (nargs >= 3) {
-        x64arch = PyObject_IsTrue(args[2]);
+        MMH3_HASH_VALIDATE_AND_SET_BOOL(args[2], x64arch);
     }
 
     if (nargs >= 4) {
-        is_signed = PyObject_IsTrue(args[2]);
+        MMH3_HASH_VALIDATE_AND_SET_BOOL(args[3], is_signed);
     }
 
     if (kwnames) {
         for (Py_ssize_t i = 0; i < PyTuple_Size(kwnames); i++) {
             const char *kwname = PyUnicode_AsUTF8(PyTuple_GetItem(kwnames, i));
+            if (kwname == NULL) {
+                return NULL;
+            }
             if (strcmp(kwname, "key") == 0) {
                 MMH3_HASH_VALIDATE_ARG_DUPLICATION(nargs, "key", 1);
                 MMH3_HASH_VALIDATE_AND_SET_BYTES(args[nargs + i], target_str,
@@ -549,11 +582,11 @@ mmh3_hash128(PyObject *self, PyObject *const *args, Py_ssize_t nargs,
             }
             else if (strcmp(kwname, "x64arch") == 0) {
                 MMH3_HASH_VALIDATE_ARG_DUPLICATION(nargs, "x64arch", 3);
-                x64arch = PyObject_IsTrue(args[nargs + i]);
+                MMH3_HASH_VALIDATE_AND_SET_BOOL(args[nargs + i], x64arch);
             }
             else if (strcmp(kwname, "signed") == 0) {
                 MMH3_HASH_VALIDATE_ARG_DUPLICATION(nargs, "signed", 4);
-                is_signed = PyObject_IsTrue(args[nargs + i]);
+                MMH3_HASH_VALIDATE_AND_SET_BOOL(args[nargs + i], is_signed);
             }
             else {
                 PyErr_Format(
@@ -564,6 +597,8 @@ mmh3_hash128(PyObject *self, PyObject *const *args, Py_ssize_t nargs,
             }
         }
     }
+
+    MMH3_HASH_VALIDATE_KEY_GIVEN(target_str);
 
     if (x64arch == 1) {
         murmurhash3_x64_128(target_str, target_str_len, seed, result);
@@ -618,8 +653,8 @@ static PyObject *
 mmh3_hash_bytes(PyObject *self, PyObject *const *args, Py_ssize_t nargs,
                 PyObject *kwnames)
 {
-    const char *target_str;
-    Py_ssize_t target_str_len;
+    const char *target_str = NULL;
+    Py_ssize_t target_str_len = 0;
     long long seed = 0;
     uint64_t result[2];
     int x64arch = 1;
@@ -646,12 +681,15 @@ mmh3_hash_bytes(PyObject *self, PyObject *const *args, Py_ssize_t nargs,
     }
 
     if (nargs >= 3) {
-        x64arch = PyObject_IsTrue(args[2]);
+        MMH3_HASH_VALIDATE_AND_SET_BOOL(args[2], x64arch);
     }
 
     if (kwnames) {
         for (Py_ssize_t i = 0; i < PyTuple_Size(kwnames); i++) {
             const char *kwname = PyUnicode_AsUTF8(PyTuple_GetItem(kwnames, i));
+            if (kwname == NULL) {
+                return NULL;
+            }
             if (strcmp(kwname, "key") == 0) {
                 MMH3_HASH_VALIDATE_ARG_DUPLICATION(nargs, "key", 1);
                 MMH3_HASH_VALIDATE_AND_SET_BYTES(args[nargs + i], target_str,
@@ -663,7 +701,7 @@ mmh3_hash_bytes(PyObject *self, PyObject *const *args, Py_ssize_t nargs,
             }
             else if (strcmp(kwname, "x64arch") == 0) {
                 MMH3_HASH_VALIDATE_ARG_DUPLICATION(nargs, "x64arch", 3);
-                x64arch = PyObject_IsTrue(args[nargs + i]);
+                MMH3_HASH_VALIDATE_AND_SET_BOOL(args[nargs + i], x64arch);
             }
             else {
                 PyErr_Format(
@@ -674,6 +712,8 @@ mmh3_hash_bytes(PyObject *self, PyObject *const *args, Py_ssize_t nargs,
             }
         }
     }
+
+    MMH3_HASH_VALIDATE_KEY_GIVEN(target_str);
 
     if (x64arch == 1) {
         murmurhash3_x64_128(target_str, target_str_len, seed, result);

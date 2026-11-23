@@ -209,6 +209,28 @@ def test_hash64() -> None:
     )
 
 
+def test_hash64_positional_signed() -> None:
+    # b"baz" has a negative signed value under both algorithms
+    for x64arch in (True, False):
+        unsigned = mmh3.hash64(b"baz", 0, x64arch, False)
+        signed = mmh3.hash64(b"baz", 0, x64arch, True)
+        assert unsigned == mmh3.hash64(b"baz", 0, x64arch, signed=False)
+        assert signed == mmh3.hash64(b"baz", 0, x64arch, signed=True)
+        assert min(unsigned) >= 0
+        assert min(signed) < 0
+
+
+def test_hash128_positional_signed() -> None:
+    # b"baz" has a negative signed value under both algorithms
+    for x64arch in (True, False):
+        unsigned = mmh3.hash128(b"baz", 0, x64arch, False)
+        signed = mmh3.hash128(b"baz", 0, x64arch, True)
+        assert unsigned == mmh3.hash128(b"baz", 0, x64arch, signed=False)
+        assert signed == mmh3.hash128(b"baz", 0, x64arch, signed=True)
+        assert unsigned >= 0
+        assert signed < 0
+
+
 def test_hash128() -> None:
     assert mmh3.hash128("foo") == 168394135621993849475852668931176482145
     assert mmh3.hash128("foo", 42) == 215966891540331383248189432718888555506

@@ -464,3 +464,52 @@ def test_mmh3_x86_128_init_raises_valueerror() -> None:
         mmh3.mmh3_x86_128(b"hello, world", -1)
     with pytest.raises(ValueError):
         mmh3.mmh3_x86_128(b"hello, world", 2**32)
+
+
+ONE_SHOT_HASHERS = [mmh3.hash, mmh3.hash64, mmh3.hash128, mmh3.hash_bytes]
+
+
+class _BadBool:  # pylint: disable=too-few-public-methods
+    def __bool__(self) -> bool:
+        raise ZeroDivisionError("bad __bool__")
+
+
+@no_type_check
+@pytest.mark.parametrize("func", ONE_SHOT_HASHERS)
+def test_one_shot_raises_typeerror_on_missing_key(func) -> None:
+    with pytest.raises(TypeError, match="missing required argument 'key'"):
+        func(seed=1)
+
+
+@no_type_check
+@pytest.mark.parametrize("func", ONE_SHOT_HASHERS)
+def test_one_shot_raises_unicodeencodeerror_on_surrogate_key(func) -> None:
+    with pytest.raises(UnicodeEncodeError):
+        func("\ud800")
+    with pytest.raises(UnicodeEncodeError):
+        func(key="\ud800")
+
+
+@no_type_check
+@pytest.mark.parametrize("func", ONE_SHOT_HASHERS)
+def test_one_shot_raises_unicodeencodeerror_on_surrogate_kwname(func) -> None:
+    with pytest.raises(UnicodeEncodeError):
+        func(b"hello, world", **{"\ud800": 1})
+
+
+@no_type_check
+@pytest.mark.parametrize(
+    "func, nflags",
+    [(mmh3.hash, 1), (mmh3.hash64, 2), (mmh3.hash128, 2), (mmh3.hash_bytes, 1)],
+)
+def test_one_shot_propagates_bool_error(func, nflags) -> None:
+    for pos in range(nflags):
+        flags = [True] * nflags
+        flags[pos] = _BadBool()
+        with pytest.raises(ZeroDivisionError):
+            func(b"hello, world", 0, *flags)
+
+    names = ["signed"] if func is mmh3.hash else ["x64arch", "signed"][:nflags]
+    for name in names:
+        with pytest.raises(ZeroDivisionError):
+            func(b"hello, world", **{name: _BadBool()})
