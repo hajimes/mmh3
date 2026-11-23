@@ -39,7 +39,7 @@ lint = [
   "actionlint-py == 1.7.12.24",
   "clang-format == 23.1.0",
   "codespell == 2.4.3",
-  "pylint == 4.0.8",
+  "pylint == 4.0.9",
   "ruff == 0.16.5"
 ]
 type = [
